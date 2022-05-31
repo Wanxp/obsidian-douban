@@ -15,7 +15,9 @@
       "ES5",
       "ES6",
       "ES7"
-    ]
+    ],
+    "outDir": "dist",           
+
   },
   "include": [
     "**/*.ts"
