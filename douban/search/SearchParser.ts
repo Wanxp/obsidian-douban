@@ -1,15 +1,8 @@
 import { CheerioAPI } from "cheerio";
-import { DoubanExtract } from "douban/Douban";
-import { type } from "os";
+import DoubanSearchResultSubject from "douban/model/DoubanSearchResultSubject";
 
-interface DoubanSearchResultExtract extends DoubanExtract{
-	cast: string;
-	score: string;
-}
-
-
-class SearchParserHandler {
-    static parseSearch(dataHtml:CheerioAPI):DoubanSearchResultExtract[]  {
+export default class SearchParserHandler {
+    static parseSearch(dataHtml:CheerioAPI):DoubanSearchResultSubject[]  {
         return dataHtml('.result')
             .get()
             .map((i:any) => {
@@ -20,7 +13,7 @@ class SearchParserHandler {
                 var ececResult = idPattern.exec(linkValue);
                 var urlResult = urlPattern.exec(linkValue);
                 var cast = item.find(".subject-cast").text();
-                const result:DoubanSearchResultExtract = {
+                const result:DoubanSearchResultSubject = {
                     id: ececResult?ececResult[0]:'',
                     title: item.find("div.content > div > h3 > a").text(),
                     score: item.find(".rating_nums").text(),
@@ -38,6 +31,3 @@ class SearchParserHandler {
             })
     };
 }
-
-export {SearchParserHandler}
-export type {DoubanSearchResultExtract}

@@ -1,4 +1,5 @@
-import { DoubanSearchModal } from "douban/DoubanSearchModal";
+import { DoubanEtractHandler } from "douban/DoubanExtractHandler";
+import { DoubanSearchModal } from "douban/search/DoubanSearchModal";
 import { DoubanSettingTab } from "douban/DoubanSettingTab";
 import { DoubanFuzzySuggester } from "douban/search/DoubanSearchFuzzySuggestModal";
 import { Editor, Notice, Plugin} from "obsidian";
@@ -10,6 +11,7 @@ import { DoubanSearchResultExtract } from "./douban/search/SearchParser";
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
 	public fuzzySuggester: DoubanFuzzySuggester;
+	public doubanEtractHandler: DoubanEtractHandler;
 
 
 	formatExtractText(extract: DoubanExtract): string {
@@ -29,22 +31,6 @@ export default class DoubanPlugin extends Plugin {
 		log.error(`Could not automatically resolve disambiguation.`);
 	}
   
-  
-	parseSearchList(extract: DoubanSearchResultExtract[]):DoubanSearchResultExtract[] {
-		// return extract.map(result => {
-		// 	return {
-		// 	id: result.id,
-		// 	type: result.type,
-		// 	title: result.title,
-		// 	desc: result.desc,
-		// 	url: result.url,
-		// 	score: result.score,
-		// 	cast: result.cast
-		// 	}
-		// })
-		return extract;
-	}
-  
 	async getDoubanSearchList(title: string): Promise<DoubanSearchResultExtract[] | undefined> {
 		return Searcher.search(title, this.settings);
 	  }
@@ -56,10 +42,15 @@ export default class DoubanPlugin extends Plugin {
 	  return null;
 	}
   
+	getAndPasteIntoEditor(extract: DoubanExtract) {
+		if (!extract) {
+		  this.handleNotFound("Not Found Subject");
+		  return;
+		}
 
+	}
 
 	async pasteIntoEditor(editor: Editor, extract: DoubanExtract) {
-
 	  if (!extract) {
 		this.handleNotFound("Not Found Subject");
 		return;
@@ -71,11 +62,10 @@ export default class DoubanPlugin extends Plugin {
 	async search(searchTerm:string) {
 		log.info("plugin search :" + searchTerm);
 		const resultListPromise = this.getDoubanSearchList(searchTerm);
-		resultListPromise.then(log.info);
 		const resultList = await resultListPromise;
-		const result = this.parseSearchList(resultList);
-		log.info("plugin search result:" + JSON.stringify(result));
-		this.fuzzySuggester.showSearchList(result);
+		// const result = this.parseSearchList(resultList);
+		log.info("plugin search result:" + JSON.stringify(resultList));
+		this.fuzzySuggester.showSearchList(resultList);
 	}
 
 	async getDoubanMovieTextForActiveFile(editor: Editor) {
@@ -113,6 +103,7 @@ export default class DoubanPlugin extends Plugin {
   
 	  this.addSettingTab(new DoubanSettingTab(this.app, this));
 	  this.fuzzySuggester = new DoubanFuzzySuggester(this.app, this);
+	  this.doubanEtractHandler = new DoubanEtractHandler(this.app, this);
 	}
   
 	async loadSettings() {

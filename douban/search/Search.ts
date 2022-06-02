@@ -2,11 +2,12 @@ import cheerio from 'cheerio';
 import { doubanHeadrs, DoubanPluginSettings } from 'douban/Douban';
 import { get, readStream } from 'tiny-network';
 import { ensureStatusCode } from 'douban/ResponseHandle';
-import { DoubanSearchResultExtract, SearchParserHandler } from './SearchParser';
 import { log } from 'utils/logutil';
+import DoubanSearchResultSubject from 'douban/model/DoubanSearchResultSubject';
+import SearchParserHandler from './SearchParser';
 
-class Searcher {
-  static search(searchItem:string, doubanSettings:DoubanPluginSettings):Promise<DoubanSearchResultExtract[]> {
+export default class Searcher {
+  static search(searchItem:string, doubanSettings:DoubanPluginSettings):Promise<DoubanSearchResultSubject[]> {
     // getData();
     // getData2();
     // return Promise.resolve();
@@ -20,5 +21,3 @@ class Searcher {
         .then(SearchParserHandler.parseSearch);
   };
 }
-
-export {Searcher}

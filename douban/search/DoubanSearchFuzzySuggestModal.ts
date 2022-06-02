@@ -18,6 +18,21 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultExtract> 
         this.app = app;
         this.plugin = plugin;
         this.setPlaceholder("Choose an item...");
+
+        // this.inputEl.addEventListener("keydown", (event) => {
+        //     if (event.key === "Enter") {
+        //         log.info("enter")
+        //       this.reloadSearch();
+        //     }
+        //   })
+
+    }
+
+    async reloadSearch() {
+        if(this.inputEl.value) {
+            log.info("reload search")
+            this.doubanSearchResultExtract = await this.plugin.getDoubanSearchList(this.inputEl.value);
+        }
     }
 
     getItems(): DoubanSearchResultExtract[] {
@@ -25,12 +40,12 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultExtract> 
     }
 
     getItemText(item: DoubanSearchResultExtract): string {
-        let text:string = item.type + ":" + item.title + " [score]:" + item.score + ",[cast]:" + item.cast;
+        let text:string = item.type + "/"  + item.score + "/" + item.title + "/" + item.cast;
         return text;
     }
 
     onChooseItem(item: DoubanSearchResultExtract, evt: MouseEvent | KeyboardEvent): void {
-        log.warn("choose item  " + item.title + " id " + item.id);
+        this.plugin.geDoubanMovieTextForSearchTerm
     }
 
     public showSearchList(doubanSearchResultExtractList:DoubanSearchResultExtract[]) {
