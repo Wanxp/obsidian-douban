@@ -1,12 +1,13 @@
-import { DoubanEtractHandler } from "douban/DoubanExtractHandler";
+import { DoubanEtractHandler } from "douban/handler/DoubanExtractHandler";
 import { DoubanSearchModal } from "douban/search/DoubanSearchModal";
 import { DoubanSettingTab } from "douban/DoubanSettingTab";
 import { DoubanFuzzySuggester } from "douban/search/DoubanSearchFuzzySuggestModal";
 import { Editor, Notice, Plugin} from "obsidian";
 import { log } from "utils/logutil";
-import { DEFAULT_SETTINGS, DoubanExtract, DoubanPluginSettings } from "./douban/Douban";
-import { Searcher } from "./douban/search/Search";
-import { DoubanSearchResultExtract } from "./douban/search/SearchParser";
+import { DEFAULT_SETTINGS,  DoubanPluginSettings } from "./douban/Douban";
+import DoubanSubject from "douban/model/DoubanSubject";
+import DoubanSearchResultSubject from "douban/model/DoubanSearchResultSubject";
+import Searcher from "douban/search/Search";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
@@ -14,7 +15,7 @@ export default class DoubanPlugin extends Plugin {
 	public doubanEtractHandler: DoubanEtractHandler;
 
 
-	formatExtractText(extract: DoubanExtract): string {
+	formatExtractText(extract: DoubanSubject): string {
 	  return this.settings.template ? 
         this.settings.template.replace("{{id}}", extract.id)
         .replace("{{type}}", extract.type)
@@ -31,26 +32,13 @@ export default class DoubanPlugin extends Plugin {
 		log.error(`Could not automatically resolve disambiguation.`);
 	}
   
-	async getDoubanSearchList(title: string): Promise<DoubanSearchResultExtract[] | undefined> {
+	async getDoubanSearchList(title: string): Promise<DoubanSearchResultSubject[] | undefined> {
 		return Searcher.search(title, this.settings);
 	  }
 
-	async getDoubanMovieText(title: DoubanSearchResultExtract): Promise<DoubanExtract | undefined> {
-	//   const moviesPromise =  search(title);
-	//   const movies = await moviesPromise;
-	//   const extract = this.parseResponse(movies);
-	  return null;
-	}
-  
-	getAndPasteIntoEditor(extract: DoubanExtract) {
-		if (!extract) {
-		  this.handleNotFound("Not Found Subject");
-		  return;
-		}
 
-	}
 
-	async pasteIntoEditor(editor: Editor, extract: DoubanExtract) {
+	async pasteIntoEditor(editor: Editor, extract: DoubanSubject) {
 	  if (!extract) {
 		this.handleNotFound("Not Found Subject");
 		return;
