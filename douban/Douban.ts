@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS:DoubanPluginSettings = {
     "---\n" + 
     "title: {{title}}" +
     "cast: {{cast}}" +
-    "score: {{score}}" + 
+    "score: {{score}}\n" + 
     "---",
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs)

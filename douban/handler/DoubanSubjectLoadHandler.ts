@@ -2,12 +2,11 @@ import DoubanSubject from "douban/model/DoubanSubject";
 
 export default interface DoubanSubjectLoadHandler<T extends DoubanSubject> {
 
-    getType():string;
+    getType():string | undefined;
 
     support(extract:DoubanSubject):boolean;
 
-    getSubject(url:string):T;
+    handle(url:string):void;
 
-    getTextResult(url:string):string;
 
 }

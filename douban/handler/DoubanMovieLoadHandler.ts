@@ -3,42 +3,21 @@ import { get, readStream } from "tiny-network";
 import { log } from "utils/logutil";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import cheerio, { CheerioAPI } from 'cheerio';
+import { DoubanPluginSettings } from "douban/Douban";
+import DoubanPlugin from "main";
 
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
-    
-    
-    
-    getSubject(url:string): DoubanMovieSubject {
-        return this.fetchFromDouban(url);
-    }
-    getTextResult(url:string): string {
-        throw new Error("Method not implemented.");
-    }
-    getType(): string {
-        throw new Error("Method not implemented.");
-    }
- 
-    fetchFromDouban(url:string):DoubanMovieSubject {
-        const reuslt = await this.fetchFromDoubanWeb(url);
-        return reuslt;
+
+    constructor(doubanPlugin:DoubanPlugin) {
+        super(doubanPlugin);
     }
 
-    fetchFromDoubanWeb(url:string):Promise<DoubanMovieSubject> {
-        return Promise
-            .resolve()
-            .then(() => get(url, JSON.parse(this.doubanSettings.searchHeaders)))
-            .then(readStream)
-            .then(log.info)
-            .then(cheerio.load)
-            .then(this.parseMovieSubjectFromHtml);
-    }
-
-    parseMovieSubjectFromHtml(responseHtml:CheerioAPI):DoubanMovieSubject {
-        return responseHtml('.result')
+    parseSubjectFromHtml(data: CheerioAPI): DoubanMovieSubject {
+        return data('.result')
         .get()
         .map((i:any) => {
-            const item = responseHtml(i);
+            const item = data(i);
             var idPattern = /(\d){5,10}/g;
             var urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
             var linkValue = item.find("div.content > div > h3 > a").text();
@@ -60,8 +39,13 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
                 url: urlResult?decodeURIComponent(urlResult[0]):'https://www.douban.com',
             };
             return result;
-        })[0];
+        })[0];    
     }
+
+    getType(): string |undefined {
+        throw new Error("Method not implemented.");
+    }
+  
 
 
 }

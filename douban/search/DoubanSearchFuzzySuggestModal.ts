@@ -1,17 +1,17 @@
+import DoubanSearchResultSubject from "douban/model/DoubanSearchResultSubject";
 import  DoubanPlugin  from "main";
 import { FuzzySuggestModal,App } from "obsidian";
 import { log } from "utils/logutil";
-import { DoubanSearchResultExtract } from "./SearchParser";
 
 
 export {DoubanFuzzySuggester}
 
 
-class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultExtract> {
+class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> {
 
     public app: App;
     private plugin: DoubanPlugin;
-    private doubanSearchResultExtract:DoubanSearchResultExtract[]
+    private doubanSearchResultExtract:DoubanSearchResultSubject[]
 
     constructor(app: App, plugin: DoubanPlugin) {
         super(app);
@@ -35,20 +35,20 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultExtract> 
         }
     }
 
-    getItems(): DoubanSearchResultExtract[] {
+    getItems(): DoubanSearchResultSubject[] {
         return this.doubanSearchResultExtract;
     }
 
-    getItemText(item: DoubanSearchResultExtract): string {
+    getItemText(item: DoubanSearchResultSubject): string {
         let text:string = item.type + "/"  + item.score + "/" + item.title + "/" + item.cast;
         return text;
     }
 
-    onChooseItem(item: DoubanSearchResultExtract, evt: MouseEvent | KeyboardEvent): void {
-        this.plugin.geDoubanMovieTextForSearchTerm
+    onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
+        this.plugin.doubanEtractHandler.handle(item);
     }
 
-    public showSearchList(doubanSearchResultExtractList:DoubanSearchResultExtract[]) {
+    public showSearchList(doubanSearchResultExtractList:DoubanSearchResultSubject[]) {
         this.doubanSearchResultExtract = doubanSearchResultExtractList;
         log.info("show search result" );
         this.start();
