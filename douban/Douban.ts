@@ -1,11 +1,19 @@
+import { i18nHelper } from "lang/helper";
 import { type } from "os";
 
-interface DoubanPluginSettings {
+export interface DoubanPluginSettings {
     movieTemplate:string,
     dateFormat:string,
     searchUrl:string,
     arraySpilt:string,
     searchHeaders?:string,
+    personNameMode:PersonNameMode,
+}
+
+export enum PersonNameMode {
+    CH_NAME = "CH",
+    EN_NAME = "EN",
+    CH_EN_NAME = "CH_EN",
 }
 
 
@@ -32,15 +40,15 @@ export const DEFAULT_SETTINGS:DoubanPluginSettings = {
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs),
     dateFormat: "yyyy_MM_DD",
-    arraySpilt: ", "
-
-
-
-}
-
-
-export class DefaultSettingsContent {
+    arraySpilt: ", ",
+    personNameMode: PersonNameMode.CH_NAME
 
 }
 
-export type {DoubanPluginSettings}
+export const personNameModeRecords: {[key in PersonNameMode]: string} = {
+    [PersonNameMode.CH_NAME]: i18nHelper.getMessage("Chinese Name"),
+    [PersonNameMode.EN_NAME]: i18nHelper.getMessage("English Name"),
+    [PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage("Chinese And English Name"),
+  }
+  
+

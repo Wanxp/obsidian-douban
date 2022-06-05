@@ -1,8 +1,12 @@
 //简体中文
 export default {
     //main.ts
-    'search in douban by current file name':'用当前文档名搜索豆瓣并写入当前文档',
-    'search douban and input current file':'在豆瓣搜索并写入到当前文档',
+    'search douban by current file name':'用当前文档名搜索豆瓣并写入当前文档',
+    'search douban and import to current file':'在豆瓣搜索并写入到当前文档',
+    'Enter Search Term:':`输入搜索内容:`,
+    'Search':`搜索`,
+    'Cancel':`取消`,
+
     //DoubanSettingTab
     'douban search url': `豆瓣搜索地址`,
     'douban search url desc 1':  `豆瓣搜索页面请求地址, 通常是网页搜索的地址. `,
@@ -33,5 +37,15 @@ export default {
      1. 访问http://www.douban.com
      2. 复制请求头,仅复制以下请求头 `,
      'current version not support type': `暂时不支持该类型导入,请至github提交issuess获取帮助`,
-     'Douban': `豆瓣网`
+     'Douban': `豆瓣网`,
+
+     'Person Name Language Mode':'人名显示模式',
+     'options:':"可选项:",
+     'Chinese Name mode, only show Chinese name':'中文名称模式, 人名只显示中文名',
+     'English Name mode, only show English name':'英文名称模式, 人名只显示英文名',
+     'Chinese English Name mode, show Chinese English name both':'中文和英文名称模式, 人名同时显示中文和英文名',
+     'Chinese Name': '中文名',
+     'English Name': '英文名',
+     'Chinese And English Name': '中文名和英文名',
+
 }

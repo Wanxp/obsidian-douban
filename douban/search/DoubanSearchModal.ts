@@ -1,6 +1,8 @@
 import { App, Editor, Modal, TextComponent } from "obsidian";
-import { log } from "utils/logutil";
+
 import  DoubanPlugin  from "../../main";
+import { i18nHelper } from "lang/helper";
+import { log } from "utils/Logutil";
 
 export class DoubanSearchModal extends Modal {
 	searchTerm: string;
@@ -16,16 +18,18 @@ export class DoubanSearchModal extends Modal {
 	onOpen() {
 	  let { contentEl } = this;
 
-	  contentEl.createEl("h2", { text: "Enter Search Term:" });
+	  contentEl.createEl("h2", { text: i18nHelper.getMessage('Enter Search Term:') });
   
 	  const inputs = contentEl.createDiv("inputs");
 	  const searchInput = new TextComponent(inputs).onChange((searchTerm) => {
 		this.searchTerm = searchTerm;
 	  });
+	  searchInput.inputEl.addClass("search_input");
+
 	  searchInput.inputEl.focus();
 	  searchInput.inputEl.addEventListener("keydown", (event) => {
 		if (event.key === "Enter") {
-		  this.search();
+		  this.close();
 		}
 	  });
 	  
@@ -33,26 +37,20 @@ export class DoubanSearchModal extends Modal {
 
 	  const controls = contentEl.createDiv("controls");
 	  const searchButton = controls.createEl("button", {
-		text: "Search",
+		text: i18nHelper.getMessage('Search'),
 		cls: "mod-cta",
 		attr: {
 		  autofocus: true,
 		},
 	  });
+	  searchButton.addClass("search_button");
+
 	  searchButton.addEventListener("click", this.close.bind(this));
-	  const cancelButton = controls.createEl("button", { text: "Cancel" });
+	  const cancelButton = controls.createEl("button", { text:  i18nHelper.getMessage('Cancel') });
 	  cancelButton.addEventListener("click", this.close.bind(this));
-	}
-	async search() {
-		let { contentEl } = this;
-		contentEl.empty();
-		if (this.searchTerm) {
-			this.close();
-			await this.plugin.search(this.searchTerm, this.editor);
+	  cancelButton.addClass("search_button");
 
-		}
 	}
-
 
   
 	async onClose() {
@@ -60,8 +58,8 @@ export class DoubanSearchModal extends Modal {
   
 	  contentEl.empty();
 	  if (this.searchTerm) {
-		// await this.plugin.pasteIntoEditor(this.editor, this.searchTerm);
-	  }
+		await this.plugin.search(this.searchTerm, this.editor);
+	}
 	}
 
   }

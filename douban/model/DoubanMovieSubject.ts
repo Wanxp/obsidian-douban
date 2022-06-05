@@ -1,12 +1,12 @@
-import DoubanSubject from "./DoubanSubject";
 import {AggregateRating, Person, WithContext} from 'schema-dts';
 
+import DoubanSubject from "./DoubanSubject";
 
 export default class DoubanMovieSubject extends DoubanSubject  {
 	director:Person[];
 	author:Person[];
 	actor:Person[];
 	aggregateRating:AggregateRating;
-	datePublished:string;
+	datePublished:Date;
 	image:string
 }

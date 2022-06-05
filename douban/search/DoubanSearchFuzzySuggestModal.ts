@@ -1,8 +1,8 @@
-import DoubanSearchResultSubject from "douban/model/DoubanSearchResultSubject";
-import  DoubanPlugin  from "main";
-import { FuzzySuggestModal,App, Editor } from "obsidian";
-import { log } from "utils/logutil";
+import { App, Editor, FuzzySuggestModal } from "obsidian";
 
+import  DoubanPlugin  from "main";
+import DoubanSearchResultSubject from "douban/model/DoubanSearchResultSubject";
+import { log } from "utils/Logutil";
 
 export {DoubanFuzzySuggester}
 
@@ -19,13 +19,6 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
         this.plugin = plugin;
         this.setPlaceholder("Choose an item...");
 
-        // this.inputEl.addEventListener("keydown", (event) => {
-        //     if (event.key === "Enter") {
-        //         log.info("enter")
-        //       this.reloadSearch();
-        //     }
-        //   })
-
     }
 
 
@@ -40,7 +33,6 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
     }
 
     onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
-        log.warn(`choose itme ${JSON.stringify(item)}`);
         this.plugin.doubanEtractHandler.handle(item, this.editor);
     }
 

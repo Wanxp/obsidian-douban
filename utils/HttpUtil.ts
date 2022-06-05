@@ -1,6 +1,7 @@
 import * as https from 'https';
+
 import { get } from 'tiny-network';
-import { log } from './logutil';
+import { log } from './Logutil';
 
 export default class HttpUtil {
 

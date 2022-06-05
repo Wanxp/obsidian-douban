@@ -1,8 +1,9 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
+import { DEFAULT_SETTINGS, PersonNameMode, personNameModeRecords } from "./Douban";
 
-import { DEFAULT_SETTINGS } from "./Douban";
 import DoubanPlugin from "main";
 import { i18nHelper } from "lang/helper";
+import { log } from "utils/Logutil";
 
 export class DoubanSettingTab extends PluginSettingTab {
 	plugin: DoubanPlugin;
@@ -82,6 +83,33 @@ export class DoubanSettingTab extends PluginSettingTab {
 			  .setValue(this.plugin.settings.movieTemplate)
 			  .onChange(async (value) => {
 				this.plugin.settings.movieTemplate = value;
+				await this.plugin.saveSettings();
+			  });
+			});
+		  });
+
+		  new Setting(containerEl).setName(i18nHelper.getMessage("Person Name Language Mode")).then((setting) => {
+			setting.addDropdown((dropdwon) => {
+			  setting.descEl.appendChild(
+				createFragment((frag) => {
+				  frag.appendText(i18nHelper.getMessage('options:'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('Chinese Name mode, only show Chinese name'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('English Name mode, only show English name'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('Chinese English Name mode, show Chinese English name both'));
+				  frag.createEl('br');
+				})
+			  );
+			//   dropdwon.inputEl.addClass("settings_area");
+			//   dropdwon.inputEl.setAttr("rows", 10);
+			dropdwon.addOption(PersonNameMode.CH_NAME, personNameModeRecords.CH)
+			dropdwon.addOption(PersonNameMode.EN_NAME, personNameModeRecords.EN)
+			dropdwon.addOption(PersonNameMode.CH_EN_NAME, personNameModeRecords.CH_EN)
+			dropdwon.setValue(this.plugin.settings.personNameMode)
+			  .onChange(async (value:string) => {
+				this.plugin.settings.personNameMode = value as PersonNameMode;
 				await this.plugin.saveSettings();
 			  });
 			});

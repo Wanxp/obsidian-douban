@@ -1,4 +1,4 @@
-import { Editor, renderResults } from "obsidian";
+import { Editor, moment, renderResults } from "obsidian";
 import cheerio, { CheerioAPI } from 'cheerio';
 import { get, readStream } from "tiny-network";
 
@@ -7,26 +7,29 @@ import DoubanMovieSubject from "douban/model/DoubanMovieSubject";
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "douban/model/DoubanSubject";
-import { log } from "utils/logutil";
+import SchemaOrg from "utils/SchemaOrg";
+import { log } from "utils/Logutil";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
-    parseText(template: string, arraySpilt:string, extract: DoubanMovieSubject): string {
-		return template ? template.replace("{{id}}", extract.id)
-		.replace("{{type}}", extract.type ? extract.type : "")
-		.replace("{{title}}", extract.title ? extract.title : "")
-		.replace("{{desc}}", extract.desc ? extract.desc : "")
-		.replace("{{image}}", extract.image  ? extract.image : "")
-		.replace("{{director}}", extract.director  ? extract.director.join(arraySpilt) : "")
-		.replace("{{actor}}", extract.actor  ? extract.actor.join(arraySpilt) : "")
-		.replace("{{author}}", extract.author  ? extract.author.join(arraySpilt) : "")
-		.replace("{{datePublished}}", extract.datePublished  ? extract.datePublished : "")
-		.replace("{{url}}", extract.url  ? extract.url : "")
-		.replace("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
+    parseText(extract: DoubanMovieSubject, settings:DoubanPluginSettings): string {
+		return settings.movieTemplate ? settings.movieTemplate.replaceAll("{{id}}", extract.id)
+		.replaceAll("{{type}}", extract.type ? extract.type : "")
+		.replaceAll("{{title}}", extract.title ? extract.title : "")
+		.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
+		.replaceAll("{{image}}", extract.image  ? extract.image : "")
+		.replaceAll("{{director}}", extract.director  ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
+		.replaceAll("{{actor}}", extract.actor  ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
+		.replaceAll("{{author}}", extract.author  ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
+		.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
+		.replaceAll("{{url}}", extract.url  ? extract.url : "")
+		.replaceAll("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
 		: undefined;    }
     support(extract: DoubanSubject): boolean {
-        return extract && ('[电影]'==extract.type || 'Movie' == extract.type);
+        return extract && extract.type && (extract.type.contains("电影") || extract.type.contains("Movie") || extract.type.contains("movie"));
     }
+
+
 
     
 
@@ -40,10 +43,10 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
             .filter(scd => "application/ld+json" == data(scd).attr("type"))
             .map(i => {
                 var item = data(i).text();
-                var obj = JSON.parse(item);
+                item = super.html_decode(item);
+                var obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
                 var idPattern = /(\d){5,10}/g;
                 var id = idPattern.exec(obj.url);
-                log.info(item);
                 const result:DoubanMovieSubject = {
                     id: id?id[0]:'',
                     type: 'Movie',
@@ -54,10 +57,9 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
                     author: obj.author,
                     actor: obj.actor,
                     aggregateRating: obj.aggregateRating,
-                    datePublished:obj.datePublished,
+                    datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
                     image:obj.image
                 }
-                log.info(result);
         return result;
     })[0];
 }

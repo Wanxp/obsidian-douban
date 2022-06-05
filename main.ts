@@ -9,14 +9,17 @@ import { DoubanSettingTab } from "douban/DoubanSettingTab";
 import DoubanSubject from "douban/model/DoubanSubject";
 import Searcher from "douban/search/Search";
 import { i18nHelper } from './lang/helper';
+import { log } from "utils/Logutil";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
 	public doubanEtractHandler: DoubanEtractHandler;
 
 	async putToEditor(editor:Editor, extract:DoubanSubject) {
-		var content:string = this.doubanEtractHandler.parseText(this.settings.movieTemplate,
-			 this.settings.arraySpilt, extract)
+		if(!editor || !extract) {
+			return;
+		}
+		var content:string = this.doubanEtractHandler.parseText(extract, this.settings)
 		if(content) {
 			editor.replaceSelection(content);
 		}
@@ -24,7 +27,9 @@ export default class DoubanPlugin extends Plugin {
 
 
 	async search(searchTerm:string, editor: Editor) {
+		log.trace("[main] start search:" + searchTerm);
 		const resultList = await Searcher.search(searchTerm, this.settings);
+		log.trace("[main] complete search:" + searchTerm + ",\n result list:" + JSON.stringify(resultList));
 		new DoubanFuzzySuggester(this, editor).showSearchList(resultList);
 	}
 
@@ -55,7 +60,7 @@ export default class DoubanPlugin extends Plugin {
   
 	  this.addCommand({
 		id: "search-douban-and-input-current-file",
-		name: i18nHelper.getMessage("search douban and input current file"),
+		name: i18nHelper.getMessage("search douban and import to current file"),
 		editorCallback: (editor: Editor) =>
 		  this.geDoubanMovieTextForSearchTerm(editor),
 	  });

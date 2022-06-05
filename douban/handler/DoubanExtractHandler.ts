@@ -30,7 +30,7 @@ export class DoubanEtractHandler {
             return;
         }
         var doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
-        .filter(h => h.support);
+        .filter(h => h.support(searchExtract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
             var result = doubanSubjectHandlers.map(h => h.handle(searchExtract.url, editor))
             if(result && result.length > 0) {
@@ -41,21 +41,21 @@ export class DoubanEtractHandler {
         }    
     }
 
-    public parseText(template: string, arraySpilt:string, extract:DoubanSubject):string {
-        if(!template) {
+    public parseText(extract:DoubanSubject, settings:DoubanPluginSettings):string {
+        if(!settings) {
             return "";
         }
         var doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
-            .filter(h => h.support);
+            .filter(h => h.support(extract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-            var result = doubanSubjectHandlers.map(h => h.parseText(template, arraySpilt, extract));
+            var result = doubanSubjectHandlers.map(h => h.parseText(extract, settings));
             if(result && result.length > 0) {
                 return result[0];
             }else {
                 return "";
             }
         }else {
-            return this._doubanSubjectHandlerDefault.parseText(template, arraySpilt, extract);
+            return this._doubanSubjectHandlerDefault.parseText(extract, settings);
         }    
 
     }
