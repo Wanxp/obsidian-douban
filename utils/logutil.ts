@@ -8,12 +8,12 @@ class Logger {
     }
 
     public warn(e:any):any {
-        new Notice("Douban Plugin Warn: " + e);
+        new Notice("Obsidian Douban Plugin Warn: " + e);
         return e;
     }
 
     public info(e:any):any {
-        console.log("Douban Plugin Warn: " + e);
+        console.log("Douban Plugin Info: " + e);
         return e;
     }
 }

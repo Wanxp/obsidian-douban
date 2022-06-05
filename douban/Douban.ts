@@ -1,9 +1,11 @@
 import { type } from "os";
 
 interface DoubanPluginSettings {
-    template:string,
+    movieTemplate:string,
+    dateFormat:string,
     searchUrl:string,
-    searchHeaders?:string
+    arraySpilt:string,
+    searchHeaders?:string,
 }
 
 
@@ -14,16 +16,31 @@ export const doubanHeadrs = {
 };
 
 export const DEFAULT_SETTINGS:DoubanPluginSettings = {
-    template: 
+    movieTemplate: 
     "---\n" + 
-    "title: {{title}}" +
-    "cast: {{cast}}" +
+    "doubanId: {{id}}\n" + 
+    "title: {{title}}\n" +
+    "type: {{type}}\n" +
     "score: {{score}}\n" + 
-    "---",
+    "datePublished: {{datePublished}}\n" + 
+    "director: {{director}}\n" + 
+    "actor: {{actor}}\n" + 
+    "author: {{author}}\n" + 
+    "url: {{url}}\n" + 
+    "image: {{image}}\n" + 
+    "---\n",
     searchUrl: 'https://www.douban.com/search?q=',
-    searchHeaders: JSON.stringify(doubanHeadrs)
+    searchHeaders: JSON.stringify(doubanHeadrs),
+    dateFormat: "yyyy_MM_DD",
+    arraySpilt: ", "
+
+
 
 }
 
+
+export class DefaultSettingsContent {
+
+}
 
 export type {DoubanPluginSettings}

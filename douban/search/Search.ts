@@ -16,7 +16,6 @@ export default class Searcher {
         .then(() => get(doubanSettings.searchUrl + searchItem, JSON.parse(doubanSettings.searchHeaders)))
         .then(ensureStatusCode(200))
         .then(readStream)
-        .then(log.info)
         .then(cheerio.load)
         .then(SearchParserHandler.parseSearch);
   };

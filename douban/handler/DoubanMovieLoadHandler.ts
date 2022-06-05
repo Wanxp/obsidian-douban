@@ -1,51 +1,68 @@
-import DoubanMovieSubject from "douban/model/DoubanMoveSubject";
-import { get, readStream } from "tiny-network";
-import { log } from "utils/logutil";
-import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
+import { Editor, renderResults } from "obsidian";
 import cheerio, { CheerioAPI } from 'cheerio';
-import { DoubanPluginSettings } from "douban/Douban";
-import DoubanPlugin from "main";
+import { get, readStream } from "tiny-network";
 
+import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
+import DoubanMovieSubject from "douban/model/DoubanMovieSubject";
+import DoubanPlugin from "main";
+import { DoubanPluginSettings } from "douban/Douban";
+import DoubanSubject from "douban/model/DoubanSubject";
+import { log } from "utils/logutil";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
+
+    parseText(template: string, arraySpilt:string, extract: DoubanMovieSubject): string {
+		return template ? template.replace("{{id}}", extract.id)
+		.replace("{{type}}", extract.type ? extract.type : "")
+		.replace("{{title}}", extract.title ? extract.title : "")
+		.replace("{{desc}}", extract.desc ? extract.desc : "")
+		.replace("{{image}}", extract.image  ? extract.image : "")
+		.replace("{{director}}", extract.director  ? extract.director.join(arraySpilt) : "")
+		.replace("{{actor}}", extract.actor  ? extract.actor.join(arraySpilt) : "")
+		.replace("{{author}}", extract.author  ? extract.author.join(arraySpilt) : "")
+		.replace("{{datePublished}}", extract.datePublished  ? extract.datePublished : "")
+		.replace("{{url}}", extract.url  ? extract.url : "")
+		.replace("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
+		: undefined;    }
+    support(extract: DoubanSubject): boolean {
+        return extract && ('[电影]'==extract.type || 'Movie' == extract.type);
+    }
+
+    
 
     constructor(doubanPlugin:DoubanPlugin) {
         super(doubanPlugin);
     }
 
     parseSubjectFromHtml(data: CheerioAPI): DoubanMovieSubject {
-        return data('.result')
-        .get()
-        .map((i:any) => {
-            const item = data(i);
-            var idPattern = /(\d){5,10}/g;
-            var urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
-            var linkValue = item.find("div.content > div > h3 > a").text();
-            var ececResult = idPattern.exec(linkValue);
-            var urlResult = urlPattern.exec(linkValue);
-            var cast = item.find(".subject-cast").text();
-            const result:DoubanMovieSubject = {
-                id: ececResult?ececResult[0]:'',
-                title: item.find("div.content > div > h3 > a").text(),
-                score: item.find(".rating_nums").text(),
-                // duration: item.attr('data-duration'),
-                // region: item.attr('data-region'),
-                // director: item.attr('data-director'),
-                // actors: item.attr('data-actors'),
-                // poster: item.find('.poster img').attr('src'),
-                cast: cast,
-                type: item.find("div.content > div > h3 > span").text(),
-                desc: item.find("div.content > p").text(),
-                url: urlResult?decodeURIComponent(urlResult[0]):'https://www.douban.com',
-            };
-            return result;
-        })[0];    
-    }
-
-    getType(): string |undefined {
-        throw new Error("Method not implemented.");
-    }
-  
+       return data('script')
+            .get()
+            .filter(scd => "application/ld+json" == data(scd).attr("type"))
+            .map(i => {
+                var item = data(i).text();
+                var obj = JSON.parse(item);
+                var idPattern = /(\d){5,10}/g;
+                var id = idPattern.exec(obj.url);
+                log.info(item);
+                const result:DoubanMovieSubject = {
+                    id: id?id[0]:'',
+                    type: 'Movie',
+                    title: obj.name,
+                    desc: obj.description,
+                    url: "https://movie.douban.com" + obj.url,
+                    director: obj.director,
+                    author: obj.author,
+                    actor: obj.actor,
+                    aggregateRating: obj.aggregateRating,
+                    datePublished:obj.datePublished,
+                    image:obj.image
+                }
+                log.info(result);
+        return result;
+    })[0];
+}
 
 
 }
+
+

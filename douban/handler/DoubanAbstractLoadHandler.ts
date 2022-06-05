@@ -1,39 +1,44 @@
-import { DoubanPluginSettings } from "douban/Douban";
-import DoubanSubject from "douban/model/DoubanSubject";
 import cheerio, { CheerioAPI } from "cheerio";
 import { get, readStream } from "tiny-network";
-import { log } from "utils/logutil";
-import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
+
 import DoubanPlugin from "main";
+import { DoubanPluginSettings } from "douban/Douban";
+import DoubanSubject from "douban/model/DoubanSubject";
+import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
+import { Editor } from "obsidian";
+import HttpUtil from "utils/HttpUtil";
+import { log } from "utils/logutil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
     
     
-    doubanPlugin:DoubanPlugin;
+    public doubanPlugin:DoubanPlugin;
 
     constructor(doubanPlugin:DoubanPlugin) {
         this.doubanPlugin = doubanPlugin;
     }
+
+    abstract parseText(template: string, arraySpilt:string, extract: T): string;
+
+    abstract support(extract: DoubanSubject): boolean;
     
-    handle(url:string):void {
-       Promise
-            .resolve()
-            .then(() => get(url, JSON.parse(this.doubanPlugin.settings.searchHeaders)))
+    handle(url:string, editor:Editor):void {
+        Promise.resolve().then(() => get(url + "/", {headers: JSON.parse(this.doubanPlugin.settings.searchHeaders)}))
             .then(readStream)
-            .then(log.info)
-            .then(cheerio.load)
-            .then(this.parseSubjectFromHtml);
+            .then(cheerio.load)  
+            .then(this.parseSubjectFromHtml)
+            .then(content => this.toEditor(editor, content))
+            // .then(content => content ? editor.replaceSelection(content) : content)
+        ;
 
     }
+
 
     abstract parseSubjectFromHtml(data:CheerioAPI):T | undefined;
-
-    abstract getType(): string | undefined; 
     
-
-
-    support(extract: DoubanSubject): boolean {
-        return extract && (this.getType() == extract.type);
+    toEditor(editor:Editor, extract: T):T {
+        this.doubanPlugin.putToEditor(editor, extract);
+        return extract;
     }
-    
+
 }

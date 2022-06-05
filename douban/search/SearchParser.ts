@@ -9,7 +9,7 @@ export default class SearchParserHandler {
                 const item = dataHtml(i);
                 var idPattern = /(\d){5,10}/g;
                 var urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
-                var linkValue = item.find("div.content > div > h3 > a").text();
+                var linkValue = item.find("div.content > div > h3 > a").attr("href");
                 var ececResult = idPattern.exec(linkValue);
                 var urlResult = urlPattern.exec(linkValue);
                 var cast = item.find(".subject-cast").text();
@@ -17,11 +17,6 @@ export default class SearchParserHandler {
                     id: ececResult?ececResult[0]:'',
                     title: item.find("div.content > div > h3 > a").text(),
                     score: item.find(".rating_nums").text(),
-                    // duration: item.attr('data-duration'),
-                    // region: item.attr('data-region'),
-                    // director: item.attr('data-director'),
-                    // actors: item.attr('data-actors'),
-                    // poster: item.find('.poster img').attr('src'),
                     cast: cast,
                     type: item.find("div.content > div > h3 > span").text(),
                     desc: item.find("div.content > p").text(),

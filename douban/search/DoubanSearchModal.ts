@@ -44,13 +44,11 @@ export class DoubanSearchModal extends Modal {
 	  cancelButton.addEventListener("click", this.close.bind(this));
 	}
 	async search() {
-		log.info("start search :" + this.searchTerm);
 		let { contentEl } = this;
 		contentEl.empty();
 		if (this.searchTerm) {
 			this.close();
-			await this.plugin.search(this.searchTerm);
-			// await this.plugin.pasteIntoEditor(this.editor, null);
+			await this.plugin.search(this.searchTerm, this.editor);
 
 		}
 	}
