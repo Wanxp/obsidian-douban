@@ -9,12 +9,16 @@ Import Movies, Books, Music Data from Douban in [Obsidian](https://obsidian.md/)
 
 ## How to use
 ### Movie
-- Search Movie By File Name/通过文件名搜索
-![Search Movie By File Name](./doc/search_by_file_name.gif)
 - Search Movie By Input Text/通过输入文本搜索
 ![Search Movie By Input Text](./doc/search_by_input.gif)
+
+- Search Movie By File Name/通过文件名搜索
+![Search Movie By File Name](./doc/search_by_file_name.gif)
+
 ## Settings
+- Setting Example2/设置案例2
+![Setting Example2](./doc/setting_cn.gif)
+
+
 - Setting Example1/设置案例1
 ![Setting Example1](./doc/setting_en.gif)
-- Setting Example2/设置案例2
-![Setting Example2](./doc/setting_en.gif)
