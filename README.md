@@ -17,7 +17,7 @@ Import Movies, Books, Music Data from Douban in [Obsidian](https://obsidian.md/)
 
 ## Settings
 - Setting Example2/设置案例2
-![Setting Example2](./doc/setting_cn.gif)
+![Setting Example2](./doc/setting_zh.gif)
 
 
 - Setting Example1/设置案例1
