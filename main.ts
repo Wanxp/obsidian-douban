@@ -1,9 +1,9 @@
 import { DEFAULT_SETTINGS, DoubanPluginSettings } from "./douban/Douban";
 import { Editor, Plugin } from "obsidian";
 
-import { DoubanEtractHandler } from "douban/handler/DoubanExtractHandler";
 import { DoubanFuzzySuggester } from "douban/search/DoubanSearchFuzzySuggestModal";
 import DoubanMovieSubject from "douban/model/DoubanMovieSubject";
+import { DoubanSearchChooseItemHandler } from "douban/handler/DoubanSearchChooseItemHandler";
 import { DoubanSearchModal } from "douban/search/DoubanSearchModal";
 import { DoubanSettingTab } from "douban/DoubanSettingTab";
 import DoubanSubject from "douban/model/DoubanSubject";
@@ -13,12 +13,14 @@ import { log } from "utils/Logutil";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
-	public doubanEtractHandler: DoubanEtractHandler;
+	public doubanEtractHandler: DoubanSearchChooseItemHandler;
 
 	async putToEditor(editor:Editor, extract:DoubanSubject) {
 		if(!editor || !extract) {
+			log.trace(`chosen item can not load data`);
 			return;
 		}
+		log.trace(`you choose item load data success: ${JSON.stringify(extract)}`);
 		var content:string = this.doubanEtractHandler.parseText(extract, this.settings)
 		if(content) {
 			editor.replaceSelection(content);
@@ -33,7 +35,7 @@ export default class DoubanPlugin extends Plugin {
 		new DoubanFuzzySuggester(this, editor).showSearchList(resultList);
 	}
 
-	async getDoubanMovieTextForActiveFile(editor: Editor) {
+	async getDoubanTextForActiveFile(editor: Editor) {
 		const activeFile = await this.app.workspace.getActiveFile();
 		if (activeFile) {
 		  const searchTerm = activeFile.basename;
@@ -43,7 +45,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 	  }
   
-	async geDoubanMovieTextForSearchTerm(editor: Editor) {
+	async geDoubanTextForSearchTerm(editor: Editor) {
 	  new DoubanSearchModal(this.app, this, editor).open();
 	}
   
@@ -54,7 +56,7 @@ export default class DoubanPlugin extends Plugin {
 		id: "search-douban-by-current-file-name",
 		name: i18nHelper.getMessage("search douban by current file name"),
 		editorCallback: (editor: Editor) =>
-		  this.getDoubanMovieTextForActiveFile(editor),
+		  this.getDoubanTextForActiveFile(editor),
 	  });
   
   
@@ -62,7 +64,7 @@ export default class DoubanPlugin extends Plugin {
 		id: "search-douban-and-input-current-file",
 		name: i18nHelper.getMessage("search douban and import to current file"),
 		editorCallback: (editor: Editor) =>
-		  this.geDoubanMovieTextForSearchTerm(editor),
+		  this.geDoubanTextForSearchTerm(editor),
 	  });
   
 	  this.addSettingTab(new DoubanSettingTab(this.app, this));
@@ -70,7 +72,7 @@ export default class DoubanPlugin extends Plugin {
   
 	async loadSettings() {
 	  this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	  this.doubanEtractHandler = new DoubanEtractHandler(this.app, this);
+	  this.doubanEtractHandler = new DoubanSearchChooseItemHandler(this.app, this);
 	}
   
 	async saveSettings() {

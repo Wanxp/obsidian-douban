@@ -14,7 +14,7 @@ export default class Searcher {
     // return Promise.resolve();
       return Promise
         .resolve()
-        .then(() => get(doubanSettings.searchUrl + searchItem, JSON.parse(doubanSettings.searchHeaders)))
+        .then(() => get(log.traceN("GET", doubanSettings.searchUrl + searchItem), JSON.parse(doubanSettings.searchHeaders)))
         .then(ensureStatusCode(200))
         .then(readStream)
         .then(cheerio.load)

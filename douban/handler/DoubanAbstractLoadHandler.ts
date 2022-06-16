@@ -24,9 +24,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
     abstract support(extract: DoubanSubject): boolean;
     
     handle(url:string, editor:Editor):void {
-        Promise.resolve().then(() => get(url + "/", {headers: JSON.parse(this.doubanPlugin.settings.searchHeaders)}))
+        Promise.resolve().then(() => get(log.traceN("GET URL", url + "/"), log.traceN("GET HEAD", {headers: JSON.parse(this.doubanPlugin.settings.searchHeaders)})))
             .then(readStream)
             .then(cheerio.load)  
+            .then(log.trace)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))
             // .then(content => content ? editor.replaceSelection(content) : content)

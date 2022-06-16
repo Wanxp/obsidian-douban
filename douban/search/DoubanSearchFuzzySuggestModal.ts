@@ -33,6 +33,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
     }
 
     onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
+        log.trace(`you chosen : ${JSON.stringify(item)}`)
         this.plugin.doubanEtractHandler.handle(item, this.editor);
     }
 

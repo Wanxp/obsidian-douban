@@ -7,7 +7,7 @@ import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 
-export class DoubanEtractHandler {
+export class DoubanSearchChooseItemHandler {
 
     private _app:App;
     private _doubanPlugin:DoubanPlugin;
@@ -32,10 +32,7 @@ export class DoubanEtractHandler {
         var doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
         .filter(h => h.support(searchExtract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-            var result = doubanSubjectHandlers.map(h => h.handle(searchExtract.url, editor))
-            if(result && result.length > 0) {
-                return result[0];
-            }
+            doubanSubjectHandlers[0].handle(searchExtract.url, editor);
         }else {
             this._doubanSubjectHandlerDefault.handle(searchExtract.url, editor);
         }    
