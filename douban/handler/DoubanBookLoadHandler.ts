@@ -1,7 +1,6 @@
 import { Editor, moment, renderResults } from "obsidian";
-import cheerio, { CheerioAPI } from 'cheerio';
-import { get, readStream } from "tiny-network";
 
+import  { CheerioAPI } from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject from "douban/model/DoubanBookSubject";
 import DoubanPlugin from "main";

@@ -1,9 +1,9 @@
 import { DoubanPluginSettings, doubanHeadrs } from 'douban/Douban';
+import cheerio, { load } from 'cheerio';
 import { get, readStream } from 'tiny-network';
 
 import DoubanSearchResultSubject from 'douban/model/DoubanSearchResultSubject';
 import SearchParserHandler from './SearchParser';
-import cheerio from 'cheerio';
 import { ensureStatusCode } from 'douban/ResponseHandle';
 import { log } from 'utils/Logutil';
 
@@ -17,7 +17,7 @@ export default class Searcher {
         .then(() => get(log.traceN("GET", doubanSettings.searchUrl + searchItem), JSON.parse(doubanSettings.searchHeaders)))
         .then(ensureStatusCode(200))
         .then(readStream)
-        .then(cheerio.load)
+        .then(load)
         .then(SearchParserHandler.parseSearch)
         .then(log.trace);
   };

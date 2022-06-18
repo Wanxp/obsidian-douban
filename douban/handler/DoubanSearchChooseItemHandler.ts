@@ -1,5 +1,6 @@
 import { App, Editor } from "obsidian";
 
+import DoubanBookLoadHandler from "./DoubanBookLoadHandler";
 import DoubanMovieLoadHandler from "./DoubanMovieLoadHandler";
 import DoubanOtherLoadHandler from "./DoubanOtherLoadHandler";
 import DoubanPlugin from "main";
@@ -20,7 +21,7 @@ export class DoubanSearchChooseItemHandler {
         this._app = app;
         this._doubanPlugin = doubanPlugin;
         this._doubanSubjectHandlerDefault = new DoubanOtherLoadHandler(doubanPlugin);
-        this._doubanSubjectHandlers = [new DoubanMovieLoadHandler(doubanPlugin),
+        this._doubanSubjectHandlers = [new DoubanMovieLoadHandler(doubanPlugin), new DoubanBookLoadHandler(doubanPlugin),
              this._doubanSubjectHandlerDefault];
 
     }

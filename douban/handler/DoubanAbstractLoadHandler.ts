@@ -1,13 +1,11 @@
+import { CheerioAPI, load } from 'cheerio';
 import { DoubanPluginSettings, PersonNameMode } from "douban/Douban";
-import cheerio, { CheerioAPI } from "cheerio";
 import { get, readStream } from "tiny-network";
 
 import DoubanPlugin from "main";
 import DoubanSubject from "douban/model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 import { Editor } from "obsidian";
-import HttpUtil from "utils/HttpUtil";
-import { json } from "stream/consumers";
 import { log } from "utils/Logutil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
@@ -26,15 +24,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
     handle(url:string, editor:Editor):void {
         Promise.resolve().then(() => get(log.traceN("GET URL", url + "/"), log.traceN("GET HEAD", {headers: JSON.parse(this.doubanPlugin.settings.searchHeaders)})))
             .then(readStream)
-            .then(cheerio.load)  
-            .then(log.trace)
+            .then(a => {log.trace(a.toString()); return a;})
+            .then(load)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))
             // .then(content => content ? editor.replaceSelection(content) : content)
         ;
 
     }
-
 
     abstract parseSubjectFromHtml(data:CheerioAPI):T | undefined;
     
