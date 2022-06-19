@@ -6,24 +6,32 @@ import DoubanBookSubject from "douban/model/DoubanBookSubject";
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "douban/model/DoubanSubject";
-import SchemaOrg from "utils/SchemaOrg";
-import { log } from "utils/Logutil";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
     parseText(extract: DoubanBookSubject, settings:DoubanPluginSettings): string {
-		return settings.movieTemplate ? settings.movieTemplate.replaceAll("{{id}}", extract.id)
+		return settings.bookTemplate ? settings.bookTemplate.replaceAll("{{id}}", extract.id)
 		.replaceAll("{{type}}", extract.type ? extract.type : "")
 		.replaceAll("{{title}}", extract.title ? extract.title : "")
 		.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
 		.replaceAll("{{image}}", extract.image  ? extract.image : "")
-		// .replaceAll("{{director}}", extract.director  ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		// .replaceAll("{{actor}}", extract.actor  ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		.replaceAll("{{author}}", extract.author  ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
+		.replaceAll("{{author}}", extract.author  ? extract.author.join(settings.arraySpilt) : "")
 		.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
 		.replaceAll("{{url}}", extract.url  ? extract.url : "")
-		.replaceAll("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
-		: undefined;    }
+		.replaceAll("{{score}}", extract.score && extract.score ? extract.score + "" : "")
+		.replaceAll("{{translator}}", extract.translator  ? extract.translator.join(settings.arraySpilt) : "")
+		.replaceAll("{{totalWord}}", extract.totalWord  ? extract.totalWord+"" : "")
+		.replaceAll("{{isbn}}", extract.isbn  ? extract.isbn : "")
+		.replaceAll("{{publish}}", extract.publish  ? extract.publish : "")
+		.replaceAll("{{originalTitle}}", extract.originalTitle  ? extract.originalTitle : "")
+		.replaceAll("{{subTitle}}", extract.subTitle  ? extract.subTitle : "")
+		.replaceAll("{{totalPage}}", extract.totalPage  ? extract.totalPage + "" : "")
+		.replaceAll("{{menu}}", extract.menu  ? extract.menu.join(settings.arraySpilt) : "")
+		.replaceAll("{{price}}", extract.price  ? extract.price + "" : "")
+		.replaceAll("{{labels}}", extract.labels  ? extract.labels.join(settings.arraySpilt) : "")
+
+		: undefined;    
+    }
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("书籍") || extract.type.contains("Book") || extract.type.contains("book"));
     }
@@ -36,29 +44,50 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
         super(doubanPlugin);
     }
 
-    parseSubjectFromHtml(data: CheerioAPI): DoubanBookSubject {
-       return data('script')
-            .get()
-            .filter(scd => "application/ld+json" == data(scd).attr("type"))
-            .map(i => {
-                var item = data(i).text();
-                item = super.html_decode(item);
-                var obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
-                var idPattern = /(\d){5,10}/g;
-                var id = idPattern.exec(obj.url);
-                const result:DoubanBookSubject = {
-                    id: id?id[0]:'',
-                    type: 'Book',
-                    title: obj.name,
-                    desc: obj.description,
-                    url: "https://book.douban.com" + obj.url,
-                    author: obj.author,
-                    aggregateRating: obj.aggregateRating,
-                    datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
-                    image:obj.image
-                }
+    parseSubjectFromHtml(html: CheerioAPI): DoubanBookSubject {
+        var title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+        var desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+        var url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+        var image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+        var type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
+        var author = html(html("head > meta[property= 'book:author']").get(0)).attr("content");
+        var isbn = html(html("head > meta[property= 'book:isbn']").get(0)).attr("content");
+        var detailDom = html(html("#info").get(0))
+        var publish = detailDom.find("span:contains('出版社') > a").text();
+        var translator = detailDom.find("span:contains('译者') > a").text();
+
+        var idPattern = /(\d){5,10}/g;
+        var id = idPattern.exec(url);
+
+        var info = detailDom.html.toString();
+
+        var datePublishedPattern = /<span class="pl">出版年:<\/span> ((\d){4}-(\d){1,2})<br\/>/g;
+        var datePublished = datePublishedPattern.exec(info);
+
+        const result:DoubanBookSubject = {
+            author: [author],
+            translator: [translator],
+            bookType: "",
+            image: image,
+            datePublished: datePublished?new Date(datePublished[0]):null,
+            totalWord: 0,
+            isbn: isbn,
+            publish: publish,
+            score: 0,
+            originalTitle: "",
+            subTitle: "",
+            totalPage: 0,
+            belong: "",
+            menu: [],
+            price: 0,
+            labels: [],
+            id: id ? id[0]:"",
+            type: "Book",
+            title: title,
+            desc: desc,
+            url: url
+        };
         return result;
-    })[0];
 }
 
 

@@ -3,6 +3,7 @@ import { type } from "os";
 
 export interface DoubanPluginSettings {
     movieTemplate:string,
+    bookTemplate:string,
     dateFormat:string,
     searchUrl:string,
     arraySpilt:string,
@@ -24,19 +25,43 @@ export const doubanHeadrs = {
 };
 
 export const DEFAULT_SETTINGS:DoubanPluginSettings = {
-    movieTemplate: 
-    "---\n" + 
-    "doubanId: {{id}}\n" + 
-    "title: {{title}}\n" +
-    "type: {{type}}\n" +
-    "score: {{score}}\n" + 
-    "datePublished: {{datePublished}}\n" + 
-    "director: {{director}}\n" + 
-    "actor: {{actor}}\n" + 
-    "author: {{author}}\n" + 
-    "url: {{url}}\n" + 
-    "image: {{image}}\n" + 
-    "---\n",
+    movieTemplate: `
+---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+score: {{score}}
+datePublished: {{datePublished}}
+director: {{director}}
+actor: {{actor}}
+author: {{author}}
+url: {{url}}
+image: {{image}}
+---`,
+    bookTemplate: `
+--- 
+doubanId: {{id}}
+title: {{title}}
+subTitle: {{subTitle}}
+originalTitle: {{originalTitle}}
+type: {{type}}
+author: {{author}}
+score: {{score}}
+datePublished: {{datePublished}}
+director: {{director}}
+translator: {{translator}}
+publish: {{publish}}
+isbn: {{isbn}}
+url: {{url}}
+image: {{image}}
+totalWord: {{totalWord}}
+totalPage: {{totalPage}}
+price: {{price}}
+tags: Book, {{labels}}
+---
+
+- Menu
+{{menu}}`,
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs),
     dateFormat: "yyyy_MM_DD",
