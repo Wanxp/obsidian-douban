@@ -9,6 +9,7 @@ import DoubanSubject from "douban/model/DoubanSubject";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
+
     parseText(extract: DoubanBookSubject, settings:DoubanPluginSettings): string {
 		return settings.bookTemplate ? settings.bookTemplate.replaceAll("{{id}}", extract.id)
 		.replaceAll("{{type}}", extract.type ? extract.type : "")
@@ -53,16 +54,22 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
         var author = html(html("head > meta[property= 'book:author']").get(0)).attr("content");
         var isbn = html(html("head > meta[property= 'book:isbn']").get(0)).attr("content");
         var detailDom = html(html("#info").get(0))
-        var publish = detailDom.find("span:contains('出版社') > a").text();
-        var translator = detailDom.find("span:contains('译者') > a").text();
+        var publish = detailDom.find("span.pl");
+
+
+        publish.map((index, info) => {
+            let key = html(info).text().trim();
+            let value = ''
+            if(key.indexOf('作者') >= 0 || key.indexOf('丛书') >= 0 || key.indexOf('译者') >= 0 || key.indexOf('出版社') >= 0){
+                value = html(info.next.next).text().trim();
+            }else{
+                value = html(info.next).text().trim();
+            }
+
+        })
 
         var idPattern = /(\d){5,10}/g;
         var id = idPattern.exec(url);
-
-        var info = detailDom.html.toString();
-
-        var datePublishedPattern = /<span class="pl">出版年:<\/span> ((\d){4}-(\d){1,2})<br\/>/g;
-        var datePublished = datePublishedPattern.exec(info);
 
         const result:DoubanBookSubject = {
             author: [author],
@@ -72,7 +79,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
             datePublished: datePublished?new Date(datePublished[0]):null,
             totalWord: 0,
             isbn: isbn,
-            publish: publish,
+            publish: null,
             score: 0,
             originalTitle: "",
             subTitle: "",

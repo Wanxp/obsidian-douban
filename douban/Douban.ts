@@ -48,9 +48,8 @@ type: {{type}}
 author: {{author}}
 score: {{score}}
 datePublished: {{datePublished}}
-director: {{director}}
 translator: {{translator}}
-publish: {{publish}}
+publish: {{publish}
 isbn: {{isbn}}
 url: {{url}}
 image: {{image}}
