@@ -59,5 +59,7 @@ If you want some features or have any questions about this plugin, create issues
 `npm run build`  
 5. Run and Watch code change/运行  
 `npm run dev`  
-6. Go to your Obsidian plugin center reload this plugin/进入Obsidian插件中心重新加载当前插件  
-7. Enjoy your develop/享受开发吧  
+6. Go to your Obsidian plugin center reload this plugin  
+进入Obsidian插件中心重新加载当前插件  
+7. Enjoy your develop  
+享受开发吧  
