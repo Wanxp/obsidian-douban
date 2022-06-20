@@ -25,8 +25,8 @@ export const doubanHeadrs = {
 };
 
 export const DEFAULT_SETTINGS:DoubanPluginSettings = {
-    movieTemplate: `
----
+    movieTemplate: 
+`![image]({{image}})
 doubanId: {{id}}
 title: {{title}}
 type: {{type}}
@@ -36,10 +36,10 @@ director: {{director}}
 actor: {{actor}}
 author: {{author}}
 url: {{url}}
-image: {{image}}
----`,
-    bookTemplate: `
---- 
+desc: {{desc}}
+`,
+    bookTemplate: 
+`---
 doubanId: {{id}}
 title: {{title}}
 subTitle: {{subTitle}}
@@ -49,18 +49,18 @@ author: {{author}}
 score: {{score}}
 datePublished: {{datePublished}}
 translator: {{translator}}
-publish: {{publish}
+publish: {{publish}}
 isbn: {{isbn}}
 url: {{url}}
-image: {{image}}
-totalWord: {{totalWord}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags: Book, {{labels}}
+tags: Book
+desc: {{desc}}
 ---
+![image|150]({{image}})
+`,
+// totalWord: {{totalWord}}
 
-- Menu
-{{menu}}`,
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs),
     dateFormat: "yyyy_MM_DD",

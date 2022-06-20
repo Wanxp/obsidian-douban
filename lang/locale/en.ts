@@ -15,12 +15,20 @@ export default {
     'douban search url desc 5': `Just copy the web address to the current input box.`,
 
     'movie content template': `Movie Content Template`,
-    'movie content template desc 1':  `Set markdown template for extract to be inserted.`,
+    'movie content template desc 1':  `Set markdown Movie template for extract to be inserted.`,
     'movie content template desc 2': `Available template variables are :`,
     'movie content template desc 3': `{{id}},  {{type}},  {{title}},`,
     'movie content template desc 4': `{{score}}, {{datePublished}}, {{director}},`,
-    'movie content template desc 5': `{{author}}, {{autor}}, {{desc}},`,
+    'movie content template desc 5': `{{author}}, {{actor}}, {{desc}},`,
     'movie content template desc 6': `{{image}}, {{url}}`,
+
+    'book content template': `Book Content Template`,
+    'book content template desc 1':  `Set markdown Book template for extract to be inserted.`,
+    'book content template desc 2': `Available Book template variables are :`,
+    'book content template desc 3': `{{id}}, {{title}}, {{originalTitle}}, {{subTitle}},`,
+    'book content template desc 4': `{{score}}, {{author}}, {{datePublished}}, {{type}},`,
+    'book content template desc 5': `{{publish}}, {{desc}}, {{translator}}, {{isbn}},`,
+    'book content template desc 6': `{{image}}, {{url}}, {{price}}, {{desc}}, {{totalPage}}`,
     
     'Date format': `Date Format`,
     'This format will be used when available template variables contain date.':

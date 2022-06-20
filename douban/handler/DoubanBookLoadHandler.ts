@@ -9,7 +9,6 @@ import DoubanSubject from "douban/model/DoubanSubject";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
-
     parseText(extract: DoubanBookSubject, settings:DoubanPluginSettings): string {
 		return settings.bookTemplate ? settings.bookTemplate.replaceAll("{{id}}", extract.id)
 		.replaceAll("{{type}}", extract.type ? extract.type : "")
@@ -53,9 +52,11 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
         var type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
         var author = html(html("head > meta[property= 'book:author']").get(0)).attr("content");
         var isbn = html(html("head > meta[property= 'book:isbn']").get(0)).attr("content");
-        var detailDom = html(html("#info").get(0))
+        var score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
+        var detailDom = html(html("#info").get(0));
         var publish = detailDom.find("span.pl");
 
+        var valueMap = new Map<string, string>();
 
         publish.map((index, info) => {
             let key = html(info).text().trim();
@@ -65,7 +66,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
             }else{
                 value = html(info.next).text().trim();
             }
-
+            valueMap.set(BookKeyValueMap.get(key), value);
         })
 
         var idPattern = /(\d){5,10}/g;
@@ -73,20 +74,20 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 
         const result:DoubanBookSubject = {
             author: [author],
-            translator: [translator],
+            translator: [valueMap.get('translator')],
             bookType: "",
             image: image,
-            datePublished: datePublished?new Date(datePublished[0]):null,
-            totalWord: 0,
+            datePublished: valueMap.has('datePublished')?new Date(valueMap.get('datePublished')) : null,
+            totalWord: valueMap.has('totalWord') ? Number(valueMap.get('totalWord')) : null,
             isbn: isbn,
-            publish: null,
-            score: 0,
-            originalTitle: "",
+            publish: valueMap.has('publish') ? valueMap.get('publish') : "",
+            score:  Number(score),
+            originalTitle: valueMap.has('originalTitle') ? valueMap.get('originalTitle') : "",
             subTitle: "",
-            totalPage: 0,
+            totalPage: valueMap.has('originalTitle') ? Number(valueMap.get('totalPage')) : null,
             belong: "",
             menu: [],
-            price: 0,
+            price: valueMap.has('price') ? Number(valueMap.get('price').replace('元', '')) : null,
             labels: [],
             id: id ? id[0]:"",
             type: "Book",
@@ -101,3 +102,16 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 }
 
 
+const BookKeyValueMap:Map<string, string> = new Map(
+    [['作者', 'author'],
+    ['出版社:', 'publish'],
+    ['原作名:', 'originalTitle'],
+    ['出版年:', 'datePublished'],
+    ['页数:', 'totalPage'],
+    ['定价:', 'price'],
+    ['装帧:', 'binding'],
+    ['丛书:', 'bush'],
+    ['ISBN:', 'isbn'],
+    ['译者', 'translator'],
+    ]
+);
