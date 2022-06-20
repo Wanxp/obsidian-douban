@@ -49,7 +49,8 @@ If you want some features or have any questions about this plugin, create issues
 3. Enable plugin in Obsidian  
 在obsidian插件中心开启当前插件功能
 ## How to Develop
-1. Enter your test vault folder `/.obsidian/plugins/`/进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`  
+1. Enter your test vault folder `/.obsidian/plugins/`  
+进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`  
 2. Clone Code/克隆代码  
 `git clone git@github.com:Wanxp/obsidian-douban.git`  
 3. Enter folder/进入代码文件夹  
