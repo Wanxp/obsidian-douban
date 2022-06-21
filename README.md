@@ -15,6 +15,7 @@ If you want some features or have any questions about this plugin, create issues
 
 ## Target
 - [x] Movie/电影
+- [x] Teleplay/电视剧
 - [x] Book/书籍
 - [ ] Music/音乐
 - [ ] Broadcast/广播
