@@ -26,17 +26,22 @@ export const doubanHeadrs = {
 
 export const DEFAULT_SETTINGS:DoubanPluginSettings = {
     movieTemplate: 
-`![image]({{image}})
+`---
 doubanId: {{id}}
 title: {{title}}
+originalTitle: {{originalTitle}}
 type: {{type}}
 score: {{score}}
+genre: {{genre}}
 datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
 url: {{url}}
 desc: {{desc}}
+---
+
+![image]({{image}})
 `,
     bookTemplate: 
 `---
@@ -57,6 +62,7 @@ price: {{price}}
 tags: Book
 desc: {{desc}}
 ---
+
 ![image|150]({{image}})
 `,
 // totalWord: {{totalWord}}

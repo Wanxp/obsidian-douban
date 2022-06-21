@@ -18,9 +18,9 @@ export default {
     'movie content template': `电影文本模板`,
     'movie content template desc 1':  `设置选择电影后导入的文本内容模板,`,
     'movie content template desc 2': `支持以下参数名称 :`,
-    'movie content template desc 3': `{{id}},  {{type}},  {{title}},`,
+    'movie content template desc 3': `{{id}},  {{type}},  {{title}}, {{originalTitle}},`,
     'movie content template desc 4': `{{score}}, {{datePublished}}, {{director}},`,
-    'movie content template desc 5': `{{author}}, {{autor}}, {{desc}},`,
+    'movie content template desc 5': `{{author}}, {{actor}}, {{desc}}, {{genre}},`,
     'movie content template desc 6': `{{image}}, {{url}}`,
 
     'book content template': `书籍文本模板`,

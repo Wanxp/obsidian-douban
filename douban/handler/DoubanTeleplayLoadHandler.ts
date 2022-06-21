@@ -1,15 +1,25 @@
-import  { CheerioAPI } from 'cheerio';
+import { CheerioAPI } from "cheerio";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
-import DoubanMovieSubject from "douban/model/DoubanMovieSubject";
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "douban/model/DoubanSubject";
+import DoubanTeleplaySubject from "douban/model/DoubanTeleplaySubject";
 import SchemaOrg from "utils/SchemaOrg";
 import { moment } from "obsidian";
 
-export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
+/**
+ * teleplay
+ */
+export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanTeleplaySubject>{
 
-    parseText(extract: DoubanMovieSubject, settings:DoubanPluginSettings): string {
+        
+
+    constructor(doubanPlugin:DoubanPlugin) {
+        super(doubanPlugin);
+    }
+
+    
+    parseText(extract: DoubanTeleplaySubject, settings:DoubanPluginSettings): string {
 		return settings.movieTemplate ? settings.movieTemplate.replaceAll("{{id}}", extract.id)
 		.replaceAll("{{type}}", extract.type ? extract.type : "")
 		.replaceAll("{{title}}", extract.title ? extract.title : "")
@@ -25,19 +35,13 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
         .replaceAll("{{genre}}", extract.genre ? extract.genre.join(settings.arraySpilt) : "")
 
 		: undefined;    }
+
     support(extract: DoubanSubject): boolean {
-        return extract && extract.type && (extract.type.contains("电影") || extract.type.contains("Movie") || extract.type.contains("movie"));
+        return extract && extract.type && (extract.type.contains("电视剧") || extract.type.contains("Teleplay") || extract.type.contains("teleplay"));
     }
 
 
-
-    
-
-    constructor(doubanPlugin:DoubanPlugin) {
-        super(doubanPlugin);
-    }
-
-    parseSubjectFromHtml(data: CheerioAPI): DoubanMovieSubject {
+    parseSubjectFromHtml(data: CheerioAPI): DoubanTeleplaySubject {
         return data('script')
                 .get()
                 .filter(scd => "application/ld+json" == data(scd).attr("type"))
@@ -54,7 +58,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
                     var originalTitleExec = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
                     var originalTitle = originalTitleExec?originalTitleExec[0]:name;
 
-                    const result:DoubanMovieSubject = {
+                    const result:DoubanTeleplaySubject = {
                         id: id?id[0]:'',
                         type: 'Movie',
                         title: title,
@@ -74,5 +78,3 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
     }
 
 }
-
-

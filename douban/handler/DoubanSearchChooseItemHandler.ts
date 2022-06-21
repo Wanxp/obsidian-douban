@@ -7,6 +7,7 @@ import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
+import { DoubanTeleplayLoadHandler } from "./DoubanTeleplayLoadHandler";
 
 export class DoubanSearchChooseItemHandler {
 
@@ -22,6 +23,7 @@ export class DoubanSearchChooseItemHandler {
         this._doubanPlugin = doubanPlugin;
         this._doubanSubjectHandlerDefault = new DoubanOtherLoadHandler(doubanPlugin);
         this._doubanSubjectHandlers = [new DoubanMovieLoadHandler(doubanPlugin), new DoubanBookLoadHandler(doubanPlugin),
+            new DoubanTeleplayLoadHandler(doubanPlugin),
              this._doubanSubjectHandlerDefault];
 
     }

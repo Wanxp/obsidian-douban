@@ -17,9 +17,9 @@ export default {
     'movie content template': `Movie Content Template`,
     'movie content template desc 1':  `Set markdown Movie template for extract to be inserted.`,
     'movie content template desc 2': `Available template variables are :`,
-    'movie content template desc 3': `{{id}},  {{type}},  {{title}},`,
+    'movie content template desc 3': `{{id}}, {{type}}, {{title}}, {{originalTitle}},`,
     'movie content template desc 4': `{{score}}, {{datePublished}}, {{director}},`,
-    'movie content template desc 5': `{{author}}, {{actor}}, {{desc}},`,
+    'movie content template desc 5': `{{author}}, {{actor}}, {{desc}}, {{genre}},`,
     'movie content template desc 6': `{{image}}, {{url}}`,
 
     'book content template': `Book Content Template`,
