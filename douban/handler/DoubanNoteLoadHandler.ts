@@ -4,6 +4,7 @@ import DoubanNoteSubject from 'douban/model/DoubanNoteSubject';
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "douban/Douban";
 import DoubanSubject from "douban/model/DoubanSubject";
+import html2markdown from '@notable/html2markdown';
 import { moment } from "obsidian";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
@@ -52,7 +53,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
         const result:DoubanNoteSubject = {
             image: image,
             timePublished: timePublished ? new Date(timePublished) : null,
-            content: content ? content.toString().replaceAll(`<div class="note">`, "").replaceAll(`</div>`, "").replaceAll(`<br>`, "  \n"): "",
+            content: content ? html2markdown(content.toString()): "",
             id: id ? id[0] : "",
             type: "Article",
             title: title,

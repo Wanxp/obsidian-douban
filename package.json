@@ -22,6 +22,7 @@
 		"typescript": "4.7.2"
 	},
 	"dependencies": {
+		"@notable/html2markdown": "^1.1.3",
 		"axios": "^0.27.2",
 		"cheerio": "^1.0.0-rc.11",
 		"douban-search-crack": "^1.0.6",
