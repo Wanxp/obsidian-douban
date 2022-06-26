@@ -31,6 +31,15 @@ export default {
     'book content template desc 5': `{{publish}}, {{desc}}, {{translator}}, {{isbn}},`,
     'book content template desc 6': `{{image}}, {{url}}, {{price}}, {{desc}}, {{totalPage}}`,
 
+    'music content template': `音乐文本模板`,
+    'music content template desc 1':  `设置选择音乐后导入的文本内容模板,`,
+    'music content template desc 2': `支持以下参数名称 :`,
+    'music content template desc 3': `{{id}}, {{title}}, {{actor}}, {{genre}},`,
+    'music content template desc 4': `{{score}}, {{medium}}, {{datePublished}}, {{type}},`,
+    'music content template desc 5': `{{publish}}, {{desc}}, {{albumType}}, {{barcode}},`,
+    'music content template desc 6': `{{image}}, {{url}}, {{numberOfRecords}}, {{desc}}`,
+
+
     'Date format': `参数日期格式`,
     'This format will be used when available template variables contain date.':
     `这个格式是给上面获取到的参数进行格式化时显示的内容 .`,

@@ -4,6 +4,7 @@ import { type } from "os";
 export interface DoubanPluginSettings {
     movieTemplate:string,
     bookTemplate:string,
+    musicTemplate:string,
     dateFormat:string,
     searchUrl:string,
     arraySpilt:string,
@@ -59,6 +60,27 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
+tags: Book
+desc: {{desc}}
+---
+
+![image|150]({{image}})
+`,
+    musicTemplate: 
+`---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+actor: {{actor}}
+score: {{score}}
+genre: {{genre}}
+medium: {{medium}}
+albumType: {{albumType}}
+datePublished: {{datePublished}}
+publish: {{publish}}
+barcode: {{barcode}}
+url: {{url}}
+numberOfRecords: {{numberOfRecords}}
 tags: Book
 desc: {{desc}}
 ---

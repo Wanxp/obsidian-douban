@@ -17,7 +17,7 @@ export default class DoubanPlugin extends Plugin {
 
 	async putToEditor(editor:Editor, extract:DoubanSubject) {
 		if(!editor || !extract) {
-			log.trace(`chosen item can not load data`);
+			log.warn(`Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`);
 			return;
 		}
 		log.trace(`you choose item load data success: ${JSON.stringify(extract)}`);

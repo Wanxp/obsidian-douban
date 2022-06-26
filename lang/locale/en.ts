@@ -29,6 +29,14 @@ export default {
     'book content template desc 4': `{{score}}, {{author}}, {{datePublished}}, {{type}},`,
     'book content template desc 5': `{{publish}}, {{desc}}, {{translator}}, {{isbn}},`,
     'book content template desc 6': `{{image}}, {{url}}, {{price}}, {{desc}}, {{totalPage}}`,
+
+    'music content template': `Music Content Template`,
+    'music content template desc 1':  `Set markdown Music template for extract to be inserted.`,
+    'music content template desc 2': `Available Music template variables are :`,
+    'music content template desc 3': `{{id}}, {{title}}, {{actor}}, {{genre}},`,
+    'music content template desc 4': `{{score}}, {{medium}}, {{datePublished}}, {{type}},`,
+    'music content template desc 5': `{{publish}}, {{desc}}, {{albumType}}, {{barcode}},`,
+    'music content template desc 6': `{{image}}, {{url}}, {{numberOfRecords}}, {{desc}}`,
     
     'Date format': `Date Format`,
     'This format will be used when available template variables contain date.':

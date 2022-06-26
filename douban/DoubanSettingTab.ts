@@ -117,6 +117,35 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
+		  new Setting(containerEl).setName(i18nHelper.getMessage("music content template")).then((setting) => {
+			setting.addTextArea((textarea) => {
+			  setting.descEl.appendChild(
+				createFragment((frag) => {
+				  frag.appendText(i18nHelper.getMessage('music content template desc 1'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('music content template desc 2'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('music content template desc 3'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('music content template desc 4'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('music content template desc 5'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('music content template desc 6'));
+				  frag.createEl('br');
+				})
+			  );
+			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.setPlaceholder(DEFAULT_SETTINGS.musicTemplate)
+			  .setValue(this.plugin.settings.musicTemplate)
+			  .onChange(async (value) => {
+				this.plugin.settings.musicTemplate = value;
+				await this.plugin.saveSettings();
+			  });
+			});
+		  });
+
 		  new Setting(containerEl).setName(i18nHelper.getMessage("Person Name Language Mode")).then((setting) => {
 			setting.addDropdown((dropdwon) => {
 			  setting.descEl.appendChild(
