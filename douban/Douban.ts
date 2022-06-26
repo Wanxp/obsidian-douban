@@ -5,7 +5,9 @@ export interface DoubanPluginSettings {
     movieTemplate:string,
     bookTemplate:string,
     musicTemplate:string,
+    noteTemplate:string
     dateFormat:string,
+    dateTimeFormat:string,
     searchUrl:string,
     arraySpilt:string,
     searchHeaders?:string,
@@ -87,11 +89,27 @@ desc: {{desc}}
 
 ![image|150]({{image}})
 `,
+noteTemplate: 
+`---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+author: [{{author}}]({{authorUrl}})
+timePublished: {{timePublished}}
+url: {{url}}
+tags: Article
+desc: {{desc}}
+---
+
+- content
+{{content}}
+`,
 // totalWord: {{totalWord}}
 
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs),
-    dateFormat: "yyyy_MM_DD",
+    dateFormat: "yyyy-MM-DD",
+    dateTimeFormat: "yyyy-MM-DD HH:mm:ss",
     arraySpilt: ", ",
     personNameMode: PersonNameMode.CH_NAME
 

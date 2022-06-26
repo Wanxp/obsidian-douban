@@ -146,6 +146,34 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
+		  new Setting(containerEl).setName(i18nHelper.getMessage("note content template")).then((setting) => {
+			setting.addTextArea((textarea) => {
+			  setting.descEl.appendChild(
+				createFragment((frag) => {
+				  frag.appendText(i18nHelper.getMessage('note content template desc 1'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('note content template desc 2'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('note content template desc 3'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('note content template desc 4'));
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('note content template desc 5'));
+				  frag.createEl('br');
+
+				})
+			  );
+			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.setPlaceholder(DEFAULT_SETTINGS.noteTemplate)
+			  .setValue(this.plugin.settings.noteTemplate)
+			  .onChange(async (value) => {
+				this.plugin.settings.noteTemplate = value;
+				await this.plugin.saveSettings();
+			  });
+			});
+		  });
+
 		  new Setting(containerEl).setName(i18nHelper.getMessage("Person Name Language Mode")).then((setting) => {
 			setting.addDropdown((dropdwon) => {
 			  setting.descEl.appendChild(
@@ -211,6 +239,41 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
+		  new Setting(containerEl).setName(i18nHelper.getMessage('DateTime format')).then((setting) => {
+			setting.addMomentFormat((mf) => {
+			  setting.descEl.appendChild(
+				createFragment((frag) => {
+				  frag.appendText(
+					i18nHelper.getMessage('This format will be used when available template variables contain dateTime.')
+				  );
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('For more syntax, refer to') + ' ');
+				  frag.createEl(
+					'a',
+					{
+					  text: i18nHelper.getMessage('format reference'),
+					  href: 'https://momentjs.com/docs/#/displaying/format/',
+					},
+					(a) => {
+					  a.setAttr('target', '_blank');
+					}
+				  );
+				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('Your current syntax looks like this') + ': ');
+				  mf.setSampleEl(frag.createEl('b', { cls: 'u-pop' }));
+				  frag.createEl('br');
+				})
+			  );
+			  mf.setPlaceholder(DEFAULT_SETTINGS.dateTimeFormat);
+			  mf.setValue(this.plugin.settings.dateTimeFormat)
+			  mf.onChange(async (value) => {
+				this.plugin.settings.dateTimeFormat = value;
+				await this.plugin.saveSettings();
+			  });
+
+			});
+		  });
+
 
 		new Setting(containerEl)
 		.setName(i18nHelper.getMessage("Array Spilt String"))
@@ -223,23 +286,6 @@ export class DoubanSettingTab extends PluginSettingTab {
 			  await this.plugin.saveSettings();
 			});
 		});
-
-
-
-		// new Setting(containerEl)
-		// .setName("Douban Request Headers")
-		// .setDesc(`if can not fetch data from douban,\n
-		//  please go to douban.com\n and copy headers to this text area  `)
-		// .addTextArea((textField) => {
-		//   textField
-		//   	.setPlaceholder(DEFAULT_SETTINGS.searchHeaders)
-		// 	.setValue(this.plugin.settings.searchHeaders)
-		// 	.onChange(async (value) => {
-		// 	  this.plugin.settings.searchHeaders = value;
-		// 	  await this.plugin.saveSettings();
-		// 	});
-		// });
-  
 
 	}
   }

@@ -37,10 +37,21 @@ export default {
     'music content template desc 4': `{{score}}, {{medium}}, {{datePublished}}, {{type}},`,
     'music content template desc 5': `{{publish}}, {{desc}}, {{albumType}}, {{barcode}},`,
     'music content template desc 6': `{{image}}, {{url}}, {{numberOfRecords}}, {{desc}}`,
+
+    'note content template': `Article Content Template`,
+    'note content template desc 1':  `Set markdown Article template for extract to be inserted.`,
+    'note content template desc 2': `Available Article template variables are :`,
+    'note content template desc 3': `{{id}}, {{title}}, {{author}}, {{authorUrl}},`,
+    'note content template desc 4': `{{timePublished}}, {{url}}, {{desc}}, {{type}},`,
+    'note content template desc 5': `{{content}}`,
     
     'Date format': `Date Format`,
+    'DateTime format': `DateTime Format`,
+
     'This format will be used when available template variables contain date.':
     `This format will be used when available template variables contain date.`,
+    'This format will be used when available template variables contain dateTime.':
+    `This format will be used when available template variables contain dateTime.`,
     'For more syntax, refer to': `For more syntax, refer to`,
     'Your current syntax looks like this':`Your current syntax looks like this`,
     'format reference': `format reference`,
@@ -57,4 +68,10 @@ export default {
     'Chinese Name': 'Chinese Name',
     'English Name': 'English Name',
     'Chinese And English Name': 'Chinese And English Name',
+
+
+    //error
+    "Fetch Data Error": "Fetch Data Error, You can go to Github add Issues",
+    "Obsidian Douban Plugin Error:": "Obsidian Douban Plugin Error: ",
+    "Obsidian Douban Plugin Warn:": "Obsidian Douban Plugin Warn: ",
 }

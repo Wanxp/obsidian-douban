@@ -6,6 +6,7 @@ import DoubanPlugin from "main";
 import DoubanSubject from "douban/model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 import { Editor } from "obsidian";
+import { i18nHelper } from 'lang/helper';
 import { log } from "utils/Logutil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
@@ -22,13 +23,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
     abstract support(extract: DoubanSubject): boolean;
     
     handle(url:string, editor:Editor):void {
-        Promise.resolve().then(() => get(log.traceN("GET URL", url + "/"), log.traceN("GET HEAD", {headers: JSON.parse(this.doubanPlugin.settings.searchHeaders)})))
+        Promise.resolve().then(() => get(log.traceN("GET URL", url + "/"), log.traceN("GET HEAD", JSON.parse(this.doubanPlugin.settings.searchHeaders))))
             .then(readStream)
             .then(a => {log.trace(a.toString()); return a;})
             .then(load)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))
             // .then(content => content ? editor.replaceSelection(content) : content)
+            .catch(e => log.error(i18nHelper.getMessage("Fetch Data Error")))
         ;
 
     }

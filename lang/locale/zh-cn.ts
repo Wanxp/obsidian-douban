@@ -39,10 +39,21 @@ export default {
     'music content template desc 5': `{{publish}}, {{desc}}, {{albumType}}, {{barcode}},`,
     'music content template desc 6': `{{image}}, {{url}}, {{numberOfRecords}}, {{desc}}`,
 
+    'note content template': `日记文本模板`,
+    'note content template desc 1':  `设置选择日记后导入的文本内容模板,`,
+    'note content template desc 2': `支持以下参数名称 :`,
+    'note content template desc 3': `{{id}}, {{title}}, {{author}}, {{authorUrl}},`,
+    'note content template desc 4': `{{timePublished}}, {{url}}, {{desc}}, {{type}},`,
+    'note content template desc 5': `{{content}}`,
+
 
     'Date format': `参数日期格式`,
     'This format will be used when available template variables contain date.':
-    `这个格式是给上面获取到的参数进行格式化时显示的内容 .`,
+    `这个格式是给上面获取到的参数进行格式化日期时显示的内容 .`,
+
+    'DateTime format': `参数时间格式`,
+    'This format will be used when available template variables contain dateTime.':
+    `这个格式是给上面获取到的参数进行格式化时间时显示的内容 .`,
     'For more syntax, refer to': `详细介绍请参考`,
     'Your current syntax looks like this':`时间参数时间格式预览`,
     'format reference': `格式参考`,
@@ -64,5 +75,9 @@ export default {
      'Chinese Name': '中文名',
      'English Name': '英文名',
      'Chinese And English Name': '中文名和英文名',
+
+     "Fetch Data Error": "获取数据失败,您如有需要请至Github提交Issues",
+     "Obsidian Douban Plugin Error: ": "Obsidian Douban插件错误提示:",
+     "Obsidian Douban Plugin Warn: ": "Obsidian Douban插件异常提示:",
 
 }
