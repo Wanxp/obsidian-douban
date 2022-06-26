@@ -17,7 +17,8 @@ If you want some features or have any questions about this plugin, create issues
 - [x] Movie/电影
 - [x] Teleplay/电视剧
 - [x] Book/书籍
-- [ ] Music/音乐
+- [x] Music/音乐
+- [x] Note/日记
 - [ ] Broadcast/广播
 
 ## How to use
