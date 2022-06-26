@@ -81,7 +81,7 @@ publish: {{publish}}
 barcode: {{barcode}}
 url: {{url}}
 numberOfRecords: {{numberOfRecords}}
-tags: Book
+tags: Music
 desc: {{desc}}
 ---
 
