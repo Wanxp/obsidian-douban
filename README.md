@@ -1,6 +1,12 @@
 # Obsidian Douban Plugin
 
-![GitHub release](https://img.shields.io/github/v/release/Wanxp/obsidian-douban)
+[![Version][version-shield]][version-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![GPL-3.0 License][license-shield]][license-url]
+[![Downloads][downloads-shield]][downloads-url]
+
 
 Import Movies, Books, Music Data from Douban in [Obsidian](https://obsidian.md/)
 
