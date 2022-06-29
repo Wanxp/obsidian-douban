@@ -71,3 +71,22 @@ If you want some features or have any questions about this plugin, create issues
 进入Obsidian插件中心重新加载当前插件  
 7. Enjoy your develop  
 享受开发吧  
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/Wanxp/obsidian-douban.svg?style=for-the-badge
+[contributors-url]: https://github.com/Wanxp/obsidian-douban/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Wanxp/obsidian-douban.svg?style=for-the-badge
+[forks-url]: https://github.com/Wanxp/obsidian-douban/network/members
+[stars-shield]: https://img.shields.io/github/stars/Wanxp/obsidian-douban.svg?style=for-the-badge
+[stars-url]: https://github.com/Wanxp/obsidian-douban/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Wanxp/obsidian-douban.svg?style=for-the-badge
+[issues-url]: https://github.com/Wanxp/obsidian-douban/issues
+[license-shield]: https://img.shields.io/github/license/Wanxp/obsidian-douban.svg?style=for-the-badge
+[license-url]: https://github.com/Wanxp/obsidian-douban/blob/master/LICENSE.txt
+[product-screenshot]: images/screenshot.png
+[version-shield]: https://img.shields.io/github/package-json/v/Wanxp/obsidian-douban.svg?style=for-the-badge
+[version-url]: https://github.com/Wanxp/obsidian-douban/releases/latest
+
+[downloads-shield]: https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total.svg?style=for-the-badge
+[downloads-url]: https://github.com/Wanxp/obsidian-douban
