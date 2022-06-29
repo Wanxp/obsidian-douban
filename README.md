@@ -2,9 +2,8 @@
 
 [![Version][version-shield]][version-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]  
-[![Forks][forks-shield]][forks-url]  
-
+[![Issues][issues-shield]][issues-url]
+[![Forks][forks-shield]][forks-url]
 [![Downloads][downloads-shield]][downloads-url]
 [![GPL-3.0 License][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
