@@ -1,15 +1,14 @@
-import { DEFAULT_SETTINGS, DoubanPluginSettings } from "./douban/Douban";
+import { DEFAULT_SETTINGS, DoubanPluginSettings } from "./src/douban/Douban";
 import { Editor, Plugin } from "obsidian";
 
-import { DoubanFuzzySuggester } from "douban/search/DoubanSearchFuzzySuggestModal";
-import DoubanMovieSubject from "douban/model/DoubanMovieSubject";
-import { DoubanSearchChooseItemHandler } from "douban/handler/DoubanSearchChooseItemHandler";
-import { DoubanSearchModal } from "douban/search/DoubanSearchModal";
-import { DoubanSettingTab } from "douban/DoubanSettingTab";
-import DoubanSubject from "douban/model/DoubanSubject";
-import Searcher from "douban/search/Search";
-import { i18nHelper } from './lang/helper';
-import { log } from "utils/Logutil";
+import { DoubanFuzzySuggester } from "src/douban/data/search/DoubanSearchFuzzySuggestModal";
+import { DoubanSearchChooseItemHandler } from "src/douban/data/handler/DoubanSearchChooseItemHandler";
+import { DoubanSearchModal } from "src/douban/data/search/DoubanSearchModal";
+import { DoubanSettingTab } from "src/douban/DoubanSettingTab";
+import DoubanSubject from "src/douban/data/model/DoubanSubject";
+import Searcher from "src/douban/data/search/Search";
+import { i18nHelper } from './src/lang/helper';
+import { log } from "src/utils/Logutil";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
@@ -63,6 +62,13 @@ export default class DoubanPlugin extends Plugin {
 	  this.addCommand({
 		id: "search-douban-and-input-current-file",
 		name: i18nHelper.getMessage("search douban and import to current file"),
+		editorCallback: (editor: Editor) =>
+		  this.geDoubanTextForSearchTerm(editor),
+	  });
+
+	  this.addCommand({
+		id: "sync-douban-broadcast-by-user-id",
+		name: i18nHelper.getMessage("sync douban broadcast by douban user id"),
 		editorCallback: (editor: Editor) =>
 		  this.geDoubanTextForSearchTerm(editor),
 	  });

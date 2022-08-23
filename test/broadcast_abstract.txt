@@ -1,0 +1,118 @@
+<div class="new-status status-wrapper    " data-sid="3703266752" data-uid="52477890">
+
+
+
+    
+
+      
+
+
+
+
+
+
+<div class="status-item" data-sid="3703266752" data-uid="52477890" data-action="3" data-target-type="movie" data-object-kind="1002" data-object-id="26752088">
+  <div class="mod" data-status-id="3703266752">
+    
+    <div class="hd " data-status-url="https://www.douban.com/people/52477890/status/3703266752/">
+      
+
+
+
+<div class="usr-pic" render-type="utils">
+
+  <a href="https://www.douban.com/people/52477890/?_dtcc=1" onclick="moreurl(this, {&quot;action&quot;: &quot;3&quot;, &quot;from&quot;: &quot;nmbp-3703266752&quot;, &quot;target_type&quot;: &quot;movie&quot;, &quot;object_kind&quot;: &quot;1002&quot;})" title="w977741432">
+    <img src="https://img2.doubanio.com/icon/up52477890-3.jpg" alt="w977741432">
+  </a>
+</div>
+
+<div class="text">
+  <a href="https://www.douban.com/people/52477890/?_dtcc=1" onclick="moreurl(this, {&quot;action&quot;: &quot;3&quot;, &quot;from&quot;: &quot;nmbp-3703266752&quot;, &quot;target_type&quot;: &quot;movie&quot;, &quot;object_kind&quot;: &quot;1002&quot;})" class="lnk-people">w977741432</a>
+  看过
+
+
+
+<blockquote class="">
+
+
+<span class="rating-stars">★★★★☆</span>
+
+<p>前半部分非常棒，逻辑细节都非常棒。比如喝医生讨价还价那段和我媳妇很像，因为做过小生意的人都会来那么一下。后半部分有点不太合理，主要是黄毛白送那一段，剧情有点无脑。
+总体非常棒。
+穷病 这回事看怎么理解，资源就那么多，需求那么大，总有个分配的方式，总有一部分人能拥有一部分无法得到。</p>
+</blockquote>
+
+</div>
+
+    </div>
+
+    <div class="bd movie">
+      
+
+
+
+
+
+<div class="block block-subject">
+  <div class="pic">
+      <a href="https://movie.douban.com/subject/26752088/?_dtcc=1" target="_blank" onclick="moreurl(this, {&quot;action&quot;: &quot;3&quot;, &quot;from&quot;: &quot;nmb-3922235930&quot;, &quot;target_type&quot;: &quot;movie&quot;, &quot;object_kind&quot;: &quot;1002&quot;})" title="我不是药神&lrm; (2018)" class="media"><img src="https://img9.doubanio.com/view/status/small/public/0mTKzU.webp"></a>
+  </div>
+  <div class="content">
+  <div class="title">
+      <a href="https://movie.douban.com/subject/26752088/?_dtcc=1" target="_blank" onclick="moreurl(this, {&quot;action&quot;: &quot;3&quot;, &quot;from&quot;: &quot;nmb-3922235930&quot;, &quot;target_type&quot;: &quot;movie&quot;, &quot;object_kind&quot;: &quot;1002&quot;})">我不是药神&lrm; (2018)</a>
+        <span class="allstar45"></span>
+        <strong class="rating_num">9.0</strong>
+  </div>
+  
+  <p>普通中年男子程勇（徐峥 饰）经营着一家保健品店，失意又失婚。不速之客吕受益（王...
+  </p><div class="info">
+  <ul>
+          <li><span class="label">导演:</span><span>文牧野 Muye Wen</span>
+          </li><li><span class="label">主演:</span><span>徐峥 Zheng Xu</span>
+          </li><li><span class="label">类型:</span><span>剧情 喜剧</span>
+  </li></ul>
+  </div>
+  </div>
+</div>
+
+
+
+
+        
+
+<div class="actions">
+
+<span class="created_at" title="2021-12-28 00:06:39"><a href="https://www.douban.com/people/52477890/status/3703266752/?_dtcc=1">2021年12月28日</a></span>
+
+<a href="https://www.douban.com/people/52477890/status/3703266752/?_dtcc=1" class="btn btn-action-reply new-reply" data-action-type="showComments" data-count="0">
+  回应
+</a>
+
+
+
+  &nbsp;&nbsp;<a class="btn btn-key-reshare btn-reshare new-reshare " data-action-type="reshare">转发</a>
+
+
+&nbsp;&nbsp;<a href="https://www.douban.com/people/52477890/status/3703266752/?_dtcc=1" class="btn btn-action-reply-delete" data-action-type="deleteStatus" data-reshare="">删除</a>
+</div>
+
+
+        <div class="others">
+          <div class="comments">
+            <div class="comments-items"></div>
+            
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+</div>
