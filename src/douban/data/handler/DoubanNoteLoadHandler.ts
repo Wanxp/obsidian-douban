@@ -3,6 +3,7 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanNoteSubject from '../model/DoubanNoteSubject';
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
+import DoubanSubject from '../model/DoubanSubject';
 import html2markdown from '@notable/html2markdown';
 import { moment } from "obsidian";
 

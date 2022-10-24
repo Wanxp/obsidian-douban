@@ -2,7 +2,7 @@ import { DoubanPluginSettings, doubanHeadrs } from 'src/douban/Douban';
 import cheerio, { load } from 'cheerio';
 import { get, readStream } from 'tiny-network';
 
-import DoubanSearchResultSubject from 'src/douban/model/DoubanSearchResultSubject';
+import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
 import SearchParserHandler from './SearchParser';
 import { ensureStatusCode } from 'src/douban/ResponseHandle';
 import { log } from 'src/utils/Logutil';

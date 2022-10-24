@@ -1,5 +1,5 @@
 import { CheerioAPI } from "cheerio";
-import DoubanSearchResultSubject from "src/douban/model/DoubanSearchResultSubject";
+import DoubanSearchResultSubject from "../model/DoubanSearchResultSubject";
 
 export default class SearchParserHandler {
     static parseSearch(dataHtml:CheerioAPI):DoubanSearchResultSubject[]  {

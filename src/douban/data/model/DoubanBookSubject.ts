@@ -2,7 +2,7 @@ import {AggregateRating, Person, WithContext} from 'schema-dts';
 
 import DoubanSubject from "./DoubanSubject";
 
-export default class DoubanMovieSubject extends DoubanSubject  {
+export default class DoubanBookSubject extends DoubanSubject  {
 	author:string[];
 	translator:string[];
 	bookType:string;

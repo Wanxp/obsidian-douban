@@ -2,7 +2,6 @@ import { App, Editor, Modal, TextComponent } from "obsidian";
 
 import DoubanPlugin from "main";
 import { i18nHelper } from "src/lang/helper";
-import { log } from "src/utils/Logutil";
 
 export class DoubanSearchModal extends Modal {
 	searchTerm: string;

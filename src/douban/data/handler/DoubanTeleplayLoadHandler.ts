@@ -2,6 +2,7 @@ import { CheerioAPI } from "cheerio";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
+import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/utils/SchemaOrg";
 import { moment } from "obsidian";

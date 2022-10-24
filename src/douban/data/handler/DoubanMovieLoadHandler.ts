@@ -1,10 +1,11 @@
 import  { CheerioAPI } from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
-import DoubanMovieSubject from '../model/DoubanBookSubject';
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
 import SchemaOrg from "src/utils/SchemaOrg";
 import { moment } from "obsidian";
+import DoubanSubject from '../model/DoubanSubject';
+import DoubanMovieSubject from '../model/DoubanMovieSubject';
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 

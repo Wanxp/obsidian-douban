@@ -5,6 +5,7 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject from "../model/DoubanBookSubject";
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
+import DoubanSubject from "../model/DoubanSubject";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
