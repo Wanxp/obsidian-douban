@@ -18,7 +18,9 @@
       "ES2021.String"
     ],
     "outDir": "dist",           
-
+    "paths": {
+      "@App/*": ["src/douban/*"]
+  }
   },
   "include": [
     "**/*.ts"
