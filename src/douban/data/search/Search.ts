@@ -1,24 +1,26 @@
 import { DoubanPluginSettings, doubanHeadrs } from 'src/douban/Douban';
-import cheerio, { load } from 'cheerio';
-import { get, readStream } from 'tiny-network';
 
 import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
 import SearchParserHandler from './SearchParser';
-import { ensureStatusCode } from 'src/douban/ResponseHandle';
 import { log } from 'src/utils/Logutil';
+import {request, RequestUrlParam} from "obsidian";
+import {i18nHelper} from "../../../lang/helper";
+import { load } from 'cheerio';
 
 export default class Searcher {
   static search(searchItem:string, doubanSettings:DoubanPluginSettings):Promise<DoubanSearchResultSubject[]> {
-    // getData();
-    // getData2();
-    // return Promise.resolve();
-      return Promise
-        .resolve()
-        .then(() => get(log.traceN("GET", doubanSettings.searchUrl + searchItem), JSON.parse(doubanSettings.searchHeaders)))
-        .then(ensureStatusCode(200))
-        .then(readStream)
-        .then(load)
-        .then(SearchParserHandler.parseSearch)
-        .then(log.trace);
+	  let requestUrlParam:RequestUrlParam = {
+		  url: doubanSettings.searchUrl + searchItem,
+		  method: "GET",
+		  headers:  JSON.parse(doubanSettings.searchHeaders),
+		  throw: true
+	  };
+	  return request(requestUrlParam)
+		  .then(a => {log.trace(a.toString()); return a;})
+		  .then(load)
+		  .then(SearchParserHandler.parseSearch)
+		  .catch(e => log.error(i18nHelper.getMessage('130101')))
+	  ;
+
   };
 }

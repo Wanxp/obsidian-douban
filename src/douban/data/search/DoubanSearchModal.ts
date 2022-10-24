@@ -17,7 +17,7 @@ export class DoubanSearchModal extends Modal {
 	onOpen() {
 	  let { contentEl } = this;
 
-	  contentEl.createEl("h2", { text: i18nHelper.getMessage('Enter Search Term:') });
+	  contentEl.createEl("h2", { text: i18nHelper.getMessage('110003') });
   
 	  const inputs = contentEl.createDiv("inputs");
 	  const searchInput = new TextComponent(inputs).onChange((searchTerm) => {
@@ -36,7 +36,7 @@ export class DoubanSearchModal extends Modal {
 
 	  const controls = contentEl.createDiv("controls");
 	  const searchButton = controls.createEl("button", {
-		text: i18nHelper.getMessage('Search'),
+		text: i18nHelper.getMessage('110004'),
 		cls: "mod-cta",
 		attr: {
 		  autofocus: true,
@@ -45,7 +45,7 @@ export class DoubanSearchModal extends Modal {
 	  searchButton.addClass("search_button");
 
 	  searchButton.addEventListener("click", this.close.bind(this));
-	  const cancelButton = controls.createEl("button", { text:  i18nHelper.getMessage('Cancel') });
+	  const cancelButton = controls.createEl("button", { text:  i18nHelper.getMessage('110005') });
 	  cancelButton.addEventListener("click", this.close.bind(this));
 	  cancelButton.addClass("search_button");
 

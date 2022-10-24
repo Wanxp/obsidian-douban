@@ -12,7 +12,7 @@ import { log } from "src/utils/Logutil";
  */
 export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<DoubanSubject> {
     parseText(extract: DoubanSubject, settings:DoubanPluginSettings): string {
-       log.warn(i18nHelper.getMessage('current version not support type'));
+       log.warn(i18nHelper.getMessage('140101'));
        return "";
     }
     support(extract: DoubanSubject): boolean {

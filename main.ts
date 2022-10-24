@@ -16,7 +16,7 @@ export default class DoubanPlugin extends Plugin {
 
 	async putToEditor(editor:Editor, extract:DoubanSubject) {
 		if(!editor || !extract) {
-			log.warn(`Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`);
+			log.warn(i18nHelper.getMessage('140101'));
 			return;
 		}
 		log.trace(`you choose item load data success: ${JSON.stringify(extract)}`);
@@ -53,7 +53,7 @@ export default class DoubanPlugin extends Plugin {
 
 	  this.addCommand({
 		id: "search-douban-by-current-file-name",
-		name: i18nHelper.getMessage("search douban by current file name"),
+		name: i18nHelper.getMessage("110001"),
 		editorCallback: (editor: Editor) =>
 		  this.getDoubanTextForActiveFile(editor),
 	  });
@@ -61,14 +61,14 @@ export default class DoubanPlugin extends Plugin {
   
 	  this.addCommand({
 		id: "search-douban-and-input-current-file",
-		name: i18nHelper.getMessage("search douban and import to current file"),
+		name: i18nHelper.getMessage("110002"),
 		editorCallback: (editor: Editor) =>
 		  this.geDoubanTextForSearchTerm(editor),
 	  });
 
 	  this.addCommand({
 		id: "sync-douban-broadcast-by-user-id",
-		name: i18nHelper.getMessage("sync douban broadcast by douban user id"),
+		name: i18nHelper.getMessage('110006'),
 		editorCallback: (editor: Editor) =>
 		  this.geDoubanTextForSearchTerm(editor),
 	  });

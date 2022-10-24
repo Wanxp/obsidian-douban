@@ -1,13 +1,12 @@
-import { CheerioAPI, load } from 'cheerio';
 import { DoubanPluginSettings, PersonNameMode } from "src/douban/Douban";
-import { get, readStream } from "tiny-network";
 
 import DoubanPlugin from "main";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
-import { Editor } from "obsidian";
+import {Editor, request, requestUrl, RequestUrlParam, sanitizeHTMLToDom} from "obsidian";
 import { i18nHelper } from 'src/lang/helper';
 import { log } from "src/utils/Logutil";
+import {CheerioAPI, load} from "cheerio";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
     
@@ -23,14 +22,19 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
     abstract support(extract: DoubanSubject): boolean;
     
     handle(url:string, editor:Editor):void {
-        Promise.resolve().then(() => get(log.traceN("GET URL", url + "/"), log.traceN("GET HEAD", JSON.parse(this.doubanPlugin.settings.searchHeaders))))
-            .then(readStream)
+		let requestUrlParam:RequestUrlParam = {
+			url: url,
+			method: "GET",
+			headers:  JSON.parse(this.doubanPlugin.settings.searchHeaders),
+			throw: true
+		};
+		request(requestUrlParam)
             .then(a => {log.trace(a.toString()); return a;})
             .then(load)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))
             // .then(content => content ? editor.replaceSelection(content) : content)
-            .catch(e => log.error(i18nHelper.getMessage("Fetch Data Error")))
+            .catch(e => log.error(i18nHelper.getMessage('130101')))
         ;
 
     }

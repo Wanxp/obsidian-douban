@@ -3,7 +3,6 @@ import { DEFAULT_SETTINGS, PersonNameMode, personNameModeRecords } from "./Douba
 
 import DoubanPlugin from "main";
 import { i18nHelper } from "src/lang/helper";
-import { log } from "src/utils/Logutil";
 
 export class DoubanSettingTab extends PluginSettingTab {
 	plugin: DoubanPlugin;
@@ -18,20 +17,20 @@ export class DoubanSettingTab extends PluginSettingTab {
   
 	  containerEl.empty();
   
-	  containerEl.createEl("h2", { text: "Obsidian Douban" });
+	  containerEl.createEl("h2", { text: '1201' });
 
-		new Setting(containerEl).setName(i18nHelper.getMessage('douban search url'))
+		new Setting(containerEl).setName(i18nHelper.getMessage('120001'))
 		.then((setting) => {
 			setting.addText((textField) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('douban search url desc 1'));
+				  frag.appendText(i18nHelper.getMessage('120002'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('douban search url desc 2'));
+				  frag.appendText(i18nHelper.getMessage('120003'));
 				  frag.createEl(
 					'a',
 					{
-					  text: i18nHelper.getMessage('Douban'),
+					  text: i18nHelper.getMessage('120901'),
 					  href: 'https://www.douban.com',
 					},
 					(a) => {
@@ -39,11 +38,11 @@ export class DoubanSettingTab extends PluginSettingTab {
 					}
 				  );
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('douban search url desc 3'));
+				  frag.appendText(i18nHelper.getMessage('120004'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('douban search url desc 4'));
+				  frag.appendText(i18nHelper.getMessage('120005'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('douban search url desc 5'));
+				  frag.appendText(i18nHelper.getMessage('120006'));
 				  frag.createEl('br');
 				})
 			  );
@@ -59,21 +58,21 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		new Setting(containerEl).setName(i18nHelper.getMessage("movie content template")).then((setting) => {
+		new Setting(containerEl).setName(i18nHelper.getMessage('120101')).then((setting) => {
 			setting.addTextArea((textarea) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 1'));
+				  frag.appendText(i18nHelper.getMessage('120102'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 2'));
+				  frag.appendText(i18nHelper.getMessage('120103'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 3'));
+				  frag.appendText(i18nHelper.getMessage('120104'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 4'));
+				  frag.appendText(i18nHelper.getMessage('120105'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 5'));
+				  frag.appendText(i18nHelper.getMessage('120106'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('movie content template desc 6'));
+				  frag.appendText(i18nHelper.getMessage('120107'));
 				  frag.createEl('br');
 				})
 			  );
@@ -88,21 +87,21 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage("book content template")).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage('120201')).then((setting) => {
 			setting.addTextArea((textarea) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('book content template desc 1'));
+				  frag.appendText(i18nHelper.getMessage('120202'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('book content template desc 2'));
+				  frag.appendText(i18nHelper.getMessage('120203'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('book content template desc 3'));
+				  frag.appendText(i18nHelper.getMessage('120204'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('book content template desc 4'));
+				  frag.appendText(i18nHelper.getMessage('120205'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('book content template desc 5'));
+				  frag.appendText(i18nHelper.getMessage('120206'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('book content template desc 6'));
+				  frag.appendText(i18nHelper.getMessage('120207'));
 				  frag.createEl('br');
 				})
 			  );
@@ -117,21 +116,21 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage("music content template")).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage('120201')).then((setting) => {
 			setting.addTextArea((textarea) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('music content template desc 1'));
+				  frag.appendText(i18nHelper.getMessage('120302'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('music content template desc 2'));
+				  frag.appendText(i18nHelper.getMessage('120303'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('music content template desc 3'));
+				  frag.appendText(i18nHelper.getMessage('120304'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('music content template desc 4'));
+				  frag.appendText(i18nHelper.getMessage('120305'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('music content template desc 5'));
+				  frag.appendText(i18nHelper.getMessage('120306'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('music content template desc 6'));
+				  frag.appendText(i18nHelper.getMessage('120307'));
 				  frag.createEl('br');
 				})
 			  );
@@ -146,19 +145,19 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage("note content template")).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage("120401")).then((setting) => {
 			setting.addTextArea((textarea) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('note content template desc 1'));
+				  frag.appendText(i18nHelper.getMessage('120402'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('note content template desc 2'));
+				  frag.appendText(i18nHelper.getMessage('120403'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('note content template desc 3'));
+				  frag.appendText(i18nHelper.getMessage('120404'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('note content template desc 4'));
+				  frag.appendText(i18nHelper.getMessage('120405'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('note content template desc 5'));
+				  frag.appendText(i18nHelper.getMessage('120406'));
 				  frag.createEl('br');
 
 				})
@@ -174,17 +173,17 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage("Person Name Language Mode")).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage('121201')).then((setting) => {
 			setting.addDropdown((dropdwon) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
-				  frag.appendText(i18nHelper.getMessage('options:'));
+				  frag.appendText(i18nHelper.getMessage('121202'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('Chinese Name mode, only show Chinese name'));
+				  frag.appendText(i18nHelper.getMessage('121203'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('English Name mode, only show English name'));
+				  frag.appendText(i18nHelper.getMessage('121204'));
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('Chinese English Name mode, show Chinese English name both'));
+				  frag.appendText(i18nHelper.getMessage('121205'));
 				  frag.createEl('br');
 				})
 			  );
@@ -204,19 +203,19 @@ export class DoubanSettingTab extends PluginSettingTab {
 
 
 
-		new Setting(containerEl).setName(i18nHelper.getMessage('Date format')).then((setting) => {
+		new Setting(containerEl).setName(i18nHelper.getMessage('120501')).then((setting) => {
 			setting.addMomentFormat((mf) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
 				  frag.appendText(
-					i18nHelper.getMessage('This format will be used when available template variables contain date.')
+					i18nHelper.getMessage('120503')
 				  );
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('For more syntax, refer to') + ' ');
+				  frag.appendText(i18nHelper.getMessage('120506') + ' ');
 				  frag.createEl(
 					'a',
 					{
-					  text: i18nHelper.getMessage('format reference'),
+					  text: i18nHelper.getMessage('120508'),
 					  href: 'https://momentjs.com/docs/#/displaying/format/',
 					},
 					(a) => {
@@ -224,7 +223,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 					}
 				  );
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('Your current syntax looks like this') + ': ');
+				  frag.appendText(i18nHelper.getMessage('120507') + ': ');
 				  mf.setSampleEl(frag.createEl('b', { cls: 'u-pop' }));
 				  frag.createEl('br');
 				})
@@ -239,19 +238,19 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage('DateTime format')).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage('120502')).then((setting) => {
 			setting.addMomentFormat((mf) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
 				  frag.appendText(
-					i18nHelper.getMessage('This format will be used when available template variables contain dateTime.')
+					i18nHelper.getMessage('120503')
 				  );
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('For more syntax, refer to') + ' ');
+				  frag.appendText(i18nHelper.getMessage('120506') + ' ');
 				  frag.createEl(
 					'a',
 					{
-					  text: i18nHelper.getMessage('format reference'),
+					  text: i18nHelper.getMessage('120508'),
 					  href: 'https://momentjs.com/docs/#/displaying/format/',
 					},
 					(a) => {
@@ -259,7 +258,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 					}
 				  );
 				  frag.createEl('br');
-				  frag.appendText(i18nHelper.getMessage('Your current syntax looks like this') + ': ');
+				  frag.appendText(i18nHelper.getMessage('120507') + ': ');
 				  mf.setSampleEl(frag.createEl('b', { cls: 'u-pop' }));
 				  frag.createEl('br');
 				})
@@ -276,8 +275,8 @@ export class DoubanSettingTab extends PluginSettingTab {
 
 
 		new Setting(containerEl)
-		.setName(i18nHelper.getMessage("Array Spilt String"))
-		.setDesc(i18nHelper.getMessage(`string to join between array type, such as author, actor`))
+		.setName(i18nHelper.getMessage('120601'))
+		.setDesc(i18nHelper.getMessage('120602'))
 		.addText((textField) => {
 		  	textField.setPlaceholder(DEFAULT_SETTINGS.arraySpilt)
 			.setValue(this.plugin.settings.arraySpilt)

@@ -116,9 +116,9 @@ desc: {{desc}}
 }
 
 export const personNameModeRecords: {[key in PersonNameMode]: string} = {
-    [PersonNameMode.CH_NAME]: i18nHelper.getMessage("Chinese Name"),
-    [PersonNameMode.EN_NAME]: i18nHelper.getMessage("English Name"),
-    [PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage("Chinese And English Name"),
+    [PersonNameMode.CH_NAME]: i18nHelper.getMessage('121206'),
+    [PersonNameMode.EN_NAME]: i18nHelper.getMessage('121207'),
+    [PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage('121208'),
   }
   
 
