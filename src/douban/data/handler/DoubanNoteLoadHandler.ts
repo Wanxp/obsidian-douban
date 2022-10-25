@@ -46,7 +46,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 
         const result:DoubanNoteSubject = {
 			image: image,
-			datePublished: timePublished ? new Date(timePublished) : null,
+			datePublished: timePublished ? new Date(timePublished) : undefined,
 			content: content ? html2markdown(content.toString()) : "",
 			id: id ? id[0] : "",
 			type: "Article",

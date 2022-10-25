@@ -15,8 +15,10 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
     parseText(beforeContent:string, extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
-		return beforeContent.replaceAll("{{platform}}", extract.platform  ? extract.platform.join(settings.arraySpilt) : "");
-    }
+		return beforeContent
+			.replaceAll("{{platform}}", extract.platform  ? extract.platform.join(settings.arraySpilt) : "")
+			.replaceAll("{{developer}}", extract.developer  ? extract.developer : "");
+	}
 
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("游戏") || extract.type.contains("Game") || extract.type.contains("game"));
@@ -67,7 +69,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 			url: url,
 			genre: valueMap.has('genre') ? valueMap.get('genre') : "",
 			image: image,
-			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : null,
+			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",
 			score: Number(score),
 			aliases: valueMap.has('aliases') ? valueMap.get('aliases') : "",

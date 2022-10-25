@@ -71,7 +71,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			translator: [valueMap.get('translator')],
 			bookType: "",
 			image: image,
-			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : null,
+			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			totalWord: valueMap.has('totalWord') ? Number(valueMap.get('totalWord')) : null,
 			isbn: isbn,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",

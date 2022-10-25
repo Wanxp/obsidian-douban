@@ -28,8 +28,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll("{{url}}", extract.url  ? extract.url : "")
 			.replaceAll("{{score}}", extract.score  ? extract.score + "": "")
 			.replaceAll("{{publisher}}", extract.publisher  ? extract.publisher : "")
-			.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
-			.replaceAll("{{timePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.timeFormat) : "")
+			.replaceAll("{{datePublished}}", extract.datePublished ? moment(extract.datePublished).format(settings.dateFormat) : "")
+			.replaceAll("{{timePublished}}", extract.datePublished ? moment(extract.datePublished).format(settings.timeFormat) : "")
 			.replaceAll("{{genre}}", extract.genre  ? extract.genre.join(settings.arraySpilt) : "")
 			: ""
 		;
