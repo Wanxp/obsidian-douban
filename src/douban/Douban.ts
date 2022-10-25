@@ -5,10 +5,11 @@ export interface DoubanPluginSettings {
     movieTemplate:string,
     bookTemplate:string,
     musicTemplate:string,
-    noteTemplate:string
+    noteTemplate:string,
+	gameTemplate:string,
     dateFormat:string,
-    dateTimeFormat:string,
-    searchUrl:string,
+	timeFormat:string,
+	searchUrl:string,
     arraySpilt:string,
     searchHeaders?:string,
     personNameMode:PersonNameMode,
@@ -29,7 +30,78 @@ export const doubanHeadrs = {
 
 export const DEFAULT_SETTINGS:DoubanPluginSettings = {
     movieTemplate: 
+`
+![image]({{image}})
+
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+score: {{score}}
+originalTitle: {{originalTitle}}
+genre: {{genre}}
+datePublished: {{datePublished}}
+director: {{director}}
+actor: {{actor}}
+author: {{author}}
+url: {{url}}
+desc: {{desc}}
+`,
+    bookTemplate: 
+`![image|150]({{image}})
+
+doubanId: {{id}}
+title: {{title}}
+subTitle: {{subTitle}}
+originalTitle: {{originalTitle}}
+type: {{type}}
+author: {{author}}
+score: {{score}}
+datePublished: {{datePublished}}
+translator: {{translator}}
+publisher: {{publisher}}
+isbn: {{isbn}}
+url: {{url}}
+totalPage: {{totalPage}}
+price: {{price}}
+tags: Book
+desc: {{desc}}
+`,
+    musicTemplate: 
+`
+![image|150]({{image}})
+
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+actor: {{actor}}
+score: {{score}}
+genre: {{genre}}
+medium: {{medium}}
+albumType: {{albumType}}
+datePublished: {{datePublished}}
+publisher: {{publisher}}
+barcode: {{barcode}}
+url: {{url}}
+numberOfRecords: {{numberOfRecords}}
+tags: Music
+desc: {{desc}}
+`,
+noteTemplate: 
 `---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}  
+author: [{{author}}]({{authorUrl}})
+dateTimePublished: {{datePublished}} {{timePublished}}
+url: {{url}}
+tags: Article
+desc: {{desc}}
+---
+
+{{content}}
+`,
+	gameTemplate:
+		`![image]({{image}})
 doubanId: {{id}}
 title: {{title}}
 originalTitle: {{originalTitle}}
@@ -42,75 +114,14 @@ actor: {{actor}}
 author: {{author}}
 url: {{url}}
 desc: {{desc}}
----
-
-![image]({{image}})
-`,
-    bookTemplate: 
-`---
-doubanId: {{id}}
-title: {{title}}
-subTitle: {{subTitle}}
-originalTitle: {{originalTitle}}
-type: {{type}}
-author: {{author}}
-score: {{score}}
-datePublished: {{datePublished}}
-translator: {{translator}}
-publish: {{publish}}
-isbn: {{isbn}}
-url: {{url}}
-totalPage: {{totalPage}}
-price: {{price}}
-tags: Book
-desc: {{desc}}
----
-
-![image|150]({{image}})
-`,
-    musicTemplate: 
-`---
-doubanId: {{id}}
-title: {{title}}
-type: {{type}}
-actor: {{actor}}
-score: {{score}}
-genre: {{genre}}
-medium: {{medium}}
-albumType: {{albumType}}
-datePublished: {{datePublished}}
-publish: {{publish}}
-barcode: {{barcode}}
-url: {{url}}
-numberOfRecords: {{numberOfRecords}}
-tags: Music
-desc: {{desc}}
----
-
-![image|150]({{image}})
-`,
-noteTemplate: 
-`---
-doubanId: {{id}}
-title: {{title}}
-type: {{type}}  
-author: [{{author}}]({{authorUrl}})
-timePublished: {{timePublished}}
-url: {{url}}
-tags: Article
-desc: {{desc}}
----
-
-- content
-{{content}}
 `,
 // totalWord: {{totalWord}}
 
     searchUrl: 'https://www.douban.com/search?q=',
     searchHeaders: JSON.stringify(doubanHeadrs),
     dateFormat: "yyyy-MM-DD",
-    dateTimeFormat: "yyyy-MM-DD HH:mm:ss",
-    arraySpilt: ", ",
+	timeFormat: "HH:mm:ss",
+	arraySpilt: ", ",
     personNameMode: PersonNameMode.CH_NAME
 
 }

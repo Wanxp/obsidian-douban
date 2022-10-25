@@ -3,7 +3,7 @@ import { DoubanPluginSettings, PersonNameMode } from "src/douban/Douban";
 import DoubanPlugin from "main";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
-import {Editor, request, requestUrl, RequestUrlParam, sanitizeHTMLToDom} from "obsidian";
+import {Editor, moment, request, requestUrl, RequestUrlParam, sanitizeHTMLToDom} from "obsidian";
 import { i18nHelper } from 'src/lang/helper';
 import { log } from "src/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
@@ -17,7 +17,28 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
         this.doubanPlugin = doubanPlugin;
     }
 
-    abstract parseText(extract: T, settings:DoubanPluginSettings): string;
+	parse(extract: T, settings:DoubanPluginSettings): string {
+		let template:string = this.getTemplate(settings);
+		let resultContent = template ? template
+			.replaceAll("{{id}}", extract.id)
+			.replaceAll("{{type}}", extract.type ? extract.type : "")
+			.replaceAll("{{title}}", extract.title ? extract.title : "")
+			.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
+			.replaceAll("{{image}}", extract.image  ? extract.image : "")
+			.replaceAll("{{url}}", extract.url  ? extract.url : "")
+			.replaceAll("{{score}}", extract.score  ? extract.score + "": "")
+			.replaceAll("{{publisher}}", extract.publisher  ? extract.publisher : "")
+			.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
+			.replaceAll("{{timePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.timeFormat) : "")
+			.replaceAll("{{genre}}", extract.genre  ? extract.genre.join(settings.arraySpilt) : "")
+			: ""
+		;
+		return this.parseText(resultContent, extract, settings);
+	}
+
+	abstract getTemplate(settings:DoubanPluginSettings):string;
+
+    abstract parseText(beforeContent:string, extract: T, settings:DoubanPluginSettings): string;
 
     abstract support(extract: DoubanSubject): boolean;
     
@@ -29,7 +50,6 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			throw: true
 		};
 		request(requestUrlParam)
-            .then(a => {log.trace(a.toString()); return a;})
             .then(load)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))

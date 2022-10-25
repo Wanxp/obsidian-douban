@@ -1,7 +1,12 @@
 export default class DoubanExtract {
 	id: string;
-	type: string;
 	title: string;
-	desc: string;
+	type: string;
+	score:number;
+	image:string;
 	url: string;
+	desc: string;
+	publisher:string;
+	datePublished:Date;
+	genre:string[];
 }

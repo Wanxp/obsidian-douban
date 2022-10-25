@@ -9,22 +9,18 @@ import DoubanMovieSubject from '../model/DoubanMovieSubject';
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
-    parseText(extract: DoubanMovieSubject, settings:DoubanPluginSettings): string {
-		return settings.movieTemplate ? settings.movieTemplate.replaceAll("{{id}}", extract.id)
-		.replaceAll("{{type}}", extract.type ? extract.type : "")
-		.replaceAll("{{title}}", extract.title ? extract.title : "")
+	getTemplate(settings: DoubanPluginSettings): string {
+		return settings.movieTemplate;
+	}
+
+    parseText(beforeContent:string, extract: DoubanMovieSubject, settings:DoubanPluginSettings): string {
+		return beforeContent
         .replaceAll("{{originalTitle}}", extract.originalTitle ? extract.originalTitle : "")
-		.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
-		.replaceAll("{{image}}", extract.image  ? extract.image : "")
 		.replaceAll("{{director}}", extract.director  ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
 		.replaceAll("{{actor}}", extract.actor  ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
 		.replaceAll("{{author}}", extract.author  ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
-		.replaceAll("{{url}}", extract.url  ? extract.url : "")
-		.replaceAll("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
-        .replaceAll("{{genre}}", extract.genre ? extract.genre.join(settings.arraySpilt) : "")
-
-		: undefined;    }
+			;
+	}
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("电影") || extract.type.contains("Movie") || extract.type.contains("movie"));
     }
@@ -55,20 +51,22 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
                     let originalTitle = originalTitleExec?originalTitleExec[0]:name;
 
                     const result:DoubanMovieSubject = {
-                        id: id?id[0]:'',
-                        type: 'Movie',
-                        title: title,
-                        originalTitle: originalTitle,
-                        desc: obj.description,
-                        url: "https://movie.douban.com" + obj.url,
-                        director: obj.director,
-                        author: obj.author,
-                        actor: obj.actor,
-                        aggregateRating: obj.aggregateRating,
-                        datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
-                        image:obj.image,
-                        genre:obj.genre
-                    }
+						id: id ? id[0] : '',
+						title: title,
+						type: 'Movie',
+						score: obj.aggregateRating ? obj.aggregateRating.ratingValue : undefined,
+						originalTitle: originalTitle,
+						desc: obj.description,
+						url: "https://movie.douban.com" + obj.url,
+						director: obj.director,
+						author: obj.author,
+						actor: obj.actor,
+						aggregateRating: obj.aggregateRating,
+						datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
+						image: obj.image,
+						genre: obj.genre,
+						publisher: ''
+					}
             return result;
         })[0];
     }

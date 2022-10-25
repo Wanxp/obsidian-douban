@@ -243,7 +243,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {
 				  frag.appendText(
-					i18nHelper.getMessage('120503')
+					i18nHelper.getMessage('120504')
 				  );
 				  frag.createEl('br');
 				  frag.appendText(i18nHelper.getMessage('120506') + ' ');
@@ -263,10 +263,10 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				})
 			  );
-			  mf.setPlaceholder(DEFAULT_SETTINGS.dateTimeFormat);
-			  mf.setValue(this.plugin.settings.dateTimeFormat)
+			  mf.setPlaceholder(DEFAULT_SETTINGS.timeFormat);
+			  mf.setValue(this.plugin.settings.timeFormat)
 			  mf.onChange(async (value) => {
-				this.plugin.settings.dateTimeFormat = value;
+				this.plugin.settings.timeFormat = value;
 				await this.plugin.saveSettings();
 			  });
 

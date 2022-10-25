@@ -13,15 +13,20 @@ export default class SearchParserHandler {
                 let ececResult = idPattern.exec(linkValue);
                 let urlResult = urlPattern.exec(linkValue);
                 let cast = item.find(".subject-cast").text();
+				let score = item.find(".rating_nums").text();
                 const result:DoubanSearchResultSubject = {
-                    id: ececResult?ececResult[0]:'',
-                    title: item.find("div.content > div > h3 > a").text(),
-                    score: item.find(".rating_nums").text(),
-                    cast: cast,
-                    type: item.find("div.content > div > h3 > span").text(),
-                    desc: item.find("div.content > p").text(),
-                    url: urlResult?decodeURIComponent(urlResult[0]):'https://www.douban.com',
-                };
+					id: ececResult ? ececResult[0] : '',
+					title: item.find("div.content > div > h3 > a").text(),
+					score: score ? Number(score) : null,
+					cast: cast,
+					type: item.find("div.content > div > h3 > span").text(),
+					desc: item.find("div.content > p").text(),
+					url: urlResult ? decodeURIComponent(urlResult[0]) : 'https://www.douban.com',
+					image: "",
+					publisher: "",
+					datePublished: undefined,
+					genre: []
+				};
                 return result;
             })
     };

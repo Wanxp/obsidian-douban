@@ -4,7 +4,7 @@ import { Editor } from "obsidian";
 
 export default interface DoubanSubjectLoadHandler<T extends DoubanSubject> {
     
-    parseText(extract: T, settings:DoubanPluginSettings): string;
+    parse(extract: T, settings:DoubanPluginSettings): string;
 
     support(extract:DoubanSubject):boolean;
 

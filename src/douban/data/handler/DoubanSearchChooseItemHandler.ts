@@ -10,6 +10,7 @@ import { DoubanPluginSettings } from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 import { DoubanTeleplayLoadHandler } from "./DoubanTeleplayLoadHandler";
+import DoubanGameLoadHandler from "./DoubanGameLoadHandler";
 
 export class DoubanSearchChooseItemHandler {
 
@@ -28,8 +29,9 @@ export class DoubanSearchChooseItemHandler {
             new DoubanTeleplayLoadHandler(doubanPlugin),
             new DoubanMusicLoadHandler(doubanPlugin),
             new DoubanNoteLoadHandler(doubanPlugin),
+			new DoubanGameLoadHandler(doubanPlugin),
 
-             this._doubanSubjectHandlerDefault];
+			this._doubanSubjectHandlerDefault];
 
     }
 
@@ -53,14 +55,14 @@ export class DoubanSearchChooseItemHandler {
         let doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
             .filter(h => h.support(extract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-            let result = doubanSubjectHandlers.map(h => h.parseText(extract, settings));
+            let result = doubanSubjectHandlers.map(h => h.parse(extract, settings));
             if(result && result.length > 0) {
                 return result[0];
             }else {
                 return "";
             }
         }else {
-            return this._doubanSubjectHandlerDefault.parseText(extract, settings);
+            return this._doubanSubjectHandlerDefault.parse(extract, settings);
         }    
 
     }

@@ -7,24 +7,16 @@ import { moment } from "obsidian";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
 
-export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
+export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
-    parseText(extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
-		return settings.movieTemplate ? settings.movieTemplate.replaceAll("{{id}}", extract.id)
-		.replaceAll("{{type}}", extract.type ? extract.type : "")
-		.replaceAll("{{title}}", extract.title ? extract.title : "")
-        .replaceAll("{{originalTitle}}", extract.originalTitle ? extract.originalTitle : "")
-		.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
-		.replaceAll("{{image}}", extract.image  ? extract.image : "")
-		.replaceAll("{{director}}", extract.director  ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		.replaceAll("{{actor}}", extract.actor  ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		.replaceAll("{{author}}", extract.author  ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-		.replaceAll("{{datePublished}}", extract.datePublished  ?  moment(extract.datePublished).format(settings.dateFormat) : "")
-		.replaceAll("{{url}}", extract.url  ? extract.url : "")
-		.replaceAll("{{score}}", extract.aggregateRating && extract.aggregateRating.ratingValue ? extract.aggregateRating.ratingValue + "" : "")
-        .replaceAll("{{genre}}", extract.genre ? extract.genre.join(settings.arraySpilt) : "")
+	getTemplate(settings: DoubanPluginSettings): string {
+		return settings.gameTemplate;
+	}
 
-		: undefined;    }
+    parseText(beforeContent:string, extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
+		return beforeContent.replaceAll("{{platform}}", extract.platform  ? extract.platform.join(settings.arraySpilt) : "");
+    }
+
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("游戏") || extract.type.contains("Game") || extract.type.contains("game"));
     }
@@ -52,23 +44,22 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
                     let title = titleExec?titleExec[0]:name;
 
                     let originalTitleExec = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
-                    let originalTitle = originalTitleExec?originalTitleExec[0]:name;
 
                     const result:DoubanGameSubject = {
-                        id: id?id[0]:'',
-                        type: 'Movie',
-                        title: title,
-                        originalTitle: originalTitle,
-                        desc: obj.description,
-                        url: "https://movie.douban.com" + obj.url,
-                        director: obj.director,
-                        author: obj.author,
-                        actor: obj.actor,
-                        aggregateRating: obj.aggregateRating,
-                        datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
-                        image:obj.image,
-                        genre:obj.genre
-                    }
+						id: id ? id[0] : '',
+						type: 'Game',
+						title: title,
+						desc: obj.description,
+						url: "https://movie.douban.com" + obj.url,
+						datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
+						image: obj.image,
+						genre: obj.genre,
+						aliases: [],
+						developer: '',
+						platform: [],
+						score: undefined,
+						publisher: ''
+					}
             return result;
         })[0];
     }

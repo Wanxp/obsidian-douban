@@ -65,13 +65,13 @@ export default class DoubanPlugin extends Plugin {
 		editorCallback: (editor: Editor) =>
 		  this.geDoubanTextForSearchTerm(editor),
 	  });
-
-	  this.addCommand({
-		id: "sync-douban-broadcast-by-user-id",
-		name: i18nHelper.getMessage('110006'),
-		editorCallback: (editor: Editor) =>
-		  this.geDoubanTextForSearchTerm(editor),
-	  });
+//TODO will support in future
+	  // this.addCommand({
+		// id: "sync-douban-broadcast-by-user-id",
+		// name: i18nHelper.getMessage('110006'),
+		// editorCallback: (editor: Editor) =>
+		//   this.geDoubanTextForSearchTerm(editor),
+	  // });
   
 	  this.addSettingTab(new DoubanSettingTab(this.app, this));
 	}

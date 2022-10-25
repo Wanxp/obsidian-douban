@@ -9,22 +9,16 @@ import { moment } from "obsidian";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
-    parseText(extract: DoubanNoteSubject, settings:DoubanPluginSettings): string {
-		return settings.bookTemplate ? settings.noteTemplate
-        .replaceAll("{{id}}", extract.id)
-		.replaceAll("{{type}}", extract.type ? extract.type : "")
-		.replaceAll("{{title}}", extract.title ? extract.title : "")
-		.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
-		.replaceAll("{{image}}", extract.image  ? extract.image : "")
-		.replaceAll("{{timePublished}}", extract.timePublished  ?  moment(extract.timePublished).format(settings.dateTimeFormat) : "")
-		.replaceAll("{{url}}", extract.url  ? extract.url : "")
-		.replaceAll("{{content}}", extract.content  ? extract.content : "")
-		.replaceAll("{{url}}", extract.url  ? extract.url : "")
+	getTemplate(settings: DoubanPluginSettings): string {
+		return settings.noteTemplate;
+	}
+
+    parseText(beforeContent:string, extract: DoubanNoteSubject, settings:DoubanPluginSettings): string {
+		return beforeContent
 		.replaceAll("{{authorUrl}}", extract.authorUrl  ? extract.authorUrl : "")
+		.replaceAll("{{content}}", extract.content  ? extract.content : "")
         .replaceAll("{{author}}", extract.author  ? extract.author : "")
-
-
-		: undefined;    
+;
     }
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("日记") || extract.type.contains("Note") || extract.type.contains("Article"));
@@ -51,17 +45,20 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
         let id = idPattern.exec(url);
 
         const result:DoubanNoteSubject = {
-            image: image,
-            timePublished: timePublished ? new Date(timePublished) : null,
-            content: content ? html2markdown(content.toString()): "",
-            id: id ? id[0] : "",
-            type: "Article",
-            title: title,
-            desc: desc,
-            url: url,
-            author: authorA ? authorA.text() : null,
-            authorUrl: authorA ? authorA.attr("href") : null,
-        };
+			image: image,
+			datePublished: timePublished ? new Date(timePublished) : null,
+			content: content ? html2markdown(content.toString()) : "",
+			id: id ? id[0] : "",
+			type: "Article",
+			title: title,
+			desc: desc,
+			url: url,
+			author: authorA ? authorA.text() : null,
+			authorUrl: authorA ? authorA.attr("href") : null,
+			score: 0,
+			publisher: '',
+			genre: []
+		};
         return result;
 }
 

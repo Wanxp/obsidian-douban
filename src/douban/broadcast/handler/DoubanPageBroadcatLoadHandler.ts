@@ -9,8 +9,12 @@ import DoubanSubject from 'src/douban/data/model/DoubanSubject';
 //TODO will support in future version
 export default class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
 
-    parseText(extract: DoubanNoteSubject, settings:DoubanPluginSettings): string {
-		return settings.bookTemplate ? null
+	getTemplate(settings: DoubanPluginSettings): string {
+		return settings.bookTemplate;
+	}
+
+    parseText(beforeContent:string, extract: DoubanNoteSubject, settings:DoubanPluginSettings): string {
+		return settings.bookTemplate ? null : "";
         // settings.noteTemplate
         // .replaceAll("{{id}}", extract.id)
 		// .replaceAll("{{type}}", extract.type ? extract.type : "")
@@ -23,9 +27,6 @@ export default class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHan
 		// .replaceAll("{{url}}", extract.url  ? extract.url : "")
 		// .replaceAll("{{authorUrl}}", extract.authorUrl  ? extract.authorUrl : "")
         // .replaceAll("{{author}}", extract.author  ? extract.author : "")
-
-
-		: undefined;    
     }
     support(extract: DoubanSubject): boolean {
         return extract && extract.type && (extract.type.contains("广播") || extract.type.contains("Broadcast"));
