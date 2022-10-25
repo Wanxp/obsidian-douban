@@ -7,12 +7,12 @@ export default class SearchParserHandler {
             .get()
             .map((i:any) => {
                 const item = dataHtml(i);
-                var idPattern = /(\d){5,10}/g;
-                var urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
-                var linkValue = item.find("div.content > div > h3 > a").attr("href");
-                var ececResult = idPattern.exec(linkValue);
-                var urlResult = urlPattern.exec(linkValue);
-                var cast = item.find(".subject-cast").text();
+                let idPattern = /(\d){5,10}/g;
+                let urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
+                let linkValue = item.find("div.content > div > h3 > a").attr("href");
+                let ececResult = idPattern.exec(linkValue);
+                let urlResult = urlPattern.exec(linkValue);
+                let cast = item.find(".subject-cast").text();
                 const result:DoubanSearchResultSubject = {
                     id: ececResult?ececResult[0]:'',
                     title: item.find("div.content > div > h3 > a").text(),

@@ -17,13 +17,13 @@ export class DoubanSearchModal extends Modal {
 	onOpen() {
 	  let { contentEl } = this;
 
-	  contentEl.createEl("h2", { text: i18nHelper.getMessage('110003') });
+	  contentEl.createEl("h3", { text: i18nHelper.getMessage('110003') });
   
 	  const inputs = contentEl.createDiv("inputs");
 	  const searchInput = new TextComponent(inputs).onChange((searchTerm) => {
 		this.searchTerm = searchTerm;
 	  });
-	  searchInput.inputEl.addClass("search_input");
+	  searchInput.inputEl.addClass("obsidian_douban_search_input");
 
 	  searchInput.inputEl.focus();
 	  searchInput.inputEl.addEventListener("keydown", (event) => {
@@ -42,12 +42,12 @@ export class DoubanSearchModal extends Modal {
 		  autofocus: true,
 		},
 	  });
-	  searchButton.addClass("search_button");
+	  searchButton.addClass("obsidian_douban_search_button");
 
 	  searchButton.addEventListener("click", this.close.bind(this));
 	  const cancelButton = controls.createEl("button", { text:  i18nHelper.getMessage('110005') });
 	  cancelButton.addEventListener("click", this.close.bind(this));
-	  cancelButton.addClass("search_button");
+	  cancelButton.addClass("obsidian_douban_search_button");
 
 	}
 

@@ -50,14 +50,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
         if(!name || !settings || !settings.personNameMode) {
             return "";
         }
-        var resultName = "";
+        let resultName:string = "";
+		let regValue:RegExpExecArray;
         switch(settings.personNameMode) {
             case PersonNameMode.CH_NAME:
-                var regValue = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
+                regValue = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
                 resultName = regValue?regValue[0]:name;
                 break;
             case PersonNameMode.EN_NAME:
-                var regValue = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
+                regValue = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
                 resultName = regValue?regValue[0]:name;
                 break;
             default:
@@ -68,7 +69,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
      html_encode(str:string):string 
     { 
-        var s = ""; 
+        let s = "";
         if (str.length == 0) return ""; 
         s = str.replace(/&/g, "&amp;"); 
         s = s.replace(/</g, "&lt;"); 
@@ -82,7 +83,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
      html_decode(str:string):string 
     { 
-        var s = ""; 
+        let s = "";
         if (str.length == 0) return ""; 
         s = str.replace(/&amp;/g, "&"); 
         s = s.replace(/&lt;/g, "<"); 

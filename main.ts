@@ -20,7 +20,7 @@ export default class DoubanPlugin extends Plugin {
 			return;
 		}
 		log.trace(`you choose item load data success: ${JSON.stringify(extract)}`);
-		var content:string = this.doubanEtractHandler.parseText(extract, this.settings)
+		let content:string = this.doubanEtractHandler.parseText(extract, this.settings)
 		if(content) {
 			editor.replaceSelection(content);
 		}

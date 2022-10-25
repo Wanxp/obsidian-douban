@@ -45,18 +45,18 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
     }
 
     parseSubjectFromHtml(html: CheerioAPI): DoubanBookSubject {
-        var title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
-        var desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
-        var url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
-        var image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
-        var type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
-        var author = html(html("head > meta[property= 'book:author']").get(0)).attr("content");
-        var isbn = html(html("head > meta[property= 'book:isbn']").get(0)).attr("content");
-        var score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
-        var detailDom = html(html("#info").get(0));
-        var publish = detailDom.find("span.pl");
+        let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+        let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+        let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+        let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+        let type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
+        let author = html(html("head > meta[property= 'book:author']").get(0)).attr("content");
+        let isbn = html(html("head > meta[property= 'book:isbn']").get(0)).attr("content");
+        let score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
+        let detailDom = html(html("#info").get(0));
+        let publish = detailDom.find("span.pl");
 
-        var valueMap = new Map<string, string>();
+        let valueMap = new Map<string, string>();
 
         publish.map((index, info) => {
             let key = html(info).text().trim();
@@ -69,8 +69,8 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
             valueMap.set(BookKeyValueMap.get(key), value);
         })
 
-        var idPattern = /(\d){5,10}/g;
-        var id = idPattern.exec(url);
+        let idPattern = /(\d){5,10}/g;
+        let id = idPattern.exec(url);
 
         const result:DoubanBookSubject = {
             author: [author],

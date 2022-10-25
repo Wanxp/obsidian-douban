@@ -40,22 +40,22 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
     }
 
     parseSubjectFromHtml(html: CheerioAPI): DoubanMusicSubject {
-        var title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
-        var desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
-        var url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
-        var image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
-        var score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
-        var detailDom = html(html("#info").get(0));
-        var publish = detailDom.find("span.pl");
+        let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+        let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+        let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+        let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+        let score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
+        let detailDom = html(html("#info").get(0));
+        let publish = detailDom.find("span.pl");
 
-        var valueMap = new Map<string, string>();
+        let valueMap = new Map<string, string>();
 
         publish.map((index, info) => {
             let key = html(info).text().trim();
             let value = ''
             if(key.indexOf('表演者') >= 0){
                 // value = html(info.next.next).text().trim();
-                var vas:string[] = key.split("\n                                    \n                                    ");
+                let vas:string[] = key.split("\n                                    \n                                    ");
                 value = vas && vas.length > 1? vas[1]:"";    
                 key = vas && vas.length > 0? vas[0]:"";
             }else{
@@ -64,8 +64,8 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
             valueMap.set(BookKeyValueMap.get(key), value);
         })
 
-        var idPattern = /(\d){5,10}/g;
-        var id = idPattern.exec(url);
+        let idPattern = /(\d){5,10}/g;
+        let id = idPattern.exec(url);
 
         const result:DoubanMusicSubject = {
             image: image,

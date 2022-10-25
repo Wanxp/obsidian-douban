@@ -37,7 +37,7 @@ export class DoubanSearchChooseItemHandler {
         if(!searchExtract) {
             return;
         }
-        var doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
+        let doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
         .filter(h => h.support(searchExtract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
             doubanSubjectHandlers[0].handle(searchExtract.url, editor);
@@ -50,10 +50,10 @@ export class DoubanSearchChooseItemHandler {
         if(!settings) {
             return "";
         }
-        var doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
+        let doubanSubjectHandlers:DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
             .filter(h => h.support(extract));
         if(doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-            var result = doubanSubjectHandlers.map(h => h.parseText(extract, settings));
+            let result = doubanSubjectHandlers.map(h => h.parseText(extract, settings));
             if(result && result.length > 0) {
                 return result[0];
             }else {

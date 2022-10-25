@@ -6,5 +6,5 @@
 	"description": "This is a plugin that can import movies, books or musics info data from Douban for Obsidian .",
 	"author": "Wanxp",
 	"authorUrl": "https://obsidian-douban.wanxuping.com",
-	"isDesktopOnly": true
+	"isDesktopOnly": false
 }

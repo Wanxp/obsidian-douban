@@ -44,20 +44,20 @@ export default class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHan
         // return html('.new-status .status-wrapper')
         //     .get()
         //     .map(i -> {
-        //         var div = html(i);
+        //         let div = html(i);
         //         div.find('')
         //     });
 
-        var title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
-        var desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
-        var url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
-        var image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
-        var type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
-        var authorA = html(html("a.note-author").get(0));
-        var timePublished = html(html(".pub-date").get(0)).text();
-        var content = html(html(".note").get(1));
-        var idPattern = /(\d){5,10}/g;
-        var id = idPattern.exec(url);
+        let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+        let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+        let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+        let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+        let type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
+        let authorA = html(html("a.note-author").get(0));
+        let timePublished = html(html(".pub-date").get(0)).text();
+        let content = html(html(".note").get(1));
+        let idPattern = /(\d){5,10}/g;
+        let id = idPattern.exec(url);
 
         // const result:DoubanNoteSubject = {
         //     image: image,

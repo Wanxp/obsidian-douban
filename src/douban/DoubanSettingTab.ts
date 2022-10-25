@@ -46,7 +46,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				})
 			  );
-			  textField.inputEl.addClass("settings_textField");
+			  textField.inputEl.addClass("obsidian_douban_settings_textField");
 			  textField
 			  .setPlaceholder(DEFAULT_SETTINGS.searchUrl)
 			  .setValue(this.plugin.settings.searchUrl)
@@ -76,7 +76,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				})
 			  );
-			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.addClass("obsidian_douban_settings_area");
 			  textarea.inputEl.setAttr("rows", 10);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.movieTemplate)
 			  .setValue(this.plugin.settings.movieTemplate)
@@ -105,7 +105,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				})
 			  );
-			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.addClass("obsidian_douban_settings_area");
 			  textarea.inputEl.setAttr("rows", 10);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.bookTemplate)
 			  .setValue(this.plugin.settings.bookTemplate)
@@ -134,7 +134,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				})
 			  );
-			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.addClass("obsidian_douban_settings_area");
 			  textarea.inputEl.setAttr("rows", 10);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.musicTemplate)
 			  .setValue(this.plugin.settings.musicTemplate)
@@ -162,7 +162,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 
 				})
 			  );
-			  textarea.inputEl.addClass("settings_area");
+			  textarea.inputEl.addClass("obsidian_douban_settings_area");
 			  textarea.inputEl.setAttr("rows", 10);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.noteTemplate)
 			  .setValue(this.plugin.settings.noteTemplate)

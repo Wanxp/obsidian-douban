@@ -46,17 +46,17 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
                 .get()
                 .filter(scd => "application/ld+json" == data(scd).attr("type"))
                 .map(i => {
-                    var item = data(i).text();
+                    let item = data(i).text();
                     item = super.html_decode(item);
-                    var obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
-                    var idPattern = /(\d){5,10}/g;
-                    var id = idPattern.exec(obj.url);
-                    var name = obj.name;
-                    var titleExec = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
-                    var title = titleExec?titleExec[0]:name;
+                    let obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
+                    let idPattern = /(\d){5,10}/g;
+                    let id = idPattern.exec(obj.url);
+                    let name = obj.name;
+                    let titleExec = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
+                    let title = titleExec?titleExec[0]:name;
 
-                    var originalTitleExec = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
-                    var originalTitle = originalTitleExec?originalTitleExec[0]:name;
+                    let originalTitleExec = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
+                    let originalTitle = originalTitleExec?originalTitleExec[0]:name;
 
                     const result:DoubanTeleplaySubject = {
                         id: id?id[0]:'',
