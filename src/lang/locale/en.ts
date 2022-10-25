@@ -36,9 +36,9 @@ export default {
     '120301': `Music Content Template`,
     '120302': `Set markdown Music template for extract to be inserted.`,
     '120303': `Available Music template variables are :`,
-	'120304': `{{id}}, {{title}}, {{type}}, {{image}},`,
-	'120305': `{{url}}, {{desc}}, {{datePublished}}`,
-    '120306': `{{genre}}, {{actor}}, {{medium}}, {{albumType}},`,
+	'120304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
+	'120305': `{{url}}, {{desc}}, {{datePublished}}, {{genre}},`,
+    '120306': `{{actor}}, {{medium}}, {{albumType}},`,
     '120307': `{{barcode}}, {{numberOfRecords}}`,
 
     '120401': `Article Content Template`,
@@ -47,6 +47,13 @@ export default {
 	'120404': `{{id}}, {{title}}, {{type}}, {{image}},`,
 	'120405': `{{url}}, {{desc}}, {{datePublished}}`,
     '120406': `{{author}}, {{authorUrl}}, {{content}}`,
+
+	'121301': `Game Content Template`,
+	'121302': `Set markdown Game template for extract to be inserted.`,
+	'121303': `Available Game template variables are :`,
+	'121304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
+	'121305': `{{url}}, {{desc}}, {{publisher}}, {{datePublished}}`,
+	'121306': `{{genre}}, {{aliases}}, {{developer}}, {{platform}}`,
     
     '120501': `Date Format`,
     '120502': `Time Format`,

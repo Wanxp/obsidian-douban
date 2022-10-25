@@ -6,5 +6,4 @@ export default class DoubanGameSubject extends DoubanSubject  {
 	aliases:string[];
 	developer:string;
 	platform:string[];
-	genre:string[];
 }

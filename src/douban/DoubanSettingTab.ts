@@ -173,6 +173,33 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
+		new Setting(containerEl).setName(i18nHelper.getMessage('121301')).then((setting) => {
+			setting.addTextArea((textarea) => {
+				setting.descEl.appendChild(
+					createFragment((frag) => {
+						frag.appendText(i18nHelper.getMessage('121302'));
+						frag.createEl('br');
+						frag.appendText(i18nHelper.getMessage('121303'));
+						frag.createEl('br');
+						frag.appendText(i18nHelper.getMessage('121304'));
+						frag.createEl('br');
+						frag.appendText(i18nHelper.getMessage('121305'));
+						frag.createEl('br');
+						frag.appendText(i18nHelper.getMessage('121306'));
+						frag.createEl('br');
+					})
+				);
+				textarea.inputEl.addClass("obsidian_douban_settings_area");
+				textarea.inputEl.setAttr("rows", 10);
+				textarea.setPlaceholder(DEFAULT_SETTINGS.gameTemplate)
+					.setValue(this.plugin.settings.gameTemplate)
+					.onChange(async (value) => {
+						this.plugin.settings.gameTemplate = value;
+						await this.plugin.saveSettings();
+					});
+			});
+		})
+
 		  new Setting(containerEl).setName(i18nHelper.getMessage('121201')).then((setting) => {
 			setting.addDropdown((dropdwon) => {
 			  setting.descEl.appendChild(

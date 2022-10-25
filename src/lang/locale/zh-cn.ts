@@ -48,6 +48,13 @@ export default {
 	'120405': `{{url}}, {{desc}}, {{datePublished}}`,
 	'120406': `{{author}}, {{authorUrl}}, {{content}}`,
 
+	'121301': `游戏文本模板`,
+	'121302': `设置选择游戏后导入的文本内容模板,`,
+	'121303': `支持以下参数名称 :`,
+	'121304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
+	'121305': `{{url}}, {{desc}}, {{publisher}}, {{datePublished}}`,
+	'121306': `{{genre}}, {{aliases}}, {{developer}}, {{platform}}`,
+
 
     '120501': `日期格式`,
     '120503': `这个格式是给上面获取到的参数进行格式化日期时显示的内容 .`,

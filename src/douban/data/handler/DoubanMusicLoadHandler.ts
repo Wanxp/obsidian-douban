@@ -55,7 +55,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
             }else{
                 value = html(info.next).text().trim();
             }
-            valueMap.set(BookKeyValueMap.get(key), value);
+            valueMap.set(MusicKeyValueMap.get(key), value);
         })
 
         let idPattern = /(\d){5,10}/g;
@@ -85,7 +85,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 }
 
 
-const BookKeyValueMap:Map<string, string> = new Map(
+const MusicKeyValueMap:Map<string, string> = new Map(
     [['表演者:', 'actor'],
     ['流派:', 'genre'],
     ['发行时间:', 'datePublished'],

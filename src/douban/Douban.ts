@@ -101,19 +101,21 @@ desc: {{desc}}
 {{content}}
 `,
 	gameTemplate:
-		`![image]({{image}})
+`![image]({{image}})
+	
 doubanId: {{id}}
 title: {{title}}
-originalTitle: {{originalTitle}}
-type: {{type}}
+aliases: {{aliases}}
+type: {{type}}  
 score: {{score}}
+tags: Game
+dateTimePublished: {{datePublished}} {{timePublished}}
+publisher: {{publisher}}
 genre: {{genre}}
-datePublished: {{datePublished}}
-director: {{director}}
-actor: {{actor}}
-author: {{author}}
+developer: {{developer}}
+platform: {{platform}}
 url: {{url}}
-desc: {{desc}}
+desc: {{desc}}}
 `,
 // totalWord: {{totalWord}}
 
