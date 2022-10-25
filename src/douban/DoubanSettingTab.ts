@@ -17,7 +17,7 @@ export class DoubanSettingTab extends PluginSettingTab {
   
 	  containerEl.empty();
   
-	  containerEl.createEl("h2", { text: '1201' });
+	  containerEl.createEl("h2", { text: i18nHelper.getMessage('1201') });
 
 		new Setting(containerEl).setName(i18nHelper.getMessage('120001'))
 		.then((setting) => {
@@ -116,7 +116,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 			});
 		  });
 
-		  new Setting(containerEl).setName(i18nHelper.getMessage('120201')).then((setting) => {
+		  new Setting(containerEl).setName(i18nHelper.getMessage('120301')).then((setting) => {
 			setting.addTextArea((textarea) => {
 			  setting.descEl.appendChild(
 				createFragment((frag) => {

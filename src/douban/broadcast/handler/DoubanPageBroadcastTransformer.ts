@@ -4,6 +4,7 @@ import { DoubanBroadcastMovieHandler } from "./DoubanBroadcastMovieHandler";
 import DoubanBroadcastSubject from "../model/DoubanBroadcastSubject";
 import DoubanPageBroadcastSubject from "../model/DoubanPageBroadcastSubject";
 
+//TODO will support in future version
 export class DoubanPageBroadcastTransformer {
   
   private handlers:DoubanBroadcastAbstractHandler<DoubanBroadcastSubject>[];

@@ -5,9 +5,8 @@ import DoubanPageBroadcastSubject from '../model/DoubanPageBroadcastSubject';
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
 import DoubanSubject from 'src/douban/data/model/DoubanSubject';
-import html2markdown from '@notable/html2markdown';
-import { moment } from "obsidian";
 
+//TODO will support in future version
 export default class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
 
     parseText(extract: DoubanNoteSubject, settings:DoubanPluginSettings): string {
