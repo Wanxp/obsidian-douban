@@ -109,13 +109,13 @@ aliases: {{aliases}}
 type: {{type}}  
 score: {{score}}
 tags: Game
-dateTimePublished: {{datePublished}} {{timePublished}}
+dateTimePublished: {{datePublished}}
 publisher: {{publisher}}
 genre: {{genre}}
 developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
-desc: {{desc}}}
+desc: {{desc}}
 `,
 // totalWord: {{totalWord}}
 

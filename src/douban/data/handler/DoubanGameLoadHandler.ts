@@ -1,12 +1,13 @@
 import  { CheerioAPI } from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import { DoubanPluginSettings } from "src/douban/Douban";
+import {DoubanPluginSettings, PersonNameMode} from "src/douban/Douban";
 import SchemaOrg from "src/utils/SchemaOrg";
 import { moment } from "obsidian";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
 import DoubanBookSubject from "@App/data/model/DoubanBookSubject";
+import { log } from 'src/utils/Logutil';
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -14,9 +15,15 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return settings.gameTemplate;
 	}
 
-    parseText(beforeContent:string, extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
+	// parse(extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
+	// 	extract.title = this.handleI18nName(extract.title, settings);
+	// 	return super.parse(extract, settings);
+	// }
+
+	parseText(beforeContent:string, extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
 		return beforeContent
 			.replaceAll("{{platform}}", extract.platform  ? extract.platform.join(settings.arraySpilt) : "")
+			.replaceAll("{{aliases}}", extract.aliases  ? extract.aliases.join(settings.arraySpilt) : "")
 			.replaceAll("{{developer}}", extract.developer  ? extract.developer : "");
 	}
 
@@ -50,16 +57,19 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		dt.map((index, info) => {
 			let key = html(info).text().trim();
 			if(key.indexOf('平台') >= 0 || key.indexOf('类型') >= 0){
-				html(info.next).find("a").map((index, a) => {
+				value = [];
+				html(info.next.next).find("a").map((index, a) => {
 					value.push(html(a).text().trim());
 				});
+			}else if (key.indexOf('别名') >= 0) {
+				let cc = html(info.next.next).text().trim();
+				value = cc.split("/");
 			}else{
-				value = html(info.next).text().trim();
+				value = html(info.next.next).text().trim();
 			}
+			log.trace(key + ":" + value);
 			valueMap.set(GameKeyValueMap.get(key), value);
 		})
-
-
 
 		const result:DoubanGameSubject = {
 			id: id,
@@ -67,17 +77,41 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 			title: title,
 			desc: desc,
 			url: url,
-			genre: valueMap.has('genre') ? valueMap.get('genre') : "",
+			genre: valueMap.has('genre') ? valueMap.get('genre') : [],
 			image: image,
 			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",
 			score: Number(score),
-			aliases: valueMap.has('aliases') ? valueMap.get('aliases') : "",
+			aliases: valueMap.has('aliases') ? valueMap.get('aliases') : [],
 			developer: valueMap.has('developer') ? valueMap.get('developer') : "",
-			platform: valueMap.has('platform') ? valueMap.get('platform') : ""
+			platform: valueMap.has('platform') ? valueMap.get('platform') : []
 		};
 		return result
     }
+//TODO support game's name i18n
+	// handleI18nName(title: string, settings: DoubanPluginSettings):string {
+	// 	if (!title) {
+	// 		return "";
+	// 	}
+	// 	if (!settings) {
+	// 		return title;
+	// 	}
+	// 	let resultName:string = "";
+	// 	let regValue:RegExpExecArray;
+	// 	switch(settings.personNameMode) {
+	// 		case PersonNameMode.CH_NAME:
+	// 			regValue = /[\u4e00-\u9fa5]{2,20}/g.exec(title);
+	// 			resultName = regValue?regValue[0]:title;
+	// 			break;
+	// 		case PersonNameMode.EN_NAME:
+	// 			regValue = /[a-zA-Z.\s\-]{2,50}/g.exec(title);
+	// 			resultName = regValue?regValue[0]:title;
+	// 			break;
+	// 		default:
+	// 			resultName = title;
+	// 	}
+	// 	return resultName;
+	// }
 
 }
 

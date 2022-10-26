@@ -7,9 +7,9 @@
 [![Contributors][contributors-shield]][contributors-url]
 
 
-Import Movies, Books, Music, Teleplay, Note even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)
+Import Movies, Books, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)
 
-在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记甚至是广播, 包含评分/发布日期/演员表等信息
+在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息
 
 If you want some features or have any questions about this plugin, create issues or join the development is welcome.
 关于当前的插件如果有任何疑问或者想要什么功能, 欢迎提issues或加入到开发当中.
@@ -24,6 +24,7 @@ If you want some features or have any questions about this plugin, create issues
 - [x] Book/书籍
 - [x] Music/音乐
 - [x] Note/日记
+- [x] Game/游戏
 - [ ] Broadcast/广播
 
 ## How to use
