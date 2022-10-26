@@ -16,7 +16,6 @@ export default class Searcher {
 		  throw: true
 	  };
 	  return request(requestUrlParam)
-		  .then(a => {log.trace(a.toString()); return a;})
 		  .then(load)
 		  .then(SearchParserHandler.parseSearch)
 		  .catch(e => log.error(i18nHelper.getMessage('130101')))

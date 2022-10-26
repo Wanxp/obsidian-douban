@@ -67,7 +67,6 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 			}else{
 				value = html(info.next.next).text().trim();
 			}
-			log.trace(key + ":" + value);
 			valueMap.set(GameKeyValueMap.get(key), value);
 		})
 

@@ -50,7 +50,6 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			throw: true
 		};
 		request(requestUrlParam)
-			.then(e => {log.trace(e.toString());return e;})
             .then(load)
             .then(this.parseSubjectFromHtml)
             .then(content => this.toEditor(editor, content))

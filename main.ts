@@ -19,7 +19,6 @@ export default class DoubanPlugin extends Plugin {
 			log.warn(i18nHelper.getMessage('140101'));
 			return;
 		}
-		log.trace(`you choose item load data success: ${JSON.stringify(extract)}`);
 		let content:string = this.doubanEtractHandler.parseText(extract, this.settings)
 		if(content) {
 			editor.replaceSelection(content);
@@ -28,9 +27,7 @@ export default class DoubanPlugin extends Plugin {
 
 
 	async search(searchTerm:string, editor: Editor) {
-		log.trace("[main] start search:" + searchTerm);
 		const resultList = await Searcher.search(searchTerm, this.settings);
-		log.trace("[main] complete search:" + searchTerm + ",\n result list:" + JSON.stringify(resultList));
 		new DoubanFuzzySuggester(this, editor).showSearchList(resultList);
 	}
 
