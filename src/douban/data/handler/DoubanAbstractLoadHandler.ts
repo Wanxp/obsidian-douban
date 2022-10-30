@@ -67,7 +67,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 * @param textMode
 	 */
 	handleContentArray(array: any[], settings: DoubanPluginSettings, textMode: TemplateTextMode): string {
-		let result = '';
+		let result;
 		switch (textMode) {
 			case TemplateTextMode.YAML:
 				result = array.map(YamlUtil.handleText).join(', ');
@@ -85,7 +85,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 * @param settings
 	 */
 	handleSpecialContent(value: any, textMode: TemplateTextMode = TemplateTextMode.NORMAL, settings: DoubanPluginSettings = null): string {
-		let result = '';
+		let result;
 		if (value instanceof Array) {
 			result = this.handleContentArray(value, settings, textMode);
 		} else if (value instanceof Number) {
@@ -103,7 +103,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	abstract support(extract: DoubanSubject): boolean;
 
 	handle(url: string, editor: Editor): void {
-		let requestUrlParam: RequestUrlParam = {
+		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
 			headers: JSON.parse(this.doubanPlugin.settings.searchHeaders),
@@ -114,7 +114,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.then(this.parseSubjectFromHtml)
 			.then(content => this.toEditor(editor, content))
 			// .then(content => content ? editor.replaceSelection(content) : content)
-			.catch(e => log.error(i18nHelper.getMessage('130101')))
+			.catch(log.error(i18nHelper.getMessage('130101')))
 		;
 
 	}
@@ -130,7 +130,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!name || !settings || !settings.personNameMode) {
 			return "";
 		}
-		let resultName: string = "";
+		let resultName: string;
 		let regValue: RegExpExecArray;
 		switch (settings.personNameMode) {
 			case PersonNameMode.CH_NAME:
@@ -138,7 +138,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				resultName = regValue ? regValue[0] : name;
 				break;
 			case PersonNameMode.EN_NAME:
-				regValue = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
+				regValue = /[a-zA-Z.\s-]{2,50}/g.exec(name);
 				resultName = regValue ? regValue[0] : name;
 				break;
 			default:
@@ -147,18 +147,18 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return resultName;
 	}
 
-	html_encode(str: string): string {
-		let s = "";
-		if (str.length == 0) return "";
-		s = str.replace(/&/g, "&amp;");
-		s = s.replace(/</g, "&lt;");
-		s = s.replace(/>/g, "&gt;");
-		s = s.replace(/ /g, "&nbsp;");
-		s = s.replace(/\'/g, "&#39;");
-		s = s.replace(/\"/g, "&quot;");
-		s = s.replace(/\n/g, "<br/>");
-		return s;
-	}
+	// html_encode(str: string): string {
+	// 	let s = "";
+	// 	if (str.length == 0) return "";
+	// 	s = str.replace(/&/g, "&amp;");
+	// 	s = s.replace(/</g, "&lt;");
+	// 	s = s.replace(/>/g, "&gt;");
+	// 	s = s.replace(/ /g, "&nbsp;");
+	// 	s = s.replace(/\'/g, "&#39;");
+	// 	s = s.replace(/\"/g, "&quot;");
+	// 	s = s.replace(/\n/g, "<br/>");
+	// 	return s;
+	// }
 
 	html_decode(str: string): string {
 		let s = "";
@@ -174,7 +174,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private parsePartText(template: string, extract: T, settings: DoubanPluginSettings, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
-		let resultContent = template
+		const resultContent = template
 			.replaceAll(DoubanParameter.ID, extract.id)
 			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(extract.title, textMode))
 			.replaceAll(DoubanParameter.TYPE, extract.type)

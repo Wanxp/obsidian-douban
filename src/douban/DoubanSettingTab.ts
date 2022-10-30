@@ -14,7 +14,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		let {containerEl} = this;
+		const {containerEl} = this;
 
 		containerEl.empty();
 

@@ -14,11 +14,8 @@
 	</a>
 	<br>
 	<img src="https://img.shields.io/tokei/lines/github/Wanxp/obsidian-douban">
-	<a href="https://www.codefactor.io/repository/github/Wanxp/obsidian-douban/stats">
-		<img src="https://img.shields.io/codefactor/grade/github/Wanxp/obsidian-douban">
-	</a>
-	<a href="https://mszturc.github.io/obsidian-advanced-slides/lcov-report/">
-		<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MSzturc/a2879612aa47b6364392d94cae882c50/raw/obsidian-advanced-slides_coverage.json">
+	<a href="https://www.codefactor.io/repository/github/wanxp/obsidian-douban">
+	<img src="https://www.codefactor.io/repository/github/wanxp/obsidian-douban/badge" alt="CodeFactor" />
 	</a>
 </p>
 
