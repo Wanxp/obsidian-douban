@@ -114,7 +114,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.then(this.parseSubjectFromHtml)
 			.then(content => this.toEditor(editor, content))
 			// .then(content => content ? editor.replaceSelection(content) : content)
-			.catch(log.error(i18nHelper.getMessage('130101')))
+			.catch(e => log.error(i18nHelper.getMessage('130101')))
 		;
 
 	}

@@ -50,7 +50,6 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async getDoubanTextForActiveFile(editor: Editor) {
-		this.doubanStatusBar = this.addStatusBarItem();
 		const activeFile = await this.app.workspace.getActiveFile();
 		if (activeFile) {
 		  const searchTerm = activeFile.basename;
@@ -67,7 +66,9 @@ export default class DoubanPlugin extends Plugin {
 	async onload() {
 	  await this.loadSettings();
 
-	  this.addCommand({
+		this.doubanStatusBar = this.addStatusBarItem();
+
+		this.addCommand({
 		id: "search-douban-by-current-file-name",
 		name: i18nHelper.getMessage("110001"),
 		editorCallback: (editor: Editor) =>
@@ -102,6 +103,7 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	showStatus(origin:string, message:string) {
+
 		this.doubanStatusBar.empty();
 		// @ts-ignore
 		this.doubanStatusBar.setText(i18nHelper.getMessage(origin).replace('{0}', message));

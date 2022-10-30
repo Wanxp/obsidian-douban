@@ -53,7 +53,6 @@ export class DoubanSearchModal extends Modal {
 
 	async onClose() {
 		let {contentEl} = this;
-
 		contentEl.empty();
 		if (this.searchTerm) {
 			await this.plugin.search(this.searchTerm, this.editor);
