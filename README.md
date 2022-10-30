@@ -8,7 +8,6 @@
 
 
 Import Movies, Books, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)
-
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息
 
 If you want some features or have any questions about this plugin, create issues or join the development is welcome.
@@ -28,12 +27,12 @@ If you want some features or have any questions about this plugin, create issues
 - [ ] Broadcast/广播
 
 ## How to use
-### Movie
+### Search
+- Search Movie By File Name/通过文件名搜索
+  ![Search Movie By File Name](./doc/search_by_file_name.gif)
+
 - Search Movie By Input Text/通过输入文本搜索
 ![Search Movie By Input Text](./doc/search_by_input.gif)
-
-- Search Movie By File Name/通过文件名搜索
-![Search Movie By File Name](./doc/search_by_file_name.gif)
 
 ## Settings
 - Setting Example1/设置案例1
@@ -74,19 +73,19 @@ If you want some features or have any questions about this plugin, create issues
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Wanxp/obsidian-douban.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Wanxp/obsidian-douban
 [contributors-url]: https://github.com/Wanxp/obsidian-douban/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Wanxp/obsidian-douban.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Wanxp/obsidian-douban
 [forks-url]: https://github.com/Wanxp/obsidian-douban/network/members
-[stars-shield]: https://img.shields.io/github/stars/Wanxp/obsidian-douban.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Wanxp/obsidian-douban
 [stars-url]: https://github.com/Wanxp/obsidian-douban/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Wanxp/obsidian-douban.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Wanxp/obsidian-douban
 [issues-url]: https://github.com/Wanxp/obsidian-douban/issues
-[license-shield]: https://img.shields.io/github/license/Wanxp/obsidian-douban.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Wanxp/obsidian-douban
 [license-url]: https://github.com/Wanxp/obsidian-douban/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
-[version-shield]: https://img.shields.io/github/package-json/v/Wanxp/obsidian-douban.svg?style=for-the-badge
+[version-shield]: https://img.shields.io/github/package-json/v/Wanxp/obsidian-douban
 [version-url]: https://github.com/Wanxp/obsidian-douban/releases/latest
 
-[downloads-shield]: https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total.svg?style=for-the-badge
+[downloads-shield]: https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total
 [downloads-url]: https://github.com/Wanxp/obsidian-douban
