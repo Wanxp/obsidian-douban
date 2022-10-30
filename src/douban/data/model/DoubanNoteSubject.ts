@@ -1,9 +1,7 @@
-import {AggregateRating, Person, WithContext} from 'schema-dts';
-
 import DoubanSubject from "./DoubanSubject";
 
-export default class DoubanNoteSubject extends DoubanSubject  {
-	author:string;
-	authorUrl:string;
-	content:string;
+export default class DoubanNoteSubject extends DoubanSubject {
+	author: string;
+	authorUrl: string;
+	content: string;
 }

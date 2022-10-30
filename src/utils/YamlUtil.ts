@@ -1,15 +1,12 @@
-import {i18nHelper} from "../lang/helper";
-
 export default class YamlUtil {
 
 
-
-	public static hasSpecialChar(str:string):boolean {
+	public static hasSpecialChar(str: string): boolean {
 		return SPECIAL_CHAR_REG.test(str);
 	}
 
 
-	public static handleSpecialChar(text: string):string {
+	public static handleSpecialChar(text: string): string {
 		// return this.hasSpecialChar(text) ? text.replace(SPECIAL_CHAR_REG, (match, p1) => {
 		// 	return SPECIAL_CHAR_REG_REPLACE.get(p1) || p1;
 		// }) : text;
@@ -26,7 +23,7 @@ export default class YamlUtil {
 }
 
 const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:`,\n]/;
-const SPECIAL_CHAR_REG_REPLACE:Map<string, string> = new Map([
+const SPECIAL_CHAR_REG_REPLACE: Map<string, string> = new Map([
 	['{', '\\{'],
 ]);
 

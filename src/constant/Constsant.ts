@@ -28,7 +28,7 @@ export enum PersonNameMode {
 /**
  * 名称模式选项
  */
-export const PersonNameModeRecords: {[key in PersonNameMode]: string} = {
+export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 	[PersonNameMode.CH_NAME]: i18nHelper.getMessage('121206'),
 	[PersonNameMode.EN_NAME]: i18nHelper.getMessage('121207'),
 	[PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage('121208'),

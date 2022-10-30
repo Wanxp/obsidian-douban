@@ -2,16 +2,16 @@ export default class DoubanSubject {
 	id: string;
 	title: string;
 	type: string;
-	score:number;
-	image:string;
+	score: number;
+	image: string;
 	url: string;
 	desc: string;
-	publisher:string;
-	datePublished:Date;
-	genre:string[];
+	publisher: string;
+	datePublished: Date;
+	genre: string[];
 }
 
-const ParameterMap:Map<string, string> = new Map([
+const ParameterMap: Map<string, string> = new Map([
 	['id', ''],
 ]);
 

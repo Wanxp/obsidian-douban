@@ -1,7 +1,26 @@
 # Obsidian Douban Plugin
 
-[![Version][version-shield]][version-url][![Stargazers][stars-shield]][stars-url][![Issues][issues-shield]][issues-url][![Downloads][downloads-shield]][downloads-url][![Contributors][contributors-shield]][contributors-url]
-
+<p align="center">
+    <a href="https://github.com/Wanxp/obsidian-douban/releases/latest">
+		<img src="https://img.shields.io/github/manifest-json/v/Wanxp/obsidian-douban?color=blue">
+	</a>
+    <img src="https://img.shields.io/github/release-date/Wanxp/obsidian-douban">
+	<a href="https://github.com/Wanxp/obsidian-douban/blob/main/LICENSE">
+		<img src="https://img.shields.io/github/license/Wanxp/obsidian-douban">
+	</a>
+	<img src="https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total">
+	<a href="https://github.com/Wanxp/obsidian-douban/issues">
+		<img src="https://img.shields.io/github/issues/Wanxp/obsidian-douban">
+	</a>
+	<br>
+	<img src="https://img.shields.io/tokei/lines/github/Wanxp/obsidian-douban">
+	<a href="https://www.codefactor.io/repository/github/Wanxp/obsidian-douban/stats">
+		<img src="https://img.shields.io/codefactor/grade/github/Wanxp/obsidian-douban">
+	</a>
+	<a href="https://mszturc.github.io/obsidian-advanced-slides/lcov-report/">
+		<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MSzturc/a2879612aa47b6364392d94cae882c50/raw/obsidian-advanced-slides_coverage.json">
+	</a>
+</p>
 
 Import Movies, Books, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息
@@ -66,22 +85,3 @@ If you want some features or have any questions about this plugin, create issues
 进入Obsidian插件中心重新加载当前插件  
 7. Enjoy your develop  
 享受开发吧  
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Wanxp/obsidian-douban
-[contributors-url]: https://github.com/Wanxp/obsidian-douban/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Wanxp/obsidian-douban
-[forks-url]: https://github.com/Wanxp/obsidian-douban/network/members
-[stars-shield]: https://img.shields.io/github/stars/Wanxp/obsidian-douban
-[stars-url]: https://github.com/Wanxp/obsidian-douban/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Wanxp/obsidian-douban
-[issues-url]: https://github.com/Wanxp/obsidian-douban/issues
-[license-shield]: https://img.shields.io/github/license/Wanxp/obsidian-douban
-[license-url]: https://github.com/Wanxp/obsidian-douban/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
-[version-shield]: https://img.shields.io/github/package-json/v/Wanxp/obsidian-douban
-[version-url]: https://github.com/Wanxp/obsidian-douban/releases/latest
-
-[downloads-shield]: https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total
-[downloads-url]: https://github.com/Wanxp/obsidian-douban

@@ -4,9 +4,9 @@ export default class DoubanBroadcastSubject {
 	title: string;
 	desc: string;
 	url: string;
-	author:string;
-	authorUrl:string;
-	timePublished:Date;
-	image:string;
-	content:string;
+	author: string;
+	authorUrl: string;
+	timePublished: Date;
+	image: string;
+	content: string;
 }

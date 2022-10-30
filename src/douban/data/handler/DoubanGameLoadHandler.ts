@@ -1,4 +1,4 @@
-import  { CheerioAPI } from 'cheerio';
+import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
 import {DoubanPluginSettings} from "src/douban/Douban";
@@ -7,8 +7,8 @@ import DoubanGameSubject from '../model/DoubanGameSubject';
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
-	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.gameTemplate;
+	constructor(doubanPlugin: DoubanPlugin) {
+		super(doubanPlugin);
 	}
 
 	// parse(extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
@@ -16,26 +16,22 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	// 	return super.parse(extract, settings);
 	// }
 
-	parseText(beforeContent:string, extract: DoubanGameSubject, settings:DoubanPluginSettings): string {
-		return beforeContent
-			.replaceAll("{{platform}}", extract.platform  ? extract.platform.join(settings.arraySpilt) : "")
-			.replaceAll("{{aliases}}", extract.aliases  ? extract.aliases.join(settings.arraySpilt) : "")
-			.replaceAll("{{developer}}", extract.developer  ? extract.developer : "");
+	getTemplate(settings: DoubanPluginSettings): string {
+		return settings.gameTemplate;
 	}
 
-    support(extract: DoubanSubject): boolean {
-        return extract && extract.type && (extract.type.contains("游戏") || extract.type.contains("Game") || extract.type.contains("game"));
-    }
+	parseText(beforeContent: string, extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
+		return beforeContent
+			.replaceAll("{{platform}}", extract.platform ? extract.platform.join(settings.arraySpilt) : "")
+			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.join(settings.arraySpilt) : "")
+			.replaceAll("{{developer}}", extract.developer ? extract.developer : "");
+	}
 
+	support(extract: DoubanSubject): boolean {
+		return extract && extract.type && (extract.type.contains("游戏") || extract.type.contains("Game") || extract.type.contains("game"));
+	}
 
-
-    
-
-    constructor(doubanPlugin:DoubanPlugin) {
-        super(doubanPlugin);
-    }
-
-    parseSubjectFromHtml(html: CheerioAPI): DoubanGameSubject {
+	parseSubjectFromHtml(html: CheerioAPI): DoubanGameSubject {
 		let title = html(html("#content > h1").get(0)).text();
 		let idContent = html(html("head > meta[name= 'mobile-agent']").get(0)).attr("content");
 		let idPattern = /(\d){5,10}/g;
@@ -49,24 +45,24 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 		let url = `https://www.douban.com/game/${id}/`;
 		let valueMap = new Map<string, any>();
-		let value:any;
+		let value: any;
 		dt.map((index, info) => {
 			let key = html(info).text().trim();
-			if(key.indexOf('平台') >= 0 || key.indexOf('类型') >= 0){
+			if (key.indexOf('平台') >= 0 || key.indexOf('类型') >= 0) {
 				value = [];
 				html(info.next.next).find("a").map((index, a) => {
 					value.push(html(a).text().trim());
 				});
-			}else if (key.indexOf('别名') >= 0) {
+			} else if (key.indexOf('别名') >= 0) {
 				let cc = html(info.next.next).text().trim();
 				value = cc.split("/");
-			}else{
+			} else {
 				value = html(info.next.next).text().trim();
 			}
 			valueMap.set(GameKeyValueMap.get(key), value);
 		})
 
-		const result:DoubanGameSubject = {
+		const result: DoubanGameSubject = {
 			id: id,
 			type: "Game",
 			title: title,
@@ -82,7 +78,8 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 			platform: valueMap.has('platform') ? valueMap.get('platform') : []
 		};
 		return result
-    }
+	}
+
 //TODO support game's name i18n
 	// handleI18nName(title: string, settings: DoubanPluginSettings):string {
 	// 	if (!title) {
@@ -110,7 +107,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 }
 
-const GameKeyValueMap:Map<string, string> = new Map(
+const GameKeyValueMap: Map<string, string> = new Map(
 	[['类型:', 'genre'],
 		['平台:', 'platform'],
 		['别名:', 'aliases'],
