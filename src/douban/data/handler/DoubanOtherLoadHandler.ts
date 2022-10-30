@@ -1,5 +1,3 @@
-import { Editor, Notice } from "obsidian";
-
 import { CheerioAPI } from "cheerio";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import { DoubanPluginSettings } from "src/douban/Douban";

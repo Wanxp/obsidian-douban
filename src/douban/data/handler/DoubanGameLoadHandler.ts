@@ -1,13 +1,9 @@
 import  { CheerioAPI } from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings, PersonNameMode} from "src/douban/Douban";
-import SchemaOrg from "src/utils/SchemaOrg";
-import { moment } from "obsidian";
+import {DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
-import DoubanBookSubject from "@App/data/model/DoubanBookSubject";
-import { log } from 'src/utils/Logutil';
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 

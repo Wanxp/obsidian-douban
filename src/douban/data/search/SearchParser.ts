@@ -14,13 +14,16 @@ export default class SearchParserHandler {
                 let urlResult = urlPattern.exec(linkValue);
                 let cast = item.find(".subject-cast").text();
 				let score = item.find(".rating_nums").text();
+				let title = item.find("div.content > div > h3 > a").text();
+				let type = item.find("div.content > div > h3 > span").text();
+				let desc = item.find("div.content > p").text();
                 const result:DoubanSearchResultSubject = {
 					id: ececResult ? ececResult[0] : '',
-					title: item.find("div.content > div > h3 > a").text(),
+					title: title ? title : '-',
 					score: score ? Number(score) : null,
 					cast: cast,
-					type: item.find("div.content > div > h3 > span").text(),
-					desc: item.find("div.content > p").text(),
+					type: type ? type : '-',
+					desc: desc ? desc : '-',
 					url: urlResult ? decodeURIComponent(urlResult[0]) : 'https://www.douban.com',
 					image: "",
 					publisher: "",

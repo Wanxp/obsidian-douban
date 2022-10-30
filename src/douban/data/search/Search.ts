@@ -1,4 +1,4 @@
-import { DoubanPluginSettings, doubanHeadrs } from 'src/douban/Douban';
+import { DoubanPluginSettings, doubanHeaders } from 'src/douban/Douban';
 
 import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
 import SearchParserHandler from './SearchParser';

@@ -5,7 +5,6 @@ import { DoubanPluginSettings } from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/utils/SchemaOrg";
-import { moment } from "obsidian";
 
 /**
  * teleplay
@@ -53,7 +52,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 
                     const result:DoubanTeleplaySubject = {
 						id: id ? id[0] : '',
-						type: 'Movie',
+						type: 'Teleplay',
 						title: title,
 						originalTitle: originalTitle,
 						desc: obj.description,

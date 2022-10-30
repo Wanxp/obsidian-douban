@@ -1,8 +1,9 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import { DEFAULT_SETTINGS, PersonNameMode, personNameModeRecords } from "./Douban";
+import { DEFAULT_SETTINGS } from "./Douban";
 
 import DoubanPlugin from "main";
 import { i18nHelper } from "src/lang/helper";
+import {PersonNameMode, PersonNameModeRecords} from "../constant/Constsant";
 
 export class DoubanSettingTab extends PluginSettingTab {
 	plugin: DoubanPlugin;
@@ -17,7 +18,7 @@ export class DoubanSettingTab extends PluginSettingTab {
   
 	  containerEl.empty();
   
-	  containerEl.createEl("h2", { text: i18nHelper.getMessage('1201') });
+	  containerEl.createEl("h2", { text: 'Obsidian Douban' });
 
 		new Setting(containerEl).setName(i18nHelper.getMessage('120001'))
 		.then((setting) => {
@@ -77,7 +78,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				})
 			  );
 			  textarea.inputEl.addClass("obsidian_douban_settings_area");
-			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.inputEl.setAttr("rows", 20);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.movieTemplate)
 			  .setValue(this.plugin.settings.movieTemplate)
 			  .onChange(async (value) => {
@@ -86,6 +87,36 @@ export class DoubanSettingTab extends PluginSettingTab {
 			  });
 			});
 		  });
+
+			// new Setting(containerEl)
+			// 	.setName(i18nHelper.getMessage('120101') + 111)
+			// 	.then((setting) => {
+			// 	setting.addTextArea((textarea) => {
+			// 		setting.descEl.appendChild(
+			// 			createEl('table', 'table', (table) => {
+			// 				table.createEl('thead', 'thread', (thead) => {
+			// 					thead.createEl('tr', 'tr',(tr) => {
+			// 						tr.createEl('th', { text: i18nHelper.getMessage('120108') });
+			// 						tr.createEl('th', { text: i18nHelper.getMessage('120109') });
+			// 						tr.createEl('th', { text: i18nHelper.getMessage('120110') });
+			// 					});
+			// 				});
+			// 				table.createEl('tbody', 'tbody', (tbody) => {
+			// 					personNameModeRecords.forEach((record) => {
+			// 						tbody.createEl('tr', (tr) => {
+			// 							tr.createEl('td', { text: record.name });
+			// 							tr.createEl('td', { text: record.key });
+			// 							tr.createEl('td', { text: record.desc });
+			// 						});
+			// 					});
+			// 				});
+			// 			}
+			//
+			// 		);
+			// 	}));
+
+
+
 
 		  new Setting(containerEl).setName(i18nHelper.getMessage('120201')).then((setting) => {
 			setting.addTextArea((textarea) => {
@@ -103,10 +134,12 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				  frag.appendText(i18nHelper.getMessage('120207'));
 				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('120208'));
+				  frag.createEl('br');
 				})
 			  );
 			  textarea.inputEl.addClass("obsidian_douban_settings_area");
-			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.inputEl.setAttr("rows", 20);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.bookTemplate)
 			  .setValue(this.plugin.settings.bookTemplate)
 			  .onChange(async (value) => {
@@ -135,7 +168,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 				})
 			  );
 			  textarea.inputEl.addClass("obsidian_douban_settings_area");
-			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.inputEl.setAttr("rows", 20);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.musicTemplate)
 			  .setValue(this.plugin.settings.musicTemplate)
 			  .onChange(async (value) => {
@@ -159,11 +192,13 @@ export class DoubanSettingTab extends PluginSettingTab {
 				  frag.createEl('br');
 				  frag.appendText(i18nHelper.getMessage('120406'));
 				  frag.createEl('br');
+				  frag.appendText(i18nHelper.getMessage('120407'));
+				  frag.createEl('br');
 
 				})
 			  );
 			  textarea.inputEl.addClass("obsidian_douban_settings_area");
-			  textarea.inputEl.setAttr("rows", 10);
+			  textarea.inputEl.setAttr("rows", 20);
 			  textarea.setPlaceholder(DEFAULT_SETTINGS.noteTemplate)
 			  .setValue(this.plugin.settings.noteTemplate)
 			  .onChange(async (value) => {
@@ -190,7 +225,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 					})
 				);
 				textarea.inputEl.addClass("obsidian_douban_settings_area");
-				textarea.inputEl.setAttr("rows", 10);
+				textarea.inputEl.setAttr("rows", 20);
 				textarea.setPlaceholder(DEFAULT_SETTINGS.gameTemplate)
 					.setValue(this.plugin.settings.gameTemplate)
 					.onChange(async (value) => {
@@ -216,9 +251,9 @@ export class DoubanSettingTab extends PluginSettingTab {
 			  );
 			//   dropdwon.inputEl.addClass("settings_area");
 			//   dropdwon.inputEl.setAttr("rows", 10);
-			dropdwon.addOption(PersonNameMode.CH_NAME, personNameModeRecords.CH)
-			dropdwon.addOption(PersonNameMode.EN_NAME, personNameModeRecords.EN)
-			dropdwon.addOption(PersonNameMode.CH_EN_NAME, personNameModeRecords.CH_EN)
+			dropdwon.addOption(PersonNameMode.CH_NAME, PersonNameModeRecords.CH)
+			dropdwon.addOption(PersonNameMode.EN_NAME, PersonNameModeRecords.EN)
+			dropdwon.addOption(PersonNameMode.CH_EN_NAME, PersonNameModeRecords.CH_EN)
 			dropdwon.setValue(this.plugin.settings.personNameMode)
 			  .onChange(async (value:string) => {
 				this.plugin.settings.personNameMode = value as PersonNameMode;

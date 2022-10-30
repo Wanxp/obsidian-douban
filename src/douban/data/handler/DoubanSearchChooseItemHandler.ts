@@ -32,7 +32,6 @@ export class DoubanSearchChooseItemHandler {
 			new DoubanGameLoadHandler(doubanPlugin),
 
 			this._doubanSubjectHandlerDefault];
-
     }
 
     public handle(searchExtract:DoubanSubject, editor: Editor):void{

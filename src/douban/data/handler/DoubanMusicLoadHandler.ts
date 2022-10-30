@@ -3,7 +3,6 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanMusicSubject from '../model/DoubanMusicSubject';
 import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
-import { moment } from "obsidian";
 import DoubanSubject from '../model/DoubanSubject';
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {

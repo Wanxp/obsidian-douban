@@ -5,7 +5,6 @@ import DoubanPlugin from "main";
 import { DoubanPluginSettings } from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import html2markdown from '@notable/html2markdown';
-import { moment } from "obsidian";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 

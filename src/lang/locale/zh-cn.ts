@@ -1,4 +1,7 @@
 //简体中文
+import DoubanBookSubject from "@App/data/model/DoubanBookSubject";
+import {extract} from "jest-docblock";
+
 export default {
     //main.ts
     '110001': '用当前文档名搜索豆瓣并写入当前文档',
@@ -32,8 +35,10 @@ export default {
 	'120205': `{{url}}, {{desc}}, {{datePublished}}, {{publisher}}`,
 	'120206': `{{originalTitle}}, {{subTitle}}, {{author}},`,
 	'120207': `{{translator}}, {{isbn}}, {{price}}, {{totalPage}}`,
+	'120208': `{{series}}, {{binding}}, {{menu}}`,
 
-    '120301': `音乐文本模板`,
+
+	'120301': `音乐文本模板`,
     '120302': `设置选择音乐后导入的文本内容模板,`,
     '120303': `支持以下参数名称 :`,
 	'120304': `{{id}}, {{title}}, {{type}}, {{image}},`,
@@ -47,6 +52,7 @@ export default {
 	'120404': `{{id}}, {{title}}, {{type}}, {{image}},`,
 	'120405': `{{url}}, {{desc}}, {{datePublished}}`,
 	'120406': `{{author}}, {{authorUrl}}, {{content}}`,
+	'120407': `{{timePublished}}`,
 
 	'121301': `游戏文本模板`,
 	'121302': `设置选择游戏后导入的文本内容模板,`,
@@ -65,8 +71,8 @@ export default {
     '120508': `格式参考`,
     '120601': `数组分割字符串`,
     '120602': `当模板中的变量存在数组, 则需要设定数组元素中的分割符号,比如演员列表等.
-    举例: '/'	
-    则演员表将会显示为: '演员1/演员2/演员3'`,
+    举例: ','	
+    则演员表将会显示为: '演员1,演员2,演员3'`,
     '120701': `豆瓣HTTP请求头`,
     '120702': `如果豆瓣搜索或者获取数据失败,请尝试修改这个参数,\n
      参数获取方式为:\n
@@ -89,5 +95,37 @@ export default {
      '130103': `Obsidian Douban插件异常提示:`,
 	 '140101': `当前版本暂不支持该类型导入,请升级Obsidian Douban或至github提交issuess获取帮助`,
 
+	'140201': `[Obsidian Douban]: 开始搜索'{0}'...`,
+	'140202': `[Obsidian Douban]: 搜索条数{0}条`,
+	'140203': `[Obsidian Douban]: 请求豆瓣'{0}'...`,
+	'140204': `[Obsidian Douban]: 替换文本'{0}'...`,
+	'140205': `[Obsidian Douban]: 处理完成'{0}'`,
+	'140206': `[Obsidian Douban]: 出现错误'{0}'`,
 
+	'150101': `选择一项内容...`,
+
+
+	//content
+	'200101': `。`,
+
+//book example
+	 'book': {
+		 id: {desc: `豆瓣ID`, example: `25982198`},
+		 title: {desc: `书名`, example: `社会心理学（第11版，精装彩印）`},
+		 type: {desc: `类型`, example: `Book`},
+		 score: {desc: `评分`, example: `9.4`},
+		 image: {desc: `图片URL`, example: `https://img1.doubanio.com/view/subject/l/public/s28261247.jpg`},
+		 url: {desc: `豆瓣URL`, example: `https://book.douban.com/subject/25982198/`},
+	 	 desc: {desc: `简述`, example: `戴维·迈尔斯的《社会心理学》是美国700 多所大专院校社会心理学教学所采用的教材，自出版以来深受广大师生和社会心理学爱好者的喜爱，并被翻译成多种语言，有着广泛的影响力。本书译自第11 版。全书共分四...`},
+		 publisher: {desc: `出版社`, example: `人民邮电出版社`},
+		 datePublished: {desc: `出版时间`, example: `2014-10-1`},
+		 genre: {desc: `类型`, example: `社会科学`},
+		 author: {desc: `作者`, example: `戴维·迈尔斯`},
+		 translator: {desc: `译者`, example: `侯玉波 / 乐国安 / 张志勇`},
+		 isbn: {desc: `ISBN`, example: `9787115369840`},
+		 originTitle: {desc: `原作名`, example: `Social Psychology (11th)`},
+		 subTitle: {desc: `副标题`, example: `社会心理学`},
+		 binding: {desc: `装帧`, example: `精装`},
+		 totalPages: {desc: `页数`, example: `707`},
+	 }
 }

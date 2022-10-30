@@ -1,12 +1,14 @@
-import { DoubanPluginSettings, PersonNameMode } from "src/douban/Douban";
+import {DoubanPluginSettings} from "src/douban/Douban";
 
 import DoubanPlugin from "main";
-import DoubanSubject from '../model/DoubanSubject';
+import DoubanSubject, {DoubanParameter} from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 import {Editor, moment, request, requestUrl, RequestUrlParam, sanitizeHTMLToDom} from "obsidian";
 import { i18nHelper } from 'src/lang/helper';
 import { log } from "src/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
+import YamlUtil from "../../../utils/YamlUtil";
+import {BasicConst, PersonNameMode, TemplateTextMode} from "../../../constant/Constsant";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
     
@@ -19,26 +21,101 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	parse(extract: T, settings:DoubanPluginSettings): string {
 		let template:string = this.getTemplate(settings);
-		let resultContent = template ? template
-			.replaceAll("{{id}}", extract.id)
-			.replaceAll("{{type}}", extract.type ? extract.type : "")
-			.replaceAll("{{title}}", extract.title ? extract.title : "")
-			.replaceAll("{{desc}}", extract.desc ? extract.desc : "")
-			.replaceAll("{{image}}", extract.image  ? extract.image : "")
-			.replaceAll("{{url}}", extract.url  ? extract.url : "")
-			.replaceAll("{{score}}", extract.score  ? extract.score + "": "")
-			.replaceAll("{{publisher}}", extract.publisher  ? extract.publisher : "")
-			.replaceAll("{{datePublished}}", extract.datePublished ? moment(extract.datePublished).format(settings.dateFormat) : "")
-			.replaceAll("{{timePublished}}", extract.datePublished ? moment(extract.datePublished).format(settings.timeFormat) : "")
-			.replaceAll("{{genre}}", extract.genre  ? extract.genre.join(settings.arraySpilt) : "")
-			: ""
+		let frontMatterStart:number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
+		let frontMatterEnd:number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
+		let frontMatter:string = '';
+		let frontMatterBefore:string = '';
+		let frontMatterAfter:string = '';
+		if(frontMatterStart > -1 && frontMatterEnd > -1) {
+			frontMatterBefore = template.substring(0, frontMatterStart);
+			frontMatter = template.substring(frontMatterStart, frontMatterEnd + 3);
+			frontMatterAfter = template.substring(frontMatterEnd + 3);
+			if (frontMatterBefore.length > 0) {
+				frontMatterBefore = this.parsePartText(frontMatterBefore, extract, settings);
+			}
+			if (frontMatterAfter.length > 0) {
+				frontMatterAfter = this.parsePartText(frontMatterAfter, extract, settings);
+			}
+			if (frontMatter.length > 0) {
+				frontMatter = this.parsePartText(frontMatter, extract, settings, TemplateTextMode.YAML);
+			}
+			return frontMatterBefore + frontMatter + frontMatterAfter;
+		}else {
+			return this.parsePartText(template, extract, settings);
+		}
+	}
+
+	private parsePartText(template: string, extract: T, settings: DoubanPluginSettings, textMode:TemplateTextMode = TemplateTextMode.NORMAL): string {
+		let resultContent =  template
+			.replaceAll(DoubanParameter.ID, extract.id)
+			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(extract.title, textMode))
+			.replaceAll(DoubanParameter.TYPE, extract.type)
+			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
+			.replaceAll(DoubanParameter.IMAGE, extract.image)
+			.replaceAll(DoubanParameter.URL, extract.url)
+			.replaceAll(DoubanParameter.DESC, this.handleSpecialContent(extract.desc, textMode))
+			.replaceAll(DoubanParameter.PUBLISHER, extract.publisher)
+			.replaceAll(DoubanParameter.DATE_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(settings.dateFormat) : '')
+			.replaceAll(DoubanParameter.TIME_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(settings.timeFormat) : '')
+			.replaceAll(DoubanParameter.GENRE, this.handleSpecialContent(extract.genre, textMode, settings))
 		;
-		return this.parseText(resultContent, extract, settings);
+		return this.parseText(resultContent, extract, settings, textMode);
+	}
+
+	/**
+	 * 处理特殊字符
+	 * @param text
+	 * @param textMode
+	 */
+	handleSpecialText(text: string, textMode: TemplateTextMode):string {
+		let result =  text;
+		switch (textMode) {
+			case TemplateTextMode.YAML:
+				result = YamlUtil.handleText(text);
+				break;
+		}
+		return result;
+	}
+
+	/**
+	 * 处理内容数组
+	 * @param array
+	 * @param settings
+	 * @param textMode
+	 */
+	handleContentArray(array: any[], settings: DoubanPluginSettings, textMode: TemplateTextMode):string {
+		let result = '';
+		switch (textMode) {
+			case TemplateTextMode.YAML:
+				result = array.map(YamlUtil.handleText).join(', ');
+				break;
+			default:
+				result = array.join(settings.arraySpilt);
+		}
+		return result;
+	}
+
+	/**
+	 * 处理特殊内容
+	 * @param value
+	 * @param textMode
+	 * @param settings
+	 */
+	handleSpecialContent(value: any, textMode:TemplateTextMode = TemplateTextMode.NORMAL, settings: DoubanPluginSettings = null): string {
+		let result = '';
+		if (value instanceof Array) {
+			result = this.handleContentArray(value, settings, textMode);
+		}else if (value instanceof Number) {
+			result = value ? value.toString() : '';
+		}else {
+			result = this.handleSpecialText(value, textMode);
+		}
+		return result;
 	}
 
 	abstract getTemplate(settings:DoubanPluginSettings):string;
 
-    abstract parseText(beforeContent:string, extract: T, settings:DoubanPluginSettings): string;
+    abstract parseText(beforeContent:string, extract: T, settings:DoubanPluginSettings, textMode:TemplateTextMode): string;
 
     abstract support(extract: DoubanSubject): boolean;
     

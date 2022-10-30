@@ -1,8 +1,9 @@
-import { App, Editor, FuzzySuggestModal } from "obsidian";
+import {  Editor, FuzzySuggestModal } from "obsidian";
 
 import  DoubanPlugin  from "main";
 import DoubanSearchResultSubject from "../model/DoubanSearchResultSubject";
 import { log } from "src/utils/Logutil";
+import {i18nHelper} from "../../../lang/helper";
 
 export {DoubanFuzzySuggester}
 
@@ -17,7 +18,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
         super(app);
         this.editor = editor;
         this.plugin = plugin;
-        this.setPlaceholder("Choose an item...");
+        this.setPlaceholder(i18nHelper.getMessage('150101'));
 
     }
 
@@ -28,12 +29,13 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
     }
 
     getItemText(item: DoubanSearchResultSubject): string {
-        let text:string = item.type + "/"  + item.score + "/" + item.title + "/" + item.cast;
+        let text:string = item.type + "/"  + (item.score ? item.score : '-') + "/" + item.title + "/" + item.cast;
         return text;
     }
 
     onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
-        this.plugin.doubanEtractHandler.handle(item, this.editor);
+		this.plugin.showStatus('140204', item.title);
+		this.plugin.doubanExtractHandler.handle(item, this.editor);
     }
 
     public showSearchList(doubanSearchResultExtractList:DoubanSearchResultSubject[]) {

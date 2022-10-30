@@ -9,29 +9,48 @@ import DoubanSubject from "src/douban/data/model/DoubanSubject";
 import Searcher from "src/douban/data/search/Search";
 import { i18nHelper } from './src/lang/helper';
 import { log } from "src/utils/Logutil";
+import {BasicConst} from "./src/constant/Constsant";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSettings;
-	public doubanEtractHandler: DoubanSearchChooseItemHandler;
+	public doubanExtractHandler: DoubanSearchChooseItemHandler;
+	public doubanStatusBar: HTMLElement;
 
 	async putToEditor(editor:Editor, extract:DoubanSubject) {
-		if(!editor || !extract) {
-			log.warn(i18nHelper.getMessage('140101'));
-			return;
-		}
-		let content:string = this.doubanEtractHandler.parseText(extract, this.settings)
-		if(content) {
-			editor.replaceSelection(content);
+		try {
+			if (!editor || !extract) {
+				log.warn(i18nHelper.getMessage('140101'));
+				return;
+			}
+			this.showStatus('140204', extract.title);
+			let content: string = this.doubanExtractHandler.parseText(extract, this.settings)
+			if (content) {
+				editor.replaceSelection(content);
+			}
+			this.showStatus('140205', extract.title);
+		}catch (e) {
+			this.showStatus('140206', e.message);
+		}finally {
+			setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
 		}
 	}
 
 
 	async search(searchTerm:string, editor: Editor) {
-		const resultList = await Searcher.search(searchTerm, this.settings);
-		new DoubanFuzzySuggester(this, editor).showSearchList(resultList);
+		try {
+			this.showStatus('140201', searchTerm);
+			const resultList = await Searcher.search(searchTerm, this.settings);
+			this.showStatus('140202', resultList.length.toString());
+			new DoubanFuzzySuggester(this, editor).showSearchList(resultList);
+		}catch (e) {
+			this.showStatus('140206', e.message);
+		}finally {
+			setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
+		}
 	}
 
 	async getDoubanTextForActiveFile(editor: Editor) {
+		this.doubanStatusBar = this.addStatusBarItem();
 		const activeFile = await this.app.workspace.getActiveFile();
 		if (activeFile) {
 		  const searchTerm = activeFile.basename;
@@ -41,7 +60,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 	  }
   
-	async geDoubanTextForSearchTerm(editor: Editor) {
+	async getDoubanTextForSearchTerm(editor: Editor) {
 	  new DoubanSearchModal(this.app, this, editor).open();
 	}
   
@@ -60,7 +79,7 @@ export default class DoubanPlugin extends Plugin {
 		id: "search-douban-and-input-current-file",
 		name: i18nHelper.getMessage("110002"),
 		editorCallback: (editor: Editor) =>
-		  this.geDoubanTextForSearchTerm(editor),
+		  this.getDoubanTextForSearchTerm(editor),
 	  });
 //TODO will support in future
 	  // this.addCommand({
@@ -75,11 +94,17 @@ export default class DoubanPlugin extends Plugin {
   
 	async loadSettings() {
 	  this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	  this.doubanEtractHandler = new DoubanSearchChooseItemHandler(this.app, this);
+	  this.doubanExtractHandler = new DoubanSearchChooseItemHandler(this.app, this);
 	}
   
 	async saveSettings() {
 	  await this.saveData(this.settings);
+	}
+
+	showStatus(origin:string, message:string) {
+		this.doubanStatusBar.empty();
+		// @ts-ignore
+		this.doubanStatusBar.setText(i18nHelper.getMessage(origin).replace('{0}', message));
 	}
   }
 

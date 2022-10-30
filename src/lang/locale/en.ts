@@ -32,8 +32,9 @@ export default {
 	'120205': `{{url}}, {{desc}}, {{datePublished}}, {{publisher}}`,
     '120206': `{{originalTitle}}, {{subTitle}}, {{author}},`,
     '120207': `{{translator}}, {{isbn}}, {{price}}, {{totalPage}}`,
+	'120208': `{{series}}, {{binding}}, {{menu}}`,
 
-    '120301': `Music Content Template`,
+	'120301': `Music Content Template`,
     '120302': `Set markdown Music template for extract to be inserted.`,
     '120303': `Available Music template variables are :`,
 	'120304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -47,6 +48,7 @@ export default {
 	'120404': `{{id}}, {{title}}, {{type}}, {{image}},`,
 	'120405': `{{url}}, {{desc}}, {{datePublished}}`,
     '120406': `{{author}}, {{authorUrl}}, {{content}}`,
+	'120407': `{{timePublished}}`,
 
 	'121301': `Game Content Template`,
 	'121302': `Set markdown Game template for extract to be inserted.`,
@@ -65,8 +67,8 @@ export default {
     '120508': `format reference`,
     '120601': `Array Spilt String`,
     '120602': `string to join between array type, such as authors, actors. 
-    example: '/'
-    the list of actor's name will be shown as: 'actor1/actor2/actor3'`,
+    example: ','
+    the list of actor's name will be shown as: 'actor1,actor2,actor3'`,
     '120701': `Douban Request Headers`,
     '120801': `This type of import is not supported temporarily, please go to github to submit issues for help`,
     '120901': `Douban`,
@@ -85,5 +87,17 @@ export default {
     '130201': `Obsidian Douban Plugin Error: `,
     '130301': `Obsidian Douban Plugin Warn: `,
 	'140101': `Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`,
+
+	'140201': `[Obsidian Douban]: searching '{0}'...`,
+	'140202': `[Obsidian Douban]: result {0} rows`,
+	'140203': `[Obsidian Douban]: request '{0}'`,
+	'140204': `[Obsidian Douban]: replace '{0}'`,
+	'140205': `[Obsidian Douban]: complete '{0}'`,
+	'140206': `[Obsidian Douban]: occur error '{0}'`,
+
+	'150101': `Choose an item...`,
+
+	//content
+	'200101': `. `,
 
 }
