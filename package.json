@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-douban-plugin",
-	"version": "v1.5.0",
+	"version": "v1.5.1",
 	"description": "This is a plugin for Obsidian (https://obsidian.md) that can import data from Douban (https://www.douban.com/).",
 	"main": "main.js",
 	"scripts": {
