@@ -1,10 +1,6 @@
 # Obsidian Douban Plugin
 
-[![Version][version-shield]][version-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Downloads][downloads-shield]][downloads-url]
-[![Contributors][contributors-shield]][contributors-url]
+[![Version][version-shield]][version-url][![Stargazers][stars-shield]][stars-url][![Issues][issues-shield]][issues-url][![Downloads][downloads-shield]][downloads-url][![Contributors][contributors-shield]][contributors-url]
 
 
 Import Movies, Books, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)
