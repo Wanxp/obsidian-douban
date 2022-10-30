@@ -5,7 +5,7 @@
 		<img src="https://img.shields.io/github/manifest-json/v/Wanxp/obsidian-douban?color=blue">
 	</a>
     <img src="https://img.shields.io/github/release-date/Wanxp/obsidian-douban">
-	<a href="https://github.com/Wanxp/obsidian-douban/blob/main/LICENSE">
+	<a href="https://github.com/Wanxp/obsidian-douban/blob/master/License">
 		<img src="https://img.shields.io/github/license/Wanxp/obsidian-douban">
 	</a>
 	<img src="https://img.shields.io/github/downloads/Wanxp/obsidian-douban/total">
