@@ -21,6 +21,7 @@
 
 Import Movie, Book, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)   
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息
+
 ![background](./doc/background.png)
 
 ---
