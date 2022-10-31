@@ -42,7 +42,7 @@ export default {
 	'120304': `{{id}}, {{title}}, {{type}}, {{image}},`,
 	'120305': `{{url}}, {{desc}}, {{datePublished}}`,
 	'120306': `{{genre}}, {{actor}}, {{medium}}, {{albumType}},`,
-	'120307': `{{barcode}}, {{numberOfRecords}}`,
+	'120307': `{{barcode}}, {{records}}`,
 
 	'120401': `日记文本模板`,
 	'120402': `设置选择日记后导入的文本内容模板,`,

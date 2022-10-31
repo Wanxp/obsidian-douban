@@ -7,7 +7,6 @@ export default class DoubanMovieSubject extends DoubanSubject {
 	author: Person[];
 	actor: Person[];
 	aggregateRating: AggregateRating;
-	genre: string[];
 	originalTitle: string;
 
 }

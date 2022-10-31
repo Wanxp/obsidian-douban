@@ -4,6 +4,6 @@ export default class DoubanMusicSubject extends DoubanSubject {
 	actor: string[];
 	albumType: string;
 	medium: string;
-	numberOfRecords: number;
+	records: number;
 	barcode: string;
 }

@@ -81,7 +81,7 @@ datePublished: {{datePublished}}
 publisher: {{publisher}}
 barcode: {{barcode}}
 url: {{url}}
-numberOfRecords: {{numberOfRecords}}
+records: {{records}}
 tags: Music
 desc: {{desc}}
 ---

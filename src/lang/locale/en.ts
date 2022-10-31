@@ -40,7 +40,7 @@ export default {
 	'120304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
 	'120305': `{{url}}, {{desc}}, {{datePublished}}, {{genre}},`,
 	'120306': `{{actor}}, {{medium}}, {{albumType}},`,
-	'120307': `{{barcode}}, {{numberOfRecords}}`,
+	'120307': `{{barcode}}, {{records}}`,
 
 	'120401': `Article Content Template`,
 	'120402': `Set markdown Article template for extract to be inserted.`,

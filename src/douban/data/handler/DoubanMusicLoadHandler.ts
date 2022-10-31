@@ -21,7 +21,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			.replaceAll("{{barcode}}", extract.barcode ? extract.barcode : "")
 			.replaceAll("{{medium}}", extract.medium ? extract.medium : "")
 			.replaceAll("{{albumType}}", extract.albumType ? extract.albumType : "")
-			.replaceAll("{{numberOfRecords}}", extract.numberOfRecords ? extract.numberOfRecords + "" : "")
+			.replaceAll("{{records}}", extract.records ? extract.records + "" : "")
 			;
 	}
 
@@ -62,7 +62,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",
 			score: Number(score),
-			numberOfRecords: valueMap.has('numberOfRecords') ? Number(valueMap.get('numberOfRecords')) : null,
+			records: valueMap.has('records') ? Number(valueMap.get('records')) : null,
 			id: id ? id[0] : "",
 			type: "Music",
 			title: title,
@@ -88,6 +88,6 @@ const MusicKeyValueMap: Map<string, string> = new Map(
 		['专辑类型:', 'albumType'],
 		['介质:', 'medium'],
 		['出版者:', 'publisher'],
-		['唱片数:', 'numberOfRecords'],
+		['唱片数:', 'records'],
 		['条形码:', 'barcode']]
 );
