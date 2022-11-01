@@ -1,10 +1,11 @@
 import {CheerioAPI} from "cheerio";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/utils/SchemaOrg";
+import StringUtil from "../../../utils/StringUtil";
 
 /**
  * teleplay
@@ -16,7 +17,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.movieTemplate;
+		return StringUtil.defaultIfBlank(settings.movieTemplate, DEFAULT_SETTINGS.movieTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanTeleplaySubject, settings: DoubanPluginSettings): string {

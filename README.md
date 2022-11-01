@@ -31,7 +31,7 @@ If you want some features or have any questions about this plugin, create issues
 - [Development Roadmap](https://github.com/users/Wanxp/projects/1)
 
 ## Support Field/支持的字段
-	(若有字段缺失, 欢迎提issues反馈)
+	(若有缺少想导入的字段, 欢迎提issues反馈)
 
 ---
 | 字段          | 电影                 | 电视剧               | 书籍                 | 音乐               | 日记     | 游戏             | 广播 |

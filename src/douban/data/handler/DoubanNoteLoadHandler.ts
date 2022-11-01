@@ -2,9 +2,10 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanNoteSubject from '../model/DoubanNoteSubject';
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import html2markdown from '@notable/html2markdown';
+import StringUtil from "../../../utils/StringUtil";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
@@ -13,7 +14,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.noteTemplate;
+		return StringUtil.defaultIfBlank(settings.noteTemplate, DEFAULT_SETTINGS.noteTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanNoteSubject, settings: DoubanPluginSettings): string {

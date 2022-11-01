@@ -2,9 +2,10 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject, {DoubanBookParameter} from "../model/DoubanBookSubject";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import {TemplateTextMode} from "../../../constant/Constsant";
+import StringUtil from "../../../utils/StringUtil";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
@@ -13,7 +14,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.bookTemplate;
+		return StringUtil.defaultIfBlank(settings.bookTemplate, DEFAULT_SETTINGS.bookTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanBookSubject, settings: DoubanPluginSettings, textMode: TemplateTextMode): string {

@@ -1,10 +1,11 @@
 import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import SchemaOrg from "src/utils/SchemaOrg";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
+import StringUtil from "../../../utils/StringUtil";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -13,7 +14,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.movieTemplate;
+		return StringUtil.defaultIfBlank(settings.movieTemplate, DEFAULT_SETTINGS.movieTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanMovieSubject, settings: DoubanPluginSettings): string {

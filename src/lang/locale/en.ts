@@ -7,6 +7,9 @@ export default {
 	'110004': `Search`,
 	'110005': `Cancel`,
 	'110006': `sync douban broadcast ot Obsidian`,
+	'110101': 'search douban and create file',
+
+
 
 	//DoubanSettingTab
 	'1201': `Obsidian Douban`,
@@ -24,6 +27,10 @@ export default {
 	'120105': `{{url}}, {{desc}}, {{datePublished}}, {{genre}}, `,
 	'120106': `{{originalTitle}},{{director}}, {{author}},`,
 	'120107': ` {{actor}}`,
+
+	'120130': `Create New File Path`,
+	'120131': `Create New File Name`,
+
 
 	'120201': `Book Content Template`,
 	'120202': `Set markdown Book template for extract to be inserted.`,
@@ -80,6 +87,9 @@ export default {
 	'121206': `Chinese Name`,
 	'121207': `English Name`,
 	'121208': `Chinese And English Name`,
+
+
+
 
 
 	//error

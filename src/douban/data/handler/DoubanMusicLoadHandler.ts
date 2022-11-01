@@ -2,8 +2,9 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanMusicSubject from '../model/DoubanMusicSubject';
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
+import StringUtil from "../../../utils/StringUtil";
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {
 
@@ -12,7 +13,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.musicTemplate;
+		return StringUtil.defaultIfBlank(settings.musicTemplate, DEFAULT_SETTINGS.musicTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanMusicSubject, settings: DoubanPluginSettings): string {

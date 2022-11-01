@@ -16,8 +16,8 @@ export default class YamlUtil {
 
 	public static handleText(text: string) {
 		return YamlUtil.hasSpecialChar(text) ? YamlUtil.handleSpecialChar(text)
-			.replace(/[\n]{1,}/, '。')
-			.replace('。。', '。') : text;
+			.replaceAll('\n', '。')
+			.replaceAll('。。', '。') : text;
 	}
 
 }

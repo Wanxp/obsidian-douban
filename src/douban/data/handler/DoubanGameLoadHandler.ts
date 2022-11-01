@@ -1,9 +1,10 @@
 import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
+import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
+import StringUtil from "../../../utils/StringUtil";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -17,7 +18,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	// }
 
 	getTemplate(settings: DoubanPluginSettings): string {
-		return settings.gameTemplate;
+		return StringUtil.defaultIfBlank(settings.gameTemplate, DEFAULT_SETTINGS.gameTemplate);
 	}
 
 	parseText(beforeContent: string, extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
