@@ -11,7 +11,7 @@ import {TemplateKey} from "../../../constant/Constsant";
  */
 export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<DoubanSubject> {
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.bookTemplate
+		return TemplateKey.bookTemplateFile
 	}
 
 	parseText(beforeContent: string, extract: DoubanSubject, context: HandleContext): string {

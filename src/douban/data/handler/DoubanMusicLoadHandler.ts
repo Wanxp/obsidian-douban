@@ -13,7 +13,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.musicTemplate;
+		return TemplateKey.musicTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {

@@ -14,7 +14,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.gameTemplate;
+		return TemplateKey.gameTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {

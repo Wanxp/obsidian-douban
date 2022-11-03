@@ -14,7 +14,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.bookTemplate;
+		return TemplateKey.bookTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {

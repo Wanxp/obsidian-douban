@@ -12,6 +12,7 @@ import HandleContext from "@App/data/model/HandleContext";
 import HandleResult from "@App/data/model/HandleResult";
 import {DEFAULT_TEMPLATE_CONTENT} from "../../../constant/DefaultTemplateContent";
 import FileHandler from "../../../file/FileHandler";
+import StringUtil from "../../../utils/StringUtil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -205,17 +206,26 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private async getTemplate(context: HandleContext):Promise<string> {
 		const tempKey:TemplateKey =  this.getTemplateKey(context);
+
+		// @ts-ignore
+		const oldTemplate:string = context.settings[tempKey.replace('File', '')]
+		if (oldTemplate && oldTemplate.length > 0) {
+			return oldTemplate;
+		}
 		const templatePath:string = context.settings[tempKey];
-		let firstLinkpathDest:TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 
 		// @ts-ignore
 		const defaultContent = 	 DEFAULT_TEMPLATE_CONTENT[tempKey + 'Content'];
 
+		if (!templatePath || StringUtil.isBlank(templatePath)) {
+			return defaultContent;
+		}
+		let firstLinkpathDest:TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 		if (!firstLinkpathDest) {
 			return defaultContent;
 		}else {
 			// return firstLinkpathDest.
-			 const val = await new FileHandler(this.doubanPlugin.app).getFileContent(firstLinkpathDest.path);
+			 const val = await this.doubanPlugin.fileHandler.getFileContent(firstLinkpathDest.path);
 			 return val?val:defaultContent;
 		}
 	}

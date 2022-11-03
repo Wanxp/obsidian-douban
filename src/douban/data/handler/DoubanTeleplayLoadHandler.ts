@@ -17,7 +17,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.teleplayTemplate
+		return TemplateKey.teleplayTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanTeleplaySubject, context: HandleContext): string {

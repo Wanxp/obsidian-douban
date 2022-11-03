@@ -14,7 +14,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.noteTemplate;
+		return TemplateKey.noteTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {

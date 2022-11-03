@@ -2,6 +2,7 @@ import {i18nHelper} from "../../lang/helper";
 import {CreateTemplateSelectParams} from "@App/setting/model/CreateTemplateSelectParams";
 import { FileSuggest } from "./model/FileSuggest";
 import {SearchComponent, Setting} from "obsidian";
+import { log } from "src/utils/Logutil";
 
 
 export function createFileSelectionSetting({
@@ -10,23 +11,27 @@ export function createFileSelectionSetting({
 	return (setting: Setting) => {
 		// @ts-ignore
 		setting.setName( i18nHelper.getMessage(name));
+
+		const templateDesc = new DocumentFragment();
 		// @ts-ignore
-		setting.setDesc( i18nHelper.getMessage(desc));
+		templateDesc.createDiv().innerHTML = i18nHelper.getMessage(desc) + `<br> <text class="obsidian_douban_settings_desc has_error" >不存在文件夹</> `;
+		setting.setDesc(templateDesc);
 		setting.addSearch(async (search: SearchComponent) => {
 			const [oldValue, defaultVal] = manager.getSetting(key);
 			let v = defaultVal;
 			if (oldValue) {
 				v = oldValue;
 			}
-			new FileSuggest(manager.app, search.inputEl);
+			const fs = new FileSuggest(manager.app, search.inputEl);
 			search.setValue(v);
 			// @ts-ignore
-			search.setPlaceholder(i18nHelper.getMessage());
+			search.setPlaceholder(i18nHelper.getMessage(placeholder));
 				search.onChange(async (value: string) => {
+					log.trace(`hange to : ${value} `)
 					manager.updateSetting(key, value);
-
 				});
 		});
+
 	};
 }
 

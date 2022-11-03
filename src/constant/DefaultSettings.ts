@@ -3,6 +3,9 @@ import {PersonNameMode} from "./Constsant";
 import {doubanHeaders} from "./Douban";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
+	//以后会被移除
+	bookTemplate: "", gameTemplate: "", movieTemplate: "", musicTemplate: "", noteTemplate: "", teleplayTemplate: "",
+
 	movieTemplateFile: ``,
 	bookTemplateFile: ``,
 	musicTemplateFile: ``,

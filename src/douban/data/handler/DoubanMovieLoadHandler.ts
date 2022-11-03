@@ -15,7 +15,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.movieTemplate;
+		return TemplateKey.movieTemplateFile;
 	}
 
 	parseText(beforeContent: string, extract: DoubanMovieSubject, context: HandleContext): string {
