@@ -17,12 +17,39 @@ export enum TemplateTextMode {
 }
 
 /**
+ * 搜索结果处理模式
+ */
+export enum SearchHandleMode {
+	/**
+	 * 为了替换当前文档
+	 */
+	FOR_REPLACE,
+	/**
+	 * 为了创建文档
+	 */
+	FOR_CREATE,
+}
+
+/**
  * 名称模式
  */
 export enum PersonNameMode {
 	CH_NAME = "CH",
 	EN_NAME = "EN",
 	CH_EN_NAME = "CH_EN",
+}
+
+/**
+ * 模板的key
+ *
+ */
+export enum TemplateKey {
+	movieTemplateFile= 'movieTemplateFile',
+	bookTemplateFile = 'bookTemplateFile',
+	musicTemplateFile = 'musicTemplateFile',
+	noteTemplateFile = 'noteTemplateFile',
+	gameTemplateFile = 'gameTemplateFile',
+	teleplayTemplateFile = 'teleplayTemplateFile',
 }
 
 /**

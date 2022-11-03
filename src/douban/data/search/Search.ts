@@ -1,4 +1,3 @@
-import {DoubanPluginSettings} from 'src/douban/Douban';
 
 import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
 import SearchParserHandler from './SearchParser';
@@ -6,9 +5,10 @@ import {log} from 'src/utils/Logutil';
 import {request, RequestUrlParam} from "obsidian";
 import {i18nHelper} from "../../../lang/helper";
 import {load} from 'cheerio';
+import {DoubanPluginSetting} from "@App/setting/model/DoubanPluginSetting";
 
 export default class Searcher {
-	static search(searchItem: string, doubanSettings: DoubanPluginSettings): Promise<DoubanSearchResultSubject[]> {
+	static search(searchItem: string, doubanSettings: DoubanPluginSetting): Promise<DoubanSearchResultSubject[]> {
 		let requestUrlParam: RequestUrlParam = {
 			url: doubanSettings.searchUrl + searchItem,
 			method: "GET",

@@ -1,10 +1,11 @@
 import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
 import StringUtil from "../../../utils/StringUtil";
+import HandleContext from "@App/data/model/HandleContext";
+import {TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -12,16 +13,12 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	// parse(extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
-	// 	extract.title = this.handleI18nName(extract.title, settings);
-	// 	return super.parse(extract, settings);
-	// }
-
-	getTemplate(settings: DoubanPluginSettings): string {
-		return StringUtil.defaultIfBlank(settings.gameTemplate, DEFAULT_SETTINGS.gameTemplate);
+	getTemplateKey(context: HandleContext): TemplateKey {
+		return TemplateKey.gameTemplate;
 	}
 
-	parseText(beforeContent: string, extract: DoubanGameSubject, settings: DoubanPluginSettings): string {
+	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {
+		const {settings} = context;
 		return beforeContent
 			.replaceAll("{{platform}}", extract.platform ? extract.platform.join(settings.arraySpilt) : "")
 			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.join(settings.arraySpilt) : "")

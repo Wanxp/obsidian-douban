@@ -2,10 +2,10 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject, {DoubanBookParameter} from "../model/DoubanBookSubject";
 import DoubanPlugin from "main";
-import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
-import {TemplateTextMode} from "../../../constant/Constsant";
+import {TemplateKey, TemplateTextMode} from "../../../constant/Constsant";
 import StringUtil from "../../../utils/StringUtil";
+import HandleContext from "@App/data/model/HandleContext";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
@@ -13,16 +13,16 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	getTemplate(settings: DoubanPluginSettings): string {
-		return StringUtil.defaultIfBlank(settings.bookTemplate, DEFAULT_SETTINGS.bookTemplate);
+	getTemplateKey(context: HandleContext): TemplateKey {
+		return TemplateKey.bookTemplate;
 	}
 
-	parseText(beforeContent: string, extract: DoubanBookSubject, settings: DoubanPluginSettings, textMode: TemplateTextMode): string {
+	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {
 		return beforeContent
 			.replaceAll(DoubanBookParameter.author,
 				super.handleSpecialContent(
-					extract.author.map(this.handleSpecialAuthorName), textMode, settings))
-			.replaceAll(DoubanBookParameter.translator, super.handleSpecialContent(extract.translator, textMode, settings))
+					extract.author.map(this.handleSpecialAuthorName), textMode, context))
+			.replaceAll(DoubanBookParameter.translator, super.handleSpecialContent(extract.translator, textMode, context))
 			.replaceAll(DoubanBookParameter.isbn, extract.isbn)
 			.replaceAll(DoubanBookParameter.originalTitle, super.handleSpecialContent(extract.originalTitle, textMode))
 			.replaceAll(DoubanBookParameter.subTitle, super.handleSpecialContent(extract.subTitle, textMode))

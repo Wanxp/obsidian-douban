@@ -27,4 +27,6 @@ export const DoubanParameter = {
 	DATE_PUBLISHED: '{{datePublished}}',
 	TIME_PUBLISHED: '{{timePublished}}',
 	GENRE: '{{genre}}',
+	CURRENT_DATE: '{{currentDate}}',
+	CURRENT_TIME: '{{currentTime}}',
 }

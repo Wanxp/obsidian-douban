@@ -2,9 +2,9 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanMusicSubject from '../model/DoubanMusicSubject';
 import DoubanPlugin from "main";
-import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
-import StringUtil from "../../../utils/StringUtil";
+import HandleContext from "@App/data/model/HandleContext";
+import {TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {
 
@@ -12,11 +12,12 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		super(doubanPlugin);
 	}
 
-	getTemplate(settings: DoubanPluginSettings): string {
-		return StringUtil.defaultIfBlank(settings.musicTemplate, DEFAULT_SETTINGS.musicTemplate);
+	getTemplateKey(context: HandleContext): TemplateKey {
+		return TemplateKey.musicTemplate;
 	}
 
-	parseText(beforeContent: string, extract: DoubanMusicSubject, settings: DoubanPluginSettings): string {
+	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {
+		const {settings} = context;
 		return beforeContent
 			.replaceAll("{{actor}}", extract.actor ? extract.actor.join(settings.arraySpilt) : "")
 			.replaceAll("{{barcode}}", extract.barcode ? extract.barcode : "")
@@ -43,7 +44,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 
 		publish.map((index, info) => {
 			let key = html(info).text().trim();
-			let value = ''
+			let value = '';
 			if (key.indexOf('表演者') >= 0) {
 				// value = html(info.next.next).text().trim();
 				let vas: string[] = key.split("\n                                    \n                                    ");

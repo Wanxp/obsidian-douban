@@ -2,10 +2,10 @@ import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanNoteSubject from '../model/DoubanNoteSubject';
 import DoubanPlugin from "main";
-import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from '../model/DoubanSubject';
 import html2markdown from '@notable/html2markdown';
-import StringUtil from "../../../utils/StringUtil";
+import HandleContext from "@App/data/model/HandleContext";
+import {TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
@@ -13,11 +13,11 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	getTemplate(settings: DoubanPluginSettings): string {
-		return StringUtil.defaultIfBlank(settings.noteTemplate, DEFAULT_SETTINGS.noteTemplate);
+	getTemplateKey(context: HandleContext): TemplateKey {
+		return TemplateKey.noteTemplate;
 	}
 
-	parseText(beforeContent: string, extract: DoubanNoteSubject, settings: DoubanPluginSettings): string {
+	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {
 		return beforeContent
 			.replaceAll("{{authorUrl}}", extract.authorUrl ? extract.authorUrl : "")
 			.replaceAll("{{content}}", extract.content ? extract.content : "")

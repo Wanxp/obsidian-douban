@@ -32,7 +32,7 @@ export default {
 	'120131': `Create New File Name`,
 
 
-	'120201': `Book Content Template`,
+	'120201': `Book Template File`,
 	'120202': `Set markdown Book template for extract to be inserted.`,
 	'120203': `Available Book template variables are :`,
 	'120204': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -41,7 +41,7 @@ export default {
 	'120207': `{{translator}}, {{isbn}}, {{price}}, {{totalPage}}`,
 	'120208': `{{series}}, {{binding}}, {{menu}}`,
 
-	'120301': `Music Content Template`,
+	'120301': `Music Template File`,
 	'120302': `Set markdown Music template for extract to be inserted.`,
 	'120303': `Available Music template variables are :`,
 	'120304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -49,7 +49,7 @@ export default {
 	'120306': `{{actor}}, {{medium}}, {{albumType}},`,
 	'120307': `{{barcode}}, {{records}}`,
 
-	'120401': `Article Content Template`,
+	'120401': `Article Template File`,
 	'120402': `Set markdown Article template for extract to be inserted.`,
 	'120403': `Available Article template variables are :`,
 	'120404': `{{id}}, {{title}}, {{type}}, {{image}},`,
@@ -57,7 +57,7 @@ export default {
 	'120406': `{{author}}, {{authorUrl}}, {{content}}`,
 	'120407': `{{timePublished}}`,
 
-	'121301': `Game Content Template`,
+	'121301': `Game Template File`,
 	'121302': `Set markdown Game template for extract to be inserted.`,
 	'121303': `Available Game template variables are :`,
 	'121304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -88,8 +88,20 @@ export default {
 	'121207': `English Name`,
 	'121208': `Chinese And English Name`,
 
+	'121401': `Status Bar`,
+	'121402': `Display status bar when import data ?`,
+
+	'121501': `Note folder`,
+	'121502': `Nodes created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. `,
+	'121503': `Default Folder`,
 
 
+	'121601': `Note Name`,
+	'121602': `Nodes created from Obsidian-Douban will use this fileName(also support filePath), If blank, they will be created by default name. `,
+
+	'121701': `Input And Search Template`,
+	'121702': `Movie created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. `,
+	'121703': `Default`,
 
 
 	//error
@@ -109,5 +121,9 @@ export default {
 
 	//content
 	'200101': `. `,
+
+	'210101': `Default`,
+	'210201': `Search...`
+
 
 }

@@ -1,4 +1,4 @@
-import {App, Editor} from "obsidian";
+import {App} from "obsidian";
 
 import DoubanBookLoadHandler from "./DoubanBookLoadHandler";
 import DoubanMovieLoadHandler from "./DoubanMovieLoadHandler";
@@ -6,11 +6,12 @@ import DoubanMusicLoadHandler from "./DoubanMusicLoadHandler";
 import DoubanNoteLoadHandler from "./DoubanNoteLoadHandler";
 import DoubanOtherLoadHandler from "./DoubanOtherLoadHandler";
 import DoubanPlugin from "main";
-import {DoubanPluginSettings} from "src/douban/Douban";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
 import {DoubanTeleplayLoadHandler} from "./DoubanTeleplayLoadHandler";
 import DoubanGameLoadHandler from "./DoubanGameLoadHandler";
+import HandleContext from "@App/data/model/HandleContext";
+import HandleResult from "@App/data/model/HandleResult";
 
 export class DoubanSearchChooseItemHandler {
 
@@ -33,34 +34,32 @@ export class DoubanSearchChooseItemHandler {
 			this._doubanSubjectHandlerDefault];
 	}
 
-	public handle(searchExtract: DoubanSubject, editor: Editor): void {
+	public handle(searchExtract: DoubanSubject, context: HandleContext): void {
 		if (!searchExtract) {
 			return;
 		}
 		let doubanSubjectHandlers: DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
 			.filter(h => h.support(searchExtract));
 		if (doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-			doubanSubjectHandlers[0].handle(searchExtract.url, editor);
+			doubanSubjectHandlers[0].handle(searchExtract.url, context);
 		} else {
-			this._doubanSubjectHandlerDefault.handle(searchExtract.url, editor);
+			this._doubanSubjectHandlerDefault.handle(searchExtract.url, context);
 		}
 	}
 
-	public parseText(extract: DoubanSubject, settings: DoubanPluginSettings): string {
-		if (!settings) {
-			return "";
-		}
+	public async parseText(extract: DoubanSubject, context: HandleContext): Promise<HandleResult> {
 		let doubanSubjectHandlers: DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
 			.filter(h => h.support(extract));
+		let result:string='';
 		if (doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-			let result = doubanSubjectHandlers.map(h => h.parse(extract, settings));
+			let result = await doubanSubjectHandlers.map(h => h.parse(extract, context));
 			if (result && result.length > 0) {
 				return result[0];
 			} else {
-				return "";
+				return {content: ''};
 			}
 		} else {
-			return this._doubanSubjectHandlerDefault.parse(extract, settings);
+			return this._doubanSubjectHandlerDefault.parse(extract, context);
 		}
 
 	}

@@ -1,11 +1,12 @@
 import {CheerioAPI} from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "main";
-import {DEFAULT_SETTINGS, DoubanPluginSettings} from "src/douban/Douban";
 import SchemaOrg from "src/utils/SchemaOrg";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
+import HandleContext from "@App/data/model/HandleContext";
+import {TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -13,16 +14,17 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		super(doubanPlugin);
 	}
 
-	getTemplate(settings: DoubanPluginSettings): string {
-		return StringUtil.defaultIfBlank(settings.movieTemplate, DEFAULT_SETTINGS.movieTemplate);
+	getTemplateKey(context: HandleContext): TemplateKey {
+		return TemplateKey.movieTemplate;
 	}
 
-	parseText(beforeContent: string, extract: DoubanMovieSubject, settings: DoubanPluginSettings): string {
+	parseText(beforeContent: string, extract: DoubanMovieSubject, context: HandleContext): string {
+		const {settings} = context;
 		return beforeContent
 			.replaceAll("{{originalTitle}}", extract.originalTitle ? extract.originalTitle : "")
-			.replaceAll("{{director}}", extract.director ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{actor}}", extract.actor ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{author}}", extract.author ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, settings)).filter(c => c).join(settings.arraySpilt) : "")
+			.replaceAll("{{director}}", extract.director ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
+			.replaceAll("{{actor}}", extract.actor ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
+			.replaceAll("{{author}}", extract.author ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
 			;
 	}
 

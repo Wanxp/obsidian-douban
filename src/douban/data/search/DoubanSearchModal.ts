@@ -1,17 +1,18 @@
-import {App, Editor, Modal, TextComponent} from "obsidian";
+import {App, Modal, TextComponent} from "obsidian";
 
 import DoubanPlugin from "main";
 import {i18nHelper} from "src/lang/helper";
+import HandleContext from "@App/data/model/HandleContext";
 
 export class DoubanSearchModal extends Modal {
 	searchTerm: string;
 	plugin: DoubanPlugin;
-	editor: Editor;
+	context: HandleContext
 
-	constructor(app: App, plugin: DoubanPlugin, editor: Editor) {
+	constructor(app: App, plugin: DoubanPlugin, context: HandleContext) {
 		super(app);
 		this.plugin = plugin;
-		this.editor = editor;
+		this.context = context;
 	}
 
 	onOpen() {
@@ -55,7 +56,7 @@ export class DoubanSearchModal extends Modal {
 		let {contentEl} = this;
 		contentEl.empty();
 		if (this.searchTerm) {
-			await this.plugin.search(this.searchTerm, this.editor);
+			await this.plugin.search(this.searchTerm, this.context);
 		}
 	}
 
