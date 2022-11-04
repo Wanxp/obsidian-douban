@@ -38,7 +38,8 @@ export const FileUtil = {
 		const regex = /(?<dir>([^/\\]+[/\\])*)(?<name>[^/\\]*$)/;
 		const match = String(pathString).match(regex);
 		const { dir, name } = match && match.groups;
-		return { dir, name: name || 'Untitled', extension: 'md'};
+		const nameWithoutSpChar = this.replaceSpecialCharactersForFileName(name);
+		return { dir, name: nameWithoutSpChar || 'Untitled_' + new Date().getTime(), extension: 'md'};
 	},
 
 	/**
@@ -52,4 +53,12 @@ export const FileUtil = {
 		const parts = strings.map((s) => String(s).trim()).filter((s) => s != null);
 		return normalizePath(parts.join('/'));
 	},
+
+
+	/**
+	 * replace special characters for filename
+	 */
+	replaceSpecialCharactersForFileName(fileName: string): string {
+		return fileName.replaceAll(/[\\/:*?"<>|]/g, '_');
+	}
 };

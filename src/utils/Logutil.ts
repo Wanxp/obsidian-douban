@@ -4,12 +4,12 @@ import {i18nHelper} from "src/lang/helper";
 class Logger {
 
 	public error(e: any): any {
-		new Notice(i18nHelper.getMessage('130201') + e);
+		new Notice(e);
 		return e;
 	}
 
 	public warn(e: any): any {
-		new Notice(i18nHelper.getMessage('130301') + e);
+		new Notice(e);
 		return e;
 	}
 

@@ -4,8 +4,6 @@ import {doubanHeaders} from "./Douban";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	//以后会被移除
-	bookTemplate: "", gameTemplate: "", movieTemplate: "", musicTemplate: "", noteTemplate: "", teleplayTemplate: "",
-
 	movieTemplateFile: ``,
 	bookTemplateFile: ``,
 	musicTemplateFile: ``,
@@ -19,5 +17,6 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	arraySpilt: ", ",
 	personNameMode: PersonNameMode.CH_NAME,
 	dataFilePath: "",
-	dataFileNamePath: "/{{type}}/{{title}}"
+	dataFileNamePath: "/{{type}}/{{title}}",
+	statusBar: true,
 }

@@ -25,31 +25,32 @@ export default class DoubanPlugin extends Plugin {
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
 		try {
+
 			if (!extract) {
 				log.warn(i18nHelper.getMessage('140101'));
 				return;
 			}
 			this.showStatus('140204', extract.title);
-			const content  = await this.doubanExtractHandler.parseText(extract, context)
-			if (content) {
-				this.putContentToObsidian(context, content);
+			const result  = await this.doubanExtractHandler.parseText(extract, context)
+			if (result) {
+				this.putContentToObsidian(context, result);
 			}
 			this.showStatus('140205', extract.title);
 		} catch (e) {
 			this.showStatus('140206', e.message);
 		} finally {
-			setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
+			this.clearStatusBarDelay();
 		}
 	}
 
-	async putContentToObsidian(context: HandleContext, content: HandleResult) {
+	async putContentToObsidian(context: HandleContext, result: HandleResult) {
 		const {mode} = context;
 		switch (mode) {
 			case SearchHandleMode.FOR_CREATE:
-				this.createFile(context, content);
+				this.createFile(context, result);
 				break;
 			case SearchHandleMode.FOR_REPLACE:
-				this.putToEditor(context.editor, content.content);
+				this.putToEditor(context.editor, result.content);
 				break;
 		}
 	}
@@ -58,8 +59,11 @@ export default class DoubanPlugin extends Plugin {
 		editor.replaceSelection(content);
 	}
 
-	async createFile(context: HandleContext, content: HandleResult) {
-		this.fileHandler.createNewNoteWithData(content.fileName,content.content);
+	async createFile(context: HandleContext, result: HandleResult) {
+		let filePath = this.settings.dataFilePath;
+		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
+		filePath = FileUtil.join(filePath, result.fileName);
+		this.fileHandler.createNewNoteWithData(filePath, result.content);
 	}
 
 	async search(searchTerm: string, context: HandleContext) {
@@ -71,7 +75,7 @@ export default class DoubanPlugin extends Plugin {
 		} catch (e) {
 			this.showStatus('140206', e.message);
 		} finally {
-			setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
+			this.clearStatusBarDelay();
 		}
 	}
 
@@ -95,8 +99,9 @@ export default class DoubanPlugin extends Plugin {
 
 	async onload() {
 		await this.loadSettings();
-
-		this.doubanStatusBar = this.addStatusBarItem();
+		if (this.settings.statusBar) {
+			this.doubanStatusBar = this.addStatusBarItem();
+		}
 
 		this.addCommand({
 			id: "search-douban-import-and-create-file",
@@ -138,10 +143,19 @@ export default class DoubanPlugin extends Plugin {
 
 
 	showStatus(origin: string, message: string) {
-
+		if (!this.settings.statusBar || !this.doubanStatusBar) {
+			return;
+		}
 		this.doubanStatusBar.empty();
 		// @ts-ignore
 		this.doubanStatusBar.setText(i18nHelper.getMessage(origin).replace('{0}', message));
+	}
+
+	clearStatusBarDelay() {
+		if (!this.settings.statusBar || !this.doubanStatusBar) {
+			return;
+		}
+		setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
 	}
 }
 

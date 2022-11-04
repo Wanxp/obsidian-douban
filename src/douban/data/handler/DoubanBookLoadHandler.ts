@@ -6,6 +6,7 @@ import DoubanSubject from "../model/DoubanSubject";
 import {TemplateKey, TemplateTextMode} from "../../../constant/Constsant";
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "@App/data/model/HandleContext";
+import {i18nHelper} from "../../../lang/helper";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 

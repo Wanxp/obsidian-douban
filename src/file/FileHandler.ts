@@ -3,6 +3,7 @@ import {App, normalizePath, Platform} from "obsidian";
 import { log } from "src/utils/Logutil";
 import DoubanPlugin from "../../main";
 import {FileUtil} from "../utils/FileUtil";
+import {i18nHelper} from "../lang/helper";
 
 /**
  * 文件处理
@@ -92,7 +93,7 @@ export default class FileHandler {
 			const fileExists = await adapter.exists(filePath);
 			if (fileExists) {
 				// If the file already exists, respond with error
-				throw new Error(`${filePath} already exists`);
+				throw new Error(i18nHelper.getMessage('110201').replace('{0}', filePath??''));
 			}
 			if (dir !== '') {
 				// If `input` includes a directory part, create it
@@ -123,7 +124,7 @@ export default class FileHandler {
 				err
 			);
 			//TODO i18n
-			log.error('Failed to read the template')
+			log.error(i18nHelper.getMessage('110202').replace('{0}', normalizedTemplatePath ?? ''));
 			return "";
 		}
 	}

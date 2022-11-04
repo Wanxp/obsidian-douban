@@ -10,9 +10,10 @@ import YamlUtil from "../../../utils/YamlUtil";
 import {BasicConst, PersonNameMode, SearchHandleMode, TemplateKey, TemplateTextMode} from "../../../constant/Constsant";
 import HandleContext from "@App/data/model/HandleContext";
 import HandleResult from "@App/data/model/HandleResult";
-import {DEFAULT_TEMPLATE_CONTENT} from "../../../constant/DefaultTemplateContent";
+import {DEFAULT_TEMPLATE_CONTENT, getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
 import FileHandler from "../../../file/FileHandler";
 import StringUtil from "../../../utils/StringUtil";
+import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -50,10 +51,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		let fileName:string = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
-			fileName = this.parsePartText(template, extract, context);
+			fileName = this.parsePartText(this.getFileName(context), extract, context);
 		}
 
 		return {content: result, fileName: fileName};
+	}
+
+	private getFileName(context:HandleContext): string {
+		const {dataFileNamePath} = context.settings;
+		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
 
 	/**
@@ -97,10 +103,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 */
 	handleSpecialContent(value: any, textMode: TemplateTextMode = TemplateTextMode.NORMAL, context: HandleContext = null): string {
 		let result;
+		if (!value) {
+			return i18nHelper.getMessage('410101');
+		}
 		if (value instanceof Array) {
 			result = this.handleContentArray(value, context, textMode);
 		} else if (value instanceof Number) {
-			result = value ? value.toString() : '';
+			result = value.toString();
 		} else {
 			result = this.handleSpecialText(value, textMode);
 		}
@@ -146,11 +155,11 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		let regValue: RegExpExecArray;
 		switch (settings.personNameMode) {
 			case PersonNameMode.CH_NAME:
-				regValue = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
+				regValue = /[\u4e00-\u9fa50-9.]{2,20}/g.exec(name);
 				resultName = regValue ? regValue[0] : name;
 				break;
 			case PersonNameMode.EN_NAME:
-				regValue = /[a-zA-Z.\s-]{2,50}/g.exec(name);
+				regValue = /[0-9a-zA-Z.\s-]{2,50}/g.exec(name);
 				resultName = regValue ? regValue[0] : name;
 				break;
 			default:
@@ -188,7 +197,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
 		const resultContent = template
 			.replaceAll(DoubanParameter.ID, extract.id)
-			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(extract.title, textMode))
+			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(this.getPersonName(extract.title, context), textMode))
 			.replaceAll(DoubanParameter.TYPE, extract.type)
 			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
 			.replaceAll(DoubanParameter.IMAGE, extract.image)
@@ -206,25 +215,17 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private async getTemplate(context: HandleContext):Promise<string> {
 		const tempKey:TemplateKey =  this.getTemplateKey(context);
-
-		// @ts-ignore
-		const oldTemplate:string = context.settings[tempKey.replace('File', '')]
-		if (oldTemplate && oldTemplate.length > 0) {
-			return oldTemplate;
-		}
 		const templatePath:string = context.settings[tempKey];
 
 		// @ts-ignore
-		const defaultContent = 	 DEFAULT_TEMPLATE_CONTENT[tempKey + 'Content'];
-
 		if (!templatePath || StringUtil.isBlank(templatePath)) {
-			return defaultContent;
+			return getDefaultTemplateContent(tempKey);
 		}
+		const defaultContent =  getDefaultTemplateContent(tempKey);
 		let firstLinkpathDest:TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 		if (!firstLinkpathDest) {
 			return defaultContent;
 		}else {
-			// return firstLinkpathDest.
 			 const val = await this.doubanPlugin.fileHandler.getFileContent(firstLinkpathDest.path);
 			 return val?val:defaultContent;
 		}

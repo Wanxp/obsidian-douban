@@ -1,3 +1,5 @@
+import {TemplateKey} from "./Constsant";
+
 export const DEFAULT_TEMPLATE_CONTENT = {
 	movieTemplateFileContent: `---
 doubanId: {{id}}
@@ -117,4 +119,13 @@ desc: {{desc}}
 
 ![image]({{image}})
 `,
+}
+
+/**
+ * 获取默认的文档内容
+ * @param key
+ */
+export function getDefaultTemplateContent(key: TemplateKey): string {
+	// @ts-ignore
+	return DEFAULT_TEMPLATE_CONTENT[key + "Content"];
 }

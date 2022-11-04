@@ -3,32 +3,39 @@ import {CreateTemplateSelectParams} from "@App/setting/model/CreateTemplateSelec
 import { FileSuggest } from "./model/FileSuggest";
 import {SearchComponent, Setting} from "obsidian";
 import { log } from "src/utils/Logutil";
+import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
+import {FolderSuggest} from "@App/setting/model/FolderSuggest";
 
 
-export function createFileSelectionSetting({
-											  name, desc, placeholder, key, manager,
+export function createFileSelectionSetting({name, desc, placeholder, key, manager
 										  }: CreateTemplateSelectParams) {
 	return (setting: Setting) => {
 		// @ts-ignore
-		setting.setName( i18nHelper.getMessage(name));
-
-		const templateDesc = new DocumentFragment();
+		setting.setName(i18nHelper.getMessage(name));
 		// @ts-ignore
-		templateDesc.createDiv().innerHTML = i18nHelper.getMessage(desc) + `<br> <text class="obsidian_douban_settings_desc has_error" >不存在文件夹</> `;
-		setting.setDesc(templateDesc);
+		setting.setDesc(i18nHelper.getMessage(desc));
 		setting.addSearch(async (search: SearchComponent) => {
 			const [oldValue, defaultVal] = manager.getSetting(key);
 			let v = defaultVal;
 			if (oldValue) {
 				v = oldValue;
 			}
-			const fs = new FileSuggest(manager.app, search.inputEl);
+			new FileSuggest(manager.app, search.inputEl);
+			// @ts-ignore
 			search.setValue(v);
 			// @ts-ignore
 			search.setPlaceholder(i18nHelper.getMessage(placeholder));
 				search.onChange(async (value: string) => {
-					log.trace(`hange to : ${value} `)
 					manager.updateSetting(key, value);
+				});
+		});
+		setting.addExtraButton((button) => {
+			button
+				.setIcon('copy')
+				.setTooltip(i18nHelper.getMessage('121901'))
+				.onClick(async () => {
+					// @ts-ignore
+					navigator.clipboard.writeText(getDefaultTemplateContent(key))
 				});
 		});
 
@@ -49,9 +56,9 @@ export function createFolderSelectionSetting({
 			if (oldValue) {
 				v = oldValue;
 			}
-			new FileSuggest(manager.app, search.inputEl);
-			search
-				.setValue(v)
+			new FolderSuggest(manager.app, search.inputEl);
+			// @ts-ignore
+			search.setValue(v)
 				// @ts-ignore
 				.setPlaceholder(i18nHelper.getMessage(placeholder))
 				.onChange(async (value: string) => {
