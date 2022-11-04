@@ -61,6 +61,9 @@ If you want some features or have any questions about this plugin, create issues
 
 ## How to use
 ### Search
+- Search Data And Create Note
+  搜索数据并创建笔记
+  ![search_and_create](./doc/search_and_create_note.gif) 
 - Search Data By File Name  
   通过当前文件名搜索  
   ![Search Movie By File Name](./doc/search_by_file_name.gif)

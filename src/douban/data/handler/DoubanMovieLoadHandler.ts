@@ -6,7 +6,7 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {PersonNameMode, TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -43,11 +43,8 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				let idPattern = /(\d){5,10}/g;
 				let id = idPattern.exec(obj.url);
 				let name = obj.name;
-				let titleExec = /[\u4e00-\u9fa5]{2,20}/g.exec(name);
-				let title = titleExec ? titleExec[0] : name;
-
-				let originalTitleExec = /[a-zA-Z.\s\-]{2,50}/g.exec(name);
-				let originalTitle = originalTitleExec ? originalTitleExec[0] : name;
+				let title = super.getPersonNameByMode(name, PersonNameMode.CH_NAME)??name;
+				let originalTitle =  super.getPersonNameByMode(name, PersonNameMode.EN_NAME) ?? name;
 
 				const result: DoubanMovieSubject = {
 					id: id ? id[0] : '',
