@@ -336,6 +336,26 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310610')}</td>
 		<td>${i18nHelper.getMessage('310710')}</td>
 	</tr>
+	<tr>
+		<td>currentDate</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+		<td>${i18nHelper.getMessage('330101')}</td>
+	</tr>
+	<tr>
+		<td>currentTime</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+		<td>${i18nHelper.getMessage('330102')}</td>
+	</tr>
 </table>`;
 
 		new Setting(containerEl)

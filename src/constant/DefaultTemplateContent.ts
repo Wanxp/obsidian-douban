@@ -14,7 +14,7 @@ actor: {{actor}}
 author: {{author}}
 tags: {{type}}
 url: {{url}}
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
@@ -38,7 +38,7 @@ totalPage: {{totalPage}}
 price: {{price}}
 tags: Book
 binding: {{binding}}
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
@@ -61,7 +61,7 @@ barcode: {{barcode}}
 url: {{url}}
 records: {{records}}
 tags: Music
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
@@ -76,7 +76,7 @@ authorUrl: {{authorUrl}}
 dateTimePublished: {{datePublished}} {{timePublished}}
 url: {{url}}
 tags: Article
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
@@ -95,7 +95,7 @@ developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
 tags: Game
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
@@ -113,7 +113,7 @@ actor: {{actor}}
 author: {{author}}
 tags: {{type}}
 url: {{url}}
-dataTime: {{currentDate}} {{currentTime}}
+createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
