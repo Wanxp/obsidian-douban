@@ -4,7 +4,7 @@ import DoubanMusicSubject from '../model/DoubanMusicSubject';
 import DoubanPlugin from "main";
 import DoubanSubject from '../model/DoubanSubject';
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {
 
@@ -12,8 +12,8 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.musicTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.MUSIC;
 	}
 
 	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {

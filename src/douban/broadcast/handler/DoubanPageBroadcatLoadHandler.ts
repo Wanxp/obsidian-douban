@@ -5,7 +5,7 @@ import DoubanPageBroadcastSubject from '../model/DoubanPageBroadcastSubject';
 import DoubanPlugin from "main";
 import DoubanSubject from 'src/douban/data/model/DoubanSubject';
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 //TODO will support in future version
 class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
@@ -14,7 +14,7 @@ class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPage
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
+	getSupportType(): SupportType {
 		return null;
 	}
 

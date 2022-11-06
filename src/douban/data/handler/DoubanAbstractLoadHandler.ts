@@ -1,4 +1,3 @@
-
 import DoubanPlugin from "main";
 import DoubanSubject, {DoubanParameter} from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
@@ -7,11 +6,17 @@ import {i18nHelper} from 'src/lang/helper';
 import {log} from "src/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
 import YamlUtil from "../../../utils/YamlUtil";
-import {BasicConst, PersonNameMode, SearchHandleMode, TemplateKey, TemplateTextMode} from "../../../constant/Constsant";
+import {
+	BasicConst,
+	PersonNameMode,
+	SearchHandleMode,
+	SupportType,
+	TemplateKey,
+	TemplateTextMode
+} from "../../../constant/Constsant";
 import HandleContext from "@App/data/model/HandleContext";
 import HandleResult from "@App/data/model/HandleResult";
-import {DEFAULT_TEMPLATE_CONTENT, getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
-import FileHandler from "../../../file/FileHandler";
+import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
 import StringUtil from "../../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
 
@@ -25,13 +30,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
-		let template: string =  await this.getTemplate(context);
+		let template: string = await this.getTemplate(context);
 		let frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
 		let frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
 		let frontMatter: string = '';
 		let frontMatterBefore: string = '';
 		let frontMatterAfter: string = '';
-		let result:string = '';
+		let result: string = '';
 		if (frontMatterStart > -1 && frontMatterEnd > -1) {
 			frontMatterBefore = template.substring(0, frontMatterStart);
 			frontMatter = template.substring(frontMatterStart, frontMatterEnd + 3);
@@ -49,7 +54,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		} else {
 			result = this.parsePartText(template, extract, context);
 		}
-		let fileName:string = '';
+		let fileName: string = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
 			fileName = this.parsePartText(this.getFileName(context), extract, context);
 		}
@@ -57,7 +62,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return {content: result, fileName: fileName};
 	}
 
-	private getFileName(context:HandleContext): string {
+	private getFileName(context: HandleContext): string {
 		const {dataFileNamePath} = context.settings;
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
@@ -116,7 +121,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return result;
 	}
 
-	abstract getTemplateKey(context: HandleContext): TemplateKey;
+	abstract getSupportType(): SupportType;
 
 	abstract parseText(beforeContent: string, extract: T, context: HandleContext, textMode: TemplateTextMode): string;
 
@@ -198,8 +203,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
-		const resultContent = template
-			.replaceAll(DoubanParameter.ID, extract.id)
+		let resultContent = this.handleCustomVariable(template, context);
+		resultContent = resultContent.replaceAll(DoubanParameter.ID, extract.id)
 			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(this.getPersonName(extract.title, context), textMode))
 			.replaceAll(DoubanParameter.TYPE, extract.type)
 			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
@@ -216,21 +221,70 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return this.parseText(resultContent, extract, context, textMode);
 	}
 
-	private async getTemplate(context: HandleContext):Promise<string> {
-		const tempKey:TemplateKey =  this.getTemplateKey(context);
-		const templatePath:string = context.settings[tempKey];
+	/**
+	 * 处理自定义参数
+	 * @param template
+	 * @param context
+	 * @private
+	 */
+	private handleCustomVariable(template: string, context: HandleContext): string {
+		let customProperties = context.settings.customProperties;
+		let resultContent = template;
+		if (!customProperties) {
+			return resultContent;
+		}
+		customProperties.filter(customProperty => customProperty.name &&
+			customProperty.field
+			&& (customProperty.field == SupportType.ALL ||
+				customProperty.field == this.getSupportType())).forEach(customProperty => {
+			resultContent = resultContent.replaceAll(`{{${customProperty.name}}}`, customProperty.value);
+		});
+		return resultContent;
+	}
+
+	private getTemplateKey():TemplateKey {
+		let templateKey: TemplateKey;
+		switch (this.getSupportType()) {
+			case SupportType.MOVIE:
+				templateKey = TemplateKey.movieTemplateFile;
+				break;
+			case SupportType.BOOK:
+				templateKey = TemplateKey.bookTemplateFile;
+				break;
+			case SupportType.MUSIC:
+				templateKey = TemplateKey.musicTemplateFile;
+				break;
+			case SupportType.TELEPLAY:
+				templateKey = TemplateKey.teleplayTemplateFile;
+				break;
+			case SupportType.GAME:
+				templateKey = TemplateKey.gameTemplateFile;
+				break;
+			case SupportType.NOTE:
+				templateKey = TemplateKey.noteTemplateFile;
+				break;
+			default:
+				templateKey = null;
+
+		}
+		return templateKey;
+	}
+
+	private async getTemplate(context: HandleContext): Promise<string> {
+		const tempKey: TemplateKey = this.getTemplateKey();
+		const templatePath: string = context.settings[tempKey];
 
 		// @ts-ignore
 		if (!templatePath || StringUtil.isBlank(templatePath)) {
 			return getDefaultTemplateContent(tempKey);
 		}
-		const defaultContent =  getDefaultTemplateContent(tempKey);
-		let firstLinkpathDest:TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
+		const defaultContent = getDefaultTemplateContent(tempKey);
+		let firstLinkpathDest: TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 		if (!firstLinkpathDest) {
 			return defaultContent;
-		}else {
-			 const val = await this.doubanPlugin.fileHandler.getFileContent(firstLinkpathDest.path);
-			 return val?val:defaultContent;
+		} else {
+			const val = await this.doubanPlugin.fileHandler.getFileContent(firstLinkpathDest.path);
+			return val ? val : defaultContent;
 		}
 	}
 }

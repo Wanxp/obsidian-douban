@@ -5,11 +5,13 @@ class Logger {
 
 	public error(e: any): any {
 		new Notice(e);
+		console.log(`Douban Plugin error: ${e}`);
 		return e;
 	}
 
 	public warn(e: any): any {
 		new Notice(e);
+		console.log(`Douban Plugin error: ${e}`);
 		return e;
 	}
 

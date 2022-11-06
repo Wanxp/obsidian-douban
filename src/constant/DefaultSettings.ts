@@ -1,5 +1,5 @@
 import {DoubanPluginSetting} from "@App/setting/model/DoubanPluginSetting";
-import {PersonNameMode} from "./Constsant";
+import {PersonNameMode, SupportType} from "./Constsant";
 import {doubanHeaders} from "./Douban";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
@@ -19,4 +19,12 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	dataFilePath: "",
 	dataFileNamePath: "/{{type}}/{{title}}",
 	statusBar: true,
+	customProperties: [
+		{name: 'myType', value: 'movie', field: SupportType.MOVIE},
+		{name: 'myType', value: 'book', field: SupportType.BOOK},
+		{name: 'myType', value: 'music', field: SupportType.MUSIC},
+		{name: 'myType', value: 'note', field: SupportType.NOTE},
+		{name: 'myType', value: 'game', field: SupportType.GAME},
+		{name: 'myType', value: 'teleplay', field: SupportType.TELEPLAY},
+	],
 }

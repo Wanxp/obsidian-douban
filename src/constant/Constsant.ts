@@ -52,6 +52,16 @@ export enum TemplateKey {
 	teleplayTemplateFile = 'teleplayTemplateFile',
 }
 
+export enum SupportType {
+	ALL = "ALL",
+	MOVIE = 'MOVIE',
+	BOOK = 'BOOK',
+	MUSIC = 'MUSIC',
+	NOTE = 'NOTE',
+	GAME = 'GAME',
+	TELEPLAY = 'TELEPLAY',
+}
+
 /**
  * 名称模式选项
  */

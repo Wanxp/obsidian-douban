@@ -1,3 +1,4 @@
+import {CustomProperty} from "@App/setting/model/CustomProperty";
 
 export interface DoubanPluginSetting {
 	movieTemplateFile: string,
@@ -15,5 +16,6 @@ export interface DoubanPluginSetting {
 	dataFilePath: string,
 	dataFileNamePath: string,
 	statusBar: boolean,
+	customProperties: CustomProperty[],
 
 }

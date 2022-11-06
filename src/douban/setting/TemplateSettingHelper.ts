@@ -5,7 +5,21 @@ import {SearchComponent, Setting} from "obsidian";
 import { log } from "src/utils/Logutil";
 import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
 import {FolderSuggest} from "@App/setting/model/FolderSuggest";
+import SettingsManager from "@App/setting/SettingsManager";
 
+
+export function constructTemplateUI(containerEl: HTMLElement, manager: SettingsManager) {
+	containerEl.createEl('h3', { text: i18nHelper.getMessage('1203') });
+	containerEl.createEl('p', { text: i18nHelper.getMessage('1204') });
+	new Setting(containerEl).setDesc(i18nHelper.getMessage('1205'))
+
+	new Setting(containerEl).then(createFileSelectionSetting({name: '120101', desc: '120102', placeholder: '121701', key: 'movieTemplateFile', manager: manager}));
+	new Setting(containerEl).then(createFileSelectionSetting({name: '120201', desc: '120202', placeholder: '121701', key: 'bookTemplateFile', manager: manager}));
+	new Setting(containerEl).then(createFileSelectionSetting({name: '120301', desc: '120302', placeholder: '121701', key: 'musicTemplateFile', manager: manager}));
+	new Setting(containerEl).then(createFileSelectionSetting({name: '120401', desc: '120402', placeholder: '121701', key: 'noteTemplateFile', manager: manager}));
+	new Setting(containerEl).then(createFileSelectionSetting({name: '121301', desc: '121302', placeholder: '121701', key: 'gameTemplateFile', manager: manager}));
+	new Setting(containerEl).then(createFileSelectionSetting({name: '121801', desc: '121802', placeholder: '121701', key: 'teleplayTemplateFile', manager: manager}));
+}
 
 export function createFileSelectionSetting({name, desc, placeholder, key, manager
 										  }: CreateTemplateSelectParams) {

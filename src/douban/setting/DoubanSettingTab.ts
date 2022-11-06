@@ -6,6 +6,11 @@ import {PersonNameMode, PersonNameModeRecords} from "../../constant/Constsant";
 import SettingsManager from "@App/setting/SettingsManager";
 import {FolderSuggest} from "@App/setting/model/FolderSuggest";
 import { DEFAULT_SETTINGS } from "src/constant/DefaultSettings";
+import { constructOutUI } from "./OutputSettingsHelper";
+import { constructTemplateUI } from "./TemplateSettingHelper";
+import { constructBasicUI } from "./BasicSettingsHelper";
+import { constructTemplateVariablesUI } from "./TemplateVariableSettingsHelper";
+import {constructCustomPropertySettingsUI, constructCustomPropertyUI} from "@App/setting/CustomPropertySettingsHelper";
 
 /**
  * 部分逻辑参考以下项目
@@ -25,11 +30,10 @@ export class DoubanSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.createEl("h2", {text: 'Obsidian Douban'});
 		new Setting(containerEl);
-		this.settingsManager.constructBasicUI(containerEl);
-		this.settingsManager.constructTemplateUI(containerEl);
-		this.settingsManager.constructOutUI(containerEl);
-
-		this.settingsManager.constructTemplateVariablesUI(containerEl);
-
+		constructBasicUI(containerEl, this.settingsManager);
+		constructTemplateUI(containerEl, this.settingsManager);
+		constructOutUI(containerEl, this.settingsManager);
+		constructCustomPropertySettingsUI(containerEl, this.settingsManager);
+		constructTemplateVariablesUI(containerEl, this.settingsManager);
 	}
 }

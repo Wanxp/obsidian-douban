@@ -3,10 +3,8 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject, {DoubanBookParameter} from "../model/DoubanBookSubject";
 import DoubanPlugin from "main";
 import DoubanSubject from "../model/DoubanSubject";
-import {TemplateKey, TemplateTextMode} from "../../../constant/Constsant";
-import StringUtil from "../../../utils/StringUtil";
+import {SupportType, TemplateTextMode} from "../../../constant/Constsant";
 import HandleContext from "@App/data/model/HandleContext";
-import {i18nHelper} from "../../../lang/helper";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
@@ -14,8 +12,8 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.bookTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.BOOK;
 	}
 
 	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {
@@ -31,7 +29,9 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			.replaceAll(DoubanBookParameter.menu, extract.menu.join('\n'))
 			.replaceAll(DoubanBookParameter.price, super.handleSpecialContent(extract.price, textMode))
 			.replaceAll(DoubanBookParameter.series, super.handleSpecialContent(extract.series, textMode))
-			.replaceAll(DoubanBookParameter.binding, super.handleSpecialContent(extract.binding, textMode));
+			.replaceAll(DoubanBookParameter.binding, super.handleSpecialContent(extract.binding, textMode))
+			.replaceAll(DoubanBookParameter.producer, super.handleSpecialContent(extract.producer, textMode))
+			;
 	}
 
 	support(extract: DoubanSubject): boolean {
@@ -69,7 +69,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 				html(info.parent).find("a").map((index, a) => {
 					value.push(html(a).text().trim());
 				});
-			} else if (key.indexOf('作者') >= 0 || key.indexOf('丛书') >= 0 || key.indexOf('出版社') >= 0) {
+			} else if (key.indexOf('作者') >= 0 || key.indexOf('丛书') >= 0 || key.indexOf('出版社') >= 0 || key.indexOf('出品方') >= 0) {
 				value = html(info.next.next).text().trim();
 			} else {
 				value = html(info.next).text().trim();
@@ -104,6 +104,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			url: url,
 			genre: [],
 			binding: valueMap.has('binding') ? valueMap.get('binding') : "",
+			producer: valueMap.has('producer') ? valueMap.get('producer') : "",
 		};
 		return result;
 	}
@@ -124,5 +125,6 @@ const BookKeyValueMap: Map<string, string> = new Map(
 		['ISBN:', 'isbn'],
 		['译者', 'translator'],
 		['副标题:', 'subTitle'],
+		['出品方:', 'producer'],
 	]
 );

@@ -5,7 +5,7 @@ import DoubanPlugin from "main";
 import DoubanSubject from '../model/DoubanSubject';
 import html2markdown from '@notable/html2markdown';
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
@@ -13,8 +13,8 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.noteTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.NOTE;
 	}
 
 	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {

@@ -5,7 +5,7 @@ import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/utils/SchemaOrg";
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 /**
  * teleplay
@@ -16,8 +16,8 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.teleplayTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.TELEPLAY;
 	}
 
 	parseText(beforeContent: string, extract: DoubanTeleplaySubject, context: HandleContext): string {

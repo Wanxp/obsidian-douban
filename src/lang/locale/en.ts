@@ -28,7 +28,17 @@ export default {
 	'1230': `Usable Variables`,
 	'1204': `Set template file path. If keep empty, it will use the default template file to create file. All the usable variables at the end.👇`,
 	'1205': `🧡Tip: You can click the 'Copy' button to copy default template content, then create and paste to your own template file. After that, back to select the file. `,
-
+	'1240': `Custom Variable`,
+	'1241': `To use the custom variables, you need to wrap them in double curly brackets. For example, {{myType}} will be replaced with the your custom type value. `,
+	'1242': `Add custom variable, so that you can use it in the template file or file name. `,
+	'124101': `Add`,
+	'124108': `Add a new variable`,
+	'124102': `Name:`,
+	'124103': `Input custom variable name`,
+	'124104': `Value:`,
+	'124105': `Input custom variable value`,
+	'124106': `Active type`,
+	'124107': `Delete custom variable`,
 
 	'120101': `Movie Template File`,
 	'120102': `This template will be used when creating new notes for Movie from Obsidian-Douban.`,
@@ -119,6 +129,7 @@ export default {
 	'121902': `Reset to default value`,
 
 
+
 	//error
 	'130101': `Fetch Data Error, You can go to Github add Issues`,
 	'140101': `Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`,
@@ -132,6 +143,10 @@ export default {
 
 	'150101': `Choose an item...`,
 
+
+
+
+
 	//content
 	'200101': `. `,
 
@@ -142,6 +157,10 @@ export default {
 	'122002': `Extra Variables`,
 	'122003': `Basic Variables must has value, Extra Variables can be empty`,
 	'122004': `To use the template variables, you need to wrap them in double curly brackets. For example, {{title}} will be replaced with the title of the note.`,
+
+
+
+
 
 	'410101': `Unknown`,
 
@@ -173,6 +192,7 @@ export default {
 	'310115': `subTitle:副标题`,
 	'310116': `totalPage:页数`,
 	'310117': `binding:装帧`,
+	'310118': `producer:出品方`,
 
 	//电影
 	'310201': `豆瓣ID`,
@@ -305,4 +325,12 @@ export default {
 	'330101': `今日日期`,
 	'330102': `当前时间`,
 
+
+	'ALL': `all`,
+	'MOVIE': `movie`,
+	'BOOK': `book`,
+	'MUSIC': `music`,
+	'NOTE': `note`,
+	'GAME': `game`,
+	'TELEPLAY': `teleplay`,
 }

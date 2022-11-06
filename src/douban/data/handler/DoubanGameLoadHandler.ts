@@ -5,7 +5,7 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -13,8 +13,8 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.gameTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.GAME;
 	}
 
 	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {

@@ -4,14 +4,14 @@ import DoubanSubject from "../model/DoubanSubject";
 import {i18nHelper} from "src/lang/helper";
 import {log} from "src/utils/Logutil";
 import HandleContext from "@App/data/model/HandleContext";
-import {TemplateKey} from "../../../constant/Constsant";
+import {SupportType, TemplateKey} from "../../../constant/Constsant";
 
 /**
  * 默认的处理器
  */
 export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<DoubanSubject> {
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.bookTemplateFile
+	getSupportType(): SupportType.ALL {
+		return SupportType.ALL;
 	}
 
 	parseText(beforeContent: string, extract: DoubanSubject, context: HandleContext): string {

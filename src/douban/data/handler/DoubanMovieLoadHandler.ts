@@ -6,7 +6,7 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "@App/data/model/HandleContext";
-import {PersonNameMode, TemplateKey} from "../../../constant/Constsant";
+import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -14,8 +14,8 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		super(doubanPlugin);
 	}
 
-	getTemplateKey(context: HandleContext): TemplateKey {
-		return TemplateKey.movieTemplateFile;
+	getSupportType(): SupportType {
+		return SupportType.MOVIE;
 	}
 
 	parseText(beforeContent: string, extract: DoubanMovieSubject, context: HandleContext): string {

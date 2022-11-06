@@ -139,3 +139,9 @@ If you want some features or have any questions about this plugin, create issues
    `npm run dev`
 6. 进入Obsidian插件中心重新加载当前插件
 7. 享受开发吧
+
+## 免责声明
+本程序没有爬取任何书影音等内容，只供技术研究使用。没有侵犯书影音作者版权和豆瓣官方利益。如有任何侵权行为，请联系我删除。
+
+## Thanks
+

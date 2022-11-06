@@ -10,6 +10,22 @@
     width: 100%;
 }
 
+.obsidian_douban_settings_text {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.obsidian_douban_settings_input {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.obsidian_douban_settings_button {
+	margin: auto;
+	vertical-align: bottom;
+
+}
+
 .obsidian_douban_search_input {
     margin-left: 5px;
     margin-right: 5px;

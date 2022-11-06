@@ -11,6 +11,7 @@ export default class DoubanBookSubject extends DoubanSubject {
 	menu: string[];
 	price: number;
 	binding: string;
+	producer: string;
 }
 
 export const DoubanBookParameter = {
@@ -24,4 +25,5 @@ export const DoubanBookParameter = {
 	menu: '{{menu}}',
 	price: '{{price}}',
 	binding: '{{binding}}',
+	producer: '{{producer}}',
 }

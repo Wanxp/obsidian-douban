@@ -30,6 +30,17 @@ export default {
 
 	'1204': `配置对应类型的模板文件, 如果为空则使用默认的文件模板. 模板可使用的参数列举在最下面.👇 `,
 	'1205': `🧡提示: 建议点击右侧'复制'默认模板按钮, 然后在新建的文件中粘贴修改模板, 最后回到此处选择对应模板. `,
+	'1240': `自定义属性`,
+	'1241': `自定义参数使用时请用'{{}}'包裹, 举例: 参数myType, 则使用时为{{myType}}. `,
+	'1242': `添加自定义参数, 参数可用于模板中或者文件名中. `,
+	'124101': `新增`,
+	'124108': `新增一个自定义参数`,
+	'124102': `参数名称:`,
+	'124103': `自定义参数名称`,
+	'124104': `参数值:`,
+	'124105': `自定义参值`,
+	'124106': `生效类型`,
+	'124107': `删除自定义参数`,
 
 
 	'120101': `电影模板文件`,
@@ -114,6 +125,9 @@ export default {
 	'121601': `笔记名称`,
 	'121602': `创建的笔记将会使用此名称作为模板, 支持所有'通用'的参数作为名称(如:{{type}}/{{title}}), 且支持路径, 比如: 'MyData/{{title}}'. 如果为空, 笔记将会使用默认名称. `,
 
+	'121701': `选择模板文件`,
+
+
 	'121901': `复制'默认'模板内容`,
 
 	'130101': `获取数据失败,您如有需要请至Github提交Issues`,
@@ -135,28 +149,28 @@ export default {
 	'200101': `。`,
 
 //book example
-	'book': {
-		id: {desc: `豆瓣ID`, example: `25982198`},
-		title: {desc: `书名`, example: `社会心理学（第11版，精装彩印）`},
-		type: {desc: `类型`, example: `Book`},
-		score: {desc: `评分`, example: `9.4`},
-		image: {desc: `图片URL`, example: `https://img1.doubanio.com/view/subject/l/public/s28261247.jpg`},
-		url: {desc: `豆瓣URL`, example: `https://book.douban.com/subject/25982198/`},
-		desc: {
-			desc: `简述`,
-			example: `戴维·迈尔斯的《社会心理学》是美国700 多所大专院校社会心理学教学所采用的教材，自出版以来深受广大师生和社会心理学爱好者的喜爱，并被翻译成多种语言，有着广泛的影响力。本书译自第11 版。全书共分四...`
-		},
-		publisher: {desc: `出版社`, example: `人民邮电出版社`},
-		datePublished: {desc: `出版时间`, example: `2014-10-1`},
-		genre: {desc: `类型`, example: `社会科学`},
-		author: {desc: `作者`, example: `戴维·迈尔斯`},
-		translator: {desc: `译者`, example: `侯玉波 / 乐国安 / 张志勇`},
-		isbn: {desc: `ISBN`, example: `9787115369840`},
-		originTitle: {desc: `原作名`, example: `Social Psychology (11th)`},
-		subTitle: {desc: `副标题`, example: `社会心理学`},
-		binding: {desc: `装帧`, example: `精装`},
-		totalPages: {desc: `页数`, example: `707`},
-	},
+// 	'book': {
+// 		id: {desc: `豆瓣ID`, example: `25982198`},
+// 		title: {desc: `书名`, example: `社会心理学（第11版，精装彩印）`},
+// 		type: {desc: `类型`, example: `Book`},
+// 		score: {desc: `评分`, example: `9.4`},
+// 		image: {desc: `图片URL`, example: `https://img1.doubanio.com/view/subject/l/public/s28261247.jpg`},
+// 		url: {desc: `豆瓣URL`, example: `https://book.douban.com/subject/25982198/`},
+// 		desc: {
+// 			desc: `简述`,
+// 			example: `戴维·迈尔斯的《社会心理学》是美国700 多所大专院校社会心理学教学所采用的教材，自出版以来深受广大师生和社会心理学爱好者的喜爱，并被翻译成多种语言，有着广泛的影响力。本书译自第11 版。全书共分四...`
+// 		},
+// 		publisher: {desc: `出版社`, example: `人民邮电出版社`},
+// 		datePublished: {desc: `出版时间`, example: `2014-10-1`},
+// 		genre: {desc: `类型`, example: `社会科学`},
+// 		author: {desc: `作者`, example: `戴维·迈尔斯`},
+// 		translator: {desc: `译者`, example: `侯玉波 / 乐国安 / 张志勇`},
+// 		isbn: {desc: `ISBN`, example: `9787115369840`},
+// 		originTitle: {desc: `原作名`, example: `Social Psychology (11th)`},
+// 		subTitle: {desc: `副标题`, example: `社会心理学`},
+// 		binding: {desc: `装帧`, example: `精装`},
+// 		totalPages: {desc: `页数`, example: `707`},
+// 	},
 
 	'122001': `通用参数`,
 	'122002': `扩展参数`,
@@ -333,7 +347,13 @@ export default {
 
 
 
-
+	'ALL': `全部类型`,
+	'MOVIE': `电影`,
+	'BOOK': `书籍`,
+	'MUSIC': `音乐`,
+	'NOTE': `笔记`,
+	'GAME': `游戏`,
+	'TELEPLAY': `电视剧`,
 
 
 }
