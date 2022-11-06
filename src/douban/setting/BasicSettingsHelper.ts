@@ -1,48 +1,16 @@
 import {i18nHelper} from "../../lang/helper";
-import {Setting} from "obsidian";
+import {Platform, Setting} from "obsidian";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import SettingsManager from "@App/setting/SettingsManager";
+import DoubanLoginModel from "@App/component/DoubanLoginModel";
+import DoubanLogoutModel from "@App/component/DoubanLogoutModel";
+import { log } from "src/utils/Logutil";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
-	new Setting(containerEl).setName(i18nHelper.getMessage('120001'))
-		.then((setting) => {
-			setting.addText((textField) => {
-				setting.descEl.appendChild(
-					createFragment((frag) => {
-						frag.appendText(i18nHelper.getMessage('120002'));
-						frag.createEl('br');
-						frag.appendText(i18nHelper.getMessage('120003'));
-						frag.createEl(
-							'a',
-							{
-								text: i18nHelper.getMessage('120901'),
-								href: 'https://www.douban.com',
-							},
-							(a) => {
-								a.setAttr('target', '_blank');
-							}
-						);
-						frag.createEl('br');
-						frag.appendText(i18nHelper.getMessage('120004'));
-						frag.createEl('br');
-						frag.appendText(i18nHelper.getMessage('120005'));
-						frag.createEl('br');
-						frag.appendText(i18nHelper.getMessage('120006'));
-						frag.createEl('br');
-					})
-				);
-				textField.inputEl.addClass("obsidian_douban_settings_textField");
-				textField
-					.setPlaceholder(DEFAULT_SETTINGS.searchUrl)
-					.setValue(manager.plugin.settings.searchUrl)
-					.onChange(async (value) => {
-						manager.plugin.settings.searchUrl = value;
-						await manager.plugin.saveSettings();
-					});
-
-			});
-		});
+	// containerEl.createDiv('login-setting', (loginSettingEl) => {
+	// 	constructDoubanTokenSettingsUI(loginSettingEl, manager);
+	// });
 
 	new Setting(containerEl).setName(i18nHelper.getMessage('120501')).then((setting) => {
 		setting.addMomentFormat((mf) => {
@@ -127,3 +95,76 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 				});
 		});
 }
+
+export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	let cookie = manager.getSetting('loginCookiesContent');
+	containerEl.empty();
+	if (Platform.isDesktopApp) {
+		if(cookie) {
+			constructHasLoginSettingsUI(containerEl, manager);
+		}else {
+			constructLoginSettingsUI(containerEl, manager);
+		}
+	} else {
+		if(cookie) {
+			showMobileLogout(containerEl, manager);
+		}else {
+			showMobileLogin(containerEl, manager);
+		}
+	}
+
+
+}
+
+
+export function constructLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	new Setting(containerEl).setName('登录豆瓣').addButton((button) => {
+		return button
+			.setButtonText('登录')
+			.setCta()
+			.onClick(async () => {
+				button.setDisabled(true);
+				const loginModel = new DoubanLoginModel(containerEl, manager);
+				await loginModel.doLogin();
+			});
+	});
+}
+
+export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	new Setting(containerEl)
+		.setName('豆瓣用户信息')
+		.setDesc('已登录')
+		.addButton((button) => {
+		return button
+			.setButtonText('登出')
+			.setCta()
+			.onClick(async () => {
+				button.setDisabled(true);
+				const loginModel = new DoubanLogoutModel(containerEl, manager);
+				await loginModel.doLogout();
+				// manager.updateSetting('loginCookiesContent', '');
+			});
+	});
+}
+
+function showMobileLogin(containerEl: HTMLElement, manager: SettingsManager) {
+	new Setting(containerEl)
+		.setName('豆瓣用户信息')
+		.setDesc('豆瓣未登录，请先在电脑端登录！')
+}
+
+function showMobileLogout(containerEl: HTMLElement, manager: SettingsManager) {
+	new Setting(containerEl)
+		.setName('豆瓣用户信息')
+		.setDesc('已登录')
+		.addButton((button) => {
+			return button
+				.setButtonText('登出')
+				.setCta()
+				.onClick(async () => {
+					manager.updateSetting('loginCookiesContent', '');
+					constructDoubanTokenSettingsUI(containerEl, manager);
+				});
+		});
+}
+

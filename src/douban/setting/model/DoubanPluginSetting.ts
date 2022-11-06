@@ -17,5 +17,6 @@ export interface DoubanPluginSetting {
 	dataFileNamePath: string,
 	statusBar: boolean,
 	customProperties: CustomProperty[],
+	loginCookiesContent: string,
 
 }

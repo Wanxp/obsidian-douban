@@ -3,7 +3,6 @@ import {PersonNameMode, SupportType} from "./Constsant";
 import {doubanHeaders} from "./Douban";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
-	//以后会被移除
 	movieTemplateFile: ``,
 	bookTemplateFile: ``,
 	musicTemplateFile: ``,
@@ -27,4 +26,5 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		{name: 'myType', value: 'game', field: SupportType.GAME},
 		{name: 'myType', value: 'teleplay', field: SupportType.TELEPLAY},
 	],
+	loginCookiesContent: '',
 }

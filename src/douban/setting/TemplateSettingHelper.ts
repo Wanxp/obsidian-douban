@@ -29,7 +29,7 @@ export function createFileSelectionSetting({name, desc, placeholder, key, manage
 		// @ts-ignore
 		setting.setDesc(i18nHelper.getMessage(desc));
 		setting.addSearch(async (search: SearchComponent) => {
-			const [oldValue, defaultVal] = manager.getSetting(key);
+			const [oldValue, defaultVal] = manager.getSettingWithDefault(key);
 			let v = defaultVal;
 			if (oldValue) {
 				v = oldValue;
@@ -65,7 +65,7 @@ export function createFolderSelectionSetting({
 		// @ts-ignore
 		setting.setDesc( i18nHelper.getMessage(desc));
 		setting.addSearch(async (search: SearchComponent) => {
-			const [oldValue, defaultVal] = manager.getSetting(key);
+			const [oldValue, defaultVal] = manager.getSettingWithDefault(key);
 			let v = defaultVal;
 			if (oldValue) {
 				v = oldValue;

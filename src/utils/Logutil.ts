@@ -16,7 +16,7 @@ class Logger {
 	}
 
 	public info(e: any): any {
-		// console.log(`Douban Plugin info:` + `${typeof e == 'string' ? e : JSON.stringify(e)}`);
+		console.log(`Douban Plugin info:` + `${typeof e == 'string' ? e : JSON.stringify(e)}`);
 		return e;
 	}
 

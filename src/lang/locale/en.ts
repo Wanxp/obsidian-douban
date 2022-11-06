@@ -22,6 +22,9 @@ export default {
 	'120005': `The redirected web page address is the search address,`,
 	'120006': `Just copy the web address to the current input box.`,
 
+	'100101': `Login Douban`,
+
+
 	'1210': `Basic Setting`,
 	'1203': `Template Setting`,
 	'1220': `Output Setting`,
