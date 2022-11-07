@@ -32,6 +32,7 @@ score: {{score}}
 datePublished: {{datePublished}}
 translator: {{translator}}
 publisher: {{publisher}}
+producer: {{producer}}
 isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}

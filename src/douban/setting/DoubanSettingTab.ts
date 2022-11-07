@@ -22,7 +22,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 	constructor(app: App, plugin: DoubanPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
-		this.settingsManager = new SettingsManager(app, plugin);
+		this.settingsManager = plugin.settingsManager;
 	}
 
 	display(): void {

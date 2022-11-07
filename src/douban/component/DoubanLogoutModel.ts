@@ -9,9 +9,9 @@ import {log} from "../../utils/Logutil";
 
 export default class DoubanLogoutModel {
 	private modal: any;
-	private containerEl: HTMLElement;
 	private settingsManager: SettingsManager;
 	constructor(containerEl: HTMLElement, settingsManager: SettingsManager) {
+		this.settingsManager = settingsManager;
 		const { remote } = require('electron');
 		const { BrowserWindow: RemoteBrowserWindow } = remote;
 		this.modal = new RemoteBrowserWindow({
@@ -26,12 +26,11 @@ export default class DoubanLogoutModel {
 		});
 		const session = this.modal.webContents.session;
 		const filter = {
-			urls: ['https://www.douban.com/accounts/logout']
+			urls: ['https://www.douban.com/']
 		};
 		session.webRequest.onCompleted(filter, (details:any) => {
-			log.info('已请求登出成功:');
 			if (details.statusCode == 200) {
-				this.settingsManager.updateSetting('loginCookiesContent', '');
+				this.settingsManager.plugin.userComponent.logout();
 				constructDoubanTokenSettingsUI(containerEl, settingsManager);
 				this.modal.close();
 			}
@@ -39,7 +38,7 @@ export default class DoubanLogoutModel {
 	}
 
 	async doLogout() {
-		await this.modal.loadURL('https://www.douban.com/logout');
+		await this.modal.loadURL('https://www.douban.com/');
 	}
 
 	onClose() {

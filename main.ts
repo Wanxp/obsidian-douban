@@ -15,12 +15,16 @@ import HandleResult from "@App/data/model/HandleResult";
 import {FileUtil} from "./src/utils/FileUtil";
 import { DoubanPluginSetting } from "@App/setting/model/DoubanPluginSetting";
 import {DEFAULT_SETTINGS} from "./src/constant/DefaultSettings";
+import UserComponent from "@App/user/UserComponent";
+import SettingsManager from "@App/setting/SettingsManager";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
 	public doubanExtractHandler: DoubanSearchChooseItemHandler;
 	public doubanStatusBar: HTMLElement;
 	public fileHandler: FileHandler;
+	public userComponent: UserComponent;
+	public settingsManager: SettingsManager;
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
@@ -124,6 +128,12 @@ export default class DoubanPlugin extends Plugin {
 			editorCallback: (editor: Editor) =>
 				this.getDoubanTextForSearchTerm({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor}),
 		});
+		this.settingsManager = new SettingsManager(app, this);
+		this.userComponent = new UserComponent(this.settingsManager);
+
+		if (this.userComponent.needLogin()) {
+			this.userComponent.loginByCookie();
+		}
 
 		this.addSettingTab(new DoubanSettingTab(this.app, this));
 	}

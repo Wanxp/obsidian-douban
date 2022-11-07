@@ -3,7 +3,7 @@ import { log } from 'src/utils/Logutil';
 import {i18nHelper} from "../../lang/helper";
 import {DoubanSettingTab} from "@App/setting/DoubanSettingTab";
 import SettingsManager from "@App/setting/SettingsManager";
-import {constructDoubanTokenSettingsUI, constructLoginSettingsUI} from "@App/setting/BasicSettingsHelper";
+import {constructDoubanTokenSettingsUI} from "@App/setting/BasicSettingsHelper";
 
 // Credits go to zhaohongxuan's Weread Plugin : https://github.com/zhaohongxuan/obsidian-weread-plugin
 
@@ -35,12 +35,12 @@ export default class DoubanLoginModel {
 		const filter = {
 			urls: ['https://www.douban.com/']
 		};
-		session.webRequest.onSendHeaders(filter, (details:any) => {
+		session.webRequest.onSendHeaders(filter, async (details:any) => {
 			const cookies = details.requestHeaders['Cookie'];
 			const cookieArr = this.parseCookies(cookies);
 			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
 			if (cookieArr) {
-				this.settingsManager.updateSetting('loginCookiesContent', cookieArr);
+				let user = await settingsManager.plugin.userComponent.loginCookie(cookieArr);
 				constructDoubanTokenSettingsUI(containerEl, settingsManager);
 				this.modal.close();
 			} else {

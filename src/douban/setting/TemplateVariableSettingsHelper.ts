@@ -236,6 +236,17 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310617')}</th>
 		<td>${i18nHelper.getMessage('310717')}</th>
 	</tr>
+	
+	<tr>
+		<td>${i18nHelper.getMessage('320108')}</th>
+		<td>${i18nHelper.getMessage('310118')}</th>
+		<td>${i18nHelper.getMessage('310218')}</th>
+		<td>${i18nHelper.getMessage('310318')}</th>
+		<td>${i18nHelper.getMessage('310418')}</th>
+		<td>${i18nHelper.getMessage('310518')}</th>
+		<td>${i18nHelper.getMessage('310618')}</th>
+		<td>${i18nHelper.getMessage('310718')}</th>
+	</tr>
 </table>`;
 
 

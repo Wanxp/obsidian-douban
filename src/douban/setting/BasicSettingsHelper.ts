@@ -4,13 +4,13 @@ import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import SettingsManager from "@App/setting/SettingsManager";
 import DoubanLoginModel from "@App/component/DoubanLoginModel";
 import DoubanLogoutModel from "@App/component/DoubanLogoutModel";
-import { log } from "src/utils/Logutil";
+import User from "@App/user/User";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
-	// containerEl.createDiv('login-setting', (loginSettingEl) => {
-	// 	constructDoubanTokenSettingsUI(loginSettingEl, manager);
-	// });
+	containerEl.createDiv('login-setting', async (loginSettingEl) => {
+		constructDoubanTokenSettingsUI(loginSettingEl, manager);
+	});
 
 	new Setting(containerEl).setName(i18nHelper.getMessage('120501')).then((setting) => {
 		setting.addMomentFormat((mf) => {
@@ -97,16 +97,16 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 }
 
 export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
-	let cookie = manager.getSetting('loginCookiesContent');
 	containerEl.empty();
+	let login = manager.plugin.userComponent.isLogin();
 	if (Platform.isDesktopApp) {
-		if(cookie) {
+		if(login) {
 			constructHasLoginSettingsUI(containerEl, manager);
 		}else {
 			constructLoginSettingsUI(containerEl, manager);
 		}
 	} else {
-		if(cookie) {
+		if(login) {
 			showMobileLogout(containerEl, manager);
 		}else {
 			showMobileLogin(containerEl, manager);
@@ -131,9 +131,16 @@ export function constructLoginSettingsUI(containerEl: HTMLElement, manager: Sett
 }
 
 export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	const user: User = manager.plugin.userComponent.getUser();
+	let userDom = new DocumentFragment();
+	userDom.createDiv().innerHTML =
+		`已登录<br>
+豆瓣ID: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
+		昵称: ${user.name}`;
+
 	new Setting(containerEl)
 		.setName('豆瓣用户信息')
-		.setDesc('已登录')
+		.setDesc(userDom)
 		.addButton((button) => {
 		return button
 			.setButtonText('登出')
@@ -142,6 +149,7 @@ export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: S
 				button.setDisabled(true);
 				const loginModel = new DoubanLogoutModel(containerEl, manager);
 				await loginModel.doLogout();
+				button.setDisabled(false);
 				// manager.updateSetting('loginCookiesContent', '');
 			});
 	});

@@ -34,30 +34,31 @@ If you want some features or have any questions about this plugin, create issues
 (若有缺少想导入的字段, 欢迎提issues反馈)
   
 ---  
-| 字段          | 电影                 | 电视剧               | 书籍                 | 音乐               | 日记               | 游戏             | 广播 |
-| ------------- | -------------------- | -------------------- | -------------------- | ------------------ | ------------------ | ---------------- | ---- |
-| id            | 豆瓣ID               | 豆瓣ID               | 豆瓣ID               | 豆瓣ID             | 豆瓣ID             | 豆瓣ID           | -    |
-| title         | 电影名称             | 电视剧名称           | 书名                 | 音乐名             | 日记标题           | 游戏名称         | -    |
-| type          | 类型                 | 类型                 | 类型                 | 类型               | 类型               | 类型             | -    |
-| score         | 评分                 | 评分                 | 评分                 | 评分               | 评分               | 评分             | -    |
-| image         | 封面                 | 封面                 | 封面                 | 封面               | 图片               | 封面             | -    |
-| url           | 豆瓣网址             | 豆瓣网址             | 豆瓣网址             | 豆瓣网址           | 豆瓣网址           | 豆瓣网址         | -    |
-| desc          | 简介                 | 简介                 | 内容简介             | 简介               | 简介               | 简介             | -    |
-| publisher     | -                    | -                    | 出版社               | 出版者             | 发布者             | 发行商           | -    |
+| 字段          | 电影                 | 电视剧               | 书籍                | 音乐               | 日记               | 游戏             | 广播 |
+| ----------- | -------------------- | -------------------- |-------------------| ------------------ | ------------------ | ---------------- | ---- |
+| id          | 豆瓣ID               | 豆瓣ID               | 豆瓣ID              | 豆瓣ID             | 豆瓣ID             | 豆瓣ID           | -    |
+| title       | 电影名称             | 电视剧名称           | 书名                | 音乐名             | 日记标题           | 游戏名称         | -    |
+| type        | 类型                 | 类型                 | 类型                | 类型               | 类型               | 类型             | -    |
+| score       | 评分                 | 评分                 | 评分                | 评分               | 评分               | 评分             | -    |
+| image       | 封面                 | 封面                 | 封面                | 封面               | 图片               | 封面             | -    |
+| url         | 豆瓣网址             | 豆瓣网址             | 豆瓣网址              | 豆瓣网址           | 豆瓣网址           | 豆瓣网址         | -    |
+| desc        | 简介                 | 简介                 | 内容简介              | 简介               | 简介               | 简介             | -    |
+| publisher   | -                    | -                    | 出版社               | 出版者             | 发布者             | 发行商           | -    |
 | datePublished | 上映日期             | 上映日期             | 出版年               | 发行时间           | 发布时间           | 发行日期         | -    |
-| genre         | 类型                 | 类型                 | -                    | 流派               | -                  | 类型             | -    |
-| currentDate   | 今日日期             | 今日日期             | 今日日期             | 今日日期           | 今日日期           | 今日日期         |      |
-| currentTime   | 当前时间             | 当前时间             | 当前时间             | 当前时间           | 当前时间           | 当前时间         |      |
+| genre       | 类型                 | 类型                 | -                 | 流派               | -                  | 类型             | -    |
+| currentDate | 今日日期             | 今日日期             | 今日日期              | 今日日期           | 今日日期           | 今日日期         |      |
+| currentTime | 当前时间             | 当前时间             | 当前时间              | 当前时间           | 当前时间           | 当前时间         |      |
 | 扩展1         | director:导演        | director:导演        | author:原作者        | actor: 表演者      | author:作者        | aliases:别名     |      |
-| 扩展2         | author:编剧          | author:编剧          | translator:译者      | albumType:专辑类型 | authorUrl:作者网址 | developer:开发商 |      |
-| 扩展3         | actor:主演           | actor:主演           | isbn:isbn            | medium:介质        | content:日记内容   | platform:平台    |      |
+| 扩展2         | author:编剧          | author:编剧          | translator:译者     | albumType:专辑类型 | authorUrl:作者网址 | developer:开发商 |      |
+| 扩展3         | actor:主演           | actor:主演           | isbn:isbn         | medium:介质        | content:日记内容   | platform:平台    |      |
 | 扩展4         | originalTitle:原作名 | originalTitle:原作名 | originalTitle:原作名 | records:唱片数     |                    |                  |      |
 | 扩展5         |                      |                      | subTitle:副标题      | barcode:条形码     |                    |                  |      |
-| 扩展6         |                      |                      | totalPage:页数       |                    |                    |                  |      |
-| 扩展7         |                      |                      | series:丛书          |                    |                    |                  |      |
-| 扩展8         |                      |                      | menu:目录            |                    |                    |                  |      |
-| 扩展9         |                      |                      | price:定价           |                    |                    |                  |      |
-| 扩展7         |                      |                      | binding:装帧         |                    |                    |                  |      |
+| 扩展6         |                      |                      | totalPage:页数      |                    |                    |                  |      |
+| 扩展7         |                      |                      | series:丛书         |                    |                    |                  |      |
+| 扩展8         |                      |                      | menu:目录           |                    |                    |                  |      |
+| 扩展9         |                      |                      | price:定价          |                    |                    |                  |      |
+| 扩展7         |                      |                      | binding:装帧        |                    |                    |                  |      |
+| 扩展8         |                      |                      | producer: 出品方     |                    |                    |                  |      |
 
 ## How to use
 ### Search
