@@ -23,6 +23,7 @@ export default {
 	'120006': `Just copy the web address to the current input box.`,
 
 	'100101': `Login Douban`,
+	'100111': `Douban login info Expired, please login again`,
 
 
 	'1210': `Basic Setting`,
@@ -134,7 +135,7 @@ export default {
 
 
 	//error
-	'130101': `Fetch Data Error, You can go to Github add Issues`,
+	'130101': `Fetch Data Error, {0}`,
 	'140101': `Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`,
 
 	'140201': `[Obsidian Douban]: searching '{0}'...`,

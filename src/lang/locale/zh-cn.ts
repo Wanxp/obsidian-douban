@@ -14,6 +14,8 @@ export default {
 	'110202': `{0} 模板文件无法读取`,
 
 	'100101': `登录豆瓣`,
+	'100111': `豆瓣登录信息过期,请至Douban插件重新登录`,
+
 
 	//DoubanSettingTab
 	'1201': `Obsidian-豆瓣`,
@@ -131,7 +133,7 @@ export default {
 
 	'121901': `复制'默认'模板内容`,
 
-	'130101': `获取数据失败,您如有需要请至Github提交Issues`,
+	'130101': `获取数据失败,{0}`,
 	'130102': `Obsidian Douban插件错误提示:`,
 	'130103': `Obsidian Douban插件异常提示:`,
 	'140101': `当前版本暂不支持该类型导入,请升级Obsidian Douban或至github提交issuess获取帮助`,

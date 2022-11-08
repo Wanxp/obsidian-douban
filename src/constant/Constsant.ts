@@ -71,3 +71,11 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 	[PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage('121208'),
 }
 
+export enum DoubanSubjectState {
+	NOT = 'have_not_watched',
+	WANTED = 'wanted',
+	DOING = 'watching',
+	HAS = 'watched',
+	UNKNOWN = 'unknown',
+}
+

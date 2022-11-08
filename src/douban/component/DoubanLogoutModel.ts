@@ -10,8 +10,10 @@ import {log} from "../../utils/Logutil";
 export default class DoubanLogoutModel {
 	private modal: any;
 	private settingsManager: SettingsManager;
+	private containerEl: HTMLElement;
 	constructor(containerEl: HTMLElement, settingsManager: SettingsManager) {
 		this.settingsManager = settingsManager;
+		this.containerEl = containerEl;
 		const { remote } = require('electron');
 		const { BrowserWindow: RemoteBrowserWindow } = remote;
 		this.modal = new RemoteBrowserWindow({
@@ -31,7 +33,7 @@ export default class DoubanLogoutModel {
 		session.webRequest.onCompleted(filter, (details:any) => {
 			if (details.statusCode == 200) {
 				this.settingsManager.plugin.userComponent.logout();
-				constructDoubanTokenSettingsUI(containerEl, settingsManager);
+				constructDoubanTokenSettingsUI(this.containerEl, this.settingsManager);
 				this.modal.close();
 			}
 		});

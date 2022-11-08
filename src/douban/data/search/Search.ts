@@ -19,7 +19,7 @@ export default class Searcher {
 		return request(requestUrlParam)
 			.then(load)
 			.then(SearchParserHandler.parseSearch)
-			.catch(e => log.error(i18nHelper.getMessage('130101')))
+			.catch(e => log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString())));
 			;
 
 	};

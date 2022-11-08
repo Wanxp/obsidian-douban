@@ -8,6 +8,7 @@ import {CheerioAPI, load} from "cheerio";
 import YamlUtil from "../../../utils/YamlUtil";
 import {
 	BasicConst,
+	DoubanSubjectState,
 	PersonNameMode,
 	SearchHandleMode,
 	SupportType,
@@ -19,6 +20,7 @@ import HandleResult from "@App/data/model/HandleResult";
 import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
 import StringUtil from "../../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
+import {UserStateSubject} from "@App/data/model/UserStateSubject";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -128,21 +130,35 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	abstract support(extract: DoubanSubject): boolean;
 
 	handle(url: string, context: HandleContext): void {
+		let headers = JSON.parse(this.doubanPlugin.settings.searchHeaders);
+		headers.Cookie = this.doubanPlugin.settings.loginCookiesContent;
+		console.log(JSON.stringify(headers))
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
-			headers: JSON.parse(this.doubanPlugin.settings.searchHeaders),
+			headers: headers,
 			throw: true
 		};
 		request(requestUrlParam)
+			.then((response) => {console.log(response.toString());return response})
 			.then(load)
-			.then(this.parseSubjectFromHtml)
+			.then(this.analysisUserState)
+			.then(({data, userState}) => {
+				let sub = this.parseSubjectFromHtml(data);
+				sub.userState = userState;
+				return sub;
+			})
 			.then(content => this.toEditor(context, content))
 			// .then(content => content ? editor.replaceSelection(content) : content)
-			.catch(e => log.error(i18nHelper.getMessage('130101')))
+			.catch(e => log
+				.error(
+					i18nHelper.getMessage('130101')
+						.replace('{0}',  e.toString())
+				));
 		;
 
 	}
+
 
 	abstract parseSubjectFromHtml(data: CheerioAPI): T | undefined;
 
@@ -286,5 +302,47 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			const val = await this.doubanPlugin.fileHandler.getFileContent(firstLinkpathDest.path);
 			return val ? val : defaultContent;
 		}
+	}
+
+	analysisUserState(html: CheerioAPI): {data:CheerioAPI ,  userState: UserStateSubject} {
+		if(!html('.nav-user-account')) {
+			return null;
+		}
+		let rate = html(html('input#n_rating').get(0)).val();
+		let tagsStr = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).text().trim();
+		let tags = tagsStr.replace('标签:', '').split(' ');
+		let stateWord = html(html('div#interest_sect_level > div.a_stars > span.mr10').get(0)).text().trim();
+		let collectionDateStr = html(html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').get(0)).text().trim();
+		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		let component = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).next().next().text().trim();
+
+
+		const userState: UserStateSubject = {
+			tags: tags,
+			rate: rate?Number(rate):null,
+			state: userState1,
+			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			comment: component
+		}
+		return {data: html, userState: userState};
+	}
+
+
+	public static getUserState(stateWord:string):DoubanSubjectState {
+		let state:DoubanSubjectState;
+		if(!stateWord) {
+			return DoubanSubjectState.UNKNOWN;
+		}
+		if(stateWord.indexOf('想')>=0 ) {
+			state = DoubanSubjectState.WANTED;
+		}else if(stateWord.indexOf('在')>=0) {
+			state = DoubanSubjectState.DOING;
+		}else if(stateWord.indexOf('过')>=0) {
+			state = DoubanSubjectState.HAS;
+		}else {
+			state = DoubanSubjectState.NOT;
+		}
+		return state;
+
 	}
 }

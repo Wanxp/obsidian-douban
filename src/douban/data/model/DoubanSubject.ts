@@ -1,3 +1,5 @@
+import {UserStateSubject} from "@App/data/model/UserStateSubject";
+
 export default class DoubanSubject {
 	id: string;
 	title: string;
@@ -9,6 +11,7 @@ export default class DoubanSubject {
 	publisher: string;
 	datePublished: Date;
 	genre: string[];
+	userState?: UserStateSubject;
 }
 
 const ParameterMap: Map<string, string> = new Map([

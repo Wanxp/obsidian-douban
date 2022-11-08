@@ -1,6 +1,3 @@
-import {PersonNameMode} from "./Constsant";
-import {DoubanPluginSetting} from "@App/setting/model/DoubanPluginSetting";
-
 
 
 export const doubanHeaders = {

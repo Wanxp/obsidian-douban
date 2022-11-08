@@ -150,7 +150,6 @@ export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: S
 				const loginModel = new DoubanLogoutModel(containerEl, manager);
 				await loginModel.doLogout();
 				button.setDisabled(false);
-				// manager.updateSetting('loginCookiesContent', '');
 			});
 	});
 }
