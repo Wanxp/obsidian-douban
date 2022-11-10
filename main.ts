@@ -41,7 +41,7 @@ export default class DoubanPlugin extends Plugin {
 			}
 			this.showStatus('140205', extract.title);
 		} catch (e) {
-			this.showStatus('140206', e.message);
+			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
 		} finally {
 			this.clearStatusBarDelay();
 		}
@@ -77,7 +77,7 @@ export default class DoubanPlugin extends Plugin {
 			this.showStatus('140202', resultList.length.toString());
 			new DoubanFuzzySuggester(this, context).showSearchList(resultList);
 		} catch (e) {
-			this.showStatus('140206', e.message);
+			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
 		} finally {
 			this.clearStatusBarDelay();
 		}
@@ -111,14 +111,14 @@ export default class DoubanPlugin extends Plugin {
 			id: "search-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNote({mode: SearchHandleMode.FOR_CREATE, settings: this.settings}),
+				this.getDoubanTextForCreateNewNote({mode: SearchHandleMode.FOR_CREATE, settings: this.settings, userComponent: this.userComponent}),
 		});
 
 		this.addCommand({
 			id: "search-douban-by-current-file-name",
 			name: i18nHelper.getMessage("110001"),
 			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForActiveFile({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor}),
+				this.getDoubanTextForActiveFile({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor, userComponent: this.userComponent}),
 		});
 
 
@@ -126,7 +126,7 @@ export default class DoubanPlugin extends Plugin {
 			id: "search-douban-and-input-current-file",
 			name: i18nHelper.getMessage("110002"),
 			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForSearchTerm({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor}),
+				this.getDoubanTextForSearchTerm({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor, userComponent: this.userComponent}),
 		});
 		this.settingsManager = new SettingsManager(app, this);
 		this.userComponent = new UserComponent(this.settingsManager);

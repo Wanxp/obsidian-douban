@@ -78,7 +78,7 @@ export default class UserComponent {
 		return request(requestUrlParam)
 			.then(load)
 			.then(this.getUserInfo)
-			.catch(e => log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString())));
+			.catch(e => log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString()), e));
 			;
 	};
 

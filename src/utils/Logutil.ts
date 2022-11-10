@@ -3,15 +3,22 @@ import {i18nHelper} from "src/lang/helper";
 
 class Logger {
 
-	public error(e: any): any {
+	public error(msg: any, e:any): any {
+		new Notice(msg);
+		console.log(`Douban Plugin error: ${msg}`);
+		console.error(e);
+		return e;
+	}
+
+	public notice(e: any): any {
 		new Notice(e);
-		console.log(`Douban Plugin error: ${e}`);
+		console.error(`Douban Plugin notice: ${e}`);
 		return e;
 	}
 
 	public warn(e: any): any {
 		new Notice(e);
-		console.log(`Douban Plugin error: ${e}`);
+		console.warn(`Douban Plugin error: ${e}`);
 		return e;
 	}
 

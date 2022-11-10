@@ -24,6 +24,19 @@ export default {
 
 	'100101': `Login Douban`,
 	'100111': `Douban login info Expired, please login again`,
+	'100113': `Could not replace user info, please login again`,
+	'100120': `Login Success`,
+	'100121': `Please login`,
+	'100122': `Nickname`,
+	'100123': `DoubanID`,
+	'100124': `Nickname`,
+	'100125': `You can use your rating and reading status after logging in, see the last for specific variables.`,
+
+	'100126': `User Info`,
+	'100128': `Logout`,
+	'100129': `You have not login Douban, please login in computer first! After login, you can use your rating and reading status, see the last for specific variables.`,
+	'100130': `Login`,
+	'100131': `Login Douban`,
 
 
 	'1210': `Basic Setting`,
@@ -131,6 +144,7 @@ export default {
 
 	'121901': `Copy default template content to clipboard`,
 	'121902': `Reset to default value`,
+	'121903': `Copy default template content (that your state in object) to clipboard`,
 
 
 
@@ -336,6 +350,49 @@ export default {
 	'330101': `今日日期`,
 	'330102': `当前时间`,
 
+
+	'500000': `UNKNOWN`,
+	'500101': `NOT`,
+	'500102': `WANTED`,
+	'500103': `DOING`,
+	'500104': `DONE`,
+
+	'500201': `NOT`,
+	'500202': `WANTED`,
+	'500203': `DOING`,
+	'500204': `DONE`,
+
+	'500301': `NOT`,
+	'500302': `WANTED`,
+	'500303': `DOING`,
+	'500304': `DONE`,
+
+	'500401': `NOT`,
+	'500402': `WANTED`,
+	'500403': `DOING`,
+	'500404': `DONE`,
+
+	'500501': `NOT`,
+	'500502': `WANTED`,
+	'500503': `DOING`,
+	'500504': `DONE`,
+
+	'500601': `NOT`,
+	'500602': `WANTED`,
+	'500603': `DOING`,
+	'500604': `DONE`,
+
+	'500701': `NOT`,
+	'500702': `WANTED`,
+	'500703': `DOING`,
+	'500704': `DONE`,
+
+	'160225': `You can use those variables in your template after login. `,
+	'160226': `The tags that I tag for subject`,
+	'160227': `The rate that I rate to subject. (1-5)`,
+	'160228': `My state at book-reading/video-watching.`,
+	'160229': `Comment`,
+	'160230': `Rate Date`,
 
 	'ALL': `all`,
 	'MOVIE': `movie`,

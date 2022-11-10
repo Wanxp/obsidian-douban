@@ -8,7 +8,6 @@ import {CheerioAPI, load} from "cheerio";
 import YamlUtil from "../../../utils/YamlUtil";
 import {
 	BasicConst,
-	DoubanSubjectState,
 	PersonNameMode,
 	SearchHandleMode,
 	SupportType,
@@ -20,7 +19,8 @@ import HandleResult from "@App/data/model/HandleResult";
 import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
 import StringUtil from "../../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
-import {UserStateSubject} from "@App/data/model/UserStateSubject";
+import {DoubanUserParameter, UserStateSubject} from "@App/data/model/UserStateSubject";
+import {DoubanSubjectState, DoubanSubjectStateRecords} from "../../../constant/DoubanUserState";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -32,7 +32,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
-		let template: string = await this.getTemplate(context);
+		let template: string = await this.getTemplate(extract, context);
 		let frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
 		let frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
 		let frontMatter: string = '';
@@ -154,7 +154,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				.error(
 					i18nHelper.getMessage('130101')
 						.replace('{0}',  e.toString())
-				));
+				, e));
 		;
 
 	}
@@ -234,7 +234,28 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll(DoubanParameter.CURRENT_TIME, moment(new Date()).format(context.settings.timeFormat))
 			.replaceAll(DoubanParameter.GENRE, this.handleSpecialContent(extract.genre, textMode, context))
 		;
+		resultContent = this.parseUserInfo(resultContent, extract, context, textMode);
 		return this.parseText(resultContent, extract, context, textMode);
+	}
+
+	private parseUserInfo(resultContent: string, extract: T, context: HandleContext, textMode: TemplateTextMode) {
+		const userState = extract.userState;
+		if ((resultContent.indexOf(DoubanUserParameter.MY_TAGS) >= 0 ||
+			resultContent.indexOf(DoubanUserParameter.MY_RATE) >= 0 ||
+			resultContent.indexOf(DoubanUserParameter.MY_STATE) >= 0 ||
+			resultContent.indexOf(DoubanUserParameter.MY_COMMENT) >= 0 ||
+			resultContent.indexOf(DoubanUserParameter.MY_COLLECTION_DATE) >= 0 ) && !this.doubanPlugin.userComponent.isLogin()) {
+			log.warn(i18nHelper.getMessage('100113'));
+			return resultContent;
+		}
+		if (!userState || !userState.collectionDate) {
+			return resultContent;
+		}
+		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(userState.tags, textMode, context))
+			.replaceAll(DoubanUserParameter.MY_RATE, this.handleSpecialContent(userState.rate, textMode))
+			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
+			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
+			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, moment(new Date()).format(context.settings.dateFormat))
 	}
 
 	/**
@@ -286,15 +307,18 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return templateKey;
 	}
 
-	private async getTemplate(context: HandleContext): Promise<string> {
+	private async getTemplate(extract: T, context: HandleContext): Promise<string> {
 		const tempKey: TemplateKey = this.getTemplateKey();
 		const templatePath: string = context.settings[tempKey];
-
+		const useUserState:boolean = context.userComponent.isLogin() &&
+			extract.userState &&
+			extract.userState.collectionDate != null  &&
+			extract.userState.collectionDate != undefined;
 		// @ts-ignore
 		if (!templatePath || StringUtil.isBlank(templatePath)) {
-			return getDefaultTemplateContent(tempKey);
+			return getDefaultTemplateContent(tempKey, useUserState);
 		}
-		const defaultContent = getDefaultTemplateContent(tempKey);
+		const defaultContent = getDefaultTemplateContent(tempKey, useUserState);
 		let firstLinkpathDest: TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 		if (!firstLinkpathDest) {
 			return defaultContent;
@@ -338,11 +362,30 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}else if(stateWord.indexOf('在')>=0) {
 			state = DoubanSubjectState.DOING;
 		}else if(stateWord.indexOf('过')>=0) {
-			state = DoubanSubjectState.HAS;
+			state = DoubanSubjectState.DONE;
 		}else {
-			state = DoubanSubjectState.NOT;
+			state = DoubanSubjectState.HAVE_NOT;
 		}
 		return state;
 
+	}
+
+	private getUserStateName(state: DoubanSubjectState): string {
+		if (!state) {
+			return DoubanSubjectStateRecords.ALL.UNKNOWN;
+		}
+		let v = DoubanSubjectStateRecords[this.getSupportType()];
+		switch (state) {
+			case DoubanSubjectState.WANTED:
+				return v.WANTED;
+			case DoubanSubjectState.DOING:
+				return v.DOING;
+			case DoubanSubjectState.DONE:
+				return v.DONE;
+			case DoubanSubjectState.HAVE_NOT:
+				return v.HAVE_NOT;
+			default:
+				return v.UNKNOWN;
+		}
 	}
 }

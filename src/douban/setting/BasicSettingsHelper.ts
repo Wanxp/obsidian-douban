@@ -118,9 +118,9 @@ export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager
 
 
 export function constructLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
-	new Setting(containerEl).setName('登录豆瓣').addButton((button) => {
+	new Setting(containerEl).setName(i18nHelper.getMessage('100131')).addButton((button) => {
 		return button
-			.setButtonText('登录')
+			.setButtonText(i18nHelper.getMessage('100130'))
 			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
@@ -134,16 +134,17 @@ export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: S
 	const user: User = manager.plugin.userComponent.getUser();
 	let userDom = new DocumentFragment();
 	userDom.createDiv().innerHTML =
-		`已登录<br>
-豆瓣ID: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
-		昵称: ${user.name}`;
+		`${i18nHelper.getMessage('100120')}<br>
+${i18nHelper.getMessage('100123')}: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
+		${i18nHelper.getMessage('100124')}: ${user.name}<br>
+${i18nHelper.getMessage('100125')}`;
 
 	new Setting(containerEl)
-		.setName('豆瓣用户信息')
+		.setName(i18nHelper.getMessage('100126'))
 		.setDesc(userDom)
 		.addButton((button) => {
 		return button
-			.setButtonText('登出')
+			.setButtonText(i18nHelper.getMessage('100128'))
 			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
@@ -156,17 +157,24 @@ export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: S
 
 function showMobileLogin(containerEl: HTMLElement, manager: SettingsManager) {
 	new Setting(containerEl)
-		.setName('豆瓣用户信息')
-		.setDesc('豆瓣未登录，请先在电脑端登录！')
+		.setName(i18nHelper.getMessage('100126'))
+		.setDesc(i18nHelper.getMessage('100129'))
 }
 
 function showMobileLogout(containerEl: HTMLElement, manager: SettingsManager) {
+	const user: User = manager.plugin.userComponent.getUser();
+	let userDom = new DocumentFragment();
+	userDom.createDiv().innerHTML =
+		`已登录<br>
+豆瓣ID: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
+		昵称: ${user.name}<br>
+登录后导入参数可使用你的评分以及阅读状态等,具体可用参数见最后.`;
 	new Setting(containerEl)
-		.setName('豆瓣用户信息')
-		.setDesc('已登录')
+		.setName(i18nHelper.getMessage('100126'))
+		.setDesc(userDom)
 		.addButton((button) => {
 			return button
-				.setButtonText('登出')
+				.setButtonText(i18nHelper.getMessage('100128'))
 				.setCta()
 				.onClick(async () => {
 					manager.updateSetting('loginCookiesContent', '');

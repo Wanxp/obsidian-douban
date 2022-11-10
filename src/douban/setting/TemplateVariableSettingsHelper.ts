@@ -253,4 +253,22 @@ ${i18nHelper.getMessage('122004')}
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('122002'))
 		.setDesc(extraVariablesTable);
+
+
+	const userInfoVariables = new DocumentFragment();
+	userInfoVariables.createDiv().innerHTML = `
+${i18nHelper.getMessage('160225')}
+<br>
+<strong>myTags</strong> → ${i18nHelper.getMessage('160226')}<br>
+<strong>myRate</strong> → ${i18nHelper.getMessage('160227')}<br>
+<strong>myState</strong> → ${i18nHelper.getMessage('160228')}<br>
+<strong>myComment</strong> → ${i18nHelper.getMessage('160229')}<br>
+<strong>myCollectionDate</strong> → ${i18nHelper.getMessage('160230')}<br>
+
+
+`
+	;
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('122002'))
+		.setDesc(userInfoVariables);
 }

@@ -46,7 +46,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		try {
 			this.open();
 		} catch (e) {
-			log.error(e);
+			log.error(e.toString(), e);
 		}
 	}
 

@@ -122,11 +122,164 @@ desc: {{desc}}
 `,
 }
 
+export const DEFAULT_TEMPLATE_CONTENT_WITH_STATE = {
+	movieTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+score: {{score}}
+myRate: {{myRate}}
+originalTitle: {{originalTitle}}
+genre: {{genre}}
+datePublished: {{datePublished}}
+director: {{director}}
+actor: {{actor}}
+author: {{author}}
+tags: {{type}}, {{myTags}}
+state: {{myState}}
+url: {{url}}
+createTime: {{currentDate}} {{currentTime}}
+collectionDate: {{myCollectionDate}}
+desc: {{desc}}
+---
+
+![image]({{image}})
+
+Comment: 
+---
+{{myComment}}
+`,
+	bookTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+subTitle: {{subTitle}}
+originalTitle: {{originalTitle}}
+series: {{series}}
+type: {{type}}
+author: {{author}}
+score: {{score}}
+myRate: {{myRate}}
+datePublished: {{datePublished}}
+translator: {{translator}}
+publisher: {{publisher}}
+producer: {{producer}}
+isbn: {{isbn}}
+url: {{url}}
+totalPage: {{totalPage}}
+price: {{price}}
+tags: Book, {{myTags}}
+state: {{myState}}
+binding: {{binding}}
+createTime: {{currentDate}} {{currentTime}}
+collectionDate: {{myCollectionDate}}
+desc: {{desc}}
+---
+
+![image|150]({{image}})
+
+Comment: 
+---
+{{myComment}}
+
+{{menu}}
+`,
+	musicTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+actor: {{actor}}
+score: {{score}}
+myRate: {{myRate}}
+genre: {{genre}}
+medium: {{medium}}
+albumType: {{albumType}}
+datePublished: {{datePublished}}
+publisher: {{publisher}}
+barcode: {{barcode}}
+url: {{url}}
+records: {{records}}
+tags: Music, {{myTags}}
+state: {{myState}}
+createTime: {{currentDate}} {{currentTime}}
+collectionDate: {{myCollectionDate}}
+desc: {{desc}}
+---
+
+![image|150]({{image}})
+`,
+	noteTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}  
+author: {{author}}
+authorUrl: {{authorUrl}}
+dateTimePublished: {{datePublished}} {{timePublished}}
+url: {{url}}
+tags: Article
+createTime: {{currentDate}} {{currentTime}}
+desc: {{desc}}
+---
+
+{{content}}
+`,
+	gameTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+aliases: {{aliases}}
+type: {{type}}  
+score: {{score}}
+myRate: {{myRate}}
+dateTimePublished: {{datePublished}}
+publisher: {{publisher}}
+genre: {{genre}}
+developer: {{developer}}
+platform: {{platform}}
+url: {{url}}
+tags: Game, {{myTags}}
+state: {{myState}}
+createTime: {{currentDate}} {{currentTime}}
+collectionDate: {{myCollectionDate}}
+desc: {{desc}}
+---
+
+![image]({{image}})	
+
+Comment: 
+---
+{{myComment}}
+`,teleplayTemplateFileContent: `---
+doubanId: {{id}}
+title: {{title}}
+type: {{type}}
+score: {{score}}
+myRate: {{myRate}}
+originalTitle: {{originalTitle}}
+genre: {{genre}}
+datePublished: {{datePublished}}
+director: {{director}}
+actor: {{actor}}
+author: {{author}}
+tags: {{type}}, {{myTags}}
+state: {{myState}}
+url: {{url}}
+createTime: {{currentDate}} {{currentTime}}
+collectionDate: {{myCollectionDate}}
+desc: {{desc}}
+---
+
+![image]({{image}})
+
+Comment: 
+---
+{{myComment}}
+`,
+}
+
 /**
  * 获取默认的文档内容
  * @param key
  */
-export function getDefaultTemplateContent(key: TemplateKey): string {
+export function getDefaultTemplateContent(key: TemplateKey, useStateTemplate: boolean = true): string {
 	// @ts-ignore
-	return DEFAULT_TEMPLATE_CONTENT[key + "Content"];
+	return useStateTemplate ? DEFAULT_TEMPLATE_CONTENT_WITH_STATE[key + "Content"] : DEFAULT_TEMPLATE_CONTENT[key + "Content"];
 }

@@ -104,7 +104,7 @@ export default class FileHandler {
 			const leaf = this._app.workspace.splitLeafOrActive();
 			await leaf.openFile(File);
 		} catch (error) {
-			log.error(error.toString());
+			log.error(error.toString(), error);
 		}
 	}
 
@@ -124,7 +124,7 @@ export default class FileHandler {
 				err
 			);
 			//TODO i18n
-			log.error(i18nHelper.getMessage('110202').replace('{0}', normalizedTemplatePath ?? ''));
+			log.error(i18nHelper.getMessage('110202').replace('{0}', normalizedTemplatePath ?? ''), err);
 			return "";
 		}
 	}

@@ -45,11 +45,20 @@ export function createFileSelectionSetting({name, desc, placeholder, key, manage
 		});
 		setting.addExtraButton((button) => {
 			button
+				.setIcon('document')
+				.setTooltip(i18nHelper.getMessage('121903'))
+				.onClick(async () => {
+					// @ts-ignore
+					navigator.clipboard.writeText(getDefaultTemplateContent(key))
+				});
+		});
+		setting.addExtraButton((button) => {
+			button
 				.setIcon('copy')
 				.setTooltip(i18nHelper.getMessage('121901'))
 				.onClick(async () => {
 					// @ts-ignore
-					navigator.clipboard.writeText(getDefaultTemplateContent(key))
+					navigator.clipboard.writeText(getDefaultTemplateContent(key, false))
 				});
 		});
 
