@@ -73,6 +73,36 @@ export default class FileHandler {
 	 * A new markdown file will be created at the given file path (`input`)
 	 * in the specified parent folder (`this.folder`)
 	 */
+	async creatAttachmentWithData(originalFilePath: string, data:ArrayBuffer): Promise<void> {
+		const {vault} = this._app;
+		const {adapter} = vault;
+		const prependDirInput = FileUtil.join("", originalFilePath);
+		const {dir, name} = FileUtil.parse(prependDirInput);
+		const filePath = FileUtil.join(dir, `${name}`);
+
+		try {
+			const fileExists = await adapter.exists(filePath);
+			if (fileExists) {
+				// If the file already exists, respond with error
+				// throw new Error(i18nHelper.getMessage('110201').replace('{0}', filePath??''));
+				return ;
+			}
+			if (dir !== '') {
+				// If `input` includes a directory part, create it
+				await this.createDirectory(dir);
+			}
+			await vault.createBinary(filePath, data);
+			// Create the file and open it in the active leaf
+		} catch (error) {
+			log.error(error.toString(), error);
+		}
+	}
+
+	/**
+	 * Handles creating the new note
+	 * A new markdown file will be created at the given file path (`input`)
+	 * in the specified parent folder (`this.folder`)
+	 */
 	async createNewNote(originalFilePath: string): Promise<void> {
 		this.createNewNoteWithData(originalFilePath, '');
 	}

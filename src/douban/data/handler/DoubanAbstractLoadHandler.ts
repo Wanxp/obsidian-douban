@@ -33,6 +33,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
 		let template: string = await this.getTemplate(extract, context);
+		await this.saveImage(extract, context);
 		let frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
 		let frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
 		let frontMatter: string = '';
@@ -386,6 +387,22 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				return v.HAVE_NOT;
 			default:
 				return v.UNKNOWN;
+		}
+	}
+
+	private async saveImage(extract: T, context: HandleContext) {
+		if (!extract.image || !context.settings.cacheImage) {
+			return;
+		}
+		let image = extract.image;
+		const filename = image.split('/').pop();
+		let folder = context.settings.attachmentPath;
+		if (!folder) {
+			folder = DEFAULT_SETTINGS.attachmentPath;
+		}
+		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename);
+		if (success) {
+			extract.image = filepath;
 		}
 	}
 }

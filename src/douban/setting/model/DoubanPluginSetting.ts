@@ -18,5 +18,6 @@ export interface DoubanPluginSetting {
 	statusBar: boolean,
 	customProperties: CustomProperty[],
 	loginCookiesContent: string,
-
+	cacheImage: boolean,
+	attachmentPath: string,
 }

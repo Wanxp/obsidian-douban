@@ -37,6 +37,7 @@ export default {
 	'100129': `You have not login Douban, please login in computer first! After login, you can use your rating and reading status, see the last for specific variables.`,
 	'100130': `Login`,
 	'100131': `Login Douban`,
+	'100132': `Load Douban Login Page Failed`,
 
 
 	'1210': `Basic Setting`,
@@ -130,6 +131,13 @@ export default {
 	'121401': `Status Bar`,
 	'121402': `Display status bar when import data ?`,
 
+	'121430': `Save Attachment File`,
+	'121431': `Save attachment file to local disk, such as image ?`,
+	'121432': `Attachment folder`,
+	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault.`,
+	'121434': `assets`,
+
+
 	'121501': `Note folder`,
 	'121502': `Nodes created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. `,
 	'121503': `Default Folder`,
@@ -175,6 +183,7 @@ export default {
 	'122002': `Extra Variables`,
 	'122003': `Basic Variables must has value, Extra Variables can be empty`,
 	'122004': `To use the template variables, you need to wrap them in double curly brackets. For example, {{title}} will be replaced with the title of the note.`,
+	'122010': `My State Variables`,
 
 
 

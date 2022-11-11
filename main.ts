@@ -17,6 +17,7 @@ import { DoubanPluginSetting } from "@App/setting/model/DoubanPluginSetting";
 import {DEFAULT_SETTINGS} from "./src/constant/DefaultSettings";
 import UserComponent from "@App/user/UserComponent";
 import SettingsManager from "@App/setting/SettingsManager";
+import NetFileHandler from "./src/net/NetFileHandler";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -25,6 +26,7 @@ export default class DoubanPlugin extends Plugin {
 	public fileHandler: FileHandler;
 	public userComponent: UserComponent;
 	public settingsManager: SettingsManager;
+	public netFileHandler: NetFileHandler;
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
@@ -111,28 +113,39 @@ export default class DoubanPlugin extends Plugin {
 			id: "search-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNote({mode: SearchHandleMode.FOR_CREATE, settings: this.settings, userComponent: this.userComponent}),
+				this.getDoubanTextForCreateNewNote({mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
+					userComponent: this.userComponent,
+				netFileHandler: this.netFileHandler}),
+		});
+
+		this.addCommand({
+			id: "search-douban-and-input-current-file",
+			name: i18nHelper.getMessage("110002"),
+			editorCallback: (editor: Editor) =>
+				this.getDoubanTextForSearchTerm({mode: SearchHandleMode.FOR_REPLACE,
+					settings: this.settings,
+					editor: editor,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler}),
 		});
 
 		this.addCommand({
 			id: "search-douban-by-current-file-name",
 			name: i18nHelper.getMessage("110001"),
 			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForActiveFile({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor, userComponent: this.userComponent}),
+				this.getDoubanTextForActiveFile({mode: SearchHandleMode.FOR_REPLACE,
+					settings: this.settings,
+					editor: editor,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler}),
 		});
 
-
-		this.addCommand({
-			id: "search-douban-and-input-current-file",
-			name: i18nHelper.getMessage("110002"),
-			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForSearchTerm({mode: SearchHandleMode.FOR_REPLACE, settings: this.settings, editor: editor, userComponent: this.userComponent}),
-		});
 		this.settingsManager = new SettingsManager(app, this);
 		this.userComponent = new UserComponent(this.settingsManager);
-
+		this.netFileHandler = new NetFileHandler(this.fileHandler);
 		if (this.userComponent.needLogin()) {
-			this.userComponent.loginByCookie();
+			await this.userComponent.loginByCookie();
 		}
 
 		this.addSettingTab(new DoubanSettingTab(this.app, this));

@@ -57,7 +57,7 @@ export default class DoubanLoginModel {
 		try {
 			await this.modal.loadURL('https://accounts.douban.com/passport/login');
 		} catch (error) {
-			log.error('加载豆瓣登录页面失败')
+			log.error(i18nHelper.getMessage('100101'), error)
 		}
 	}
 

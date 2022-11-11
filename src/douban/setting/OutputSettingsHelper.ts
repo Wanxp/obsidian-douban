@@ -7,8 +7,14 @@ import SettingsManager from "@App/setting/SettingsManager";
 
 export function constructOutUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1220') });
+
+	new Setting(containerEl);
+	let attachmentFileSetting = containerEl.createDiv({ cls: 'settings-item-attachment' });
+	constructAttachmentFileSettingsUI(attachmentFileSetting, manager);
+
 	new Setting(containerEl).then(createFolderSelectionSetting({name: '121501', desc: '121502', placeholder: '121503', key: 'dataFilePath', manager: manager}));
 	let outfolder = containerEl.createDiv({ cls: 'settings-item' });
+
 	constructOutFolderUI(outfolder, manager);
 
 	new Setting(containerEl)
@@ -75,4 +81,26 @@ export function constructOutFolderUI(containerEl: HTMLElement, manager: Settings
 				constructOutFolderUI(containerEl, manager)
 			});
 	})
+}
+
+
+export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	containerEl.empty();
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('121430'))
+		.setDesc(i18nHelper.getMessage('121431'))
+		.addToggle((toggleComponent) => {
+			toggleComponent
+				// .setTooltip(i18nHelper.getMessage('121403'))
+				.setValue(manager.plugin.settings.cacheImage)
+				.onChange(async (value) => {
+					manager.plugin.settings.cacheImage = value;
+					await manager.plugin.saveSettings();
+					constructAttachmentFileSettingsUI(containerEl, manager);
+				});
+		});
+
+	if(manager.plugin.settings.cacheImage) {
+		new Setting(containerEl).then(createFolderSelectionSetting({name: '121432', desc: '121433', placeholder: '121434', key: 'attachmentPath', manager: manager}));
+	}
 }

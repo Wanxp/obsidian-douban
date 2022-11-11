@@ -5,6 +5,7 @@ import SettingsManager from "@App/setting/SettingsManager";
 import DoubanLoginModel from "@App/component/DoubanLoginModel";
 import DoubanLogoutModel from "@App/component/DoubanLogoutModel";
 import User from "@App/user/User";
+import {createFolderSelectionSetting} from "@App/setting/TemplateSettingHelper";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
@@ -94,6 +95,8 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 					await manager.plugin.saveSettings();
 				});
 		});
+
+
 }
 
 export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
@@ -165,10 +168,10 @@ function showMobileLogout(containerEl: HTMLElement, manager: SettingsManager) {
 	const user: User = manager.plugin.userComponent.getUser();
 	let userDom = new DocumentFragment();
 	userDom.createDiv().innerHTML =
-		`已登录<br>
-豆瓣ID: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
-		昵称: ${user.name}<br>
-登录后导入参数可使用你的评分以及阅读状态等,具体可用参数见最后.`;
+		`${i18nHelper.getMessage('100120')}<br>
+${i18nHelper.getMessage('100123')}: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
+		${i18nHelper.getMessage('100124')}: ${user.name}<br>
+${i18nHelper.getMessage('100125')}`;
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('100126'))
 		.setDesc(userDom)

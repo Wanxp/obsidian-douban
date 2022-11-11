@@ -269,6 +269,6 @@ ${i18nHelper.getMessage('160225')}
 `
 	;
 	new Setting(containerEl)
-		.setName(i18nHelper.getMessage('122002'))
+		.setName(i18nHelper.getMessage('122010'))
 		.setDesc(userInfoVariables);
 }

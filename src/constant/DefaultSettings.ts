@@ -27,4 +27,6 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		{name: 'myType', value: 'teleplay', field: SupportType.TELEPLAY},
 	],
 	loginCookiesContent: '',
+	cacheImage: true,
+	attachmentPath: 'assets',
 }
