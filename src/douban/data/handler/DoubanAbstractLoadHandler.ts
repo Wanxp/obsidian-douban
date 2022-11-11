@@ -141,7 +141,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		};
 		request(requestUrlParam)
 			.then(load)
-			.then(this.analysisUserState)
+			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
 				let sub = this.parseSubjectFromHtml(data);
 				sub.userState = userState;
@@ -309,10 +309,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private async getTemplate(extract: T, context: HandleContext): Promise<string> {
 		const tempKey: TemplateKey = this.getTemplateKey();
 		const templatePath: string = context.settings[tempKey];
-		const useUserState:boolean = context.userComponent.isLogin() &&
+		let useUserState:boolean = context.userComponent.isLogin() &&
 			extract.userState &&
 			extract.userState.collectionDate != null  &&
 			extract.userState.collectionDate != undefined;
+
+		useUserState = useUserState ? useUserState : false;
+
 		// @ts-ignore
 		if (!templatePath || StringUtil.isBlank(templatePath)) {
 			return getDefaultTemplateContent(tempKey, useUserState);
@@ -327,9 +330,12 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 	}
 
-	analysisUserState(html: CheerioAPI): {data:CheerioAPI ,  userState: UserStateSubject} {
+	analysisUserState(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+		if (!context.userComponent.isLogin()) {
+			return {data: html, userState: null};
+		}
 		if(!html('.nav-user-account')) {
-			return null;
+			return {data: html, userState: null};
 		}
 		let rate = html(html('input#n_rating').get(0)).val();
 		let tagsStr = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).text().trim();
