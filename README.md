@@ -19,7 +19,7 @@
    </a>    
 </p>    
 
-Import Movie, Book, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)       
+Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ from Douban in [Obsidian](https://obsidian.md/)       
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息, 登录后还有个人阅读状态等信息  ![background](./doc/background.png)
 
 ---  If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
