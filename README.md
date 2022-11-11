@@ -19,7 +19,7 @@
    </a>    
 </p>    
 
-Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ from Douban in [Obsidian](https://obsidian.md/)       
+Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ from Douban in [Obsidian](https://obsidian.md/)         
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你个人的评语_ , 包含评分/发布日期/演员表等信息, 登录后还有个人阅读状态等信息  ![background](./doc/background.png)
 
 ---  If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
@@ -44,38 +44,38 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
 ## Support Field/支持的字段
 (若有缺少想导入的字段, 欢迎提issues反馈)
 
-| 字段             | 电影                 | 电视剧               | 书籍                 | 音乐                | 日记               | 游戏                | 广播 | 备注 |
-| ---------------- | -------------------- | -------------------- | -------------------- | ------------------- | ------------------ | ------------------- | ---- | ---- |
-| id               | 豆瓣ID               | 豆瓣ID               | 豆瓣ID               | 豆瓣ID              | 豆瓣ID             | 豆瓣ID              | -    |      |
-| title            | 电影名称             | 电视剧名称           | 书名                 | 音乐名              | 日记标题           | 游戏名称            | -    |      |
-| type             | 类型                 | 类型                 | 类型                 | 类型                | 类型               | 类型                | -    |      |
-| score            | 评分                 | 评分                 | 评分                 | 评分                | 评分               | 评分                | -    |      |
-| image            | 封面                 | 封面                 | 封面                 | 封面                | 图片               | 封面                | -    |      |
-| url              | 豆瓣网址             | 豆瓣网址             | 豆瓣网址             | 豆瓣网址            | 豆瓣网址           | 豆瓣网址            | -    |      |
-| desc             | 简介                 | 简介                 | 内容简介             | 简介                | 简介               | 简介                | -    |      |
-| publisher        | -                    | -                    | 出版社               | 出版者              | 发布者             | 发行商              | -    |      |
-| datePublished    | 上映日期             | 上映日期             | 出版年               | 发行时间            | 发布时间           | 发行日期            | -    |      |
-| genre            | 类型                 | 类型                 | -                    | 流派                | -                  | 类型                | -    |      |
-| currentDate      | 今日日期             | 今日日期             | 今日日期             | 今日日期            | 今日日期           | 今日日期            |      |      |
-| currentTime      | 当前时间             | 当前时间             | 当前时间             | 当前时间            | 当前时间           | 当前时间            |      |      |
-| myTags           | 我标记的标签         | 我标记的标签         | 我标记的标签         | 我标记的标签        | -                  | 我标记的标签        |      |  登录后可用    |
-| myRating         | 我的评分             | 我的评分             | 我的评分             | 我的评分            | -                  | 我的评分            |      |     登录后可用 |
-| myState          | 状态:想看/在看/看过  | 状态:想看/在看/看过  | 状态:想看/在看/看过  | 状态:想听/在听/听过 | -                  | 状态:想玩/在玩/玩过 |      |     登录后可用|
-| myComment        | 我的评语             | 我的评语             | 我的评语             | 我的评语            | -                  | 我的评语            |      |   登录后可用   |
-| myCollectionDate | 我标记的时间         | 我标记的时间         | 我标记的时间         | 我标记的时间        | -                  | 我标记的时间        |      |    登录后可用  |
-| 扩展1            | director:导演        | director:导演        | author:原作者        | actor: 表演者       | author:作者        | aliases:别名        |      |      |
-| 扩展2            | author:编剧          | author:编剧          | translator:译者      | albumType:专辑类型  | authorUrl:作者网址 | developer:开发商    |      |      |
-| 扩展3            | actor:主演           | actor:主演           | isbn:isbn            | medium:介质         | content:日记内容   | platform:平台       |      |      |
-| 扩展4            | originalTitle:原作名 | originalTitle:原作名 | originalTitle:原作名 | records:唱片数      |                    |                     |      |      |
-| 扩展5            |                      |                      | subTitle:副标题      | barcode:条形码      |                    |                     |      |      |
-| 扩展6            |                      |                      | totalPage:页数       |                     |                    |                     |      |      |
-| 扩展7            |                      |                      | series:丛书          |                     |                    |                     |      |      |
-| 扩展8            |                      |                      | menu:目录            |                     |                    |                     |      |      |
-| 扩展9            |                      |                      | price:定价           |                     |                    |                     |      |      |
-| 扩展7            |                      |                      | binding:装帧         |                     |                    |                     |      |      |
-| 扩展8            |                      |                      | producer: 出品方     |                     |                    |                     |      |      |
+| 字段             | 电影                 | 电视剧               | 书籍                 | 音乐                | 日记               | 游戏                | 广播 |
+| ---------------- | -------------------- | -------------------- | -------------------- | ------------------- | ------------------ | ------------------- | ---- |
+| id               | 豆瓣ID               | 豆瓣ID               | 豆瓣ID               | 豆瓣ID              | 豆瓣ID             | 豆瓣ID              | -    | 
+| title            | 电影名称             | 电视剧名称           | 书名                 | 音乐名              | 日记标题           | 游戏名称            | -    |   
+| type             | 类型                 | 类型                 | 类型                 | 类型                | 类型               | 类型                | -    |   
+| score            | 评分                 | 评分                 | 评分                 | 评分                | 评分               | 评分                | -    |   
+| image            | 封面                 | 封面                 | 封面                 | 封面                | 图片               | 封面                | -    |    
+| url              | 豆瓣网址             | 豆瓣网址             | 豆瓣网址             | 豆瓣网址            | 豆瓣网址           | 豆瓣网址            | -    |    
+| desc             | 简介                 | 简介                 | 内容简介             | 简介                | 简介               | 简介                | -    |    
+| publisher        | -                    | -                    | 出版社               | 出版者              | 发布者             | 发行商              | -    |    
+| datePublished    | 上映日期             | 上映日期             | 出版年               | 发行时间            | 发布时间           | 发行日期            | -    |    
+| genre            | 类型                 | 类型                 | -                    | 流派                | -                  | 类型                | -    |   
+| currentDate      | 今日日期             | 今日日期             | 今日日期             | 今日日期            | 今日日期           | 今日日期            |      |  
+| currentTime      | 当前时间             | 当前时间             | 当前时间             | 当前时间            | 当前时间           | 当前时间            |      |   
+| myTags           | 我标记的标签         | 我标记的标签         | 我标记的标签         | 我标记的标签        | -                  | 我标记的标签        |      |  
+| myRating         | 我的评分             | 我的评分             | 我的评分             | 我的评分            | -                  | 我的评分            |    
+| myState          | 状态:想看/在看/看过  | 状态:想看/在看/看过  | 状态:想看/在看/看过  | 状态:想听/在听/听过 | -                  | 状态:想玩/在玩/玩过 |      |    
+| myComment        | 我的评语             | 我的评语             | 我的评语             | 我的评语            | -                  | 我的评语            |      |  
+| myCollectionDate | 我标记的时间         | 我标记的时间         | 我标记的时间         | 我标记的时间        | -                  | 我标记的时间        |      |   
+| 扩展1            | director:导演        | director:导演        | author:原作者        | actor: 表演者       | author:作者        | aliases:别名        |      |   
+| 扩展2            | author:编剧          | author:编剧          | translator:译者      | albumType:专辑类型  | authorUrl:作者网址 | developer:开发商    |      |    
+| 扩展3            | actor:主演           | actor:主演           | isbn:isbn            | medium:介质         | content:日记内容   | platform:平台       |      |    
+| 扩展4            | originalTitle:原作名 | originalTitle:原作名 | originalTitle:原作名 | records:唱片数      |                    |                     |      |   
+| 扩展5            |                      |                      | subTitle:副标题      | barcode:条形码      |                    |                     |      |   
+| 扩展6            |                      |                      | totalPage:页数       |                     |                    |                     |      |    
+| 扩展7            |                      |                      | series:丛书          |                     |                    |                     |      |    
+| 扩展8            |                      |                      | menu:目录            |                     |                    |                     |      |    
+| 扩展9            |                      |                      | price:定价           |                     |                    |                     |      |     
+| 扩展7            |                      |                      | binding:装帧         |                     |                    |                     |      |    
+| 扩展8            |                      |                      | producer: 出品方     |                     |                    |                     |      |     
 
-
+- 注: myTags, myRating, myState, myComment, myCollectionDate 参数均为在插件中登录后可用
 
 
 ## How to use
