@@ -45,7 +45,7 @@ export function createFileSelectionSetting({name, desc, placeholder, key, manage
 		});
 		setting.addExtraButton((button) => {
 			button
-				.setIcon('document')
+				.setIcon('copy')
 				.setTooltip(i18nHelper.getMessage('121903'))
 				.onClick(async () => {
 					// @ts-ignore
@@ -54,7 +54,7 @@ export function createFileSelectionSetting({name, desc, placeholder, key, manage
 		});
 		setting.addExtraButton((button) => {
 			button
-				.setIcon('copy')
+				.setIcon('document')
 				.setTooltip(i18nHelper.getMessage('121901'))
 				.onClick(async () => {
 					// @ts-ignore

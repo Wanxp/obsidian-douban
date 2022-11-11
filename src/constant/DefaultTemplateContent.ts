@@ -128,7 +128,7 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
-myRate: {{myRate}}
+myRating: {{myRating}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}
@@ -158,7 +158,7 @@ series: {{series}}
 type: {{type}}
 author: {{author}}
 score: {{score}}
-myRate: {{myRate}}
+myRating: {{myRating}}
 datePublished: {{datePublished}}
 translator: {{translator}}
 publisher: {{publisher}}
@@ -189,7 +189,7 @@ title: {{title}}
 type: {{type}}
 actor: {{actor}}
 score: {{score}}
-myRate: {{myRate}}
+myRating: {{myRating}}
 genre: {{genre}}
 medium: {{medium}}
 albumType: {{albumType}}
@@ -228,7 +228,7 @@ title: {{title}}
 aliases: {{aliases}}
 type: {{type}}  
 score: {{score}}
-myRate: {{myRate}}
+myRating: {{myRating}}
 dateTimePublished: {{datePublished}}
 publisher: {{publisher}}
 genre: {{genre}}
@@ -252,7 +252,7 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
-myRate: {{myRate}}
+myRating: {{myRating}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}

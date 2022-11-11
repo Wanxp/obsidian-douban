@@ -15,7 +15,6 @@ export default class DoubanLoginModel {
 	constructor(containerEl: HTMLElement, settingsManager: SettingsManager) {
 		this.containerEl = containerEl;
 		this.settingsManager = settingsManager;
-		log.info('初始化登录页面');
 
 		const { remote } = require('electron');
 		const { BrowserWindow: RemoteBrowserWindow } = remote;

@@ -10,7 +10,7 @@ export interface UserStateSubject {
 
 export const DoubanUserParameter = {
 	MY_TAGS: '{{myTags}}',
-	MY_RATE: '{{myRate}}',
+	MY_RATING: '{{myRating}}',
 	MY_STATE: '{{myState}}',
 	MY_COMMENT: '{{myComment}}',
 	MY_COLLECTION_DATE: '{{myCollectionDate}}',

@@ -20,7 +20,7 @@
 </p>  
 
 Import Movie, Book, Music, Teleplay, Note, Game even Broadcast Data from Douban in [Obsidian](https://obsidian.md/)     
-在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息  
+在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的电影/书籍/音乐/电视剧/日记/游戏甚至是广播, 包含评分/发布日期/演员表等信息, 登录后还有个人阅读状态等信息  
 ![background](./doc/background.png)
   
 ---  
@@ -29,6 +29,19 @@ If you want some features or have any questions about this plugin, create issues
 
 - [Bugs, Issues, & Feature Requests](https://github.com/Wanxp/obsidian-douban/issues)
 - [Development Roadmap](https://github.com/users/Wanxp/projects/1)
+
+## Target/功能
+- [x] Import Movie/导入电影
+- [x] Import Teleplay/导入电视剧
+- [x] Import Book/导入书籍
+- [x] Import Music/导入音乐
+- [x] Import Note/导入日记
+- [x] Import Game/导入游戏
+- [x] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
+- [x] Attachment Files/支持保存封面至本地
+- [x] Custom Variables/支持自定义参数
+- [ ] Broadcast/广播
+
 
 ## Support Field/支持的字段
 (若有缺少想导入的字段, 欢迎提issues反馈)
@@ -60,6 +73,8 @@ If you want some features or have any questions about this plugin, create issues
 | 扩展7         |                      |                      | binding:装帧        |                    |                    |                  |      |
 | 扩展8         |                      |                      | producer: 出品方     |                    |                    |                  |      |
 
+
+
 ## How to use
 ### Search
 - Search Data And Create Note
@@ -84,14 +99,8 @@ If you want some features or have any questions about this plugin, create issues
   ![Setting Example2](./doc/setting_en.gif)
 
 
-## Target
-- [x] Movie/电影
-- [x] Teleplay/电视剧
-- [x] Book/书籍
-- [x] Music/音乐
-- [x] Note/日记
-- [x] Game/游戏
-- [ ] Broadcast/广播
+
+
 
 ## How to install
 ### From Obsidian
@@ -142,7 +151,6 @@ If you want some features or have any questions about this plugin, create issues
 7. 享受开发吧
 
 ## 免责声明
-本程序没有爬取任何书影音等内容，只供技术研究使用。没有侵犯书影音作者版权和豆瓣官方利益。如有任何侵权行为，请联系我删除。
-
+1. 本程序没有爬取任何书影音等内容，只供技术研究使用。没有侵犯书影音作者版权和豆瓣官方利益。如有任何侵权行为，请联系我删除。
 ## Thanks
 

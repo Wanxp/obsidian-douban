@@ -133,7 +133,6 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	handle(url: string, context: HandleContext): void {
 		let headers = JSON.parse(this.doubanPlugin.settings.searchHeaders);
 		headers.Cookie = this.doubanPlugin.settings.loginCookiesContent;
-		console.log(JSON.stringify(headers))
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
@@ -141,7 +140,6 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			throw: true
 		};
 		request(requestUrlParam)
-			.then((response) => {console.log(response.toString());return response})
 			.then(load)
 			.then(this.analysisUserState)
 			.then(({data, userState}) => {
@@ -242,7 +240,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private parseUserInfo(resultContent: string, extract: T, context: HandleContext, textMode: TemplateTextMode) {
 		const userState = extract.userState;
 		if ((resultContent.indexOf(DoubanUserParameter.MY_TAGS) >= 0 ||
-			resultContent.indexOf(DoubanUserParameter.MY_RATE) >= 0 ||
+			resultContent.indexOf(DoubanUserParameter.MY_RATING) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_STATE) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_COMMENT) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_COLLECTION_DATE) >= 0 ) && !this.doubanPlugin.userComponent.isLogin()) {
@@ -253,7 +251,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			return resultContent;
 		}
 		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(userState.tags, textMode, context))
-			.replaceAll(DoubanUserParameter.MY_RATE, this.handleSpecialContent(userState.rate, textMode))
+			.replaceAll(DoubanUserParameter.MY_RATING, this.handleSpecialContent(userState.rate, textMode))
 			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
 			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
 			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, moment(new Date()).format(context.settings.dateFormat))
