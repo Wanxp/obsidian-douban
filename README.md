@@ -79,8 +79,8 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
 - 注: myTags, myRating, myState, myComment, myCollectionDate 参数均为在插件中登录后可用
 
 
-## How to use
-### Search
+## How to use/如何使用
+### Search/搜索
 - Search Data And Create Note  
   搜索数据并创建笔记  
   ![search_and_create](./doc/search_and_create_note.gif)
@@ -92,7 +92,7 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
   通过输入文本搜索    
   ![Search Movie By Input Text](./doc/search_by_input.gif)
 
-## Settings
+## Settings/设置
 - Setting Example1(Custom Template)      
   设置案例1(自定义模板)    
   ![Setting Example1](./doc/setting_zh.gif)
@@ -112,17 +112,22 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
 2. Search obsidian-douban
 3. Click install
 4. Enable plugin  
-   ---  ### 从Obsidian插件中心
+   
+### Manmel
+1. Download `main.js`, `manifest.json`, `styles.css` from GitHub release page
+2. Copy step1 downloaded file to your vault folder `/.obsidian/plugins/obsidian-douban/`
+3. Enable plugin in Obsidian  
+
+---
+## 如何安装
+### 从Obsidian插件中心
 1. 进入Obsidian插件中心
 2. 搜索obsidian-douban
 3. 安装
 4. 开启插件
 
-### Manmel
-1. Download `main.js`, `manifest.json`, `styles.css` from GitHub release page
-2. Copy step1 downloaded file to your vault folder `/.obsidian/plugins/obsidian-douban/`
-3. Enable plugin in Obsidian  
-   ----  ### 手动安装
+### 手动安装
+
 1. 从Github release 页面下载 `main.js`, `manifest.json`, `styles.css`
 2. 将下载的文件复制到你的Obsidian文档根目录下的`/.obsidian/plugins/obsidian-douban`路径,若不存在则新建文件夹(注意.obsidian文件夹可能是个隐藏为文件夹)
 3. 在obsidian插件中心开启当前插件功能
@@ -139,7 +144,12 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
    `npm run dev`
 6. Go to your Obsidian plugin center reload this plugin
 7. Enjoy your develop  
-   ---  1. 进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`
+
+
+---
+## 如何开发调试
+
+1. 进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`
 2. 克隆代码      
    `git clone git@github.com:Wanxp/obsidian-douban.git`
 3. 进入代码文件夹      
