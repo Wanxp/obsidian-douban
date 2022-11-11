@@ -20,7 +20,8 @@
 </p>    
 
 Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ from Douban in [Obsidian](https://obsidian.md/)         
-在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你个人的评语_ , 包含评分/发布日期/演员表等信息, 登录后还有个人阅读状态等信息  ![background](./doc/background.png)
+在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你个人的评语_ , 包含评分/发布日期/演员表等信息.   
+![background](./doc/background.png)
 
 ---  If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
 关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中.
