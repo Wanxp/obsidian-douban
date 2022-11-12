@@ -403,6 +403,10 @@ export default {
 	'160229': `Comment`,
 	'160230': `Rate Date`,
 
+
+	'500001': `Sync Config`,
+
+
 	'ALL': `all`,
 	'MOVIE': `movie`,
 	'BOOK': `book`,

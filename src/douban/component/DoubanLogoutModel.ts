@@ -26,21 +26,26 @@ export default class DoubanLogoutModel {
 			this.modal.setTitle(i18nHelper.getMessage('100101'));
 			this.modal.show();
 		});
+		this.modal.on('closed', () => {
+			constructDoubanTokenSettingsUI(this.containerEl, this.settingsManager);
+		});
 		const session = this.modal.webContents.session;
 		const filter = {
-			urls: ['https://www.douban.com/']
+			urls: ['https://www.douban.com/',
+			'https://www.douban.com/accounts/logout']
 		};
-		session.webRequest.onCompleted(filter, (details:any) => {
-			if (details.statusCode == 200) {
+		session.webRequest.onSendHeaders(filter, (details:any) => {
+			const cookies = details.requestHeaders['Cookie'];
+			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
+			if (cookies && cookies.indexOf('dbcl2') < 0) {
 				this.settingsManager.plugin.userComponent.logout();
-				constructDoubanTokenSettingsUI(this.containerEl, this.settingsManager);
-				this.modal.close();
+				this.onClose();
 			}
 		});
 	}
 
 	async doLogout() {
-		await this.modal.loadURL('https://www.douban.com/');
+		await this.modal.loadURL('https://www.douban.com/accounts/logout?source=main&ck=DfFJ');
 	}
 
 	onClose() {

@@ -153,7 +153,6 @@ ${i18nHelper.getMessage('100125')}`;
 				button.setDisabled(true);
 				const loginModel = new DoubanLogoutModel(containerEl, manager);
 				await loginModel.doLogout();
-				button.setDisabled(false);
 			});
 	});
 }
@@ -180,6 +179,7 @@ ${i18nHelper.getMessage('100125')}`;
 				.setButtonText(i18nHelper.getMessage('100128'))
 				.setCta()
 				.onClick(async () => {
+					button.setDisabled(true);
 					manager.updateSetting('loginCookiesContent', '');
 					constructDoubanTokenSettingsUI(containerEl, manager);
 				});

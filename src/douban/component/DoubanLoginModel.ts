@@ -29,6 +29,9 @@ export default class DoubanLoginModel {
 			this.modal.setTitle(i18nHelper.getMessage('100101'));
 			this.modal.show();
 		});
+		this.modal.on('closed', () => {
+			constructDoubanTokenSettingsUI(this.containerEl, this.settingsManager);
+		});
 
 		const session = this.modal.webContents.session;
 		const filter = {
@@ -40,10 +43,11 @@ export default class DoubanLoginModel {
 			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
 			if (cookieArr) {
 				let user = await settingsManager.plugin.userComponent.loginCookie(cookieArr);
-				constructDoubanTokenSettingsUI(containerEl, settingsManager);
-				this.modal.close();
+				if (user && user.login) {
+					this.onClose();
+				}
 			} else {
-				this.modal.reload();
+				this.onReload();
 			}
 		});
 	}
@@ -62,5 +66,9 @@ export default class DoubanLoginModel {
 
 	onClose() {
 		this.modal.close();
+	}
+
+	onReload() {
+		this.modal.reload();
 	}
 }

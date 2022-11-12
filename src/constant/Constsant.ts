@@ -71,6 +71,11 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 	[PersonNameMode.CH_EN_NAME]: i18nHelper.getMessage('121208'),
 }
 
+export enum SyncType {
+	MY_MOVIE= 'MY_MOVIE',
+	MY_BOOK= 'MY_BOOK',
+	BROADCAST= 'BROADCAST',
+}
 
 
 
