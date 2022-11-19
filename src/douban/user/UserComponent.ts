@@ -23,6 +23,10 @@ export default class UserComponent {
 		return this.user;
 	}
 
+	getUserId() {
+		return this.user?this.user.id:null;
+	}
+
 
 	isLogin() {
 		return this.user && this.user.login;

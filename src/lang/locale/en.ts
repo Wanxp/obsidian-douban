@@ -10,6 +10,8 @@ export default {
 	'110101': 'search douban and create file',
 	'110201': `{0} already exists`,
 	'110202': `{0} template can not read`,
+	'110103': 'sync personal data from douban',
+	'110007': `Start Sync`,
 
 
 
@@ -166,6 +168,9 @@ export default {
 	'140204': `[Obsidian Douban]: replace '{0}'`,
 	'140205': `[Obsidian Douban]: complete '{0}'`,
 	'140206': `[Obsidian Douban]: occur error '{0}'`,
+	'140301': `Douban: Syncing...`,
+	'140303': `Douban: User Info Expire, Please login again`,
+	'140302': `Douban: Sync complete`,
 
 	'150101': `Choose an item...`,
 
@@ -361,40 +366,43 @@ export default {
 
 
 	'500000': `UNKNOWN`,
-	'500101': `NOT`,
-	'500102': `WANTED`,
-	'500103': `DOING`,
-	'500104': `DONE`,
+	'500101': `not`,
+	'500102': `wish`,
+	'500103': `do`,
+	'500104': `collect`,
 
-	'500201': `NOT`,
-	'500202': `WANTED`,
-	'500203': `DOING`,
-	'500204': `DONE`,
+	'500201': `not`,
+	'500202': `wish`,
+	'500203': `do`,
+	'500204': `collect`,
 
-	'500301': `NOT`,
-	'500302': `WANTED`,
-	'500303': `DOING`,
-	'500304': `DONE`,
+	'500301': `not`,
+	'500302': `wish`,
+	'500303': `do`,
+	'500304': `collect`,
 
-	'500401': `NOT`,
-	'500402': `WANTED`,
-	'500403': `DOING`,
-	'500404': `DONE`,
+	'500401': `not`,
+	'500402': `wish`,
+	'500403': `do`,
+	'500404': `collect`,
 
-	'500501': `NOT`,
-	'500502': `WANTED`,
-	'500503': `DOING`,
-	'500504': `DONE`,
+	'500501': `not`,
+	'500502': `wish`,
+	'500503': `do`,
+	'500504': `collect`,
 
-	'500601': `NOT`,
-	'500602': `WANTED`,
-	'500603': `DOING`,
-	'500604': `DONE`,
+	'500601': `not`,
+	'500602': `wish`,
+	'500603': `do`,
+	'500604': `collect`,
 
-	'500701': `NOT`,
-	'500702': `WANTED`,
-	'500703': `DOING`,
-	'500704': `DONE`,
+	'500701': `not`,
+	'500702': `wish`,
+	'500703': `do`,
+	'500704': `collect`,
+
+	'500004': `ALL`,
+
 
 	'160225': `You can use those variables in your template after login. `,
 	'160226': `The tags that I tag for subject`,
@@ -405,6 +413,13 @@ export default {
 
 
 	'500001': `Sync Config`,
+	'504102': `My Book`,
+	'504103': `My Movie`,
+	'504104': `My Broadcast`,
+	'504105': `My Note`,
+	'504106': `My Music`,
+
+	'500110': `Replace exists or not`,
 
 
 	'ALL': `all`,

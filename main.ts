@@ -1,4 +1,4 @@
-import {Editor, Plugin} from "obsidian";
+import {Editor, Notice, Plugin} from "obsidian";
 
 import {DoubanFuzzySuggester} from "src/douban/data/search/DoubanSearchFuzzySuggestModal";
 import {DoubanSearchChooseItemHandler} from "src/douban/data/handler/DoubanSearchChooseItemHandler";
@@ -18,6 +18,9 @@ import {DEFAULT_SETTINGS} from "./src/constant/DefaultSettings";
 import UserComponent from "@App/user/UserComponent";
 import SettingsManager from "@App/setting/SettingsManager";
 import NetFileHandler from "./src/net/NetFileHandler";
+import {DoubanSyncModal} from "@App/component/DoubanSyncModal";
+import SyncHandler from "@App/sync/handler/SyncHandler";
+import {SyncConfig} from "@App/sync/model/SyncConfig";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -69,7 +72,7 @@ export default class DoubanPlugin extends Plugin {
 		let filePath = this.settings.dataFilePath;
 		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
-		this.fileHandler.createNewNoteWithData(filePath, result.content);
+		this.fileHandler.createNewNoteWithData(filePath, result.content, context.showAfterCreate);
 	}
 
 	async search(searchTerm: string, context: HandleContext) {
@@ -103,6 +106,10 @@ export default class DoubanPlugin extends Plugin {
 		new DoubanSearchModal(this.app, this, context).open();
 	}
 
+	async showSyncModal(context: HandleContext) {
+		new DoubanSyncModal(this.app, this, context).open();
+	}
+
 	async onload() {
 		await this.loadSettings();
 		if (this.settings.statusBar) {
@@ -116,7 +123,8 @@ export default class DoubanPlugin extends Plugin {
 				this.getDoubanTextForCreateNewNote({mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
-				netFileHandler: this.netFileHandler}),
+				netFileHandler: this.netFileHandler,
+				showAfterCreate:true}),
 		});
 
 		this.addCommand({
@@ -137,6 +145,16 @@ export default class DoubanPlugin extends Plugin {
 				this.getDoubanTextForActiveFile({mode: SearchHandleMode.FOR_REPLACE,
 					settings: this.settings,
 					editor: editor,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler}),
+		});
+
+		this.addCommand({
+			id: "sync-douban-import-and-create-file",
+			name: i18nHelper.getMessage("110103"),
+			callback: () =>
+				this.showSyncModal({mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler}),
 		});
@@ -179,6 +197,35 @@ export default class DoubanPlugin extends Plugin {
 			return;
 		}
 		setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
+	}
+
+	async sync(syncConfig: SyncConfig, context: HandleContext) {
+		try {
+			const result:boolean = await this.checkLogin(context);
+			if (!result) {
+				return;
+			}
+			new Notice(i18nHelper.getMessage('140301'));
+			this.showStatus('140203', syncConfig.syncType);
+			const syncHandler = new SyncHandler(this.app, this, syncConfig, context);
+			await syncHandler.sync();
+			new Notice(i18nHelper.getMessage('140302'));
+		} catch (e) {
+			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
+		} finally {
+			this.clearStatusBarDelay();
+		}
+	}
+
+	private async checkLogin(context: HandleContext):Promise<boolean> {
+		if (!context.userComponent.needLogin()) {
+			await context.userComponent.loginByCookie();
+		}
+		if (!context.userComponent.isLogin()) {
+			new Notice(i18nHelper.getMessage('140303'));
+			return false;
+		}
+		return true;
 	}
 }
 

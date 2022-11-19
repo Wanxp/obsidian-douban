@@ -1,4 +1,4 @@
-import DoubanBroadcastSubject from "./DoubanBroadcastSubject";
+import DoubanSyncSubject from "./DoubanSyncSubject";
 
-export default class DoubanBroadcastMovieSubject extends DoubanBroadcastSubject {
+export default class DoubanBroadcastMovieSubject extends DoubanSyncSubject {
 }

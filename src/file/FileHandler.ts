@@ -112,7 +112,7 @@ export default class FileHandler {
 	 * A new markdown file will be created at the given file path (`input`)
 	 * in the specified parent folder (`this.folder`)
 	 */
-	async createNewNoteWithData(originalFilePath: string, data:string): Promise<void> {
+	async createNewNoteWithData(originalFilePath: string, data:string, showAfterCreate:boolean=false): Promise<void> {
 		const {vault} = this._app;
 		const {adapter} = vault;
 		const prependDirInput = FileUtil.join("", originalFilePath);
@@ -131,8 +131,10 @@ export default class FileHandler {
 			}
 			const File = await vault.create(filePath, data);
 			// Create the file and open it in the active leaf
-			const leaf = this._app.workspace.splitLeafOrActive();
-			await leaf.openFile(File);
+			if (showAfterCreate) {
+				const leaf = this._app.workspace.splitLeafOrActive();
+				await leaf.openFile(File);
+			}
 		} catch (error) {
 			log.error(error.toString(), error);
 		}

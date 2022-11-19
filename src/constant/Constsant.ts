@@ -6,6 +6,8 @@ import {i18nHelper} from "../lang/helper";
 export const BasicConst = {
 	YAML_FRONT_MATTER_SYMBOL: '---',
 	CLEAN_STATUS_BAR_DELAY: 5000,
+	CLEAN_STATUS_BAR_DELAY_RANGE: 2000,
+
 }
 
 /**
@@ -72,10 +74,25 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 }
 
 export enum SyncType {
-	MY_MOVIE= 'MY_MOVIE',
-	MY_BOOK= 'MY_BOOK',
-	BROADCAST= 'BROADCAST',
+	movie= 'movie',
+	book= 'book',
+	broadcast= 'broadcast',
+	note= 'note',
+	music= 'music',
 }
 
+/**
+ * 同步模式选项
+ */
+export const SyncTypeRecords: { [key in SyncType]: string } = {
+	[SyncType.movie]: i18nHelper.getMessage('504103'),
+	[SyncType.book]: i18nHelper.getMessage('504102'),
+	[SyncType.broadcast]: i18nHelper.getMessage('504104'),
+	[SyncType.note]: i18nHelper.getMessage('504105'),
+	[SyncType.music]: i18nHelper.getMessage('504105'),
+}
+
+
+export const PAGE_SIZE:number = 15;
 
 

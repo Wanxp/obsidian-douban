@@ -1,4 +1,4 @@
-export default class DoubanBroadcastSubject {
+export default class DoubanSyncSubject {
 	id: string;
 	type: string;
 	title: string;

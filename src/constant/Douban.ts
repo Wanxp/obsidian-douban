@@ -7,3 +7,6 @@ export const doubanHeaders = {
 };
 
 
+export const doubanSubjectSyncListUrl = function(subjectType:string, userId:string, doType:string, start:number):string {
+	return `https://${subjectType}.douban.com/people/${userId}/${doType}?start=${start}&sort=time&rating=all&filter=all&mode=list`;
+}

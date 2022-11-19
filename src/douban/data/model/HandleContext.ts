@@ -10,4 +10,5 @@ export default interface HandleContext {
 	editor?:Editor;
 	userComponent: UserComponent;
 	netFileHandler: NetFileHandler;
+	showAfterCreate?:boolean;
 }

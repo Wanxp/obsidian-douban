@@ -35,7 +35,7 @@ export default class DoubanLoginModel {
 
 		const session = this.modal.webContents.session;
 		const filter = {
-			urls: ['https://www.douban.com/']
+			urls: ['https://www.douban.com/','https://accounts.douban.com/']
 		};
 		session.webRequest.onSendHeaders(filter, async (details:any) => {
 			const cookies = details.requestHeaders['Cookie'];

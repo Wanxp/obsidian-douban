@@ -112,7 +112,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	handleSpecialContent(value: any, textMode: TemplateTextMode = TemplateTextMode.NORMAL, context: HandleContext = null): string {
 		let result;
 		if (!value) {
-			return i18nHelper.getMessage('410101');
+			return '';
 		}
 		if (value instanceof Array) {
 			result = this.handleContentArray(value, context, textMode);
@@ -131,8 +131,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	abstract support(extract: DoubanSubject): boolean;
 
 	handle(url: string, context: HandleContext): void {
-		let headers = JSON.parse(this.doubanPlugin.settings.searchHeaders);
-		headers.Cookie = this.doubanPlugin.settings.loginCookiesContent;
+		let headers = JSON.parse(context.settings.searchHeaders);
+		headers.Cookie = context.settings.loginCookiesContent;
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
@@ -254,7 +254,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll(DoubanUserParameter.MY_RATING, this.handleSpecialContent(userState.rate, textMode))
 			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
 			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
-			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, moment(new Date()).format(context.settings.dateFormat))
+			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, moment(userState.collectionDate).format(context.settings.dateFormat))
 	}
 
 	/**
@@ -360,16 +360,16 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	public static getUserState(stateWord:string):DoubanSubjectState {
 		let state:DoubanSubjectState;
 		if(!stateWord) {
-			return DoubanSubjectState.UNKNOWN;
+			return null;
 		}
 		if(stateWord.indexOf('想')>=0 ) {
-			state = DoubanSubjectState.WANTED;
+			state = DoubanSubjectState.wish;
 		}else if(stateWord.indexOf('在')>=0) {
-			state = DoubanSubjectState.DOING;
+			state = DoubanSubjectState.do;
 		}else if(stateWord.indexOf('过')>=0) {
-			state = DoubanSubjectState.DONE;
+			state = DoubanSubjectState.collect;
 		}else {
-			state = DoubanSubjectState.HAVE_NOT;
+			state = DoubanSubjectState.not;
 		}
 		return state;
 
@@ -377,20 +377,20 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private getUserStateName(state: DoubanSubjectState): string {
 		if (!state) {
-			return DoubanSubjectStateRecords.ALL.UNKNOWN;
+			return '';
 		}
 		let v = DoubanSubjectStateRecords[this.getSupportType()];
 		switch (state) {
-			case DoubanSubjectState.WANTED:
-				return v.WANTED;
-			case DoubanSubjectState.DOING:
-				return v.DOING;
-			case DoubanSubjectState.DONE:
-				return v.DONE;
-			case DoubanSubjectState.HAVE_NOT:
-				return v.HAVE_NOT;
+			case DoubanSubjectState.wish:
+				return v.wish;
+			case DoubanSubjectState.do:
+				return v.do;
+			case DoubanSubjectState.collect:
+				return v.collect;
+			case DoubanSubjectState.not:
+				return v.not;
 			default:
-				return v.UNKNOWN;
+				return '';
 		}
 	}
 
