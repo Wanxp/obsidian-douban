@@ -19,8 +19,8 @@
    </a>    
 </p>    
 
-Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ from Douban in [Obsidian](https://obsidian.md/)         
-在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你个人的评语_ , 包含评分/发布日期/演员表等信息.   
+Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book/Music_ from Douban in [Obsidian](https://obsidian.md/)         
+在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你标记过的书影音_ , 包含你的评分/发布日期/演员表等信息.   
 ![background](./doc/background.png)
 
 ---  If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
@@ -30,16 +30,19 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Comment_ f
 - [Development Roadmap](https://github.com/users/Wanxp/projects/1)
 
 ## Target/功能
-- [x] Import Movie/导入电影
-- [x] Import Teleplay/导入电视剧
-- [x] Import Book/导入书籍
-- [x] Import Music/导入音乐
-- [x] Import Note/导入日记
-- [x] Import Game/导入游戏
-- [x] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
-- [x] Attachment Files/支持保存封面至本地
-- [x] Custom Variables/支持自定义参数
-- [ ] Broadcast/广播
+- [ ] Sync Personal Movie/同步个人看过的电影
+- [ ] Sync Personal Book/同步个人阅读过的书籍
+- [ ] Sync Personal Music/同步个人听过的音乐
+- [ ] Import Movie/导入电影
+- [ ] Import Teleplay/导入电视剧
+- [ ] Import Book/导入书籍
+- [ ] Import Music/导入音乐
+- [ ] Import Note/导入日记
+- [ ] Import Game/导入游戏
+- [ ] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
+- [ ] Attachment Files/支持保存封面至本地
+- [ ] Custom Variables/支持自定义参数
+- [x] Broadcast/广播
 
 
 ## Support Field/支持的字段
