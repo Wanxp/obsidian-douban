@@ -270,7 +270,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 	}
 
-	private async checkLogin(context: HandleContext):Promise<boolean> {
+	async checkLogin(context: HandleContext):Promise<boolean> {
 		if (!context.userComponent.needLogin()) {
 			await context.userComponent.loginByCookie();
 		}

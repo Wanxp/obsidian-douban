@@ -113,6 +113,9 @@ export class DoubanSyncModal extends Modal {
 		const syncButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110007'))
 			.onClick(async () => {
+				if(!await this.plugin.checkLogin(this.context)) {
+					return;
+				}
 				syncButton.setDisabled(true);
 				if(!this.plugin.statusHolder.startSync(syncConfig)) {
 					return;
