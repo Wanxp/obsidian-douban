@@ -48,3 +48,28 @@
 }
 
 
+.obsidian_douban_sync_config{
+	display: inline-block;
+}
+
+
+.obsidian_douban_sync_config_text{
+	vertical-align: bottom;
+}
+
+.obsidian_douban_sync_slider {
+	display: inline-block;
+	position: relative;
+	margin-left: 5px;
+	margin-bottom: 1px;
+	width: 90%;
+}
+.obsidian_douban_sync_slider.with_number {
+	display: inline-flex;
+	align-items: center;
+}
+
+
+
+
+
