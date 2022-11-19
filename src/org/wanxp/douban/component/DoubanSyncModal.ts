@@ -3,6 +3,7 @@ import {
 	ButtonComponent,
 	DropdownComponent,
 	Modal, SearchComponent, Setting,
+	TextComponent,
 	ToggleComponent
 } from "obsidian";
 
@@ -13,13 +14,15 @@ import {SyncType, SyncTypeRecords} from "../../constant/Constsant";
 import {
 	ALL,
 	DoubanSubjectStateRecords_BOOK_SYNC, DoubanSubjectStateRecords_BROADCAST_SYNC,
-	DoubanSubjectStateRecords_MOVIE_SYNC, DoubanSubjectStateRecords_NOTE_SYNC
+	DoubanSubjectStateRecords_MOVIE_SYNC, DoubanSubjectStateRecords_MUSIC_SYNC, DoubanSubjectStateRecords_NOTE_SYNC
 } from "../../constant/DoubanUserState";
 import {SyncConfig} from "../sync/model/SyncConfig";
 import {clearInterval} from "timers";
 import {statSync} from "fs";
 import {CreateTemplateSelectParams} from "../setting/model/CreateTemplateSelectParams";
 import {FolderSuggest} from "../setting/model/FolderSuggest";
+import SettingsManager from "../setting/SettingsManager";
+import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 
 export class DoubanSyncModal extends Modal {
 	plugin: DoubanPlugin;
@@ -55,7 +58,6 @@ export class DoubanSyncModal extends Modal {
 
 		const sliderDiv = contentEl.createEl('div');
 		sliderDiv.addClass('obsidian_douban_sync_slider');
-		this.showProgress(sliderDiv);
 		const controls = contentEl.createDiv("controls");
 
 		const syncButton = new ButtonComponent(controls)
@@ -72,16 +74,22 @@ export class DoubanSyncModal extends Modal {
 			});
 		cancelButton.setClass("obsidian_douban_search_button");
 		syncButton.setClass("obsidian_douban_search_button");
+		this.showProgress(sliderDiv, syncButton);
 
 		this.timer = setInterval(() => {
-			this.showProgress(sliderDiv);
+			this.showProgress(sliderDiv,syncButton);
 		}, 1000);
 	}
 
 
-	private showProgress(sliderDiv: HTMLDivElement) {
+	private showProgress(sliderDiv: HTMLDivElement, button:ButtonComponent) {
 		const {syncStatus} = this.plugin.statusHolder;
-		if (!syncStatus) {
+		if (!this.plugin.statusHolder.syncStarted) {
+			sliderDiv.innerHTML = `<p>
+    <label for="file">${i18nHelper.getMessage('110033')}</label>
+    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')} </span>
+</p>`
+			button.setDisabled(true);
 			return;
 		}
 		sliderDiv.innerHTML = `<p>
@@ -94,8 +102,11 @@ export class DoubanSyncModal extends Modal {
 			clearInterval(this.timer)
 		}
 		contentEl.createEl("h3", {text: i18nHelper.getMessage('500001')});
-
-		let syncConfig:SyncConfig = {syncType: SyncType.movie, scope: ALL, force: false, outputFolder: this.plugin.settings.dataFilePath};
+		const {settings} =  this.plugin;
+		let syncConfig:SyncConfig = {syncType: SyncType.movie, scope: ALL,
+			force: false,
+			outputFolder: (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath,
+			dataFileNamePath: (settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath};
 		this.showConfigPan(contentEl, syncConfig, false);
 		const controls = contentEl.createDiv("controls");
 
@@ -157,6 +168,16 @@ export class DoubanSyncModal extends Modal {
 		folderLabel.addClass('obsidian_douban_sync_config_text');
 		this.createFolderSetting(folderSelections, config, disable);
 
+		const fileName = contentEl.createDiv('fileName-item');
+		let fileNameLabel = fileName.createEl('label');
+		fileNameLabel.setText(i18nHelper.getMessage('110035'));
+		fileNameLabel.addClass('obsidian_douban_settings_text');
+		fileNameLabel.addClass('obsidian_douban_sync_config_text');
+		fileNameLabel.addClass('obsidian_douban_sync_config');
+		this.constructOutiFleName(fileName, config, disable);
+
+		fileName.addClass('obsidian_douban_sync_config');
+		folderSelections.addClass('obsidian_douban_sync_config');
 		typeSelections.addClass('obsidian_douban_sync_config');
 		scopeSelections.addClass('obsidian_douban_sync_config');
 		forceSelections.addClass('obsidian_douban_sync_config');
@@ -188,6 +209,9 @@ export class DoubanSyncModal extends Modal {
 			case SyncType.note:
 				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_NOTE_SYNC, config, disable);
 				break;
+			case SyncType.music:
+				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_MUSIC_SYNC, config, disable);
+				break;
 		}
 	}
 
@@ -204,20 +228,40 @@ export class DoubanSyncModal extends Modal {
 	}
 
 	 private createFolderSetting(contentEl:HTMLDivElement, config: SyncConfig, disable:boolean) {
-		 let outputFolder = this.plugin.settings.dataFilePath;
+		 const {settings} =  this.plugin;
+		 const placeHolder =  (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath;
+		 let outputFolder = placeHolder;
 		 if (config.outputFolder) {
 			 outputFolder = config.outputFolder;
 		 }
-		 const search = new SearchComponent(contentEl);
+		 const search = new TextComponent(contentEl);
 		 new FolderSuggest(this.plugin.app, search.inputEl);
 		 search.setValue(outputFolder)
-			 .setPlaceholder(i18nHelper.getMessage('121503'))
+			 .setPlaceholder(placeHolder)
 			 .onChange(async (value:string) => {
 				 config.outputFolder = value;
 			 })
 		 if (disable) {
 			 search.setDisabled(true);
 		 }
+	}
+
+	private  constructOutiFleName(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		const {settings} =  this.plugin;
+		const placeHolder =(settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath;
+		let dataFileNamePath = placeHolder;
+		if (config.dataFileNamePath) {
+			dataFileNamePath = config.dataFileNamePath;
+		}
+		const textComponent = new TextComponent(containerEl);
+		textComponent.setPlaceholder(placeHolder)
+					.setValue(dataFileNamePath)
+					.onChange(async (value) => {
+						config.dataFileNamePath = value;
+					});
+		if (disable) {
+			textComponent.setDisabled(true);
+		}
 	}
 
 }

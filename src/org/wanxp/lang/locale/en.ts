@@ -20,6 +20,8 @@ export default {
 	'110032': `Scope:`,
 	'110033': `Progress:`,
 	'110034': `OutputFolder:`,
+	'110035': `FileName: (Tip:Support Variables And Path)`,
+	'110036': `Complete`,
 
 
 
@@ -183,7 +185,7 @@ export default {
 	'140207': `[OB-Douban]: [{0}/{1}] {2}`,
 	'140208': `[OB-Douban]: [{0}/{1}] {2}`,
 
-	'140301': `Douban: Syncing...`,
+	'140301': `Douban: Syncing[{0}]...`,
 	'140303': `Douban: User Info Expire, Please login again`,
 	'140302': `Douban: Sync complete`,
 

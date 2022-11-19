@@ -16,5 +16,6 @@ export default interface HandleContext {
 	showAfterCreate?:boolean;
 	syncStatusHolder?:SyncStatusHolder;
 	action:string;
-	outputFolder:string;
+	outputFolder?:string;
+	dataFileNamePath?:string;
 }

@@ -8,7 +8,7 @@ import DoubanSubject from "./douban/data/model/DoubanSubject";
 import Searcher from "./douban/data/search/Search";
 import {i18nHelper} from './lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
-import {Action, BasicConst, SearchHandleMode} from "./constant/Constsant";
+import {Action, BasicConst, SearchHandleMode, SyncTypeRecords} from "./constant/Constsant";
 import FileHandler from "./file/FileHandler";
 import HandleContext from "./douban/data/model/HandleContext";
 import HandleResult from "./douban/data/model/HandleResult";
@@ -83,24 +83,28 @@ export default class DoubanPlugin extends Plugin {
 
 	async createFile(context: HandleContext, result: HandleResult) {
 		let filePath = this.settings.dataFilePath;
+		if (context.outputFolder) {
+			filePath = context.outputFolder;
+		}
 		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
 		const {syncStatusHolder} = context;
 		const {subject} = result;
+		const {content} = result;
 		if (Action.Sync == context.action) {
 			if (context.syncStatusHolder.syncConfig.force) {
-				const exists:boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, result.content, context.showAfterCreate);
+				const exists:boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, content, context.showAfterCreate);
 				if (exists) {
 					syncStatusHolder != null ? syncStatusHolder.replace(subject.id, subject.title):null;
 				}else {
 					syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
 				}
 			}else {
-				await this.fileHandler.createNewNoteWithData(filePath, result.content, context.showAfterCreate);
+				await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
 				syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
 			}
 		}else {
-			await this.fileHandler.createNewNoteWithData(filePath, result.content, context.showAfterCreate);
+			await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
 			syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
 		}
 	}
@@ -243,15 +247,23 @@ export default class DoubanPlugin extends Plugin {
 			if (!result) {
 				return;
 			}
-
+			if (syncConfig.dataFileNamePath) {
+				context.dataFileNamePath = syncConfig.dataFileNamePath;
+			}
+			if (syncConfig.outputFolder) {
+				context.outputFolder = syncConfig.outputFolder;
+			}
 			context.syncStatusHolder = new SyncStatusHolder(syncConfig, this.statusHolder);
-			new Notice(i18nHelper.getMessage('140301'));
-			this.showStatus(i18nHelper.getMessage('140203', syncConfig.syncType));
+			// @ts-ignore
+			new Notice(i18nHelper.getMessage('140301', SyncTypeRecords[syncConfig.syncType]));
+
+			// @ts-ignore
+			this.showStatus(i18nHelper.getMessage('140203', SyncTypeRecords[syncConfig.syncType]));
 			const syncHandler = new SyncHandler(this.app, this, syncConfig, context);
 			await syncHandler.sync();
 			new Notice(i18nHelper.getMessage('140302'));
 		} catch (e) {
-			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
+			log.error(i18nHelper.getMessage('140206', e.message), e);
 		} finally {
 			context.plugin.statusHolder.completeSync();
 			this.clearStatusBarDelay();

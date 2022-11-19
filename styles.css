@@ -50,6 +50,13 @@
 
 .obsidian_douban_sync_config{
 	display: inline-block;
+	margin-left: 5px;
+	margin-bottom: 10px;
+	width: 90%;
+}
+
+.obsidian_douban_sync_selections{
+	width: 40px;
 }
 
 

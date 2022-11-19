@@ -97,6 +97,14 @@ export const DoubanSubjectStateRecords_NOTE_SYNC: { [key :string]: string } = {
 	[ALL]: i18nHelper.getMessage('500004'),
 }
 
+// @ts-ignore
+export const DoubanSubjectStateRecords_MUSIC_SYNC: { [key in DoubanSubjectState]: string } = {
+	// @ts-ignore
+	[ALL]: i18nHelper.getMessage('500004'),
+	[DoubanSubjectState.wish]: i18nHelper.getMessage('500402'),
+	[DoubanSubjectState.do]: i18nHelper.getMessage('500403'),
+	[DoubanSubjectState.collect]: i18nHelper.getMessage('500404'),
+}
 
 
 

@@ -3,4 +3,5 @@ export interface  SyncConfig {
 	scope: string,
 	force:boolean,
 	outputFolder:string;
+	dataFileNamePath:string;
 }

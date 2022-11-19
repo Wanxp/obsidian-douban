@@ -68,6 +68,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private getFileName(context: HandleContext): string {
+		if (context.dataFileNamePath) {
+			return context.dataFileNamePath;
+		}
 		const {dataFileNamePath} = context.settings;
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
