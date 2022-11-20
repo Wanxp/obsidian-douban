@@ -2,6 +2,8 @@ export interface  SyncConfig {
 	syncType: string,
 	scope: string,
 	force:boolean,
-	outputFolder:string;
+	dataFilePath:string;
 	dataFileNamePath:string;
+	cacheImage:boolean;
+	attachmentPath:string;
 }

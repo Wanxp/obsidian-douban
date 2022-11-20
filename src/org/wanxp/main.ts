@@ -83,8 +83,9 @@ export default class DoubanPlugin extends Plugin {
 
 	async createFile(context: HandleContext, result: HandleResult) {
 		let filePath = this.settings.dataFilePath;
-		if (context.outputFolder) {
-			filePath = context.outputFolder;
+		const {syncConfig} = context;
+		if (syncConfig) {
+			filePath = syncConfig.dataFilePath;
 		}
 		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
@@ -241,17 +242,12 @@ export default class DoubanPlugin extends Plugin {
 		setTimeout(() => this.doubanStatusBar.empty(), BasicConst.CLEAN_STATUS_BAR_DELAY)
 	}
 
-	async sync(syncConfig: SyncConfig, context: HandleContext) {
-		try {
+	async sync(context: HandleContext) {
+		const {syncConfig}  = context;
+			try {
 			const result:boolean = await this.checkLogin(context);
 			if (!result) {
 				return;
-			}
-			if (syncConfig.dataFileNamePath) {
-				context.dataFileNamePath = syncConfig.dataFileNamePath;
-			}
-			if (syncConfig.outputFolder) {
-				context.outputFolder = syncConfig.outputFolder;
 			}
 			context.syncStatusHolder = new SyncStatusHolder(syncConfig, this.statusHolder);
 			// @ts-ignore

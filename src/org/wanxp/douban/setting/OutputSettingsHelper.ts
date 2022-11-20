@@ -15,7 +15,7 @@ export function constructOutUI(containerEl: HTMLElement, manager: SettingsManage
 	new Setting(containerEl).then(createFolderSelectionSetting({name: '121501', desc: '121502', placeholder: '121503', key: 'dataFilePath', manager: manager}));
 	let outfolder = containerEl.createDiv({ cls: 'settings-item' });
 
-	constructOutFolderUI(outfolder, manager);
+	constructOutputFileNameUI(outfolder, manager);
 
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('120601'))
@@ -58,7 +58,7 @@ export function constructOutUI(containerEl: HTMLElement, manager: SettingsManage
 }
 
 
-export function constructOutFolderUI(containerEl: HTMLElement, manager: SettingsManager) {
+export function constructOutputFileNameUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.empty();
 	const dataFilePathSetting = new Setting(containerEl)
 		.setName(i18nHelper.getMessage('121601'))
@@ -78,7 +78,7 @@ export function constructOutFolderUI(containerEl: HTMLElement, manager: Settings
 			.onClick(async () => {
 				manager.plugin.settings.dataFileNamePath = DEFAULT_SETTINGS.dataFileNamePath;
 				await manager.plugin.saveSettings();
-				constructOutFolderUI(containerEl, manager)
+				constructOutputFileNameUI(containerEl, manager)
 			});
 	})
 }

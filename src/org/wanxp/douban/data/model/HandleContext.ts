@@ -5,6 +5,7 @@ import UserComponent from "../../user/UserComponent";
 import NetFileHandler from "src/org/wanxp/net/NetFileHandler";
 import DoubanPlugin from "../../../main";
 import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
+import {SyncConfig} from "../../sync/model/SyncConfig";
 
 export default interface HandleContext {
 	plugin:DoubanPlugin;
@@ -16,6 +17,5 @@ export default interface HandleContext {
 	showAfterCreate?:boolean;
 	syncStatusHolder?:SyncStatusHolder;
 	action:string;
-	outputFolder?:string;
-	dataFileNamePath?:string;
+	syncConfig?: SyncConfig;
 }

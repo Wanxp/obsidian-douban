@@ -68,8 +68,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private getFileName(context: HandleContext): string {
-		if (context.dataFileNamePath) {
-			return context.dataFileNamePath;
+		const {syncConfig} = context;
+		if (syncConfig) {
+			return syncConfig.dataFileNamePath;
 		}
 		const {dataFileNamePath} = context.settings;
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
@@ -406,12 +407,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private async saveImage(extract: T, context: HandleContext) {
-		if (!extract.image || !context.settings.cacheImage) {
+		const {syncConfig} = context;
+		if (!extract.image || (syncConfig && !syncConfig.cacheImage)  || !context.settings.cacheImage) {
 			return;
 		}
 		let image = extract.image;
 		const filename = image.split('/').pop();
-		let folder = context.settings.attachmentPath;
+		let folder = syncConfig? syncConfig.attachmentPath : context.settings.attachmentPath;
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}

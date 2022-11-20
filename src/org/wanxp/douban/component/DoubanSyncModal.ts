@@ -1,10 +1,7 @@
 import {
 	App,
 	ButtonComponent,
-	DropdownComponent,
 	Modal, SearchComponent, Setting,
-	TextComponent,
-	ToggleComponent
 } from "obsidian";
 
 import DoubanPlugin from "../../main";
@@ -18,10 +15,7 @@ import {
 } from "../../constant/DoubanUserState";
 import {SyncConfig} from "../sync/model/SyncConfig";
 import {clearInterval} from "timers";
-import {statSync} from "fs";
-import {CreateTemplateSelectParams} from "../setting/model/CreateTemplateSelectParams";
 import {FolderSuggest} from "../setting/model/FolderSuggest";
-import SettingsManager from "../setting/SettingsManager";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 
 export class DoubanSyncModal extends Modal {
@@ -105,8 +99,11 @@ export class DoubanSyncModal extends Modal {
 		const {settings} =  this.plugin;
 		let syncConfig:SyncConfig = {syncType: SyncType.movie, scope: ALL,
 			force: false,
-			outputFolder: (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath,
-			dataFileNamePath: (settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath};
+			dataFilePath: (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath,
+			dataFileNamePath: (settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath,
+			cacheImage: ( settings.cacheImage == null) ?  DEFAULT_SETTINGS.cacheImage : settings.cacheImage,
+			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
+		};
 		this.showConfigPan(contentEl, syncConfig, false);
 		const controls = contentEl.createDiv("controls");
 
@@ -120,8 +117,9 @@ export class DoubanSyncModal extends Modal {
 				if(!this.plugin.statusHolder.startSync(syncConfig)) {
 					return;
 				}
+				this.updateContextByConfig(syncConfig);
 				this.show(contentEl);
-				await this.plugin.sync(syncConfig, this.context);
+				await this.plugin.sync(this.context);
 			})
 
 		const cancelButton = new ButtonComponent(controls)
@@ -133,57 +131,22 @@ export class DoubanSyncModal extends Modal {
 		syncButton.setClass("obsidian_douban_search_button");
 	}
 
+	private updateContextByConfig(syncConfig: SyncConfig) {
+		const { context} = this;
+		context.syncConfig = syncConfig;
+	}
+
 	private showConfigPan(contentEl: HTMLElement, config:SyncConfig, disable:boolean) {
 		const typeSelections = contentEl.createDiv('type-selection');
-		const typeSelectionLabel = typeSelections.createEl('label');
-		typeSelectionLabel.setText(i18nHelper.getMessage('110030'))
-		typeSelectionLabel.addClass('obsidian_douban_settings_text')
-		const syncTypeDropdown = new DropdownComponent(typeSelections);
-		const scopeSelections = contentEl.createDiv("scope-selection");
-		syncTypeDropdown.addOptions(SyncTypeRecords)
-			.setValue(config.syncType)
-			.onChange((value) => {
-				config.syncType = value;
-				this.openScopeDropdown(scopeSelections, config, disable);
-			});
-
-		this.openScopeDropdown(scopeSelections, config, disable);
-
-		const forceSelections = contentEl.createDiv('force-selection');
-		let forceLabel = forceSelections.createEl('label');
-		forceLabel.setText(i18nHelper.getMessage('110031'));
-		forceLabel.addClass('obsidian_douban_settings_text');
-		forceLabel.addClass('obsidian_douban_sync_config_text');
-		const toggle:ToggleComponent = new ToggleComponent(forceSelections)
-			.setTooltip(i18nHelper.getMessage('500110'))
-			.setValue(config.force)
-			.onChange((value) => {
-				config.force = value;
-			});
-		if (disable) {
-			syncTypeDropdown.setDisabled(true);
-			toggle.setDisabled(true);
-		}
 		const folderSelections = contentEl.createDiv('folder-selection');
-		let folderLabel = folderSelections.createEl('label');
-		folderLabel.setText(i18nHelper.getMessage('110034'));
-		folderLabel.addClass('obsidian_douban_settings_text');
-		folderLabel.addClass('obsidian_douban_sync_config_text');
-		this.createFolderSetting(folderSelections, config, disable);
-
 		const fileName = contentEl.createDiv('fileName-item');
-		let fileNameLabel = fileName.createEl('label');
-		fileNameLabel.setText(i18nHelper.getMessage('110035'));
-		fileNameLabel.addClass('obsidian_douban_settings_text');
-		fileNameLabel.addClass('obsidian_douban_sync_config_text');
-		fileNameLabel.addClass('obsidian_douban_sync_config');
-		this.constructOutiFleName(fileName, config, disable);
-
-		fileName.addClass('obsidian_douban_sync_config');
-		folderSelections.addClass('obsidian_douban_sync_config');
-		typeSelections.addClass('obsidian_douban_sync_config');
-		scopeSelections.addClass('obsidian_douban_sync_config');
-		forceSelections.addClass('obsidian_douban_sync_config');
+		const attachments = contentEl.createDiv('attachments-item');
+		const forceSelections = contentEl.createDiv('force-selection');
+		this.showTypeDropdown(typeSelections, config, disable);
+		this.showOutputFolderSelections(folderSelections, config, disable);
+		this.showOutiFleName(fileName, config, disable);
+		this.showAttachmentsFileConfig(attachments, config, disable);
+		this.showForceUpdateConfig(forceSelections, config, disable);
 	}
 
 	async onClose() {
@@ -196,9 +159,6 @@ export class DoubanSyncModal extends Modal {
 
 	private openScopeDropdown(contentEl:HTMLDivElement, config: SyncConfig, disable:boolean) {
 		contentEl.empty();
-		let scopeLabel = contentEl.createEl('label');
-		scopeLabel.addClass('obsidian_douban_settings_text');
-		scopeLabel.setText(i18nHelper.getMessage('110032'));
 		switch (config.syncType) {
 			case SyncType.movie:
 				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_MOVIE_SYNC, config, disable);
@@ -218,53 +178,135 @@ export class DoubanSyncModal extends Modal {
 		}
 	}
 
-	private showScopeDropdown(contentEl:HTMLDivElement, scopeSelections: Record<string, string>, config: SyncConfig, disable:boolean) {
-		const syncScopeTypeDropdown = new DropdownComponent(contentEl)
-			.addOptions(scopeSelections)
-			.setValue(config.scope)
-			.onChange((value) => {
-				config.scope = value;
-			});
-		if (disable) {
-			syncScopeTypeDropdown.setDisabled(true);
-		}
+	private showTypeDropdown(containerEl:HTMLDivElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		const settings = new Setting(containerEl);
+		settings
+			.setName(i18nHelper.getMessage('110030'))
+			.addDropdown((dropdown) => {
+				dropdown.addOptions(SyncTypeRecords)
+					.setValue(config.syncType)
+					.onChange((value) => {
+						config.syncType = value;
+						this.showTypeDropdown(containerEl, config, disable);
+					});
+			}).setDisabled(disable);
+		const scopeSelections = containerEl.createDiv("scope-selection");
+		this.openScopeDropdown(scopeSelections, config, disable);
 	}
 
-	 private createFolderSetting(contentEl:HTMLDivElement, config: SyncConfig, disable:boolean) {
-		 const {settings} =  this.plugin;
-		 const placeHolder =  (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath;
-		 let outputFolder = placeHolder;
-		 if (config.outputFolder) {
-			 outputFolder = config.outputFolder;
-		 }
-		 const search = new TextComponent(contentEl);
-		 new FolderSuggest(this.plugin.app, search.inputEl);
-		 search.setValue(outputFolder)
-			 .setPlaceholder(placeHolder)
-			 .onChange(async (value:string) => {
-				 config.outputFolder = value;
-			 })
-		 if (disable) {
-			 search.setDisabled(true);
-		 }
+	private showScopeDropdown(containerEl:HTMLDivElement, scopeSelections: Record<string, string>, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('110032'))
+			.addDropdown((dropdown) => {
+				dropdown.addOptions(scopeSelections)
+				dropdown.setValue(config.scope)
+					.onChange(async (value: string) => {
+						config.scope = value;
+					});
+			}).setDisabled(disable);
 	}
 
-	private  constructOutiFleName(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+	private  showOutiFleName(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
 		const {settings} =  this.plugin;
 		const placeHolder =(settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath;
-		let dataFileNamePath = placeHolder;
-		if (config.dataFileNamePath) {
-			dataFileNamePath = config.dataFileNamePath;
-		}
-		const textComponent = new TextComponent(containerEl);
-		textComponent.setPlaceholder(placeHolder)
-					.setValue(dataFileNamePath)
+		containerEl.empty();
+		const dataFilePathSetting = new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121601'))
+			.setDesc(i18nHelper.getMessage('121602'))
+			.addText((textField) => {
+				textField.setPlaceholder(placeHolder)
+					.setValue(config.dataFileNamePath)
 					.onChange(async (value) => {
-						config.dataFileNamePath = value;
+						config.dataFileNamePath = value
 					});
-		if (disable) {
-			textComponent.setDisabled(true);
+			})
+			.setDisabled(disable);
+		dataFilePathSetting.addExtraButton((button) => {
+			button
+				.setIcon('reset')
+				.setTooltip(i18nHelper.getMessage('121902'))
+				.onClick(async () => {
+					config.dataFileNamePath = placeHolder
+					this.showOutiFleName(containerEl, config, disable);
+				});
+		})
+	}
+
+	showOutputFolderSelections(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		const placeHolder:string = this.plugin.settings.dataFilePath ? this.plugin.settings.dataFilePath : DEFAULT_SETTINGS.dataFilePath;
+		new Setting(containerEl)
+			.setName( i18nHelper.getMessage('121501'))
+			.setDesc( i18nHelper.getMessage('121502'))
+			.addSearch(async (search: SearchComponent) => {
+				new FolderSuggest(this.app, search.inputEl);
+				// @ts-ignore
+				search.setValue(config.dataFilePath)
+					// @ts-ignore
+					.setPlaceholder(placeHolder)
+					.onChange(async (value: string) => {
+						config.dataFilePath = value;
+					});
+			})
+			.setDisabled(disable);
+	}
+
+
+	showForceUpdateConfig(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('110031'))
+			.setDesc(i18nHelper.getMessage('500110'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					// .setTooltip(i18nHelper.getMessage('121403'))
+					.setValue(config.force)
+					.onChange(async (value) => {
+						config.force = value;
+					});
+			})
+			.setDisabled(disable);
+	}
+
+	showAttachmentsFileConfig(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121430'))
+			.setDesc(i18nHelper.getMessage('121431'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					// .setTooltip(i18nHelper.getMessage('121403'))
+					.setValue(config.cacheImage)
+					.onChange(async (value) => {
+						config.cacheImage = value;
+						this.showAttachmentsFileConfig(containerEl, config, disable);
+					});
+			})
+			.setDisabled(disable);
+		if(config.cacheImage) {
+			this.showAttachmentPathSelections(containerEl, config, disable);
 		}
+	}
+
+	showAttachmentPathSelections(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		const placeHolder:string = this.plugin.settings.attachmentPath ? this.plugin.settings.attachmentPath : DEFAULT_SETTINGS.attachmentPath;
+		new Setting(containerEl)
+			.setName( i18nHelper.getMessage('121432'))
+			.setDesc( i18nHelper.getMessage('121433'))
+			.addSearch(async (search: SearchComponent) => {
+				new FolderSuggest(this.plugin.app, search.inputEl);
+				// @ts-ignore
+				search.setValue(config.attachmentPath)
+					// @ts-ignore
+					.setPlaceholder(placeHolder)
+					.onChange(async (value: string) => {
+						config.attachmentPath = value;
+					});
+			})
+			.setDisabled(disable);
 	}
 
 }
