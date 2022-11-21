@@ -72,8 +72,8 @@ export class DoubanSyncModal extends Modal {
 			this.showProgress(sliderDiv,syncButton);
 		}, 1000);
 
-		syncButton.setClass("obsidian_douban_search_button");
-		cancelButton.setClass("obsidian_douban_search_button");
+		syncButton.setClass("obsidian_douban_status_button");
+		cancelButton.setClass("obsidian_douban_status_button");
 
 	}
 
@@ -111,7 +111,11 @@ export class DoubanSyncModal extends Modal {
 		};
 		this.showConfigPan(contentEl.createDiv('config'), syncConfig, false);
 		const controls = contentEl.createDiv("controls");
-
+		const cancelButton = new ButtonComponent(controls)
+			.setButtonText(i18nHelper.getMessage('110005'))
+			.onClick(() => {
+				this.close();
+			});
 		const syncButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110007'))
 			.onClick(async () => {
@@ -127,13 +131,10 @@ export class DoubanSyncModal extends Modal {
 				await this.plugin.sync(this.context);
 			})
 
-		const cancelButton = new ButtonComponent(controls)
-			.setButtonText(i18nHelper.getMessage('110005'))
-			.onClick(() => {
-				this.close();
-			});
-		cancelButton.setClass("obsidian_douban_search_button");
+
 		syncButton.setClass("obsidian_douban_search_button");
+		cancelButton.setClass("obsidian_douban_search_button");
+
 	}
 
 	private updateContextByConfig(syncConfig: SyncConfig) {
