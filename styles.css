@@ -34,8 +34,9 @@
 
 .obsidian_douban_search_button {
     margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 10px;
+	horiz-align: right;
+	float:right;
 }
 
 .obsidian_douban_settings_desc.has_error {
