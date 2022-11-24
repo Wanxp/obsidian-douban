@@ -42,7 +42,7 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book
 - [x] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
 - [x] Attachment Files/支持保存封面至本地
 - [x] Custom Variables/支持自定义参数
-- [] Broadcast/广播
+- [ ] Broadcast/广播
 
 
 ## Support Field/支持的字段
