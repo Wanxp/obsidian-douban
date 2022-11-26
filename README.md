@@ -30,19 +30,19 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book
 - [Development Roadmap](https://github.com/users/Wanxp/projects/1)
 
 ## Target/功能
-- [ ] Sync Personal Movie/同步个人看过的电影
-- [ ] Sync Personal Book/同步个人阅读过的书籍
-- [ ] Sync Personal Music/同步个人听过的音乐
-- [ ] Import Movie/导入电影
-- [ ] Import Teleplay/导入电视剧
-- [ ] Import Book/导入书籍
-- [ ] Import Music/导入音乐
-- [ ] Import Note/导入日记
-- [ ] Import Game/导入游戏
-- [ ] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
-- [ ] Attachment Files/支持保存封面至本地
-- [ ] Custom Variables/支持自定义参数
-- [x] Broadcast/广播
+- [x] Sync Personal Movie/同步个人看过的电影
+- [x] Sync Personal Book/同步个人阅读过的书籍
+- [x] Sync Personal Music/同步个人听过的音乐
+- [x] Import Movie/导入电影
+- [x] Import Teleplay/导入电视剧
+- [x] Import Book/导入书籍
+- [x] Import Music/导入音乐
+- [x] Import Note/导入日记
+- [x] Import Game/导入游戏
+- [x] Personal Comment/导入个人的评论,评论时间,阅读状态,个人评分
+- [x] Attachment Files/支持保存封面至本地
+- [x] Custom Variables/支持自定义参数
+- [ ] Broadcast/广播
 
 
 ## Support Field/支持的字段
