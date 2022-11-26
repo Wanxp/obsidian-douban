@@ -35,9 +35,11 @@ export default class SettingsManager {
 		await this.plugin.saveSettings();
 	}
 
-	debug(message:string) {
+	debug(message:any):any {
 		if(this.settings.debugMode) {
-			this.innerLogger.debug(message);
+			return this.innerLogger.debug(message);
+		}else {
+			return message;
 		}
 	}
 

@@ -85,7 +85,9 @@ export default class UserComponent {
 			headers: {'Cookie': cookie},
 			throw: true
 		};
-		return request(requestUrlParam)
+		 this.settingsManager.debug('loadUserInfo:尝试获取用户信息:https://www.douban.com/mine/');
+		 return request(requestUrlParam)
+			 .then(response => this.settingsManager.settings.debugMode ? this.settingsManager.debug(response) : response)
 			.then(load)
 			.then(this.getUserInfo)
 			.catch(e => log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString()), e));
