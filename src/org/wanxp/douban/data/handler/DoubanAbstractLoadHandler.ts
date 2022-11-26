@@ -147,7 +147,6 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		};
 		await request(requestUrlParam)
 			.then(s => this.humanCheck(s, url))
-			.then(response => log.debug(response))
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
