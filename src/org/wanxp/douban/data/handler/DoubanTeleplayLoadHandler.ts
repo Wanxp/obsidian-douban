@@ -113,8 +113,6 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				// value = html(info.next.next).text().trim();
 				let vas = html(info.next).text().trim();
 				value = vas.split("/").map((v) => v.trim());
-			} else if(key.indexOf('单集片长') >= 0) {
-				value = html(info.next.next).text().trim()
 			}else {
 				value = html(info.next).text().trim();
 			}
