@@ -1,7 +1,8 @@
-import {Notice} from "obsidian";
+import {moment, Notice} from "obsidian";
 import {i18nHelper} from "src/org/wanxp/lang/helper";
 
-class Logger {
+export default class Logger {
+
 
 	public error(msg: any, e:any): any {
 		new Notice(msg);
@@ -28,7 +29,7 @@ class Logger {
 	}
 
 	public debug(e: any): any {
-		console.log(`OB-Douban:` + `${typeof e == 'string' ? e : JSON.stringify(e)}`);
+		console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}:${typeof e == 'string' ? e : JSON.stringify(e)}`);
 		return e;
 	}
 

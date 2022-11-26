@@ -9,6 +9,7 @@ import {log} from "../../utils/Logutil";
 import {i18nHelper} from "../../lang/helper";
 import User from "./User";
 import DoubanGameSubject from "../data/model/DoubanGameSubject";
+import StringUtil from "../../utils/StringUtil";
 
 export default class UserComponent {
 	private settingsManager: SettingsManager;
@@ -53,10 +54,13 @@ export default class UserComponent {
 	async loginByCookie():Promise<User> {
 		let cookie = this.settingsManager.getSetting('loginCookiesContent');
 		if(!cookie) {
+			this.settingsManager.debug('主界面:loginByCookie:无豆瓣cookies信息，获取用户信息失败');
 			return new User();
 		}
+		this.settingsManager.debug('主界面:loginByCookie:豆瓣cookies信息正常，尝试获取用户信息');
 		await this.loadUserInfo(cookie).then(user => {
 			this.user = user;
+			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
 		return this.user;
 	}
@@ -65,8 +69,10 @@ export default class UserComponent {
 		if(!cookie) {
 			return new User();
 		}
+		this.settingsManager.debug('配置界面:loginCookie:豆瓣cookies信息正常，尝试获取用户信息');
 		await this.loadUserInfo(cookie).then(user => {
 			this.user = user;
+			this.settingsManager.debug(`配置界面:loginCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
 		this.settingsManager.updateSetting('loginCookiesContent', cookie);
 		return this.user;

@@ -13,6 +13,7 @@ export default class DoubanLogoutModel {
 	private containerEl: HTMLElement;
 	constructor(containerEl: HTMLElement, settingsManager: SettingsManager) {
 		this.settingsManager = settingsManager;
+		this.settingsManager.debug(`配置界面:初始化登出界面`)
 		this.containerEl = containerEl;
 		const { remote } = require('electron');
 		const { BrowserWindow: RemoteBrowserWindow } = remote;
@@ -27,6 +28,7 @@ export default class DoubanLogoutModel {
 			this.modal.show();
 		});
 		this.modal.on('closed', () => {
+			this.showCloseMessage();
 			constructDoubanTokenSettingsUI(this.containerEl, this.settingsManager);
 		});
 		const session = this.modal.webContents.session;
@@ -35,20 +37,33 @@ export default class DoubanLogoutModel {
 			'https://www.douban.com/accounts/logout']
 		};
 		session.webRequest.onSendHeaders(filter, (details:any) => {
+			this.settingsManager.debug(`配置界面:登出界面请求头检测:${details.url}`)
 			const cookies = details.requestHeaders['Cookie'];
 			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
 			if (cookies && cookies.indexOf('dbcl2') < 0) {
+				this.settingsManager.debug(`配置界面:登出界面退出登录请求检测成功，准备退出登录`)
 				this.settingsManager.plugin.userComponent.logout();
+				this.settingsManager.debug(`配置界面:登出界面退出登录成功`)
 				this.onClose();
 			}
 		});
 	}
 
 	async doLogout() {
+		this.settingsManager.debug(`配置界面:登出界面加载登出页面`)
 		await this.modal.loadURL('https://www.douban.com/accounts/logout?source=main&ck=DfFJ');
 	}
 
 	onClose() {
+		this.settingsManager.debug(`配置界面:登出界面关闭, 自动退出登出界面`)
 		this.modal.close();
+	}
+
+	private showCloseMessage() {
+		if(this.settingsManager.plugin.userComponent.isLogin()) {
+			this.settingsManager.debug(`配置界面:登出界面关闭, 但未检测到登出, 退出登录失败`)
+		}else {
+			this.settingsManager.debug(`配置界面:登出界面关闭, 退出登录成功`)
+		}
 	}
 }

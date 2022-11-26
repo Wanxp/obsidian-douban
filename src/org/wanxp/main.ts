@@ -266,10 +266,13 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async checkLogin(context: HandleContext):Promise<boolean> {
+		this.settingsManager.debug('主界面:同步时的登录状态检测');
 		if (!context.userComponent.needLogin()) {
+			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 无用户信息, 尝试使用cookie获取用户信息');
 			await context.userComponent.loginByCookie();
 		}
 		if (!context.userComponent.isLogin()) {
+			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 尝试使用cookie获取用户信息失败');
 			new Notice(i18nHelper.getMessage('140303'));
 			return false;
 		}

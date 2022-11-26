@@ -6,6 +6,7 @@ import DoubanLoginModel from "../component/DoubanLoginModel";
 import DoubanLogoutModel from "../component/DoubanLogoutModel";
 import User from "../user/User";
 import {createFolderSelectionSetting} from "./TemplateSettingHelper";
+import StringUtil from "../../utils/StringUtil";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
@@ -102,6 +103,7 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.empty();
 	let login = manager.plugin.userComponent.isLogin();
+	manager.debug(`配置界面:展示豆瓣状态:${login?'已登录':'未登录'}`)
 	if (Platform.isDesktopApp) {
 		if(login) {
 			constructHasLoginSettingsUI(containerEl, manager);
@@ -121,12 +123,14 @@ export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager
 
 
 export function constructLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	manager.debug(`配置界面:未登录-展示登录按钮`)
 	new Setting(containerEl).setName(i18nHelper.getMessage('100131')).addButton((button) => {
 		return button
 			.setButtonText(i18nHelper.getMessage('100130'))
 			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
+				manager.debug(`配置界面:点击登录按钮`)
 				const loginModel = new DoubanLoginModel(containerEl, manager);
 				await loginModel.doLogin();
 			});
@@ -141,7 +145,7 @@ export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: S
 ${i18nHelper.getMessage('100123')}: <a href="https://www.douban.com/people/${user.id}/">${user.id}</a><br>
 		${i18nHelper.getMessage('100124')}: ${user.name}<br>
 ${i18nHelper.getMessage('100125')}`;
-
+	manager.debug(`配置界面:展示豆瓣登录信息:id:${StringUtil.confuse(user.id)}, 用户名:${StringUtil.confuse(user.name)}`)
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('100126'))
 		.setDesc(userDom)
@@ -151,6 +155,7 @@ ${i18nHelper.getMessage('100125')}`;
 			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
+				manager.debug(`配置界面:点击退出登录按钮`)
 				const loginModel = new DoubanLogoutModel(containerEl, manager);
 				await loginModel.doLogout();
 			});

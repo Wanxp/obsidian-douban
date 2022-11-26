@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	dataFilePath: "",
 	dataFileNamePath: "/{{type}}/{{title}}",
 	statusBar: true,
+	debugMode: false,
 	customProperties: [
 		{name: 'myType', value: 'movie', field: SupportType.MOVIE},
 		{name: 'myType', value: 'book', field: SupportType.BOOK},

@@ -23,4 +23,21 @@ export default class StringUtil {
 		return id;
 	}
 
+
+	public static confuse(text: string):string {
+		if (!text) {
+			return
+		}
+		let texts = Array.from(text);
+		const length = texts.length;
+		const newTexts = [];
+		for (let i = 0; i < length; i++) {
+			let val = text[i];
+			if (i >= length/3 && i <= length * 2/3) {
+				val = '*'
+			}
+			newTexts[i] = val;
+		}
+		return newTexts.join('');
+	}
 }

@@ -1,6 +1,7 @@
 import {App, Setting} from "obsidian";
 import { DEFAULT_SETTINGS } from "src/org/wanxp/constant/DefaultSettings";
 import DoubanPlugin from "../../main";
+import Logger from "../../utils/Logutil";
 import { DoubanPluginSetting } from "./model/DoubanPluginSetting";
 
 export default class SettingsManager {
@@ -8,6 +9,7 @@ export default class SettingsManager {
 	plugin: DoubanPlugin;
 	settings:  DoubanPluginSetting;
 	cleanupFns: Array<() => void> = [];
+	innerLogger: Logger = new Logger();
 
 	constructor(app: App, plugin: DoubanPlugin) {
 		this.app = app;
@@ -31,6 +33,12 @@ export default class SettingsManager {
 		// @ts-ignore
 		this.settings[key] = value;
 		await this.plugin.saveSettings();
+	}
+
+	debug(message:string) {
+		if(this.settings.debugMode) {
+			this.innerLogger.debug(message);
+		}
 	}
 
 }

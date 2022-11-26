@@ -76,6 +76,10 @@ PS: This file could be delete if you want to.
 	'1230': `Usable Variables`,
 	'1204': `Set template file path. If keep empty, it will use the default template file to create file. All the usable variables at the end.👇`,
 	'1205': `🧡Tip: You can click the 'Copy' button to copy default template content, then create and paste to your own template file. After that, back to select the file. `,
+	'1250': `Advanced Setting`,
+	'1252': `Some Debug or Other Settings`,
+	'1251': `☢The Advanced Setting only could be changed after you know what you are doing`,
+
 	'1240': `Custom Variable`,
 	'1241': `To use the custom variables, you need to wrap them in double curly brackets. For example, {{myType}} will be replaced with the your custom type value. `,
 	'1242': `Add custom variable, so that you can use it in the template file or file name. `,
@@ -185,8 +189,13 @@ PS: This file could be delete if you want to.
 
 	'121901': `Copy default template content to clipboard`,
 	'121902': `Reset to default value`,
+	'121905': `Reset Advanced Settings to default value`,
+
 	'121903': `Copy default template content (that your state in object) to clipboard`,
 
+
+	'125001': `Debug Mode`,
+	'125002': `Open Debug Mode, so that this plugin will log some message in console`,
 
 
 	//error

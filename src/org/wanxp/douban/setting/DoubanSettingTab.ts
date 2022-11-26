@@ -11,6 +11,8 @@ import { constructTemplateUI } from "./TemplateSettingHelper";
 import { constructBasicUI } from "./BasicSettingsHelper";
 import { constructTemplateVariablesUI } from "./TemplateVariableSettingsHelper";
 import {constructCustomPropertySettingsUI, constructCustomPropertyUI} from "./CustomPropertySettingsHelper";
+import {log} from "../../utils/Logutil";
+import { constructAdvancedUI } from "./AdvancedSettingsHelper";
 
 /**
  * 部分逻辑参考以下项目
@@ -19,6 +21,7 @@ import {constructCustomPropertySettingsUI, constructCustomPropertyUI} from "./Cu
 export class DoubanSettingTab extends PluginSettingTab {
 	plugin: DoubanPlugin;
 	settingsManager: SettingsManager;
+
 	constructor(app: App, plugin: DoubanPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
@@ -35,5 +38,10 @@ export class DoubanSettingTab extends PluginSettingTab {
 		constructOutUI(containerEl, this.settingsManager);
 		constructCustomPropertySettingsUI(containerEl, this.settingsManager);
 		constructTemplateVariablesUI(containerEl, this.settingsManager);
+		constructAdvancedUI(containerEl, this.settingsManager);
+	}
+
+	hide(): void {
+
 	}
 }
