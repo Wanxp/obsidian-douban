@@ -5,6 +5,7 @@ import {i18nHelper} from "src/org/wanxp/lang/helper";
 import {log} from "src/org/wanxp/utils/Logutil";
 import HandleContext from "../model/HandleContext";
 import {SupportType, TemplateKey} from "../../../constant/Constsant";
+import {UserStateSubject} from "../model/UserStateSubject";
 
 /**
  * 默认的处理器
@@ -23,8 +24,12 @@ export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<Do
 		return false;
 	}
 
-	parseSubjectFromHtml(data: CheerioAPI): DoubanSubject {
+	parseSubjectFromHtml(data: CheerioAPI, context: HandleContext): DoubanSubject {
 		return undefined;
+	}
+
+	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI; userState: UserStateSubject } {
+		return {data: undefined, userState: undefined};
 	}
 
 

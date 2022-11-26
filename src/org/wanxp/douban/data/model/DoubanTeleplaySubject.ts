@@ -8,4 +8,10 @@ export default class DoubanTeleplaySubject extends DoubanSubject {
 	actor: Person[];
 	aggregateRating: AggregateRating;
 	originalTitle: string;
+	aliases: string[];
+	language: string[];
+	country: string[];
+	episode: string;
+	time: string;
+	IMDb: string;
 }

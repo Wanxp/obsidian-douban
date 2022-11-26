@@ -17,6 +17,9 @@ import {SyncConfig} from "../sync/model/SyncConfig";
 import {clearInterval} from "timers";
 import {FolderSuggest} from "../setting/model/FolderSuggest";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
+import {createFileSelectionSetting} from "../setting/TemplateSettingHelper";
+import {FileSuggest} from "../setting/model/FileSuggest";
+import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
 
 export class DoubanSyncModal extends Modal {
 	plugin: DoubanPlugin;
@@ -54,31 +57,32 @@ export class DoubanSyncModal extends Modal {
 		sliderDiv.addClass('obsidian_douban_sync_slider');
 		const controls = contentEl.createDiv("controls");
 
-		const syncButton = new ButtonComponent(controls)
+		const stopButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110009'))
 			.onClick(async () => {
 				this.close();
 				await this.plugin.statusHolder.stopSync();
 			})
 
-		const cancelButton = new ButtonComponent(controls)
+		const backgroundButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110010'))
 			.onClick(() => {
 				this.close();
 			});
-		this.showProgress(sliderDiv, syncButton);
+
+		this.showProgress(sliderDiv, backgroundButton, stopButton);
 
 		this.timer = setInterval(() => {
-			this.showProgress(sliderDiv,syncButton);
+			this.showProgress(sliderDiv,backgroundButton, stopButton);
 		}, 1000);
 
-		syncButton.setClass("obsidian_douban_status_button");
-		cancelButton.setClass("obsidian_douban_status_button");
+		backgroundButton.setClass("obsidian_douban_status_button");
+		stopButton.setClass("obsidian_douban_status_button");
 
 	}
 
 
-	private showProgress(sliderDiv: HTMLDivElement, button:ButtonComponent) {
+	private showProgress(sliderDiv: HTMLDivElement, backgroundButton:ButtonComponent, stopButton:ButtonComponent) {
 		sliderDiv.empty();
 		new Setting(sliderDiv);
 		let progress = sliderDiv.createDiv('progress');
@@ -88,7 +92,8 @@ export class DoubanSyncModal extends Modal {
     <label for="file">${i18nHelper.getMessage('110033')}</label>
     <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')} </span>
 </p>`
-			button.setDisabled(true);
+			backgroundButton.setDisabled(true);
+			stopButton.setButtonText(i18nHelper.getMessage('110036'))
 			return;
 		}
 		progress.innerHTML = `<p>
@@ -108,6 +113,7 @@ export class DoubanSyncModal extends Modal {
 			dataFileNamePath: (settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath,
 			cacheImage: ( settings.cacheImage == null) ?  DEFAULT_SETTINGS.cacheImage : settings.cacheImage,
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
+			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
 		};
 		this.showConfigPan(contentEl.createDiv('config'), syncConfig, false);
 		const controls = contentEl.createDiv("controls");
@@ -145,6 +151,7 @@ export class DoubanSyncModal extends Modal {
 	private showConfigPan(contentEl: HTMLElement, config:SyncConfig, disable:boolean) {
 		new Setting(contentEl);
 		this.showTypeDropdown(contentEl, config, disable);
+
 		this.showOutputFolderSelections(contentEl, config, disable);
 		this.showOutiFleName(contentEl, config, disable);
 		this.showAttachmentsFileConfig(contentEl, config, disable);
@@ -182,6 +189,7 @@ export class DoubanSyncModal extends Modal {
 	private showTypeDropdown(containerEl:HTMLElement, config: SyncConfig, disable:boolean) {
 		const settings = new Setting(containerEl);
 		const scopeSelections = containerEl.createDiv("scope-selection");
+		const templateFile:HTMLDivElement = containerEl.createDiv('template-file-path-selection');
 		settings
 			.setName(i18nHelper.getMessage('110030'))
 			.addDropdown((dropdown) => {
@@ -190,9 +198,11 @@ export class DoubanSyncModal extends Modal {
 					.onChange((value) => {
 						config.syncType = value;
 						this.openScopeDropdown(scopeSelections, config, disable);
+						this.showTemplateFileSelectionSetting(templateFile, config, disable);
 					});
 			}).setDisabled(disable);
 		this.openScopeDropdown(scopeSelections, config, disable);
+		this.showTemplateFileSelectionSetting(templateFile, config, disable);
 	}
 
 	private showScopeDropdown(containerEl:HTMLDivElement, scopeSelections: Record<string, string>, config: SyncConfig, disable:boolean) {
@@ -251,6 +261,52 @@ export class DoubanSyncModal extends Modal {
 			.setDisabled(disable);
 	}
 
+	showTemplateFileSelectionSetting(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		containerEl.empty();
+		const key:string = this.getKey(config.syncType);
+		// @ts-ignore
+		const placeHolder:string =  this.plugin.settings[key] ? this.plugin.settings[key] : DEFAULT_SETTINGS[key];
+		let setting = new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121101'))
+			.setDesc(i18nHelper.getMessage('121102'))
+			.addSearch(async (search: SearchComponent) => {
+				new FileSuggest(this.app, search.inputEl);
+				// @ts-ignore
+				search.setValue(config.templateFile)
+					// @ts-ignore
+					.setPlaceholder(placeHolder)
+					.onChange(async (value: string) => {
+						config.templateFile = value;
+					});
+			})
+			.setDisabled(disable);
+
+		setting.addExtraButton((button) => {
+			button
+				.setIcon('copy')
+				.setTooltip(i18nHelper.getMessage('121903'))
+				.onClick(async () => {
+					// @ts-ignore
+					navigator.clipboard.writeText(getDefaultTemplateContent(key));
+				});
+		});
+		setting.addExtraButton((button) => {
+			button
+				.setIcon('document')
+				.setTooltip(i18nHelper.getMessage('121901'))
+				.onClick(async () => {
+					// @ts-ignore
+					navigator.clipboard.writeText(getDefaultTemplateContent(key, false))
+				});
+		});
+
+
+	}
+
+
+	private getKey(supportType: string) {
+		return supportType + 'TemplateFile';
+	}
 
 	showForceUpdateConfig(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
 		new Setting(containerEl)

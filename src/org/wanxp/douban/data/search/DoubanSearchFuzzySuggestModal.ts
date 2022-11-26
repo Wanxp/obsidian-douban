@@ -34,6 +34,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 
 	onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
 		this.plugin.showStatus(i18nHelper.getMessage('140204', item.title));
+		this.context.listItem = item;
 		this.plugin.doubanExtractHandler.handle(item, this.context);
 	}
 

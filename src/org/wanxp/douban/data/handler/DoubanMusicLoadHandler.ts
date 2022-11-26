@@ -5,6 +5,8 @@ import DoubanPlugin from "../../../main";
 import DoubanSubject from '../model/DoubanSubject';
 import HandleContext from "../model/HandleContext";
 import {SupportType, TemplateKey} from "../../../constant/Constsant";
+import {UserStateSubject} from "../model/UserStateSubject";
+import {moment} from "obsidian";
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {
 
@@ -31,7 +33,26 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		return extract && extract.type && (extract.type.contains("音乐") || extract.type.contains("Music") || extract.type.contains("music"));
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI): DoubanMusicSubject {
+	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+		let rate = html('input#n_rating').val();
+		let tagsStr = html('span#rating').next().next().text().trim();
+		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
+		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
+		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		let component = html('span#rating').next().next().next().next().text().trim();
+
+		const userState: UserStateSubject = {
+			tags: tags,
+			rate: rate?Number(rate):null,
+			state: userState1,
+			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			comment: component
+		}
+		return {data: html, userState: userState};
+	}
+
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMusicSubject {
 		let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
 		let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
 		let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");

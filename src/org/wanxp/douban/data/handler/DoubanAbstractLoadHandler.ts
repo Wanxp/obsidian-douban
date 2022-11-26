@@ -136,7 +136,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract support(extract: DoubanSubject): boolean;
 
-	handle(url: string, context: HandleContext): void {
+	async handle(url: string, context: HandleContext): Promise<void> {
 		let headers = JSON.parse(context.settings.searchHeaders);
 		headers.Cookie = context.settings.loginCookiesContent;
 		const requestUrlParam: RequestUrlParam = {
@@ -145,12 +145,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			headers: headers,
 			throw: true
 		};
-		request(requestUrlParam)
+		await request(requestUrlParam)
 			.then(s => this.humanCheck(s, url))
+			.then(response => log.debug(response))
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
-				let sub = this.parseSubjectFromHtml(data);
+				let sub = this.parseSubjectFromHtml(data, context);
 				sub.userState = userState;
 				return sub;
 			})
@@ -171,10 +172,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 
-	abstract parseSubjectFromHtml(data: CheerioAPI): T | undefined;
+	abstract parseSubjectFromHtml(data: CheerioAPI, context: HandleContext): T | undefined;
 
-	toEditor(context: HandleContext, extract: T): T {
-		this.doubanPlugin.putToObsidian(context, extract);
+	async toEditor(context: HandleContext, extract: T): Promise<T> {
+		await this.doubanPlugin.putToObsidian(context, extract);
 		return extract;
 	}
 
@@ -201,6 +202,24 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				resultName = name;
 		}
 		return resultName;
+	}
+
+	getTitleNameByMode(name: string, personNameMode: string, context: HandleContext): string {
+		if (!name || !personNameMode) {
+			return "";
+		}
+		if (context.listItem) {
+			const newName = context.listItem.title.trim().replaceAll(' ', '');
+			switch (personNameMode) {
+				case PersonNameMode.CH_NAME:
+					return newName;
+					break;
+				case PersonNameMode.EN_NAME:
+					return name.trim().replaceAll(' ', '').replaceAll(newName, '');
+                    break;
+			}
+		}
+		return this.getPersonNameByMode(name, personNameMode);
 	}
 
 	// html_encode(str: string): string {
@@ -232,7 +251,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
 		let resultContent = this.handleCustomVariable(template, context);
 		resultContent = resultContent.replaceAll(DoubanParameter.ID, extract.id)
-			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(this.getPersonName(extract.title, context), textMode))
+			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(extract.title, textMode))
 			.replaceAll(DoubanParameter.TYPE, extract.type)
 			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
 			.replaceAll(DoubanParameter.IMAGE, extract.image)
@@ -266,7 +285,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll(DoubanUserParameter.MY_RATING, this.handleSpecialContent(userState.rate, textMode))
 			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
 			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
-			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, moment(userState.collectionDate).format(context.settings.dateFormat))
+			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, userState.collectionDate?moment(userState.collectionDate).format(context.settings.dateFormat): '')
 	}
 
 	/**
@@ -319,6 +338,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private async getTemplate(extract: T, context: HandleContext): Promise<string> {
+		const {syncConfig} = context;
+		if (syncConfig && syncConfig.templateFile) {
+			const val = await this.doubanPlugin.fileHandler.getFileContent(syncConfig.templateFile);
+			if (val) {
+                return val;
+            }
+		}
 		const tempKey: TemplateKey = this.getTemplateKey();
 		const templatePath: string = context.settings[tempKey];
 		let useUserState:boolean = context.userComponent.isLogin() &&
@@ -349,24 +375,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if(!html('.nav-user-account')) {
 			return {data: html, userState: null};
 		}
-		let rate = html(html('input#n_rating').get(0)).val();
-		let tagsStr = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).text().trim();
-		let tags = tagsStr.replace('标签:', '').split(' ');
-		let stateWord = html(html('div#interest_sect_level > div.a_stars > span.mr10').get(0)).text().trim();
-		let collectionDateStr = html(html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').get(0)).text().trim();
-		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).next().next().text().trim();
-
-
-		const userState: UserStateSubject = {
-			tags: tags,
-			rate: rate?Number(rate):null,
-			state: userState1,
-			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
-			comment: component
-		}
-		return {data: html, userState: userState};
+		return this. analysisUser(html, context);
 	}
+
+	abstract analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject};
 
 
 	public static getUserState(stateWord:string):DoubanSubjectState {

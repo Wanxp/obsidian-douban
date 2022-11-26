@@ -5,10 +5,11 @@ import DoubanPageBroadcastSubject from '../model/DoubanPageBroadcastSubject';
 import DoubanPlugin from "../../../main";
 import DoubanSubject from 'src/org/wanxp/douban/data/model/DoubanSubject';
 import HandleContext from "../../data/model/HandleContext";
-import {SupportType, TemplateKey} from "../../../constant/Constsant";
+import {SupportType} from "../../../constant/Constsant";
+import { UserStateSubject } from '../../data/model/UserStateSubject';
 
 //TODO will support in future version
-class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
+class DoubanPageBroadcastLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
 
 	constructor(doubanPlugin: DoubanPlugin) {
 		super(doubanPlugin);
@@ -26,8 +27,12 @@ class DoubanPageBroadcatLoadHandler extends DoubanAbstractLoadHandler<DoubanPage
 		return extract && extract.type && (extract.type.contains("广播") || extract.type.contains("Broadcast"));
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI): DoubanPageBroadcastSubject {
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanPageBroadcastSubject {
 		return null;
+	}
+
+	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI; userState: UserStateSubject } {
+		return {data: undefined, userState: undefined};
 	}
 
 

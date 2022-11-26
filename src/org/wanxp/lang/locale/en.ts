@@ -22,9 +22,23 @@ export default {
 	'110034': `OutputFolder:`,
 	'110035': `FileName: (Tip:Support Variables And Path)`,
 	'110036': `Complete`,
+	'110037': `
+### Summary
+{0}
 
+### Details
+{1}
 
-
+---
+PS: This file could be delete if you want to.
+`,
+	'110038': `DoubanSyncResult`,
+	'exists':`[exists]`,
+	'replace':`[replace]`,
+	'create':`[create]`,
+	'fail':`[fail]`,
+	'notsync':`[notSync]`,
+	'syncall':`[summary]`,
 
 	//DoubanSettingTab
 	'1201': `Obsidian Douban`,
@@ -73,6 +87,9 @@ export default {
 	'124105': `Input custom variable value`,
 	'124106': `Active type`,
 	'124107': `Delete custom variable`,
+
+	'121101': `Template File`,
+	'121102': `This template will be used when creating new notes. If keep empty, it will use default template`,
 
 	'120101': `Movie Template File`,
 	'120102': `This template will be used when creating new notes for Movie from Obsidian-Douban.`,
@@ -242,7 +259,8 @@ export default {
 	'310116': `totalPage:页数`,
 	'310117': `binding:装帧`,
 	'310118': `producer:出品方`,
-
+	'310119': `-`,
+	'310120': `-`,
 	//电影
 	'310201': `豆瓣ID`,
 	'310202': `电影名称`,
@@ -251,17 +269,19 @@ export default {
 	'310205': `封面`,
 	'310206': `豆瓣网址`,
 	'310207': `简介`,
-	'310208': `(未知)`,
+	'310208': ``,
 	'310209': `上映日期`,
 	'310210': `类型`,
 	'310211': `director:导演`,
 	'310212': `author:编剧`,
 	'310213': `actor:主演`,
 	'310214': `originalTitle:原作名`,
-	'310215': `-`,
-	'310216': `-`,
-	'310217': `-`,
-	'310218': `-`,
+	'310215': `country:国家`,
+	'310216': `language:语言`,
+	'310217': `time:片长`,
+	'310218': `aliases:又名`,
+	'310219': `IMDb`,
+	'310220': `-`,
 
 
 	//电视剧
@@ -279,10 +299,12 @@ export default {
 	'310312': `author:编剧`,
 	'310313': `actor:主演`,
 	'310314': `originalTitle:原作名`,
-	'310315': `-`,
-	'310316': `-`,
-	'310317': `-`,
-	'310318': `-`,
+	'310315': `country:国家`,
+	'310316': `language:语言`,
+	'310317': `time:片长`,
+	'310318': `aliases:又名`,
+	'310319': `IMDb`,
+	'310320': `episode:集数`,
 
 
 
@@ -305,7 +327,8 @@ export default {
 	'310416': `-`,
 	'310417': `-`,
 	'310418': `-`,
-
+	'310419': `-`,
+	'310420': `-`,
 	//日记
 	'310501': `豆瓣ID`,
 	'310502': `日记标题`,
@@ -325,7 +348,8 @@ export default {
 	'310516': `-`,
 	'310517': `-`,
 	'310518': `-`,
-
+	'310519': `-`,
+	'310520': `-`,
 	//游戏
 	'310601': `豆瓣ID`,
 	'310602': `游戏名称`,
@@ -345,7 +369,8 @@ export default {
 	'310616': `-`,
 	'310617': `-`,
 	'310618': `-`,
-
+	'310619': `-`,
+	'310620': `-`,
 	//广播
 	'310701': `待开发`,
 	'310702': `待开发`,
@@ -365,6 +390,9 @@ export default {
 	'310716': `-`,
 	'310717': `-`,
 	'310718': `-`,
+	'310719': `-`,
+	'310720': `-`,
+
 
 	'320101': `扩展1`,
 	'320102': `扩展2`,
@@ -377,6 +405,8 @@ export default {
 	'320109': `扩展9`,
 	'320110': `扩展10`,
 	'320111': `扩展11`,
+	'320112': `扩展12`,
+	'320113': `扩展13`,
 
 	'330101': `今日日期`,
 	'330102': `当前时间`,

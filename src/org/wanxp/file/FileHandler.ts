@@ -112,8 +112,9 @@ export default class FileHandler {
 	 * Handles creating the new note
 	 * A new markdown file will be created at the given file path (`input`)
 	 * in the specified parent folder (`this.folder`)
+	 * @return true if the file was successfully created
 	 */
-	async createNewNoteWithData(originalFilePath: string, data:string, showAfterCreate:boolean=false): Promise<void> {
+	async createNewNoteWithData(originalFilePath: string, data:string, showAfterCreate:boolean=false, showExistsError:boolean = true): Promise<boolean> {
 		const {vault} = this._app;
 		const {adapter} = vault;
 		const prependDirInput = FileUtil.join("", originalFilePath);
@@ -122,6 +123,9 @@ export default class FileHandler {
 
 		const fileExists = await adapter.exists(filePath);
 		if (fileExists) {
+			if (!showExistsError) {
+				return false;
+			}
 			// If the file already exists, respond with error
 			throw new Error(i18nHelper.getMessage('110201').replace('{0}', filePath??''));
 		}
@@ -135,6 +139,7 @@ export default class FileHandler {
 			const leaf = this._app.workspace.splitLeafOrActive();
 			await leaf.openFile(File);
 		}
+		return true;
 	}
 
 	/**

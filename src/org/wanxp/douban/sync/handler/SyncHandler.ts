@@ -1,24 +1,13 @@
 import HandleContext from "../../data/model/HandleContext";
 import {SyncConfig} from "../model/SyncConfig";
 import DoubanPlugin from "../../../main";
-import {App} from "obsidian";
+import {App, moment} from "obsidian";
 import {DoubanSyncHandler} from "./DoubanSyncHandler";
-import DoubanOtherLoadHandler from "../../data/handler/DoubanOtherLoadHandler";
-import DoubanMovieLoadHandler from "../../data/handler/DoubanMovieLoadHandler";
-import DoubanBookLoadHandler from "../../data/handler/DoubanBookLoadHandler";
-import {DoubanTeleplayLoadHandler} from "../../data/handler/DoubanTeleplayLoadHandler";
-import DoubanMusicLoadHandler from "../../data/handler/DoubanMusicLoadHandler";
-import DoubanNoteLoadHandler from "../../data/handler/DoubanNoteLoadHandler";
-import DoubanGameLoadHandler from "../../data/handler/DoubanGameLoadHandler";
-import { DoubanBroadcastSyncHandler } from "./DoubanBroadcastSyncHandler";
 import {DoubanOtherSyncHandler} from "./DoubanOtherSyncHandler";
 import { DoubanMovieSyncHandler } from "./DoubanMovieSyncHandler";
-import { DoubanNoteSyncHandler } from "./DoubanNoteSyncHandler";
 import { DoubanMusicSyncHandler } from "./DoubanMusicSyncHandler";
 import { DoubanBookSyncHandler } from "./DoubanBookSyncHandler";
-import DoubanSubjectLoadHandler from "../../data/handler/DoubanSubjectLoadHandler";
-import DoubanSubject from "../../data/model/DoubanSubject";
-import {DoubanAbstractSyncHandler} from "./DoubanAbstractSyncHandler";
+import {i18nHelper} from "../../../lang/helper";
 
 export default class SyncHandler {
 	private app: App;
@@ -54,5 +43,31 @@ export default class SyncHandler {
 				await this.defaultSyncHandler.sync(this.syncConfig, this.context);
 			}
 		}
+		await this.showResult();
+	}
+
+	async showResult() {
+		const {syncStatusHolder} = this.context;
+		const {statusHandleMap} = syncStatusHolder;
+		const {syncResultMap} = syncStatusHolder;
+		let summary:string = `${i18nHelper.getMessage('syncall')}: ${syncStatusHolder.getTotal()}
+`;
+		for (const [key, value] of statusHandleMap) {
+			// @ts-ignore
+			summary+= `${i18nHelper.getMessage(key)}:  ${value}
+`;
+		}
+		let details:string = '';
+		for (const [key, value] of syncResultMap) {
+			// @ts-ignore
+			details+= `${value.id}-[[${value.title}]]:  ${i18nHelper.getMessage(value.status)}
+`;
+		}
+		summary+= `${i18nHelper.getMessage('notsync')}: ${syncStatusHolder.getTotal() - syncStatusHolder.getHandle()} 
+`
+
+		const result : string = i18nHelper.getMessage('110037', summary, details);
+		const resultFileName = `${i18nHelper.getMessage('110038')}_${moment(new Date()).format('YYYYMMDDHHmmss')}`
+		await this.plugin.fileHandler.createNewNoteWithData(`${this.syncConfig.dataFilePath}/${resultFileName}`, result, true);
 	}
 }

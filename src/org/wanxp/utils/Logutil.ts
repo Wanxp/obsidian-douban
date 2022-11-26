@@ -27,6 +27,11 @@ class Logger {
 		return e;
 	}
 
+	public debug(e: any): any {
+		console.log(`OB-Douban:` + `${typeof e == 'string' ? e : JSON.stringify(e)}`);
+		return e;
+	}
+
 	public trace(e: any): any {
 		// return e;
 		console.log(`OB-Douban:` + `${typeof e == 'string' ? e : JSON.stringify(e)}`);

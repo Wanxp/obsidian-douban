@@ -9,7 +9,7 @@ export default class GlobalSyncStatusHolder {
 	constructor(syncConfig: SyncConfig) {
 		this.syncConfig = syncConfig;
 		this.total = 100;
-		this.handle = 1;
+		this.handle = 0;
 	}
 
 	handled(num:number) {

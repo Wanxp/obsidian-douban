@@ -6,6 +6,8 @@ import DoubanSubject from "../model/DoubanSubject";
 import {SupportType, TemplateTextMode} from "../../../constant/Constsant";
 import HandleContext from "../model/HandleContext";
 import StringUtil from "../../../utils/StringUtil";
+import {UserStateSubject} from "../model/UserStateSubject";
+import {moment} from "obsidian";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
@@ -44,7 +46,28 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			.replace(']', '/');
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI): DoubanBookSubject {
+	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+		let rate = html('input#n_rating').val();
+		let tagsStr = html('span#rating').next().text().trim();
+		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
+		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
+		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		let component = html('span#rating').next().next().next().text().trim();
+
+
+		const userState: UserStateSubject = {
+			tags: tags,
+			rate: rate?Number(rate):null,
+			state: userState1,
+			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			comment: component
+		}
+		return {data: html, userState: userState};
+	}
+
+
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanBookSubject {
 		let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
 		let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
 		let item = html(html("head > script[type='application/ld+json']").get(0)).text();

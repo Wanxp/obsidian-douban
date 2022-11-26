@@ -5,7 +5,9 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "../model/HandleContext";
-import {SupportType, TemplateKey} from "../../../constant/Constsant";
+import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
+import {UserStateSubject} from "../model/UserStateSubject";
+import {moment} from "obsidian";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -29,8 +31,30 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return extract && extract.type && (extract.type.contains("游戏") || extract.type.contains("Game") || extract.type.contains("game"));
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI): DoubanGameSubject {
+	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+		let rate = html('input#n_rating').val();
+		const rating = html('span#rating');
+		const tagsStr = rating.parent().next().text().trim();
+		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		const collected = html('div.collection-section > div.collection-rating-stars > div.collection-collected');
+		const stateWord = collected.find('span.collection-result').text().trim();
+		const collectionDateStr = collected.find('span.color_gray').text().trim();
+		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		const component = rating.parent().next().next().text().trim();
+
+		const userState: UserStateSubject = {
+			tags: tags,
+			rate: rate?Number(rate):null,
+			state: userState1,
+			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			comment: component
+		}
+		return {data: html, userState: userState};
+	}
+
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanGameSubject {
 		let title = html(html("#content > h1").get(0)).text();
+		title = this.getPersonNameByMode(title, PersonNameMode.CH_NAME);
 		let idContent = html(html("head > meta[name= 'mobile-agent']").get(0)).attr("content");
 		let idPattern = /(\d){5,10}/g;
 		let idP = idPattern.exec(idContent);

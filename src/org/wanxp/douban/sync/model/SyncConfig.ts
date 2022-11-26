@@ -6,4 +6,5 @@ export interface  SyncConfig {
 	dataFileNamePath:string;
 	cacheImage:boolean;
 	attachmentPath:string;
+	templateFile:string;
 }

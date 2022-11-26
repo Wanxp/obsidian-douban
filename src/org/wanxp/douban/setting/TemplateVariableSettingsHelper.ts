@@ -247,6 +247,28 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310618')}</th>
 		<td>${i18nHelper.getMessage('310718')}</th>
 	</tr>
+	
+	<tr>
+		<td>${i18nHelper.getMessage('320109')}</th>
+		<td>${i18nHelper.getMessage('310119')}</th>
+		<td>${i18nHelper.getMessage('310219')}</th>
+		<td>${i18nHelper.getMessage('310319')}</th>
+		<td>${i18nHelper.getMessage('310419')}</th>
+		<td>${i18nHelper.getMessage('310519')}</th>
+		<td>${i18nHelper.getMessage('310619')}</th>
+		<td>${i18nHelper.getMessage('310719')}</th>
+	</tr>
+	
+	<tr>
+		<td>${i18nHelper.getMessage('320110')}</th>
+		<td>${i18nHelper.getMessage('310120')}</th>
+		<td>${i18nHelper.getMessage('310220')}</th>
+		<td>${i18nHelper.getMessage('310320')}</th>
+		<td>${i18nHelper.getMessage('310420')}</th>
+		<td>${i18nHelper.getMessage('310520')}</th>
+		<td>${i18nHelper.getMessage('310620')}</th>
+		<td>${i18nHelper.getMessage('310720')}</th>
+	</tr>
 </table>`;
 
 

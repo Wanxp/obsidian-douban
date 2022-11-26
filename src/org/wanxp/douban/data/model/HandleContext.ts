@@ -6,6 +6,7 @@ import NetFileHandler from "src/org/wanxp/net/NetFileHandler";
 import DoubanPlugin from "../../../main";
 import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
 import {SyncConfig} from "../../sync/model/SyncConfig";
+import DoubanSubject from "./DoubanSubject";
 
 export default interface HandleContext {
 	plugin:DoubanPlugin;
@@ -18,4 +19,5 @@ export default interface HandleContext {
 	syncStatusHolder?:SyncStatusHolder;
 	action:string;
 	syncConfig?: SyncConfig;
+	listItem?:DoubanSubject;
 }

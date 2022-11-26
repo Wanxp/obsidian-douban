@@ -14,6 +14,11 @@ actor: {{actor}}
 author: {{author}}
 tags: {{type}}
 url: {{url}}
+aliases: {{aliases}}
+country: {{country}}
+language: {{language}}
+IMDb: {{IMDb}}
+time: {{time}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -114,6 +119,12 @@ actor: {{actor}}
 author: {{author}}
 tags: {{type}}
 url: {{url}}
+aliases: {{aliases}}
+country: {{country}}
+language: {{language}}
+IMDb: {{IMDb}}
+time: {{time}}
+episode: {{episode}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -138,6 +149,11 @@ author: {{author}}
 tags: {{type}}, {{myTags}}
 state: {{myState}}
 url: {{url}}
+aliases: {{aliases}}
+country: {{country}}
+language: {{language}}
+IMDb: {{IMDb}}
+time: {{time}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 desc: {{desc}}
@@ -206,6 +222,11 @@ desc: {{desc}}
 ---
 
 ![image|150]({{image}})
+
+Comment: 
+---
+{{myComment}}
+
 `,
 	noteTemplateFileContent: `---
 doubanId: {{id}}
@@ -262,6 +283,12 @@ author: {{author}}
 tags: {{type}}, {{myTags}}
 state: {{myState}}
 url: {{url}}
+aliases: {{aliases}}
+country: {{country}}
+language: {{language}}
+IMDb: {{IMDb}}
+time: {{time}}
+episode: {{episode}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 desc: {{desc}}

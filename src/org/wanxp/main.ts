@@ -101,12 +101,11 @@ export default class DoubanPlugin extends Plugin {
 					syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
 				}
 			}else {
-				await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
-				syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
+				const created:boolean = await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate, false);
+				created ?syncStatusHolder.create(subject.id, subject.title):syncStatusHolder.exists(subject.id, subject.title);
 			}
 		}else {
 			await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
-			syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
 		}
 	}
 

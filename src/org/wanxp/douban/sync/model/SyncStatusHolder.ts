@@ -6,8 +6,8 @@ import GlobalStatusHolder from "../../model/GlobalStatusHolder";
 
 export default class SyncStatusHolder extends GlobalSyncStatusHolder{
 
-	private syncResultMap: Map<string, SyncItemResult> = new Map();
-	private statusHandleMap: Map<SyncItemStatus, number> = new Map([
+	public syncResultMap: Map<string, SyncItemResult> = new Map();
+	public statusHandleMap: Map<SyncItemStatus, number> = new Map([
 	[SyncItemStatus.exists, 0],
 	[SyncItemStatus.replace, 0],
 	[SyncItemStatus.create, 0],
