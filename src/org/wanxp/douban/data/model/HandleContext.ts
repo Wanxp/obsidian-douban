@@ -7,6 +7,7 @@ import DoubanPlugin from "../../../main";
 import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
 import {SyncConfig} from "../../sync/model/SyncConfig";
 import DoubanSubject from "./DoubanSubject";
+import GlobalStatusHolder from "../../model/GlobalStatusHolder";
 
 export default interface HandleContext {
 	plugin:DoubanPlugin;
@@ -16,7 +17,7 @@ export default interface HandleContext {
 	userComponent: UserComponent;
 	netFileHandler: NetFileHandler;
 	showAfterCreate?:boolean;
-	syncStatusHolder?:SyncStatusHolder;
+	syncStatusHolder?:GlobalStatusHolder;
 	action:string;
 	syncConfig?: SyncConfig;
 	listItem?:DoubanSubject;

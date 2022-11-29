@@ -160,9 +160,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				log.error(i18nHelper.getMessage('130101',  e.toString()), e);
 				if (url) {
 					let id = StringUtil.analyzeIdByUrl(url);
-					context.syncStatusHolder?context.syncStatusHolder.fail(id, ''):null;
+					context.syncStatusHolder?context.syncStatusHolder.syncFail(id, ''):null;
 				}else {
-					context.syncStatusHolder?context.syncStatusHolder.handled(1):null;
+					context.syncStatusHolder?context.syncStatusHolder.syncHandled(1):null;
 
 				}
 			});
@@ -338,11 +338,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private async getTemplate(extract: T, context: HandleContext): Promise<string> {
 		const {syncConfig} = context;
-		if (syncConfig && syncConfig.templateFile) {
-			const val = await this.doubanPlugin.fileHandler.getFileContent(syncConfig.templateFile);
-			if (val) {
-                return val;
-            }
+		if (syncConfig) {
+			if(syncConfig.templateFile) {
+				const val = await this.doubanPlugin.fileHandler.getFileContent(syncConfig.templateFile);
+				if (val) {
+					return val;
+				}
+			}
 		}
 		const tempKey: TemplateKey = this.getTemplateKey();
 		const templatePath: string = context.settings[tempKey];

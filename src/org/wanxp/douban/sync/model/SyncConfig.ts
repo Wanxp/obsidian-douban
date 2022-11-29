@@ -1,10 +1,11 @@
 export interface  SyncConfig {
 	syncType: string,
 	scope: string,
-	force:boolean,
-	dataFilePath:string;
-	dataFileNamePath:string;
+	force: boolean,
+	dataFilePath: string;
+	dataFileNamePath: string;
 	cacheImage:boolean;
-	attachmentPath:string;
-	templateFile:string;
+	attachmentPath: string;
+	templateFile: string;
+	incrementalUpdate: boolean;
 }

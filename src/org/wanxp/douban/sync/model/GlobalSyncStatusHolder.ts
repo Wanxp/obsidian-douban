@@ -8,7 +8,7 @@ export default class GlobalSyncStatusHolder {
 
 	constructor(syncConfig: SyncConfig) {
 		this.syncConfig = syncConfig;
-		this.total = 100;
+		this.total = 0;
 		this.handle = 0;
 	}
 

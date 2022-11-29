@@ -44,7 +44,7 @@ export default class DoubanPlugin extends Plugin {
 				return;
 			}
 			if (Action.Sync == context.action) {
-				this.showStatus(i18nHelper.getMessage('140207', syncStatusHolder.getHandle(), syncStatusHolder.getTotal(), extract.title));
+				this.showStatus(i18nHelper.getMessage('140207', syncStatusHolder.getSyncHandle(), syncStatusHolder.getSyncTotal(), extract.title));
 			}else {
 				this.showStatus(i18nHelper.getMessage('140204', extract.title));
 			}
@@ -53,13 +53,13 @@ export default class DoubanPlugin extends Plugin {
 				await this.putContentToObsidian(context, result);
 			}
 			if (Action.Sync == context.action) {
-				this.showStatus(i18nHelper.getMessage('140208', syncStatusHolder.getHandle(), syncStatusHolder.getTotal(), extract.title));
+				this.showStatus(i18nHelper.getMessage('140208', syncStatusHolder.getSyncHandle(), syncStatusHolder.getSyncTotal(), extract.title));
 			}else {
 				this.showStatus(i18nHelper.getMessage('140205', extract.title));
 			}
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206', e.message), e);
-			syncStatusHolder!=null?syncStatusHolder.fail(extract.id, extract.title):null;
+			syncStatusHolder!=null?syncStatusHolder.syncFail(extract.id, extract.title):null;
 		} finally {
 			this.clearStatusBarDelay();
 		}
@@ -93,16 +93,16 @@ export default class DoubanPlugin extends Plugin {
 		const {subject} = result;
 		const {content} = result;
 		if (Action.Sync == context.action) {
-			if (context.syncStatusHolder.syncConfig.force) {
+			if (context.syncStatusHolder.syncStatus.syncConfig.force) {
 				const exists:boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, content, context.showAfterCreate);
 				if (exists) {
-					syncStatusHolder != null ? syncStatusHolder.replace(subject.id, subject.title):null;
+					syncStatusHolder != null ? syncStatusHolder.syncReplace(subject.id, subject.title):null;
 				}else {
-					syncStatusHolder != null ?syncStatusHolder.create(subject.id, subject.title):null;
+					syncStatusHolder != null ?syncStatusHolder.syncCreate(subject.id, subject.title):null;
 				}
 			}else {
 				const created:boolean = await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate, false);
-				created ?syncStatusHolder.create(subject.id, subject.title):syncStatusHolder.exists(subject.id, subject.title);
+				created ?syncStatusHolder.syncCreate(subject.id, subject.title):syncStatusHolder.syncExists(subject.id, subject.title);
 			}
 		}else {
 			await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
@@ -198,7 +198,8 @@ export default class DoubanPlugin extends Plugin {
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-				action: Action.Sync}),
+				action: Action.Sync,
+				syncStatusHolder: this.statusHolder}),
 		});
 
 		this.settingsManager = new SettingsManager(app, this);
@@ -209,7 +210,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 
 		this.addSettingTab(new DoubanSettingTab(this.app, this));
-		this.statusHolder = new GlobalStatusHolder();
+		this.statusHolder = new GlobalStatusHolder(this.app, this);
 	}
 
 	async loadSettings() {
@@ -248,9 +249,10 @@ export default class DoubanPlugin extends Plugin {
 			if (!result) {
 				return;
 			}
-			context.syncStatusHolder = new SyncStatusHolder(syncConfig, this.statusHolder);
 			// @ts-ignore
 			new Notice(i18nHelper.getMessage('140301', SyncTypeRecords[syncConfig.syncType]));
+			this.initSyncDefaultSettings(syncConfig);
+			context.syncStatusHolder.initSyncHandledData();
 
 			// @ts-ignore
 			this.showStatus(i18nHelper.getMessage('140203', SyncTypeRecords[syncConfig.syncType]));
@@ -260,7 +262,7 @@ export default class DoubanPlugin extends Plugin {
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206', e.message), e);
 		} finally {
-			context.plugin.statusHolder.completeSync();
+			await context.plugin.statusHolder.completeSync();
 			this.clearStatusBarDelay();
 		}
 	}
@@ -277,6 +279,13 @@ export default class DoubanPlugin extends Plugin {
 			return false;
 		}
 		return true;
+	}
+
+	private initSyncDefaultSettings(syncConfig: SyncConfig) {
+		syncConfig.dataFilePath = syncConfig.dataFilePath ? syncConfig.dataFilePath : DEFAULT_SETTINGS.dataFilePath;
+		syncConfig.templateFile = syncConfig.templateFile ? syncConfig.templateFile : '';
+		syncConfig.attachmentPath = syncConfig.attachmentPath ? syncConfig.attachmentPath : DEFAULT_SETTINGS.attachmentPath;
+		syncConfig.dataFileNamePath = syncConfig.dataFileNamePath ? syncConfig.dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
 }
 

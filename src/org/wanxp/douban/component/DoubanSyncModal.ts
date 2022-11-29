@@ -90,7 +90,7 @@ export class DoubanSyncModal extends Modal {
 		if (!this.plugin.statusHolder.syncStarted) {
 			progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')} </span>
+    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')} </span>
 </p>`
 			backgroundButton.setDisabled(true);
 			stopButton.setButtonText(i18nHelper.getMessage('110036'))
@@ -98,7 +98,7 @@ export class DoubanSyncModal extends Modal {
 		}
 		progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()} </span>
+    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()} </span>
 </p>`}
 
 	private showSyncConfig(contentEl: HTMLElement) {
@@ -114,6 +114,7 @@ export class DoubanSyncModal extends Modal {
 			cacheImage: ( settings.cacheImage == null) ?  DEFAULT_SETTINGS.cacheImage : settings.cacheImage,
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
 			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
+			incrementalUpdate: true,
 		};
 		this.showConfigPan(contentEl.createDiv('config'), syncConfig, false);
 		const controls = contentEl.createDiv("controls");
@@ -155,6 +156,7 @@ export class DoubanSyncModal extends Modal {
 		this.showOutputFolderSelections(contentEl, config, disable);
 		this.showOutiFleName(contentEl, config, disable);
 		this.showAttachmentsFileConfig(contentEl, config, disable);
+		this.showUpdateAllConfig(contentEl, config, disable);
 		this.showForceUpdateConfig(contentEl, config, disable);
 	}
 
@@ -218,33 +220,21 @@ export class DoubanSyncModal extends Modal {
 			}).setDisabled(disable);
 	}
 
-	private  showOutiFleName(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
-		const {settings} =  this.plugin;
-		const placeHolder =(settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath;
+	private showOutiFleName(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
 		const dataFilePathSetting = new Setting(containerEl)
 			.setName(i18nHelper.getMessage('121601'))
 			.setDesc(i18nHelper.getMessage('121602'))
 			.addText((textField) => {
-				textField.setPlaceholder(placeHolder)
+				textField.setPlaceholder(i18nHelper.getMessage('121602'))
 					.setValue(config.dataFileNamePath)
 					.onChange(async (value) => {
 						config.dataFileNamePath = value
 					});
 			})
 			.setDisabled(disable);
-		// dataFilePathSetting.addExtraButton((button) => {
-		// 	button
-		// 		.setIcon('reset')
-		// 		.setTooltip(i18nHelper.getMessage('121902'))
-		// 		.onClick(async () => {
-		// 			config.dataFileNamePath = placeHolder
-		// 			this.showOutiFleName(containerEl, config, disable);
-		// 		});
-		// })
 	}
 
 	showOutputFolderSelections(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
-		const placeHolder:string = this.plugin.settings.dataFilePath ? this.plugin.settings.dataFilePath : DEFAULT_SETTINGS.dataFilePath;
 		new Setting(containerEl)
 			.setName( i18nHelper.getMessage('121501'))
 			.setDesc( i18nHelper.getMessage('121502'))
@@ -253,7 +243,7 @@ export class DoubanSyncModal extends Modal {
 				// @ts-ignore
 				search.setValue(config.dataFilePath)
 					// @ts-ignore
-					.setPlaceholder(placeHolder)
+					.setPlaceholder(i18nHelper.getMessage('121503'))
 					.onChange(async (value: string) => {
 						config.dataFilePath = value;
 					});
@@ -265,7 +255,6 @@ export class DoubanSyncModal extends Modal {
 		containerEl.empty();
 		const key:string = this.getKey(config.syncType);
 		// @ts-ignore
-		const placeHolder:string =  this.plugin.settings[key] ? this.plugin.settings[key] : DEFAULT_SETTINGS[key];
 		let setting = new Setting(containerEl)
 			.setName(i18nHelper.getMessage('121101'))
 			.setDesc(i18nHelper.getMessage('121102'))
@@ -274,7 +263,6 @@ export class DoubanSyncModal extends Modal {
 				// @ts-ignore
 				search.setValue(config.templateFile)
 					// @ts-ignore
-					.setPlaceholder(placeHolder)
 					.onChange(async (value: string) => {
 						config.templateFile = value;
 					});
@@ -323,6 +311,8 @@ export class DoubanSyncModal extends Modal {
 			.setDisabled(disable);
 	}
 
+
+
 	showAttachmentsFileConfig(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
 		const settings = new Setting(containerEl);
 		let attachmentFileEl = containerEl.createDiv('attachment-file-path-selection');
@@ -346,7 +336,6 @@ export class DoubanSyncModal extends Modal {
 		if (!show) {
 			return;
 		}
-		const placeHolder:string = this.plugin.settings.attachmentPath ? this.plugin.settings.attachmentPath : DEFAULT_SETTINGS.attachmentPath;
 		new Setting(containerEl)
 			.setName( i18nHelper.getMessage('121432'))
 			.setDesc( i18nHelper.getMessage('121433'))
@@ -355,9 +344,24 @@ export class DoubanSyncModal extends Modal {
 				// @ts-ignore
 				search.setValue(config.attachmentPath)
 					// @ts-ignore
-					.setPlaceholder(placeHolder)
+					.setPlaceholder(i18nHelper.getMessage('121434'))
 					.onChange(async (value: string) => {
 						config.attachmentPath = value;
+					});
+			})
+			.setDisabled(disable);
+	}
+
+	showUpdateAllConfig(containerEl: HTMLElement, config: SyncConfig, disable:boolean) {
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('110039'))
+			.setDesc(i18nHelper.getMessage('110040'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					.setTooltip(i18nHelper.getMessage('110040'))
+					.setValue(config.incrementalUpdate)
+					.onChange(async (value) => {
+						config.incrementalUpdate = value;
 					});
 			})
 			.setDisabled(disable);

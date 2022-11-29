@@ -71,7 +71,9 @@ export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implem
 			if (!context.plugin.statusHolder.syncing()) {
 				return;
 			}
-			await this.doubanSubjectLoadHandler.handle(item.url, context);
+			if(context.syncStatusHolder.shouldSync(item.id)) {
+				await this.doubanSubjectLoadHandler.handle(item.url, context);
+			}
 		}
 	}
 

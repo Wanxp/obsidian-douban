@@ -33,6 +33,11 @@ export default {
 PS: This file could be delete if you want to.
 `,
 	'110038': `DoubanSyncResult`,
+	'110039': `SyncNotSync:`,
+	'110040': `Only sync that haven't been synced yet. if not enabled, will sync all the subject'`,
+	'110041': `If`,
+
+
 	'exists':`[exists]`,
 	'replace':`[replace]`,
 	'create':`[create]`,
@@ -182,6 +187,7 @@ PS: This file could be delete if you want to.
 	'121601': `Note Name`,
 	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath),
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/{{title}}`,
+	'121603': `assets`,
 
 	'121701': `Search Template File`,
 	// '121702': `Movie created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. `,

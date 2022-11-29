@@ -48,9 +48,9 @@ export default class SyncHandler {
 
 	async showResult() {
 		const {syncStatusHolder} = this.context;
-		const {statusHandleMap} = syncStatusHolder;
-		const {syncResultMap} = syncStatusHolder;
-		let summary:string = `${i18nHelper.getMessage('syncall')}: ${syncStatusHolder.getTotal()}
+		const {statusHandleMap} = syncStatusHolder.syncStatus;
+		const {syncResultMap} = syncStatusHolder.syncStatus;
+		let summary:string = `${i18nHelper.getMessage('syncall')}: ${syncStatusHolder.getSyncTotal()}
 `;
 		for (const [key, value] of statusHandleMap) {
 			// @ts-ignore
@@ -63,7 +63,7 @@ export default class SyncHandler {
 			details+= `${value.id}-[[${value.title}]]:  ${i18nHelper.getMessage(value.status)}
 `;
 		}
-		summary+= `${i18nHelper.getMessage('notsync')}: ${syncStatusHolder.getTotal() - syncStatusHolder.getHandle()} 
+		summary+= `${i18nHelper.getMessage('notsync')}: ${syncStatusHolder.getSyncTotal() - syncStatusHolder.getSyncHandle()} 
 `
 
 		const result : string = i18nHelper.getMessage('110037', summary, details);
