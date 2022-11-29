@@ -157,12 +157,14 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book
    `git clone git@github.com:Wanxp/obsidian-douban.git`
 3. 进入代码文件夹      
    `cd obsidian-douban`
-4. 构建      
+4. install
+	`npm install`
+5. 构建      
    `npm run build`
-5. 运行      
+6. 运行      
    `npm run dev`
-6. 进入Obsidian插件中心重新加载当前插件
-7. 享受开发吧
+7. 进入Obsidian插件中心重新加载当前插件
+8. 享受开发吧
 
 ## 免责声明
 1. 本程序没有爬取任何书影音等内容，只供技术研究使用。没有侵犯书影音作者版权和豆瓣官方利益。如有任何侵权行为，请联系我删除。
