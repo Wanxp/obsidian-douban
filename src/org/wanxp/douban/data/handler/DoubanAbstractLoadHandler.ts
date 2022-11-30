@@ -276,7 +276,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			log.warn(i18nHelper.getMessage('100113'));
 			return resultContent;
 		}
-		if (!userState || !userState.collectionDate) {
+		if (!userState) {
 			return resultContent;
 		}
 		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(userState.tags, textMode, context))

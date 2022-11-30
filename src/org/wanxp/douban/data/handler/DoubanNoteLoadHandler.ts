@@ -32,23 +32,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
-		let rate = html(html('input#n_rating').get(0)).val();
-		let tagsStr = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).text().trim();
-		let tags = tagsStr.replace('标签:', '').split(' ');
-		let stateWord = html(html('div#interest_sect_level > div.a_stars > span.mr10').get(0)).text().trim();
-		let collectionDateStr = html(html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').get(0)).text().trim();
-		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = html(html('div#interest_sect_level > div.a_stars > span.color_gray').get(0)).next().next().text().trim();
-
-
-		const userState: UserStateSubject = {
-			tags: tags,
-			rate: rate?Number(rate):null,
-			state: userState1,
-			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
-			comment: component
-		}
-		return {data: html, userState: userState};
+		return {data: html, userState: null};
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanNoteSubject {

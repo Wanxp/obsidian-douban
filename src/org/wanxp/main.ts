@@ -35,7 +35,7 @@ export default class DoubanPlugin extends Plugin {
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
-		const {syncStatus} = context.syncStatusHolder;
+		const syncStatus = context.syncStatusHolder && context.syncStatusHolder.syncStatus ? context.syncStatusHolder.syncStatus : null;
 		try {
 
 			if (!extract) {
@@ -88,7 +88,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
-		const {syncStatus} = context.syncStatusHolder;
+		const syncStatus = context.syncStatusHolder && context.syncStatusHolder.syncStatus ? context.syncStatusHolder.syncStatus : null;
 		const {subject} = result;
 		const {content} = result;
 		if (Action.Sync == context.action) {
