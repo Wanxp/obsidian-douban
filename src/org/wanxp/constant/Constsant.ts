@@ -5,10 +5,51 @@ import {i18nHelper} from "../lang/helper";
  */
 export const BasicConst = {
 	YAML_FRONT_MATTER_SYMBOL: '---',
+	/**
+	 * 状态栏显示毫秒数
+	 */
 	CLEAN_STATUS_BAR_DELAY: 5000,
-	CALL_DOUBAN_DELAY: 3000,
-	CALL_DOUBAN_DELAY_RANGE: 3000,
+	/**
+	 * 请求豆瓣周期(多少秒一次)
+	 */
+	CALL_DOUBAN_DELAY: 4000,
+	/**
+	 * 请求豆瓣周期(多少秒一次)
+	 */
+	CALL_DOUBAN_DELAY_RANGE: 4000,
+	/**
+	 * 多少条后同步速率变慢，防止403
+	 */
+	SLOW_SIZE: 200,
+
+	/**
+	 * 请求豆瓣周期(多少秒一次) 慢速模式
+	 */
+	CALL_DOUBAN_DELAY_SLOW: 10000,
+	/**
+	 * 请求豆瓣周期(多少秒一次)
+	 */
+	CALL_DOUBAN_DELAY_RANGE_SLOW: 5000,
+
 }
+
+/**
+ * 预估程序处理时间长度
+ * @private
+ */
+export const  ESTIMATE_TIME_PER:number = 2000;
+
+/**
+ * 预估每次请求+处理时间长度(慢速模式)
+ * @private
+ */
+export const ESTIMATE_TIME_PER_WITH_REQUEST_SLOW:number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY_SLOW + BasicConst.CALL_DOUBAN_DELAY_RANGE_SLOW / 2;
+
+/**
+ * 预估每次请求+处理时间长度(正常模式)
+ * @private
+ */
+export const  ESTIMATE_TIME_PER_WITH_REQUEST:number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE / 2;
 
 /**
  * 模板类型
@@ -93,8 +134,16 @@ export const SyncTypeRecords: { [key in SyncType]: string } = {
 	[SyncType.music]: i18nHelper.getMessage('504106'),
 }
 
-
+/**
+ * 同步豆瓣每页的大小
+ */
 export const PAGE_SIZE:number = 30;
+
+/**
+ * 多少条后同步速率变慢，防止403
+ */
+
+
 
 /**
  * 动作
@@ -111,5 +160,8 @@ export enum SyncItemStatus {
 	replace= 'replace',
 	create= 'create',
 	fail= 'fail',
+	unHandle='unHandle',
 }
+
+
 

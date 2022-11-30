@@ -5,8 +5,7 @@ import { SyncTypeRecords} from "../../constant/Constsant";
 import {DoubanSubjectState} from "../../constant/DoubanUserState";
 import SyncStatusHolder from "../sync/model/SyncStatusHolder";
 import DoubanPlugin from "../../main";
-import {HandleKey} from "../sync/model/HandledKey";
-import {HandleValue} from "../sync/model/HandleValue";
+import {SyncHandledData} from "../setting/model/SyncHandledData";
 
 export default class GlobalStatusHolder {
 	public syncStatus:SyncStatusHolder;
@@ -48,64 +47,23 @@ export default class GlobalStatusHolder {
 		return this.syncStarted;
 	}
 
-	public syncReplace(id:string, title:string) {
-		this.syncStatus.replace(id, title);
+	public async initHandledData() {
+		this.syncStatus.initSyncHandledData(this._plugin.settings.syncHandledDataArray);
 	}
 
-	public syncExists(id:string, title:string) {
-		this.syncStatus.exists(id, title);
-	}
-
-	public syncCreate(id:string, title:string) {
-		this.syncStatus.create(id, title);
-	}
-
-	public syncFail(id:string, title:string) {
-		this.syncStatus.fail(id, title);
-	}
-
-	public putSyncHandledData(handledData:Map<HandleKey, Set<HandleValue>>) {
-		this.syncStatus.handledData = handledData;
-	}
-
-	public initSyncHandledData() {
-		this.putSyncHandledData(this._plugin.settings.syncHandledData);
-		const incrementalUpdate:boolean = this.syncStatus.syncConfig.incrementalUpdate;
-		if (incrementalUpdate == false) {
-			this.syncStatus.resetSyncHandledSet();
-		}
-	}
-
-	public setTotal(total:number) {
-		this.syncStatus.setTotal(total);
-	}
-
-	syncHandled(num:number) {
-		this.syncStatus.handled(num);
-	}
-
-	syncTotalNum(num:number) {
-		this.syncStatus.setTotal(num);
-	}
-
-	getSyncTotal():number {
-		return this.syncStatus.getTotal();
-	}
-
-	getSyncHandle():number {
-		return this.syncStatus.getHandle();
-	}
-
-	private async saveHandledData() {
+	public async saveHandledData() {
 		if(!this.syncStatus || !this.syncStatus.handledData) {
 			return;
 		}
-		this._plugin.settings.syncHandledData = this.syncStatus.handledData;
+		const data:SyncHandledData[] = [];
+		this.syncStatus.handledData.forEach((value, key) => {
+			data.push({key: key, value: Array.from(value)});
+		})
+		this._plugin.settings.syncHandledDataArray = data;
 		await this._plugin.saveSettings();
-
 	}
 
-	shouldSync(id: string) {
-		return this.syncStatus.shouldSync(id);
+	public async onunload() {
+		await this.saveHandledData();
 	}
 }

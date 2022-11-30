@@ -160,10 +160,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				log.error(i18nHelper.getMessage('130101',  e.toString()), e);
 				if (url) {
 					let id = StringUtil.analyzeIdByUrl(url);
-					context.syncStatusHolder?context.syncStatusHolder.syncFail(id, ''):null;
+					context.syncStatusHolder?context.syncStatusHolder.syncStatus.fail(id, ''):null;
 				}else {
-					context.syncStatusHolder?context.syncStatusHolder.syncHandled(1):null;
-
+					context.syncStatusHolder?context.syncStatusHolder.syncStatus.handled(1):null;
 				}
 			});
 		;

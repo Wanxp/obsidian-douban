@@ -20,6 +20,7 @@ import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {createFileSelectionSetting} from "../setting/TemplateSettingHelper";
 import {FileSuggest} from "../setting/model/FileSuggest";
 import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
+import TimeUtil from "../../utils/TimeUtil";
 
 export class DoubanSyncModal extends Modal {
 	plugin: DoubanPlugin;
@@ -90,7 +91,7 @@ export class DoubanSyncModal extends Modal {
 		if (!this.plugin.statusHolder.syncStarted) {
 			progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')} </span>
+    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getHasHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')}  </span>
 </p>`
 			backgroundButton.setDisabled(true);
 			stopButton.setButtonText(i18nHelper.getMessage('110036'))
@@ -98,7 +99,8 @@ export class DoubanSyncModal extends Modal {
 		}
 		progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHandle()}"> </progress> <span> ${syncStatus.getHandle()}/${syncStatus.getTotal()} </span>
+    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getTotal() == 0 ? i18nHelper.getMessage('110043') : syncStatus.getHasHandle() + '/' + syncStatus.getTotal()}
+${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled()-syncStatus.getHandle(), syncStatus.getOverSize())} </span>
 </p>`}
 
 	private showSyncConfig(contentEl: HTMLElement) {
@@ -199,12 +201,30 @@ export class DoubanSyncModal extends Modal {
 					.setValue(config.syncType)
 					.onChange((value) => {
 						config.syncType = value;
+						config.templateFile = this.getDefaultTemplatePath(value);
 						this.openScopeDropdown(scopeSelections, config, disable);
 						this.showTemplateFileSelectionSetting(templateFile, config, disable);
 					});
 			}).setDisabled(disable);
 		this.openScopeDropdown(scopeSelections, config, disable);
 		this.showTemplateFileSelectionSetting(templateFile, config, disable);
+	}
+
+	private getDefaultTemplatePath(value: string) {
+		let result:string = "";
+		const {settings} = this.plugin;
+		switch (value) {
+			case SyncType.movie:
+				result = (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile
+				break;
+			case SyncType.book:
+				result = (settings.bookTemplateFile == '' || settings.bookTemplateFile == null) ? DEFAULT_SETTINGS.bookTemplateFile : settings.bookTemplateFile
+				break;
+			case SyncType.music:
+				result = (settings.musicTemplateFile == '' || settings.musicTemplateFile == null) ? DEFAULT_SETTINGS.musicTemplateFile : settings.musicTemplateFile
+				break;
+		}
+		return result;
 	}
 
 	private showScopeDropdown(containerEl:HTMLDivElement, scopeSelections: Record<string, string>, config: SyncConfig, disable:boolean) {

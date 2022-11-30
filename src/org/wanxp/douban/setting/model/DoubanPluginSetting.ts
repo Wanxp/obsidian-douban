@@ -1,7 +1,5 @@
 import {CustomProperty} from "./CustomProperty";
-import {SyncConfig} from "../../sync/model/SyncConfig";
-import {HandleKey} from "../../sync/model/HandledKey";
-import {HandleValue} from "../../sync/model/HandleValue";
+import {SyncHandledData} from "./SyncHandledData";
 
 export interface DoubanPluginSetting {
 	movieTemplateFile: string,
@@ -24,5 +22,5 @@ export interface DoubanPluginSetting {
 	loginCookiesContent: string,
 	cacheImage: boolean,
 	attachmentPath: string,
-	syncHandledData?:Map<HandleKey, Set<HandleValue>>,
+	syncHandledDataArray: SyncHandledData[],
 }

@@ -48,24 +48,35 @@ export default class SyncHandler {
 
 	async showResult() {
 		const {syncStatusHolder} = this.context;
-		const {statusHandleMap} = syncStatusHolder.syncStatus;
-		const {syncResultMap} = syncStatusHolder.syncStatus;
-		let summary:string = `${i18nHelper.getMessage('syncall')}: ${syncStatusHolder.getSyncTotal()}
+		const {syncStatus} = syncStatusHolder;
+		const {statusHandleMap} = syncStatus;
+		const {syncResultMap} = syncStatus;
+		let summary:string
+			= `${i18nHelper.getMessage('110053', i18nHelper.getMessage('110050'), i18nHelper.getMessage('110051'), i18nHelper.getMessage('110052'))} 
+|-----|----|----------------------------------|
+`;
+		summary += `${i18nHelper.getMessage('110053', i18nHelper.getMessage('syncall'), syncStatus.getTotal(), i18nHelper.getMessage('syncall_desc'))}
 `;
 		for (const [key, value] of statusHandleMap) {
 			// @ts-ignore
-			summary+= `${i18nHelper.getMessage(key)}:  ${value}
+			summary+= `${i18nHelper.getMessage('110053', i18nHelper.getMessage(key), value, i18nHelper.getMessage(key + '_desc'))}
 `;
 		}
+		summary += `${i18nHelper.getMessage('110053', i18nHelper.getMessage('notsync'), syncStatus.getTotal()-syncStatus.getHasHandle(), i18nHelper.getMessage('notsync_desc'))}
+`;
 		let details:string = '';
 		for (const [key, value] of syncResultMap) {
-			// @ts-ignore
-			details+= `${value.id}-[[${value.title}]]:  ${i18nHelper.getMessage(value.status)}
+			if (value.status == 'unHandle') {
+				// @ts-ignore
+				details+= `${value.id}-  ${value.title}  :  ${i18nHelper.getMessage(value.status)}
 `;
-		}
-		summary+= `${i18nHelper.getMessage('notsync')}: ${syncStatusHolder.getSyncTotal() - syncStatusHolder.getSyncHandle()} 
-`
+			}else {
+				// @ts-ignore
+				details+= `${value.id}-[[${value.title}]]:  ${i18nHelper.getMessage(value.status)}
+`;
+			}
 
+		}
 		const result : string = i18nHelper.getMessage('110037', summary, details);
 		const resultFileName = `${i18nHelper.getMessage('110038')}_${moment(new Date()).format('YYYYMMDDHHmmss')}`
 		await this.plugin.fileHandler.createNewNoteWithData(`${this.syncConfig.dataFilePath}/${resultFileName}`, result, true);

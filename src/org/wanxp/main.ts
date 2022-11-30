@@ -22,7 +22,6 @@ import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
 import SyncHandler from "./douban/sync/handler/SyncHandler";
 import {SyncConfig} from "./douban/sync/model/SyncConfig";
 import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
-import SyncStatusHolder from "./douban/sync/model/SyncStatusHolder";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -36,7 +35,7 @@ export default class DoubanPlugin extends Plugin {
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
-		const {syncStatusHolder} = context;
+		const {syncStatus} = context.syncStatusHolder;
 		try {
 
 			if (!extract) {
@@ -44,7 +43,7 @@ export default class DoubanPlugin extends Plugin {
 				return;
 			}
 			if (Action.Sync == context.action) {
-				this.showStatus(i18nHelper.getMessage('140207', syncStatusHolder.getSyncHandle(), syncStatusHolder.getSyncTotal(), extract.title));
+				this.showStatus(i18nHelper.getMessage('140207', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
 			}else {
 				this.showStatus(i18nHelper.getMessage('140204', extract.title));
 			}
@@ -53,13 +52,13 @@ export default class DoubanPlugin extends Plugin {
 				await this.putContentToObsidian(context, result);
 			}
 			if (Action.Sync == context.action) {
-				this.showStatus(i18nHelper.getMessage('140208', syncStatusHolder.getSyncHandle(), syncStatusHolder.getSyncTotal(), extract.title));
+				this.showStatus(i18nHelper.getMessage('140208', syncStatus.getHasHandle(),  syncStatus.getTotal(), extract.title));
 			}else {
 				this.showStatus(i18nHelper.getMessage('140205', extract.title));
 			}
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206', e.message), e);
-			syncStatusHolder!=null?syncStatusHolder.syncFail(extract.id, extract.title):null;
+			syncStatus!=null?syncStatus.fail(extract.id, extract.title):null;
 		} finally {
 			this.clearStatusBarDelay();
 		}
@@ -89,20 +88,20 @@ export default class DoubanPlugin extends Plugin {
 		}
 		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
-		const {syncStatusHolder} = context;
+		const {syncStatus} = context.syncStatusHolder;
 		const {subject} = result;
 		const {content} = result;
 		if (Action.Sync == context.action) {
 			if (context.syncStatusHolder.syncStatus.syncConfig.force) {
 				const exists:boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, content, context.showAfterCreate);
 				if (exists) {
-					syncStatusHolder != null ? syncStatusHolder.syncReplace(subject.id, subject.title):null;
+					syncStatus != null ? syncStatus.replace(subject.id, subject.title):null;
 				}else {
-					syncStatusHolder != null ?syncStatusHolder.syncCreate(subject.id, subject.title):null;
+					syncStatus != null ?syncStatus.create(subject.id, subject.title):null;
 				}
 			}else {
 				const created:boolean = await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate, false);
-				created ?syncStatusHolder.syncCreate(subject.id, subject.title):syncStatusHolder.syncExists(subject.id, subject.title);
+				created ?syncStatus.create(subject.id, subject.title):syncStatus.exists(subject.id, subject.title);
 			}
 		}else {
 			await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
@@ -224,6 +223,13 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 
+	async onunload() {
+		if (this.statusHolder.syncStatus) {
+			await this.statusHolder.onunload();
+		}
+	}
+
+
 
 
 
@@ -252,8 +258,7 @@ export default class DoubanPlugin extends Plugin {
 			// @ts-ignore
 			new Notice(i18nHelper.getMessage('140301', SyncTypeRecords[syncConfig.syncType]));
 			this.initSyncDefaultSettings(syncConfig);
-			context.syncStatusHolder.initSyncHandledData();
-
+			context.syncStatusHolder.initHandledData();
 			// @ts-ignore
 			this.showStatus(i18nHelper.getMessage('140203', SyncTypeRecords[syncConfig.syncType]));
 			const syncHandler = new SyncHandler(this.app, this, syncConfig, context);

@@ -75,9 +75,10 @@ export default abstract class DoubanAbstractListHandler implements DoubanListHan
 			.map((i: any) => {
 				const item = dataHtml(i);
 				const linkValue:string = item.find('div.title > a').attr('href');
+				const titleValue:string = item.find('div.title > a').text().trim();
 				let idPattern = /(\d){5,10}/g;
 				let ececResult = idPattern.exec(linkValue);
-				return ececResult?{id: ececResult[0], url: linkValue}:null;
+				return ececResult?{id: ececResult[0], url: linkValue, title: titleValue}:null;
 				// return linkValue;
 			})
 	}

@@ -65,14 +65,19 @@ export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implem
 		if (!items || items.length == 0) {
 			return ;
 		}
-		context.syncStatusHolder.setTotal(items.length);
+		const {syncStatus} = context.syncStatusHolder;
+		syncStatus.totalNum(items.length);
+		const needHandled:number = items.filter(item => syncStatus.shouldSync(item.id)).length;
+		syncStatus.setNeedHandled(needHandled);
 		for (const item of items) {
-			await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
 			if (!context.plugin.statusHolder.syncing()) {
 				return;
 			}
-			if(context.syncStatusHolder.shouldSync(item.id)) {
+			if(syncStatus.shouldSync(item.id)) {
 				await this.doubanSubjectLoadHandler.handle(item.url, context);
+				await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
+			}else {
+				syncStatus.unHandle(item.id, item.title);
 			}
 		}
 	}

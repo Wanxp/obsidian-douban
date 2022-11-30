@@ -35,15 +35,31 @@ PS: This file could be delete if you want to.
 	'110038': `DoubanSyncResult`,
 	'110039': `SyncNotSync:`,
 	'110040': `Only sync that haven't been synced yet. if not enabled, will sync all the subject'`,
-	'110041': `If`,
+	'110041': `IncrementalSync`,
+	'110042': `EstimateTime`,
+	'110043': `Loading Menu`,
 
+	'110050': `Type`,
+	'110051': `Number`,
+	'110052': `Description`,
 
 	'exists':`[exists]`,
+	'unHandle':`[unHandle]`,
 	'replace':`[replace]`,
 	'create':`[create]`,
 	'fail':`[fail]`,
-	'notsync':`[notSync]`,
 	'syncall':`[summary]`,
+	'notsync':`[notsync]`,
+
+	'unHandle_desc':`unHandle`,
+	'exists_desc':  `exists`,
+	'replace_desc': `replace`,
+	'create_desc':  `create`,
+	'fail_desc':	`fail`,
+	'notsync_desc': `notsync`,
+	'syncall_desc': `syncall`,
+
+	'110053':`|{0}|{1}|{2}|`,
 
 	//DoubanSettingTab
 	'1201': `Obsidian Douban`,
@@ -495,4 +511,9 @@ PS: This file could be delete if you want to.
 	'NOTE': `note`,
 	'GAME': `game`,
 	'TELEPLAY': `teleplay`,
+
+	'DAY': `D`,
+	'HOUR': `H`,
+	'MINUTE': `m`,
+	'SECOND': `S`,
 }
