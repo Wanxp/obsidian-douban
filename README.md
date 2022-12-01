@@ -23,8 +23,10 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book
 在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你标记过的书影音_ , 包含你的评分/发布日期/演员表等信息.   
 ![background](./doc/background.png)
 
----  If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
+---  
+If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
 关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中.
+如果觉得喜欢，欢迎一键三连-点亮 ⭐Star
 
 - [Bugs, Issues, & Feature Requests](https://github.com/Wanxp/obsidian-douban/issues)
 - [Development Roadmap](https://github.com/users/Wanxp/projects/1)
