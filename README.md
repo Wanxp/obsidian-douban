@@ -25,7 +25,7 @@ Import _Movie, Book, Music, Teleplay, Note, Game_ even _Your Personal Movie/Book
 
 ---  
 If you want some features or have any questions about this plugin, create issues or join the development is welcome.      
-关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中.
+关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中.  
 如果觉得喜欢，欢迎一键三连-点亮 ⭐Star
 
 - [Bugs, Issues, & Feature Requests](https://github.com/Wanxp/obsidian-douban/issues)
