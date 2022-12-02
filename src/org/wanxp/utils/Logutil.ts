@@ -29,7 +29,11 @@ export default class Logger {
 	}
 
 	public debug(e: any): any {
-		console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}:${typeof e == 'string' ? e : JSON.stringify(e)}`);
+		if(e instanceof Error) {
+			console.error(e);
+		}else {
+			console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}:${typeof e == 'string' ? e : JSON.stringify(e)}`);
+		}
 		return e;
 	}
 

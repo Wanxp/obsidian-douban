@@ -155,9 +155,14 @@ ${i18nHelper.getMessage('100125')}`;
 			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
-				manager.debug(`配置界面:点击退出登录按钮`)
-				const loginModel = new DoubanLogoutModel(containerEl, manager);
-				await loginModel.doLogout();
+				manager.debug(`配置界面:点击退出登录按钮，准备退出登录`)
+				// manager.debug(`配置界面:登出界面退出登录请求检测成功，准备退出登录`)
+				manager.plugin.userComponent.logout();
+				manager.debug(`配置界面:退出登录成功`);
+				constructDoubanTokenSettingsUI(containerEl, manager);
+
+				// const loginModel = new DoubanLogoutModel(containerEl, manager);
+				// await loginModel.doLogout();
 			});
 	});
 }

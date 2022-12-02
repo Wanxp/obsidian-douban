@@ -1,7 +1,7 @@
 import SettingsManager from "../setting/SettingsManager";
 import {DoubanPluginSetting} from "../setting/model/DoubanPluginSetting";
 import DoubanSearchResultSubject from "../data/model/DoubanSearchResultSubject";
-import {request, RequestUrlParam} from "obsidian";
+import {request, requestUrl, RequestUrlParam, RequestUrlResponse} from "obsidian";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {CheerioAPI, load} from "cheerio";
 import SearchParserHandler from "../data/search/SearchParser";
@@ -87,11 +87,21 @@ export default class UserComponent {
 		};
 		 this.settingsManager.debug('loadUserInfo:尝试获取用户信息:https://www.douban.com/mine/');
 		 return request(requestUrlParam)
-			 .then(response => this.settingsManager.settings.debugMode ? this.settingsManager.debug(response) : response)
+			 .then(requestUrlResponse => {
+				 if (requestUrlResponse.indexOf('https://sec.douban.com/a') > 0) {
+					 throw new Error(i18nHelper.getMessage('130105'));
+				 }
+				 return requestUrlResponse;
+			 })
 			.then(load)
 			.then(this.getUserInfo)
-			.catch(e => log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString()), e));
-			;
+			.catch(e =>  {
+				if(e.toString().indexOf('403') > 0) {
+					throw new Error(i18nHelper.getMessage('130105'));
+				}else {
+					throw log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString()), e)
+				}
+			});
 	};
 
 

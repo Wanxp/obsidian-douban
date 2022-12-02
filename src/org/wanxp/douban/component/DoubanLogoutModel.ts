@@ -40,12 +40,12 @@ export default class DoubanLogoutModel {
 			this.settingsManager.debug(`配置界面:登出界面请求头检测:${details.url}`)
 			const cookies = details.requestHeaders['Cookie'];
 			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
-			if (cookies && cookies.indexOf('dbcl2') < 0) {
+			// if (cookies && cookies.indexOf('dbcl2') < 0) {
 				this.settingsManager.debug(`配置界面:登出界面退出登录请求检测成功，准备退出登录`)
 				this.settingsManager.plugin.userComponent.logout();
-				this.settingsManager.debug(`配置界面:登出界面退出登录成功`)
+				this.settingsManager.debug(`配置界面:登出界面退出登录成功`);
 				this.onClose();
-			}
+			// }
 		});
 	}
 
@@ -55,7 +55,8 @@ export default class DoubanLogoutModel {
 	}
 
 	onClose() {
-		this.settingsManager.debug(`配置界面:登出界面关闭, 自动退出登出界面`)
+		this.settingsManager.debug(`配置界面:登出界面关闭, 自动退出登出界面`);
+		// this.modal.destroy();
 		this.modal.close();
 	}
 

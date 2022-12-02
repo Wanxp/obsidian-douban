@@ -22,7 +22,9 @@ export default class YamlUtil {
 
 }
 
-const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:`,\n]/;
+export const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:`,\n]/;
+export const TITLE_ALIASES_SPECIAL_CHAR_REG_G = /[{}\[\]&*#?|\-<>=!%@:`,， \n]/g;
+
 const SPECIAL_CHAR_REG_REPLACE: Map<string, string> = new Map([
 	['{', '\\{'],
 ]);

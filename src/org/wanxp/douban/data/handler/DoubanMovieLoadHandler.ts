@@ -9,6 +9,7 @@ import HandleContext from "../model/HandleContext";
 import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
+import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -27,7 +28,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			.replaceAll("{{director}}", extract.director ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
 			.replaceAll("{{actor}}", extract.actor ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
 			.replaceAll("{{author}}", extract.author ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.join(settings.arraySpilt) : "")
+			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')).join(settings.arraySpilt) : "")
 			.replaceAll("{{country}}", extract.country ? extract.country.join(settings.arraySpilt) : "")
 			.replaceAll("{{language}}", extract.language ? extract.language.join(settings.arraySpilt) : "")
 			.replaceAll("{{IMDb}}", extract.IMDb ? extract.IMDb : "")

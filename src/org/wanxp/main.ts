@@ -111,7 +111,7 @@ export default class DoubanPlugin extends Plugin {
 	async search(searchTerm: string, context: HandleContext) {
 		try {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
-			const resultList = await Searcher.search(searchTerm, this.settings);
+			const resultList = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
 			this.showStatus(i18nHelper.getMessage('140202', resultList.length.toString()));
 			new DoubanFuzzySuggester(this, context).showSearchList(resultList);
 		} catch (e) {
