@@ -48,7 +48,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image|150]({{image}})
+![image]({{image}})
 
 {{menu}}
 `,
@@ -71,7 +71,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image|150]({{image}})
+![image]({{image}})
 `,
 	noteTemplateFileContent: `---
 doubanId: {{id}}
@@ -191,7 +191,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image|150]({{image}})
+![image]({{image}})
 
 Comment: 
 ---
@@ -221,7 +221,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image|150]({{image}})
+![image]({{image}})
 
 Comment: 
 ---

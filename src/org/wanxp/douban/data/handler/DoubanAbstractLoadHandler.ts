@@ -461,7 +461,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (context.settings.cacheHighQuantityImage && context.userComponent.isLogin()) {
 			try {
 				const fileNameSpilt = filename.split('.');
-				const highImage = `https://img9.doubanio.com/view/photo/raw/public/${fileNameSpilt.first()}.jpg`
+				const highImage = `https://img9.doubanio.com/view/photo/l/public/${fileNameSpilt.first()}.jpg`
 				const highFilename = fileNameSpilt.first() + '.jpg';
 				const {success, filepath} = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false);
 				if (success) {
