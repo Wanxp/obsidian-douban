@@ -12,7 +12,7 @@ export default class NetFileHandler {
 		this.fileHandler = fileHandler;
 	}
 
-	async downloadFile(url: string, folder:string, filename: string, context:HandleContext): Promise<{ success: boolean, error:string, filepath: string }> {
+	async downloadFile(url: string, folder:string, filename: string, context:HandleContext, showError:boolean): Promise<{ success: boolean, error:string, filepath: string }> {
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
@@ -26,11 +26,17 @@ export default class NetFileHandler {
 			}).then(() => {
 				return {success: true, error: '', filepath: filePath};
 			})
-			.catch(e => log
-				.error(
-					i18nHelper.getMessage('130101')
-						.replace('{0}',  e.toString())
-					, e));
+			.catch(e => {
+				if (showError) {
+					return log
+						.error(
+							i18nHelper.getMessage('130101')
+								.replace('{0}',  e.toString())
+							, e);
+				}else {
+					console.error(e);
+				}
+			});
 		;
 	}
 }

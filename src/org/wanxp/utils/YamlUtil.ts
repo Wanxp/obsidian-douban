@@ -15,15 +15,15 @@ export default class YamlUtil {
 	}
 
 	public static handleText(text: string) {
-		return YamlUtil.hasSpecialChar(text) ? YamlUtil.handleSpecialChar(text)
+		return YamlUtil.hasSpecialChar(text) ? YamlUtil.handleSpecialChar(text.replaceAll('"', '\\"'))
 			.replaceAll('\n', '。')
 			.replaceAll('。。', '。') : text;
 	}
 
 }
 
-export const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:`,\n]/;
-export const TITLE_ALIASES_SPECIAL_CHAR_REG_G = /[{}\[\]&*#?|\-<>=!%@:`,， \n]/g;
+export const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:"`,\n]/;
+export const TITLE_ALIASES_SPECIAL_CHAR_REG_G = /[{}\[\]&*#?|\-<>=!%@:"`,， \n]/g;
 
 const SPECIAL_CHAR_REG_REPLACE: Map<string, string> = new Map([
 	['{', '\\{'],

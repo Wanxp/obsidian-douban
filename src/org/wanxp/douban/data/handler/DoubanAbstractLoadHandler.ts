@@ -102,9 +102,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	handleContentArray(array: any[], context: HandleContext, textMode: TemplateTextMode): string {
 		let result;
 		switch (textMode) {
-			case TemplateTextMode.YAML:
-				result = array.map(YamlUtil.handleText).join(', ');
-				break;
+			// case TemplateTextMode.YAML:
+			// 	result = array.map(YamlUtil.handleText).join(', ');
+			// 	break;
 			default:
 				result = array.join(context.settings.arraySpilt);
 		}
@@ -463,7 +463,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				const fileNameSpilt = filename.split('.');
 				const highImage = `https://img9.doubanio.com/view/photo/raw/public/${fileNameSpilt.first()}.jpg`
 				const highFilename = fileNameSpilt.first() + '.jpg';
-				const {success, filepath} = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context);
+				const {success, filepath} = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false);
 				if (success) {
 					extract.image = filepath;
 					return;
@@ -473,7 +473,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
 		}
-		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename, context);
+		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename, context, true);
 		if (success) {
 			extract.image = filepath;
 		}
