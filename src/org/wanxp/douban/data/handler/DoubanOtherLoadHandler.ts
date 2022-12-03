@@ -24,6 +24,10 @@ export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<Do
 		return false;
 	}
 
+	getHighQuantityImageUrl(fileName:string):string{
+		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
+	}
+
 	parseSubjectFromHtml(data: CheerioAPI, context: HandleContext): DoubanSubject {
 		return undefined;
 	}

@@ -43,6 +43,10 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	support(extract: DoubanSubject): boolean {
 		return extract && extract.type && (extract.type.contains("电视剧") || extract.type.contains("Teleplay") || extract.type.contains("teleplay"));
 	}
+	getHighQuantityImageUrl(fileName:string):string{
+		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
+	}
+
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
 		let rate = html('input#n_rating').val();
 		const rating = html('span#rating');

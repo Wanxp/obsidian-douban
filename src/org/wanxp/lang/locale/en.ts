@@ -197,7 +197,7 @@ PS: This file could be delete if you want to.
 	'121435': `Save High Definition Cover`,
 	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
 	'121437': `Please login first, Then this function could be enable`,
-
+	'121438': `High Definition Cover looks better but it will take more space`,
 
 
 	'121501': `Note folder`,

@@ -5,6 +5,8 @@ export interface  SyncConfig {
 	dataFilePath: string;
 	dataFileNamePath: string;
 	cacheImage:boolean;
+
+	cacheHighQuantityImage:boolean;
 	attachmentPath: string;
 	templateFile: string;
 	incrementalUpdate: boolean;

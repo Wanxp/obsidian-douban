@@ -458,14 +458,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
-		if (context.settings.cacheHighQuantityImage && context.userComponent.isLogin()) {
+		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
 				const fileNameSpilt = filename.split('.');
-				const highImage = `https://img9.doubanio.com/view/photo/l/public/${fileNameSpilt.first()}.jpg`
 				const highFilename = fileNameSpilt.first() + '.jpg';
-				const {success, filepath} = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false);
-				if (success) {
-					extract.image = filepath;
+
+				const highImage = this.getHighQuantityImageUrl(highFilename);
+				const resultValue = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false);
+				if (resultValue && resultValue.success) {
+					extract.image = resultValue.filepath;
 					return;
 				}
 			}catch (e) {
@@ -473,11 +474,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
 		}
-		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename, context, true);
-		if (success) {
-			extract.image = filepath;
+		const resultValue = await context.netFileHandler.downloadFile(image, folder, filename, context, true);
+		if (resultValue && resultValue.success) {
+			extract.image = resultValue.filepath;
 		}
 	}
+
+	abstract getHighQuantityImageUrl(fileName:string):string;
 
 	private async humanCheck(html:any, url:string):Promise<any> {
 		if (html && html.indexOf("<title>禁止访问</title>") != -1) {

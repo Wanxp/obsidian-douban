@@ -19,6 +19,10 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return SupportType.BOOK;
 	}
 
+	getHighQuantityImageUrl(fileName:string):string{
+		return `https://img9.doubanio.com/view/subject/l/public/${fileName}`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {
 		return beforeContent
 			.replaceAll(DoubanBookParameter.author,

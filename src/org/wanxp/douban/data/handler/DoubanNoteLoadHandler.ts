@@ -19,6 +19,10 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return SupportType.NOTE;
 	}
 
+	getHighQuantityImageUrl(fileName:string):string{
+		return ``;
+	}
+
 	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {
 		return beforeContent
 			.replaceAll("{{authorUrl}}", extract.authorUrl ? extract.authorUrl : "")

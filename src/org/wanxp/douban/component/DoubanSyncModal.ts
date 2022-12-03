@@ -114,6 +114,7 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			dataFilePath: (settings.dataFilePath == '' || settings.dataFilePath == null) ? DEFAULT_SETTINGS.dataFilePath : settings.dataFilePath,
 			dataFileNamePath: (settings.dataFileNamePath == '' || settings.dataFileNamePath == null) ?  DEFAULT_SETTINGS.dataFileNamePath : settings.dataFileNamePath,
 			cacheImage: ( settings.cacheImage == null) ?  DEFAULT_SETTINGS.cacheImage : settings.cacheImage,
+			cacheHighQuantityImage: ( settings.cacheHighQuantityImage == null) ?  DEFAULT_SETTINGS.cacheHighQuantityImage : settings.cacheHighQuantityImage,
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
 			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
 			incrementalUpdate: true,
@@ -367,6 +368,18 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 					.setPlaceholder(i18nHelper.getMessage('121434'))
 					.onChange(async (value: string) => {
 						config.attachmentPath = value;
+					});
+			})
+			.setDisabled(disable);
+
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121435'))
+			.setDesc(i18nHelper.getMessage('121438'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					.setValue(config.cacheHighQuantityImage)
+					.onChange(async (value) => {
+						config.cacheHighQuantityImage = value;
 					});
 			})
 			.setDisabled(disable);

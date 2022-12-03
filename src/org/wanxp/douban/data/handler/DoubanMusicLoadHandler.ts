@@ -18,6 +18,10 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		return SupportType.MUSIC;
 	}
 
+	getHighQuantityImageUrl(fileName:string):string{
+		return `https://img1.doubanio.com/view/subject/m/public/${fileName}`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {
 		const {settings} = context;
 		return beforeContent
