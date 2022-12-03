@@ -29,6 +29,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	],
 	loginCookiesContent: '',
 	cacheImage: true,
+	cacheHighQuantityImage: true,
 	attachmentPath: 'assets',
 	syncHandledDataArray: [],
 }

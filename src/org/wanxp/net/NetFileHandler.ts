@@ -3,6 +3,7 @@ import {log} from "../utils/Logutil";
 import {i18nHelper} from "../lang/helper";
 import FileHandler from "../file/FileHandler";
 import {FileUtil} from "../utils/FileUtil";
+import HandleContext from "../douban/data/model/HandleContext";
 
 export default class NetFileHandler {
 	private fileHandler: FileHandler;
@@ -11,12 +12,12 @@ export default class NetFileHandler {
 		this.fileHandler = fileHandler;
 	}
 
-	async downloadFile(url: string, folder:string, filename: string): Promise<{ success: boolean, error:string, filepath: string }> {
+	async downloadFile(url: string, folder:string, filename: string, context:HandleContext): Promise<{ success: boolean, error:string, filepath: string }> {
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
 			throw: true,
-			headers: {}
+			headers: {Cookie: context.settings.loginCookiesContent}
 		};
 		const filePath:string = FileUtil.join(folder, filename);
 		return requestUrl(requestUrlParam)

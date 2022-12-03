@@ -10,6 +10,7 @@ import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Consts
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
 import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import { Person } from 'schema-dts';
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -99,6 +100,9 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				}
 				return result;
 			})[0];
+		this.handlePersonNameByMeta(html, movie,  context, 'video:actor', 'actor');
+		this.handlePersonNameByMeta(html, movie,  context, 'video:director', 'director');
+
 		let detailDom = html(html("#info").get(0));
 		let publish = detailDom.find("span.pl");
 
@@ -126,6 +130,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		movie.IMDb =  valueMap.has('IMDb') ? valueMap.get('IMDb') : "";
 		return movie;
 	}
+
 
 }
 

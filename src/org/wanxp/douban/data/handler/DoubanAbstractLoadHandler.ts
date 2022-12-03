@@ -23,6 +23,8 @@ import {DoubanUserParameter, UserStateSubject} from "../model/UserStateSubject";
 import {DoubanSubjectState, DoubanSubjectStateRecords} from "../../../constant/DoubanUserState";
 import DoubanLoginModel from "../../component/DoubanLoginModel";
 import DoubanHumanCheckModel from "../../component/DoubanHumanCheckModel";
+import DoubanMovieSubject from "../model/DoubanMovieSubject";
+import {Person} from "schema-dts";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -180,6 +182,33 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	getPersonName(name: string, context: HandleContext): string {
 		return this.getPersonNameByMode(name, context.settings.personNameMode);
 	}
+
+	getPersonName2(originalName: string, chineseName: string, context: HandleContext): string {
+		return this.getPersonNameByMode2(originalName, chineseName, context.settings.personNameMode);
+	}
+
+
+	getPersonNameByMode2(originalName: string, chineseName: string, personNameMode: string): string {
+		if (!originalName || !personNameMode) {
+			return "";
+		}
+		let resultName: string;
+		switch (personNameMode) {
+			case PersonNameMode.CH_NAME:
+				resultName = chineseName;
+				break;
+			case PersonNameMode.EN_NAME:
+				resultName  = originalName.trim().replaceAll(chineseName, '').trim();
+				if (!resultName) {
+					resultName = originalName;
+				}
+				break;
+			default:
+				resultName = originalName;
+		}
+		return resultName;
+	}
+
 
 	getPersonNameByMode(name: string, personNameMode: string): string {
 		if (!name || !personNameMode) {
@@ -423,13 +452,28 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!extract.image || (syncConfig && !syncConfig.cacheImage)  || !context.settings.cacheImage) {
 			return;
 		}
-		let image = extract.image;
+		const image = extract.image;
 		const filename = image.split('/').pop();
 		let folder = syncConfig? syncConfig.attachmentPath : context.settings.attachmentPath;
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
-		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename);
+		if (context.settings.cacheHighQuantityImage && context.userComponent.isLogin()) {
+			try {
+				const fileNameSpilt = filename.split('.');
+				const highImage = `https://img9.doubanio.com/view/photo/raw/public/${fileNameSpilt.first()}.jpg`
+				const highFilename = fileNameSpilt.first() + '.jpg';
+				const {success, filepath} = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context);
+				if (success) {
+					extract.image = filepath;
+					return;
+				}
+			}catch (e) {
+				console.error(e);
+				console.error('下载高清封面失败，将会使用普通封面')
+			}
+		}
+		const {success, filepath} = await context.netFileHandler.downloadFile(image, folder, filename, context);
 		if (success) {
 			extract.image = filepath;
 		}
@@ -446,5 +490,26 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 
 
+	}
+
+	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
+								   metaProperty:string, objectProperty:string) {
+		let metaProperties: string[] = html(`head > meta[property='${metaProperty}']`).get()
+			.map((e) => {
+				return html(e).attr('content');
+			});
+		// @ts-ignore
+		movie[objectProperty]
+			// @ts-ignore
+			.filter((p:Person) => p.name)
+			// @ts-ignore
+			.map((p:Person) => {
+				// @ts-ignore
+				const persons = metaProperties.filter((a) => p.name.indexOf(a) >= 0);
+				if (persons) {
+					// @ts-ignore
+					p.name = this.getPersonName2(p.name, persons[0], context);
+				}
+			})
 	}
 }

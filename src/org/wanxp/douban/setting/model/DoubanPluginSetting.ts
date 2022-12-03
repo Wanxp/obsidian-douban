@@ -21,6 +21,8 @@ export interface DoubanPluginSetting {
 	customProperties: CustomProperty[],
 	loginCookiesContent: string,
 	cacheImage: boolean,
+	cacheHighQuantityImage: boolean,
+
 	attachmentPath: string,
 	syncHandledDataArray: SyncHandledData[],
 }

@@ -194,6 +194,10 @@ PS: This file could be delete if you want to.
 	'121432': `Attachment folder`,
 	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault.`,
 	'121434': `assets`,
+	'121435': `Save High Definition Cover`,
+	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
+	'121437': `Please login first, Then this function could be enable`,
+
 
 
 	'121501': `Note folder`,

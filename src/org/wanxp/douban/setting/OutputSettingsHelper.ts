@@ -102,5 +102,18 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 
 	if(manager.plugin.settings.cacheImage) {
 		new Setting(containerEl).then(createFolderSelectionSetting({name: '121432', desc: '121433', placeholder: '121434', key: 'attachmentPath', manager: manager}));
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121435'))
+			.setDesc(i18nHelper.getMessage('121436'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					.setTooltip(i18nHelper.getMessage('121437'))
+					.setValue(manager.plugin.settings.cacheHighQuantityImage)
+					.onChange(async (value) => {
+						manager.plugin.settings.cacheHighQuantityImage = value;
+						await manager.plugin.saveSettings();
+						constructAttachmentFileSettingsUI(containerEl, manager);
+					});
+			});
 	}
 }

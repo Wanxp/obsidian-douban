@@ -102,6 +102,11 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				}
 				return result;
 			})[0];
+
+		this.handlePersonNameByMeta(html, teleplay,  context, 'video:actor', 'actor');
+		this.handlePersonNameByMeta(html, teleplay,  context, 'video:director', 'director');
+
+
 		let detailDom = html(html("#info").get(0));
 		let publish = detailDom.find("span.pl");
 
