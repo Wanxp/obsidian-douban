@@ -113,6 +113,18 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310609')}</td>
 		<td>${i18nHelper.getMessage('310709')}</td>
 	</tr>
+	
+	<tr>
+		<td>yearPublished</td>
+		<td>${i18nHelper.getMessage('310130')}</td>
+		<td>${i18nHelper.getMessage('310230')}</td>
+		<td>${i18nHelper.getMessage('310330')}</td>
+		<td>${i18nHelper.getMessage('310430')}</td>
+		<td>${i18nHelper.getMessage('310530')}</td>
+		<td>${i18nHelper.getMessage('310630')}</td>
+		<td>${i18nHelper.getMessage('310730')}</td>
+	</tr>
+	
 	<tr>
 		<td>genre</td>
 		<td>${i18nHelper.getMessage('310110')}</td>

@@ -285,6 +285,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll(DoubanParameter.URL, extract.url)
 			.replaceAll(DoubanParameter.DESC, this.handleSpecialContent(extract.desc, textMode))
 			.replaceAll(DoubanParameter.PUBLISHER, extract.publisher)
+			.replaceAll(DoubanParameter.YEAR_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format('yyyy') : '')
 			.replaceAll(DoubanParameter.DATE_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(context.settings.dateFormat) : '')
 			.replaceAll(DoubanParameter.TIME_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(context.settings.timeFormat) : '')
 			.replaceAll(DoubanParameter.CURRENT_DATE, moment(new Date()).format(context.settings.dateFormat))
