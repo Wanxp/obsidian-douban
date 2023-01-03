@@ -136,7 +136,7 @@ export default class FileHandler {
 		const File = await vault.create(filePath, data);
 		// Create the file and open it in the active leaf
 		if (showAfterCreate) {
-			const leaf = this._app.workspace.getRightLeaf(true);
+			const leaf = this._app.workspace.getLeaf(true);
 			await leaf.openFile(File);
 		}
 		return true;
