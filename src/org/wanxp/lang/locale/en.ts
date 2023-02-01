@@ -88,6 +88,13 @@ PS: This file could be delete if you want to.
 	'100129': `You have not login Douban, please login in computer first! After login, you can use your rating and reading status, see the last for specific variables.`,
 	'100130': `Login`,
 	'100131': `Login Douban`,
+	'100133': `For Login Error `,
+	'100135': `LoginByCookie`,
+	'100136': `Cookie Input`,
+	'100137': `Cookie Login Failed, Can not get User Info By Cookie, Please Check Your Cookie Text`,
+	'100134': `If you login failed, please click this button and follow`,
+	'100139': `Tutorial`,
+	'100138': `get Cookie and input to text area bellow`,
 	'100132': `Load Douban Login Page Failed`,
 
 

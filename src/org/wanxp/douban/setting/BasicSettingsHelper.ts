@@ -1,4 +1,4 @@
-import {i18nHelper} from "../../lang/helper";
+import I18nHelper, {i18nHelper} from "../../lang/helper";
 import {Platform, Setting} from "obsidian";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import SettingsManager from "./SettingsManager";
@@ -7,6 +7,7 @@ import DoubanLogoutModel from "../component/DoubanLogoutModel";
 import User from "../user/User";
 import {createFolderSelectionSetting} from "./TemplateSettingHelper";
 import StringUtil from "../../utils/StringUtil";
+import {log} from "../../utils/Logutil";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
@@ -124,10 +125,12 @@ export function constructDoubanTokenSettingsUI(containerEl: HTMLElement, manager
 
 export function constructLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
 	manager.debug(`配置界面:未登录-展示登录按钮`)
-	new Setting(containerEl).setName(i18nHelper.getMessage('100131')).addButton((button) => {
+	let loginSetting = containerEl.createDiv("login-button");
+	let loginCookie = containerEl.createDiv("login-button-cookie");
+
+	new Setting(loginSetting).setName(i18nHelper.getMessage('100131')).addButton((button) => {
 		return button
 			.setButtonText(i18nHelper.getMessage('100130'))
-			.setCta()
 			.onClick(async () => {
 				button.setDisabled(true);
 				manager.debug(`配置界面:点击登录按钮`)
@@ -135,6 +138,67 @@ export function constructLoginSettingsUI(containerEl: HTMLElement, manager: Sett
 				await loginModel.doLogin();
 			});
 	});
+	const loginCookieSetting:Setting = new Setting(loginSetting).setName(i18nHelper.getMessage('100133'));
+		// .setDesc(i18nHelper.getMessage('100134'))
+	loginCookieSetting.addButton((button) => {
+		loginCookieSetting.descEl.appendChild(
+				createFragment((frag) => {
+					frag.appendText(
+						i18nHelper.getMessage('100134')
+					);
+					frag.createEl(
+						'a',
+						{
+							text: i18nHelper.getMessage('100139'),
+							href: 'https://wiki.wanxuping.com/zh/obsidian-douban/setting/login/getCookie',
+						},
+						(a) => {
+							a.setAttr('target', '_blank');
+						}
+					);
+					frag.appendText(i18nHelper.getMessage('100138'));
+				})
+			);
+
+
+		return button
+			.setButtonText(i18nHelper.getMessage('100135'))
+			.onClick(async () => {
+				button.setDisabled(true);
+				manager.debug(`配置界面:点击登录异常处理按钮`)
+				constructLoginCookieSettingsUI(loginCookie, containerEl, manager);
+			});
+	});
+}
+
+export function constructLoginCookieSettingsUI(containerEl: HTMLElement, parentContainerEl: HTMLElement, manager: SettingsManager) {
+	manager.debug(`配置界面:登录异常处理按钮-展示Cookie输入框`)
+	new Setting(containerEl).setName(i18nHelper.getMessage('100136'))
+		.setClass("obsidian_douban_settings_cookie_login").addTextArea((text) => {
+		text.onChange(value => manager.updateCookieTemp(value));
+		return text;
+	}).addExtraButton((button) => {
+		return button
+			.setIcon('check')
+			.onClick(async () => {
+				button.setDisabled(true);
+				manager.debug(`配置界面:确认输入Cookie`);
+				const user:User = await manager.plugin.userComponent.loginCookie(manager.getCookieTemp())
+				if (!user || !user.id) {
+					log.notice(i18nHelper.getMessage('100137'))
+				}
+				constructDoubanTokenSettingsUI(parentContainerEl, manager);
+			});
+	})
+		.addExtraButton((button) => {
+			return button
+				.setIcon('x')
+				.onClick(async () => {
+					button.setDisabled(true);
+					manager.debug(`配置界面:取消输入Cookie`);
+					constructDoubanTokenSettingsUI(parentContainerEl, manager);
+				});
+		});
 }
 
 export function constructHasLoginSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {

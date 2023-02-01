@@ -11,6 +11,8 @@ export default class SettingsManager {
 	cleanupFns: Array<() => void> = [];
 	innerLogger: Logger = new Logger();
 
+	cookieTemp:string;
+
 	constructor(app: App, plugin: DoubanPlugin) {
 		this.app = app;
 		this.plugin = plugin;
@@ -41,6 +43,14 @@ export default class SettingsManager {
 		}else {
 			return message;
 		}
+	}
+
+	updateCookieTemp(cookie:string):void {
+		this.cookieTemp = cookie;
+	}
+
+	getCookieTemp():string {
+		return this.cookieTemp;
 	}
 
 }

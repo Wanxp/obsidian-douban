@@ -74,7 +74,9 @@ export default class UserComponent {
 			this.user = user;
 			this.settingsManager.debug(`配置界面:loginCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
-		this.settingsManager.updateSetting('loginCookiesContent', cookie);
+		if(this.user) {
+			this.settingsManager.updateSetting('loginCookiesContent', cookie);
+		}
 		return this.user;
 	}
 
