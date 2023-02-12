@@ -8,7 +8,7 @@ export default class SearchParserHandler {
 			.map((i: any) => {
 				const item = dataHtml(i);
 				let idPattern = /(\d){5,10}/g;
-				let urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}/g;
+				let urlPattern = /(https%3A%2F%2F)\S+(\d){5,10}(%2F)/g;
 				let linkValue = item.find("div.content > div > h3 > a").attr("href");
 				let ececResult = idPattern.exec(linkValue);
 				let urlResult = urlPattern.exec(linkValue);

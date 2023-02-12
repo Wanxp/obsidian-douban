@@ -141,6 +141,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	async handle(url: string, context: HandleContext): Promise<void> {
 		let headers = JSON.parse(context.settings.searchHeaders);
 		headers.Cookie = context.settings.loginCookiesContent;
+		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
+		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求cookie:${context.settings.loginCookiesContent}`)
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
