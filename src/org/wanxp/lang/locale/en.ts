@@ -251,8 +251,13 @@ PS: This file could be delete if you want to.
 	'140301': `Douban: Syncing[{0}]...`,
 	'140303': `Douban: User Info Expire, Please login again`,
 	'140302': `Douban: Sync complete`,
+	'140304': `Douban: Need Login, Please login in Obsidian-Douban plugin`,
+
 
 	'150101': `Choose an item...`,
+	'150102': `[Previous Page]...`,
+	'150103': `[Next Page]...`,
+	'150104': `[Next Page (Please Login First)]...`,
 
 
 

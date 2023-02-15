@@ -1,4 +1,5 @@
 import {i18nHelper} from "../lang/helper";
+import DoubanSearchResultSubject from "../douban/data/model/DoubanSearchResultSubject";
 
 /**
  * 常量池
@@ -162,6 +163,58 @@ export enum SyncItemStatus {
 	fail= 'fail',
 	unHandle='unHandle',
 }
+export enum NavigateType {
+	previous = "previous",
+	next = "next",
+
+	nextNeedLogin = "nextNeedLogin"
+}
+
+export const DoubanSearchResultSubjectPreviousPage:DoubanSearchResultSubject = {
+	cast: "",
+	datePublished: undefined,
+	desc: "",
+	genre: [],
+	id: "",
+	image: "",
+	publisher: "",
+	score: 0,
+	title: i18nHelper.getMessage("150102"),
+	type: "navigate",
+	url: NavigateType.previous
+}
+
+export const DoubanSearchResultSubjectNextPage:DoubanSearchResultSubject = {
+	cast: "",
+	datePublished: undefined,
+	desc: "",
+	genre: [],
+	id: "",
+	image: "",
+	publisher: "",
+	score: 0,
+	title: i18nHelper.getMessage("150103"),
+	type: "navigate",
+	url: NavigateType.next
+}
+
+export const DoubanSearchResultSubjectNextPageNeedLogin:DoubanSearchResultSubject = {
+	cast: "",
+	datePublished: undefined,
+	desc: "",
+	genre: [],
+	id: "",
+	image: "",
+	publisher: "",
+	score: 0,
+	title: i18nHelper.getMessage("150104"),
+	type: "navigate",
+	url: NavigateType.nextNeedLogin
+}
+
+export const SEARCH_ITEM_PAGE_SIZE:number = 20;
+
+
 
 
 

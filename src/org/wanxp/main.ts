@@ -22,6 +22,8 @@ import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
 import SyncHandler from "./douban/sync/handler/SyncHandler";
 import {SyncConfig} from "./douban/sync/model/SyncConfig";
 import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
+import DoubanSearchResultSubject from "./douban/data/model/DoubanSearchResultSubject";
+import {SearchPageInfo} from "./douban/data/model/SearchPageInfo";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -111,8 +113,9 @@ export default class DoubanPlugin extends Plugin {
 	async search(searchTerm: string, context: HandleContext) {
 		try {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
-			const resultList = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
+			const resultList:DoubanSearchResultSubject[] = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
 			this.showStatus(i18nHelper.getMessage('140202', resultList.length.toString()));
+			context.searchPage = new SearchPageInfo(0,0,20, true);
 			new DoubanFuzzySuggester(this, context).showSearchList(resultList);
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);

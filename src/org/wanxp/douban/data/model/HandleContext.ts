@@ -8,6 +8,8 @@ import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
 import {SyncConfig} from "../../sync/model/SyncConfig";
 import DoubanSubject from "./DoubanSubject";
 import GlobalStatusHolder from "../../model/GlobalStatusHolder";
+import {SearchResultsPage} from "schema-dts";
+import {SearchPageInfo} from "./SearchPageInfo";
 
 export default interface HandleContext {
 	plugin:DoubanPlugin;
@@ -21,4 +23,6 @@ export default interface HandleContext {
 	action:string;
 	syncConfig?: SyncConfig;
 	listItem?:DoubanSubject;
+
+	searchPage:SearchPageInfo;
 }
