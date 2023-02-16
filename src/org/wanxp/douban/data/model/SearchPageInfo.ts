@@ -1,25 +1,23 @@
 export class SearchPageInfo {
 	private _total: number;
-	private _hasNext: boolean;
 	private _pageSize: number;
 	private _pageNum: number;
+	
+	private _hasNext: boolean;
 
-	constructor(total: number, pageNum: number, pageSize: number, hasNext: boolean) {
+	constructor(total: number, pageNum: number, pageSize: number) {
 		this._total = total;
 		this._pageNum = pageNum;
 		this._pageSize = pageSize;
-		this._hasNext = hasNext;
+		this._hasNext = ((pageNum + 1) * pageSize) < total;
 	}
 
 	public nextPage(): SearchPageInfo {
 		if (!this._hasNext) {
 			return this;
 		}
-		if (((this._pageNum + 1) * this._pageSize) > this.total) {
-			return this;
-		}
 		return new SearchPageInfo(this.total, this._pageNum + 1,
-			this._pageSize, ((this._pageNum + 2) * this._pageSize) > this.total);
+			this._pageSize);
 	}
 
 	public previousPage(): SearchPageInfo {
@@ -27,7 +25,7 @@ export class SearchPageInfo {
 			return this;
 		}
 		return new SearchPageInfo(this.total, this._pageNum - 1,
-			this._pageSize, true);
+			this._pageSize);
 	}
 
 

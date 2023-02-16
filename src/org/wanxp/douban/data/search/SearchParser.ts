@@ -45,7 +45,7 @@ export default class SearchParserHandler {
 			.map(e => load(e))
 			.map(e=>this.parseSearch(e))
 			.map(e => e? e[0]:null);
-		return new SearchPage(data.total, start / SEARCH_ITEM_PAGE_SIZE, data.limit, data.more, resultList);
-	};
+			return new SearchPage(data.total, start / data.limit, data.limit, resultList);
+		};
 
 }

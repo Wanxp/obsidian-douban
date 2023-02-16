@@ -1,21 +1,23 @@
-import {FuzzySuggestModal, request, RequestUrlParam} from "obsidian";
+import {
+	DoubanSearchResultSubjectNextPage,
+	DoubanSearchResultSubjectNextPageNeedLogin,
+	DoubanSearchResultSubjectPreviousPage,
+	NavigateType
+} from "../../../constant/Constsant";
+import {FuzzySuggestModal, RequestUrlParam, request} from "obsidian";
 
 import DoubanPlugin from "../../../main";
 import DoubanSearchResultSubject from "../model/DoubanSearchResultSubject";
-import {log} from "src/org/wanxp/utils/Logutil";
-import {i18nHelper} from "../../../lang/helper";
 import HandleContext from "../model/HandleContext";
-import {init} from "cjs-module-lexer";
-import {
-	DoubanSearchResultSubjectNextPage,
-	DoubanSearchResultSubjectNextPageNeedLogin, DoubanSearchResultSubjectPreviousPage, NavigateType
-} from "../../../constant/Constsant";
-import {SearchPageInfo} from "../model/SearchPageInfo";
-import {flat} from "builtin-modules";
-import User from "../../user/User";
-import {load} from "cheerio";
-import Searcher from "./Search";
 import {SearchPage} from "../model/SearchPage";
+import {SearchPageInfo} from "../model/SearchPageInfo";
+import Searcher from "./Search";
+import User from "../../user/User";
+import {flat} from "builtin-modules";
+import {i18nHelper} from "../../../lang/helper";
+import {init} from "cjs-module-lexer";
+import {load} from "cheerio";
+import {log} from "src/org/wanxp/utils/Logutil";
 
 export {DoubanFuzzySuggester}
 
@@ -52,9 +54,9 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		return item.type == "navigate";
 	}
 
-	onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent): void {
+	async onChooseItem(item: DoubanSearchResultSubject, evt: MouseEvent | KeyboardEvent):Promise<void>  {
 		if(this.isNavigate(item)) {
-			if (this.handleNavigate(item)) {
+			if (await this.handleNavigate(item)) {
 				this.start();
 			}
 			return;
@@ -84,9 +86,12 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 				log.warn(i18nHelper.getMessage("140304"));
 				break;
 		}
-		const searchPageResult:SearchPage = await Searcher.loadSearchItem(this.searchItem, currentPage.start, this.plugin.settings, this.plugin.settingsManager);
-		this.updatePageResult(searchPageResult);
-		this.context.searchPage = new SearchPageInfo(searchPageResult.total, currentPage.pageNum, searchPageResult.pageSize, searchPageResult.hasNext);
+		if (result) {
+			const searchPageResult: SearchPage =
+				await Searcher.loadSearchItem(this.searchItem, currentPage.start, this.plugin.settings, this.plugin.settingsManager);
+			this.updatePageResult(searchPageResult);
+			this.context.searchPage = new SearchPageInfo(searchPageResult.total, currentPage.pageNum, searchPageResult.pageSize);
+		}
 		return result;
 	}
 

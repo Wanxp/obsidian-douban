@@ -1,15 +1,15 @@
-import {SearchHandleMode} from "../../../constant/Constsant";
-import {Editor} from "obsidian";
-import { DoubanPluginSetting } from "../../setting/model/DoubanPluginSetting";
-import UserComponent from "../../user/UserComponent";
-import NetFileHandler from "src/org/wanxp/net/NetFileHandler";
 import DoubanPlugin from "../../../main";
-import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
-import {SyncConfig} from "../../sync/model/SyncConfig";
+import { DoubanPluginSetting } from "../../setting/model/DoubanPluginSetting";
 import DoubanSubject from "./DoubanSubject";
+import {Editor} from "obsidian";
 import GlobalStatusHolder from "../../model/GlobalStatusHolder";
-import {SearchResultsPage} from "schema-dts";
+import NetFileHandler from "src/org/wanxp/net/NetFileHandler";
+import {SearchHandleMode} from "../../../constant/Constsant";
 import {SearchPageInfo} from "./SearchPageInfo";
+import {SearchResultsPage} from "schema-dts";
+import {SyncConfig} from "../../sync/model/SyncConfig";
+import SyncStatusHolder from "../../sync/model/SyncStatusHolder";
+import UserComponent from "../../user/UserComponent";
 
 export default interface HandleContext {
 	plugin:DoubanPlugin;
@@ -24,5 +24,6 @@ export default interface HandleContext {
 	syncConfig?: SyncConfig;
 	listItem?:DoubanSubject;
 
-	searchPage:SearchPageInfo;
+	searchPage?:SearchPageInfo;
+
 }

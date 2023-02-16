@@ -1,15 +1,15 @@
+import {RequestUrlParam, request, requestUrl} from "obsidian";
 
-import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
-import SearchParserHandler from './SearchParser';
-import {log} from 'src/org/wanxp/utils/Logutil';
-import {request, requestUrl, RequestUrlParam} from "obsidian";
-import {i18nHelper} from "../../../lang/helper";
-import {load} from 'cheerio';
-import {DoubanPluginSetting} from "../../setting/model/DoubanPluginSetting";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
+import {DoubanPluginSetting} from "../../setting/model/DoubanPluginSetting";
+import DoubanSearchResultSubject from '../model/DoubanSearchResultSubject';
+import {SearchPage} from "../model/SearchPage";
+import SearchParserHandler from './SearchParser';
 import SettingsManager from "../../setting/SettingsManager";
 import User from "../../user/User";
-import {SearchPage} from "../model/SearchPage";
+import {i18nHelper} from "../../../lang/helper";
+import {load} from 'cheerio';
+import {log} from 'src/org/wanxp/utils/Logutil';
 
 export default class Searcher {
 	static search(searchItem: string, doubanSettings: DoubanPluginSetting, settingsManager:SettingsManager): Promise<DoubanSearchResultSubject[]> {
@@ -48,9 +48,10 @@ export default class Searcher {
 		if (doubanSettings.loginCookiesContent) {
 			myHeaders.Cookie = doubanSettings.loginCookiesContent
 		}
-		log.debug("请求更多页面");
+		const url:string = `https://www.douban.com/j/search?q=${searchItem}&start=${start}&subtype=item`;
+		log.debug(`请求更多页面:${url}`);
 		let requestUrlParam: RequestUrlParam = {
-			url: `https://www.douban.com/j/search?q=${searchItem}&start=${start}&subtype=item`,
+			url: url,
 			method: "GET",
 			headers: myHeaders,
 			throw: true
