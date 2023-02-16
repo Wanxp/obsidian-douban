@@ -115,7 +115,7 @@ export default class DoubanPlugin extends Plugin {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
 			const resultList:DoubanSearchResultSubject[] = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
 			this.showStatus(i18nHelper.getMessage('140202', resultList.length.toString()));
-			context.searchPage = new SearchPageInfo(21,0,20);
+			context.searchPage = new SearchPageInfo(21,-1,20);
 			new DoubanFuzzySuggester(this, context, searchTerm).showSearchList(resultList);
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);

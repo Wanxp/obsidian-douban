@@ -73,7 +73,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		const {searchPage} = this.context;
 		let currentPage:SearchPageInfo = searchPage;
 		let result:boolean = false;
-		switch (item.type) {
+		switch (item.url) {
 			case NavigateType.previous:
 				currentPage = searchPage.previousPage();
 				result = true;
@@ -89,8 +89,8 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		if (result) {
 			const searchPageResult: SearchPage =
 				await Searcher.loadSearchItem(this.searchItem, currentPage.start, this.plugin.settings, this.plugin.settingsManager);
-			this.updatePageResult(searchPageResult);
 			this.context.searchPage = new SearchPageInfo(searchPageResult.total, currentPage.pageNum, searchPageResult.pageSize);
+			this.updatePageResult(searchPageResult);
 		}
 		return result;
 	}
