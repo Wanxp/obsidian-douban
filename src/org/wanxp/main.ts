@@ -1,29 +1,29 @@
+import {Action, BasicConst, SearchHandleMode, SyncTypeRecords} from "./constant/Constsant";
 import {Editor, Notice, Plugin} from "obsidian";
 
+import {DEFAULT_SETTINGS} from "./constant/DefaultSettings";
 import {DoubanFuzzySuggester} from "./douban/data/search/DoubanSearchFuzzySuggestModal";
+import { DoubanPluginSetting } from "./douban/setting/model/DoubanPluginSetting";
 import {DoubanSearchChooseItemHandler} from "./douban/data/handler/DoubanSearchChooseItemHandler";
 import {DoubanSearchModal} from "./douban/data/search/DoubanSearchModal";
+import DoubanSearchResultSubject from "./douban/data/model/DoubanSearchResultSubject";
 import {DoubanSettingTab} from "./douban/setting/DoubanSettingTab";
 import DoubanSubject from "./douban/data/model/DoubanSubject";
-import Searcher from "./douban/data/search/Search";
-import {i18nHelper} from './lang/helper';
-import {log} from "src/org/wanxp/utils/Logutil";
-import {Action, BasicConst, SearchHandleMode, SyncTypeRecords} from "./constant/Constsant";
+import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
 import FileHandler from "./file/FileHandler";
+import {FileUtil} from "./utils/FileUtil";
+import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
 import HandleContext from "./douban/data/model/HandleContext";
 import HandleResult from "./douban/data/model/HandleResult";
-import {FileUtil} from "./utils/FileUtil";
-import { DoubanPluginSetting } from "./douban/setting/model/DoubanPluginSetting";
-import {DEFAULT_SETTINGS} from "./constant/DefaultSettings";
-import UserComponent from "./douban/user/UserComponent";
-import SettingsManager from "./douban/setting/SettingsManager";
 import NetFileHandler from "./net/NetFileHandler";
-import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
-import SyncHandler from "./douban/sync/handler/SyncHandler";
-import {SyncConfig} from "./douban/sync/model/SyncConfig";
-import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
-import DoubanSearchResultSubject from "./douban/data/model/DoubanSearchResultSubject";
 import {SearchPageInfo} from "./douban/data/model/SearchPageInfo";
+import Searcher from "./douban/data/search/Search";
+import SettingsManager from "./douban/setting/SettingsManager";
+import {SyncConfig} from "./douban/sync/model/SyncConfig";
+import SyncHandler from "./douban/sync/handler/SyncHandler";
+import UserComponent from "./douban/user/UserComponent";
+import {i18nHelper} from './lang/helper';
+import {log} from "src/org/wanxp/utils/Logutil";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -115,8 +115,8 @@ export default class DoubanPlugin extends Plugin {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
 			const resultList:DoubanSearchResultSubject[] = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
 			this.showStatus(i18nHelper.getMessage('140202', resultList.length.toString()));
-			context.searchPage = new SearchPageInfo(0,0,20, true);
-			new DoubanFuzzySuggester(this, context).showSearchList(resultList);
+			context.searchPage = new SearchPageInfo(21,0,20);
+			new DoubanFuzzySuggester(this, context, searchTerm).showSearchList(resultList);
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
 		} finally {
