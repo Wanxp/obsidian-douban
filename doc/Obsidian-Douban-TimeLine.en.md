@@ -7,13 +7,13 @@
 1. 安装[Timeline](https://github.com/Darakah/obsidian-timelines)插件
 2. 安装[Obsidian-Douban](https://github.com/Wanxp/obsidian-douban)插件(本插件)
 3. 在Obsidian-Douban插件配置中登录Douban
-4. 配置同步需要的模板 电影/书籍的模板中的frontmatter，在frontmatter中 ==增加== 特定tags（根据自己的需要指定），用于需要过滤成为timeline的笔记，如增加tags：`我看过的电影`
-```md
+4. 配置同步需要的模板 电影/书籍的模板中的frontmatter，在frontmatter中 **增加** 特定tags（根据自己的需要指定），用于需要过滤成为timeline的笔记，如增加tags：`我看过的电影`
+```markdown
 ---
 tags: 我看过的电影
 ---
-```	
-5. 同时，在电影/书籍... 模板中的 ==最后增加== timeline插件需要的html标签如下:
+````
+5. 同时，在电影/书籍... 模板中的 **最后增加** timeline插件需要的html标签如下:
 ```html
 <span class='ob-timelines' data-date='{{myCollectionDate}}' 
 data-title='{{title}}' data-img='{{image}}'
