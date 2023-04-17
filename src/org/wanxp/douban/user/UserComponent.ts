@@ -1,14 +1,9 @@
 import SettingsManager from "../setting/SettingsManager";
-import {DoubanPluginSetting} from "../setting/model/DoubanPluginSetting";
-import DoubanSearchResultSubject from "../data/model/DoubanSearchResultSubject";
-import {request, requestUrl, RequestUrlParam, RequestUrlResponse} from "obsidian";
-import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
+import {request, RequestUrlParam} from "obsidian";
 import {CheerioAPI, load} from "cheerio";
-import SearchParserHandler from "../data/search/SearchParser";
 import {log} from "../../utils/Logutil";
 import {i18nHelper} from "../../lang/helper";
 import User from "./User";
-import DoubanGameSubject from "../data/model/DoubanGameSubject";
 import StringUtil from "../../utils/StringUtil";
 
 export default class UserComponent {
@@ -114,20 +109,19 @@ export default class UserComponent {
 		}
 		let name = dataHtml(dataHtml("head > title").get(0)).text().trim();
 		let userUrl = dataHtml(elements.get(0)).attr("href");
-		let idPattern = /(\d){5,10}/g;
-		let idP = idPattern.exec(userUrl);
-		let id = idP ? idP[0] : "";
-		if (!id) {
+		if (!name && !userUrl) {
 			return new User();
 		}
-		const result: User = {
+		let id = '';
+		if (userUrl && userUrl.indexOf('people/') > 0) {
+			id = userUrl.substring(userUrl.lastIndexOf('people/') + 7, userUrl.lastIndexOf('/'));
+		}
+		return {
 			id: id,
 			name: name,
 			url: userUrl,
 			login: true
-		}
-		return result;
-
+		};
 	};
 
 }
