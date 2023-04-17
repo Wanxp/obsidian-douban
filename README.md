@@ -45,6 +45,30 @@
 - [ ] 广播
 
 
+## 如何使用
+### 同步
+- 同步个人的观影、阅读、游戏、音乐记录    
+  从豆瓣同步数据(如何利用Timeline插件构建阅读/观影时间线，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md))    
+  ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
+### 搜索
+- 搜索数据并创建笔记  
+  ![search_and_create](doc/img/search_and_create_note.gif)
+- 通过当前文件名搜索    
+  ![Search Movie By File Name](doc/img/search_by_file_name.gif)
+
+- 通过输入文本搜索    
+  ![Search Movie By Input Text](doc/img/search_by_input.gif)
+
+## 设置
+- 设置案例1(自定义模板)    
+  ![Setting Example1](doc/img/setting_zh.gif)
+
+
+- 设置案例2(其它配置)    
+  ![Setting Example2](doc/img/setting_en.gif)
+
+
+
 ## 支持的字段
 (若有缺少想导入的字段, 欢迎提issues反馈)
 
@@ -64,7 +88,7 @@
 | currentDate      | 今日日期              | 今日日期             | 今日日期              | 今日日期           | 今日日期           | 今日日期          |      |  
 | currentTime      | 当前时间              | 当前时间             | 当前时间              | 当前时间           | 当前时间           | 当前时间          |      |   
 | myTags           | 我标记的标签            | 我标记的标签           | 我标记的标签            | 我标记的标签         | -              | 我标记的标签        |      |  
-| myRating         | 我的评分              | 我的评分             | 我的评分              | 我的评分           | -              | 我的评分          |    
+| myRating         | 我的评分              | 我的评分             | 我的评分              | 我的评分           | -              | 我的评分          |
 | myState          | 状态:想看/在看/看过       | 状态:想看/在看/看过      | 状态:想看/在看/看过       | 状态:想听/在听/听过    | -              | 状态:想玩/在玩/玩过   |      |    
 | myComment        | 我的评语              | 我的评语             | 我的评语              | 我的评语           | -              | 我的评语          |      |  
 | myCollectionDate | 我标记的时间            | 我标记的时间           | 我标记的时间            | 我标记的时间         | -              | 我标记的时间        |      |   
@@ -81,30 +105,6 @@
 | 扩展8              |                   |                  | producer: 出品方     |                |                |               |      |     
 
 - 注: myTags, myRating, myState, myComment, myCollectionDate 参数均为在插件中登录后可用
-
-
-## 如何使用
-### 同步
-- 同步个人的观影、阅读、游戏、音乐记录    
-  从豆瓣同步数据(如何利用Timeline插件构建阅读/观影时间线，请参照[结合timeline插件实现时间线效果](Obsidian-Douban-TimeLine.en.md))    
-  ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
-### 搜索
-- 搜索数据并创建笔记  
-  ![search_and_create](doc/img/search_and_create_note.gif)
-- 通过当前文件名搜索    
-  ![Search Movie By File Name](doc/img/search_by_file_name.gif)
-
-- 通过输入文本搜索    
-  ![Search Movie By Input Text](doc/img/search_by_input.gif)
-
-## 设置
-- 设置案例1(自定义模板)    
-  ![Setting Example1](doc/img/setting_zh.gif)
-
-
-- 设置案例2(其它配置)    
-  ![Setting Example2](doc/img/setting_en.gif)
-
 
 
 ## 如何安装
