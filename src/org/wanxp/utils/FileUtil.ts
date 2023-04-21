@@ -59,6 +59,6 @@ export const FileUtil = {
 	 * replace special characters for filename
 	 */
 	replaceSpecialCharactersForFileName(fileName: string): string {
-		return fileName.replaceAll(/[\\/:*?"<>|]/g, '_');
+		return fileName.replaceAll(/[\\/:*?"<>|.]/g, '_');
 	}
 };
