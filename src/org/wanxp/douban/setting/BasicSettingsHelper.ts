@@ -186,6 +186,7 @@ export function constructLoginCookieSettingsUI(containerEl: HTMLElement, parentC
 				const user:User = await manager.plugin.userComponent.loginCookie(manager.getCookieTemp())
 				if (!user || !user.id) {
 					log.notice(i18nHelper.getMessage('100137'))
+					return;
 				}
 				constructDoubanTokenSettingsUI(parentContainerEl, manager);
 			});

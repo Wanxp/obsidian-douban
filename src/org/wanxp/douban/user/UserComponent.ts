@@ -116,6 +116,9 @@ export default class UserComponent {
 		if (userUrl && userUrl.indexOf('people/') > 0) {
 			id = userUrl.substring(userUrl.lastIndexOf('people/') + 7, userUrl.lastIndexOf('/'));
 		}
+		if (!id) {
+			return new User();
+		}
 		return {
 			id: id,
 			name: name,
