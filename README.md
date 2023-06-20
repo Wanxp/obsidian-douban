@@ -137,8 +137,8 @@
 8. 享受开发吧
 
 ## 交流社群
-<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px">
-<img src="doc/img/obsidian-douban-discord-qr_code.svg" width="300px">     
+<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px"> <img src="doc/img/obsidian-douban-discord-qr_code.svg" width="300px">     
+
 
 
 

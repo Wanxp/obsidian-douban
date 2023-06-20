@@ -133,8 +133,8 @@ If you want some features or have any questions about this plugin, create issues
 7. Enjoy your develop  
 
 ## Community
-<img src="img/obsidian-douban-discord-qr_code.svg" width="300px">     
-<img src="img/obsidian-douban-qq-qr_code.svg" width="300px">
+<img src="img/obsidian-douban-discord-qr_code.svg" width="300px">   <img src="img/obsidian-douban-qq-qr_code.svg" width="300px">  
+
 
 
 ## Disclaimer
