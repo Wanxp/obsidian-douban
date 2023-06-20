@@ -161,6 +161,6 @@
 | 同步书影音数据 | 以上所有            | 以上所有                      | 以上所有                                                                                          |
 | 同步书影音数据 |  `替换同名文档`值为勾选      | 已经存在 **同路径同文档名** ，直接覆盖    | 如已经存在在`data/Movie/蝙蝠侠.md`,配置`笔记名称`值为`/data/{{type}}/{{title}}`, 同步书影音记录时勾选 `替换同名文档`, 则`data/Movie/蝙蝠侠.md`会被替换成最新 |
 
-## Thanks
-
-
+## 鸣谢
+### IDE支持
+[<image src="doc/img/jb_beam.svg"> </image>](https://www.jetbrains.com/?from=obsidian-douban)

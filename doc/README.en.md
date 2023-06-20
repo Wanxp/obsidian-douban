@@ -155,3 +155,5 @@ Note: Except for checking "Replace documents with the same name" when synchroniz
 | Synchronize book and video data |  Check the value of `replace the same document` | If the file with the same path and name already exists, overwrite it directly | If there is already a `data/Movie/Batman.md` file, configure the `note name` value to be `/data/{{type}}/{{title}}`, and check "Replace documents with the same name" when synchronizing book and video records, then `data/Movie/Batman.md` will be replaced with the latest one |
 
 ## Thanks
+### IDE support
+[<image src="doc/img/jb_beam.svg"> </image>](https://www.jetbrains.com/?from=obsidian-douban)
