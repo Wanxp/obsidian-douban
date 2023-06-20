@@ -132,6 +132,11 @@ If you want some features or have any questions about this plugin, create issues
 6. Go to your Obsidian plugin center reload this plugin
 7. Enjoy your develop  
 
+## Community
+<img src="img/obsidian-douban-discord-qr_code.svg" width="300px">     
+<img src="img/obsidian-douban-qq-qr_code.svg" width="300px">
+
+
 ## Disclaimer
 1. This program does not crawl any content such as books and videos, and is only for technical research purposes. It does not violate the copyright of authors of books and videos or the official interests of Douban. If there is any infringement, please contact me to delete it.
 2. This program is for learning and communication only, and cannot be used for commercial purposes. Otherwise, the consequences will be at your own risk.

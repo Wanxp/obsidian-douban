@@ -136,6 +136,14 @@
 7. 进入Obsidian插件中心重新加载当前插件
 8. 享受开发吧
 
+## 交流社群
+<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px">
+<img src="doc/img/obsidian-douban-discord-qr_code.svg" width="300px">     
+
+
+
+
+
 ## 免责声明
 1. 本程序没有爬取任何书影音等内容，只供技术研究使用。没有侵犯书影音作者版权和豆瓣官方利益。如有任何侵权行为，请联系我删除。
 2. 本程序仅供学习交流使用。

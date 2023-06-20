@@ -486,6 +486,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	abstract getHighQuantityImageUrl(fileName:string):string;
 
 	private async humanCheck(html:any, url:string):Promise<any> {
+		this.doubanPlugin.settingsManager.debug(html);
 		if (html && html.indexOf("<title>禁止访问</title>") != -1) {
 			const loginModel = new DoubanHumanCheckModel(url);
 			await loginModel.load();
