@@ -197,7 +197,7 @@ PS: This file could be delete if you want to.
 	'121402': `Display status bar when import data ?`,
 
 	'121430': `Save Attachment File`,
-	'121431': `Save attachment file to local disk, such as image ?`,
+	'121431': `Save attachment file to local disk, such as image ? If you do not enable this feature, it will not show cover image in note`,
 	'121432': `Attachment folder`,
 	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault.`,
 	'121434': `assets`,

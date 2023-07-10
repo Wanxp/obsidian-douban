@@ -181,7 +181,6 @@ export function constructLoginCookieSettingsUI(containerEl: HTMLElement, parentC
 		return button
 			.setIcon('check')
 			.onClick(async () => {
-				button.setDisabled(true);
 				manager.debug(`配置界面:确认输入Cookie`);
 				const user:User = await manager.plugin.userComponent.loginCookie(manager.getCookieTemp())
 				if (!user || !user.id) {

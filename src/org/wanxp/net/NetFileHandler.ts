@@ -12,12 +12,20 @@ export default class NetFileHandler {
 		this.fileHandler = fileHandler;
 	}
 
-	async downloadFile(url: string, folder:string, filename: string, context:HandleContext, showError:boolean): Promise<{ success: boolean, error:string, filepath: string }> {
+	async downloadFile(url: string, folder:string, filename: string, context:HandleContext, showError:boolean, headers?:any): Promise<{ success: boolean, error:string, filepath: string }> {
+		const headersCookie = {Cookie: context.settings.loginCookiesContent}
+		const headersInner = {};
+		if(headers) {
+			Object.assign(headersInner, headers, headersCookie);
+		}else {
+			Object.assign(headersInner, headersCookie);
+		}
+
 		const requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
 			throw: true,
-			headers: {Cookie: context.settings.loginCookiesContent}
+			headers: headersInner
 		};
 		const filePath:string = FileUtil.join(folder, filename);
 		return requestUrl(requestUrlParam)

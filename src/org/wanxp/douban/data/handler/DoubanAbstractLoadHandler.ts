@@ -461,13 +461,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
+		const referHeaders = {'referer': image};
 		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
 				const fileNameSpilt = filename.split('.');
 				const highFilename = fileNameSpilt.first() + '.jpg';
 
 				const highImage = this.getHighQuantityImageUrl(highFilename);
-				const resultValue = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false);
+				const resultValue = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false, referHeaders);
 				if (resultValue && resultValue.success) {
 					extract.image = resultValue.filepath;
 					return;
@@ -477,7 +478,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
 		}
-		const resultValue = await context.netFileHandler.downloadFile(image, folder, filename, context, true);
+		const resultValue = await context.netFileHandler.downloadFile(image, folder, filename, context, true, referHeaders);
 		if (resultValue && resultValue.success) {
 			extract.image = resultValue.filepath;
 		}
