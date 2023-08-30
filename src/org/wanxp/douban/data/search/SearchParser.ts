@@ -29,6 +29,7 @@ export default class SearchParserHandler {
 					desc: desc ? desc : '-',
 					url: urlResult ? decodeURIComponent(urlResult[0]) : 'https://www.douban.com',
 					image: "",
+					imageUrl: "",
 					publisher: "",
 					datePublished: undefined,
 					genre: []

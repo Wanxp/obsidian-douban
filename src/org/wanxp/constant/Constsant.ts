@@ -104,6 +104,7 @@ export enum SupportType {
 	NOTE = 'NOTE',
 	GAME = 'GAME',
 	TELEPLAY = 'TELEPLAY',
+	THEATER = 'THEATER',
 }
 
 /**
@@ -177,6 +178,7 @@ export const DoubanSearchResultSubjectPreviousPage:DoubanSearchResultSubject = {
 	genre: [],
 	id: "",
 	image: "",
+	imageUrl: "",
 	publisher: "",
 	score: 0,
 	title: i18nHelper.getMessage("150102"),
@@ -191,6 +193,7 @@ export const DoubanSearchResultSubjectNextPage:DoubanSearchResultSubject = {
 	genre: [],
 	id: "",
 	image: "",
+	imageUrl: "",
 	publisher: "",
 	score: 0,
 	title: i18nHelper.getMessage("150103"),
@@ -205,6 +208,7 @@ export const DoubanSearchResultSubjectNextPageNeedLogin:DoubanSearchResultSubjec
 	genre: [],
 	id: "",
 	image: "",
+	imageUrl: "",
 	publisher: "",
 	score: 0,
 	title: i18nHelper.getMessage("150104"),

@@ -6,6 +6,7 @@ export default class DoubanSubject {
 	type: string;
 	score: number;
 	image: string;
+	imageUrl: string;
 	url: string;
 	desc: string;
 	publisher: string;
@@ -24,6 +25,7 @@ export const DoubanParameter = {
 	TYPE: '{{type}}',
 	SCORE: '{{score}}',
 	IMAGE: '{{image}}',
+	IMAGE_URL: '{{imageData.url}}',
 	URL: '{{url}}',
 	DESC: '{{desc}}',
 	PUBLISHER: '{{publisher}}',

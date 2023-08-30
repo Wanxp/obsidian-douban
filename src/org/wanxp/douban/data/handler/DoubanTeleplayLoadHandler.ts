@@ -94,6 +94,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 					aggregateRating: obj.aggregateRating,
 					datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
 					image: obj.image,
+					imageUrl: obj.image,
 					genre: obj.genre,
 					score: obj.aggregateRating ? obj.aggregateRating.ratingValue : undefined,
 					publisher: "",

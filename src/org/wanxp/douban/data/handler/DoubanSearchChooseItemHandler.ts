@@ -12,6 +12,7 @@ import {DoubanTeleplayLoadHandler} from "./DoubanTeleplayLoadHandler";
 import DoubanGameLoadHandler from "./DoubanGameLoadHandler";
 import HandleContext from "../model/HandleContext";
 import HandleResult from "../model/HandleResult";
+import DoubanTheaterLoadHandler from "./DoubanTheaterLoadHandler";
 
 export class DoubanSearchChooseItemHandler {
 
@@ -30,7 +31,7 @@ export class DoubanSearchChooseItemHandler {
 			new DoubanMusicLoadHandler(doubanPlugin),
 			new DoubanNoteLoadHandler(doubanPlugin),
 			new DoubanGameLoadHandler(doubanPlugin),
-
+			new DoubanTheaterLoadHandler(doubanPlugin),
 			this._doubanSubjectHandlerDefault];
 	}
 

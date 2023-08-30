@@ -12,14 +12,14 @@ import {moment} from "obsidian";
 import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
 import { Person } from 'schema-dts';
 
-export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
+export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
 	constructor(doubanPlugin: DoubanPlugin) {
 		super(doubanPlugin);
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.MOVIE;
+		return SupportType.THEATER;
 	}
 
 	getHighQuantityImageUrl(fileName:string):string{
@@ -42,7 +42,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	support(extract: DoubanSubject): boolean {
-		return extract && extract.type && (extract.type.contains("电影") || extract.type.contains("Movie") || extract.type.contains("movie"));
+		return extract && extract.type && (extract.type.contains("舞台剧") || extract.type.contains("舞剧") || extract.type.contains("Theater") || extract.type.contains("theater"));
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {

@@ -284,6 +284,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.replaceAll(DoubanParameter.TYPE, extract.type)
 			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
 			.replaceAll(DoubanParameter.IMAGE, extract.image)
+			.replaceAll(DoubanParameter.IMAGE_URL, extract.imageUrl)
 			.replaceAll(DoubanParameter.URL, extract.url)
 			.replaceAll(DoubanParameter.DESC, this.handleSpecialContent(extract.desc, textMode))
 			.replaceAll(DoubanParameter.PUBLISHER, extract.publisher)

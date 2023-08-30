@@ -58,6 +58,13 @@ export const DoubanSubjectStateRecords_TELEPLAY: { [key in DoubanSubjectState]: 
 	[DoubanSubjectState.collect]: i18nHelper.getMessage('500704'),
 }
 
+export const DoubanSubjectStateRecords_THEATER: { [key in DoubanSubjectState]: string } = {
+	[DoubanSubjectState.not]: i18nHelper.getMessage('500701'),
+	[DoubanSubjectState.wish]: i18nHelper.getMessage('500702'),
+	[DoubanSubjectState.do]: i18nHelper.getMessage('500703'),
+	[DoubanSubjectState.collect]: i18nHelper.getMessage('500704'),
+}
+
 export const DoubanSubjectStateRecords: { [key in SupportType]: Record<DoubanSubjectState, string> } = {
 	[SupportType.ALL]:DoubanSubjectStateRecords_ALL,
 	[SupportType.MOVIE]:DoubanSubjectStateRecords_MOVIE,
@@ -66,6 +73,7 @@ export const DoubanSubjectStateRecords: { [key in SupportType]: Record<DoubanSub
 	[SupportType.NOTE]:DoubanSubjectStateRecords_NOTE,
 	[SupportType.GAME]:DoubanSubjectStateRecords_GAME,
 	[SupportType.TELEPLAY]:DoubanSubjectStateRecords_TELEPLAY,
+	[SupportType.THEATER]:DoubanSubjectStateRecords_THEATER,
 
 }
 

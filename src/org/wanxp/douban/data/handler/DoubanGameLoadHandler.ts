@@ -95,6 +95,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 			url: url,
 			genre: valueMap.has('genre') ? valueMap.get('genre') : [],
 			image: image,
+			imageUrl: image,
 			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",
 			score: Number(score),

@@ -29,10 +29,12 @@ export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	parseSubjectFromHtml(data: CheerioAPI, context: HandleContext): DoubanSubject {
+		log.notice(i18nHelper.getMessage('140101'));
 		return undefined;
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI; userState: UserStateSubject } {
+		log.notice(i18nHelper.getMessage('140101'));
 		return {data: undefined, userState: undefined};
 	}
 

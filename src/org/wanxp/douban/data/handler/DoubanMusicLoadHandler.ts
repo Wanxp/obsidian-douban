@@ -86,6 +86,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 
 		const result: DoubanMusicSubject = {
 			image: image,
+			imageUrl: image,
 			datePublished: valueMap.has('datePublished') ? new Date(valueMap.get('datePublished')) : undefined,
 			publisher: valueMap.has('publisher') ? valueMap.get('publisher') : "",
 			score: Number(score),

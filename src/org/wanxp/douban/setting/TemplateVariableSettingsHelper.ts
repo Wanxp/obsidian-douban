@@ -73,6 +73,16 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310705')}</td>
 	</tr>
 	<tr>
+		<td>imageData.url</td>
+		<td>${i18nHelper.getMessage('310121')}</td>
+		<td>${i18nHelper.getMessage('310221')}</td>
+		<td>${i18nHelper.getMessage('310321')}</td>
+		<td>${i18nHelper.getMessage('310421')}</td>
+		<td>${i18nHelper.getMessage('310521')}</td>
+		<td>${i18nHelper.getMessage('310621')}</td>
+		<td>${i18nHelper.getMessage('310721')}</td>
+	</tr>
+	<tr>
 		<td>url</td>
 		<td>${i18nHelper.getMessage('310106')}</td>
 		<td>${i18nHelper.getMessage('310206')}</td>
