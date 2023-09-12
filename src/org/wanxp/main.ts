@@ -208,7 +208,11 @@ export default class DoubanPlugin extends Plugin {
 		this.userComponent = new UserComponent(this.settingsManager);
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
 		if (this.userComponent.needLogin()) {
-			await this.userComponent.loginByCookie();
+			try {
+				await this.userComponent.loginByCookie();
+			}catch (e) {
+				log.debug(i18nHelper.getMessage('100101'));
+			}
 		}
 
 		this.addSettingTab(new DoubanSettingTab(this.app, this));
