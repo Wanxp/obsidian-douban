@@ -23,6 +23,32 @@ export default class StringUtil {
 		return id;
 	}
 
+	/**
+	 * request headers 字符串 转 json
+	 * @param text
+	 * @return json object
+	 */
+	public static parseHeaders(text: string): any {
+		let headers = {};
+		if (text) {
+			//如果首行包含'GET'或者'POST'，则去掉首行
+			if (text.indexOf('GET') == 0 || text.indexOf('POST') == 0) {
+				text = text.substring(text.indexOf('\n') + 1);
+			}
+			let lines = text.split('\n');
+			for (let line of lines) {
+				let index = line.indexOf(':');
+				if (index > 0) {
+					let key = line.substring(0, index);
+					let value = line.substring(index + 1).trim();
+					// @ts-ignore
+					headers[key] = value;
+				}
+			}
+		}
+		return headers;
+	}
+
 
 	public static confuse(text: string):string {
 		if (!text) {
