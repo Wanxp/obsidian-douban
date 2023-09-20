@@ -25,6 +25,7 @@ import DoubanLoginModel from "../../component/DoubanLoginModel";
 import DoubanHumanCheckModel from "../../component/DoubanHumanCheckModel";
 import DoubanMovieSubject from "../model/DoubanMovieSubject";
 import {Person} from "schema-dts";
+import HttpUtil from "../../../utils/HttpUtil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -143,14 +144,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		headers.Cookie = context.settings.loginCookiesContent;
 		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
 		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求cookie:${context.settings.loginCookiesContent}`)
-		const requestUrlParam: RequestUrlParam = {
-			url: url,
-			method: "GET",
-			headers: headers,
-			throw: true
-		};
-		await request(requestUrlParam)
-			.then(s => this.humanCheck(s, url))
+		await HttpUtil.httpRequestGet(url, headers, context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
@@ -487,19 +481,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getHighQuantityImageUrl(fileName:string):string;
 
-	private async humanCheck(html:any, url:string):Promise<any> {
-		this.doubanPlugin.settingsManager.debug(html);
-		if (html && html.indexOf("<title>禁止访问</title>") != -1) {
-			const loginModel = new DoubanHumanCheckModel(url);
-			await loginModel.load();
-			return '';
-		}else {
-			return html;
-		}
 
-
-
-	}
 
 	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
 								   metaProperty:string, objectProperty:string) {

@@ -83,7 +83,7 @@ export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<
 				const result: DoubanMovieSubject = {
 					id: id ? id[0] : '',
 					title: title,
-					type: 'Movie',
+					type: 'Theater',
 					score: obj.aggregateRating ? obj.aggregateRating.ratingValue : undefined,
 					originalTitle: originalTitle,
 					desc: obj.description,

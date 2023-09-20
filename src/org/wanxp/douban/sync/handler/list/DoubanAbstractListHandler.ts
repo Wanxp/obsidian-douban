@@ -10,6 +10,7 @@ import {DoubanListHandler} from "./DoubanListHandler";
 import {SyncConfig} from "../../model/SyncConfig";
 import  { sleepRange} from "../../../../utils/TimeUtil";
 import {ALL} from "../../../../constant/DoubanUserState";
+import HttpUtil from "../../../../utils/HttpUtil";
 
 export default abstract class DoubanAbstractListHandler implements DoubanListHandler{
 
@@ -47,13 +48,7 @@ export default abstract class DoubanAbstractListHandler implements DoubanListHan
 	async getPageList(url: string, context: HandleContext):Promise<SubjectListItem[]>  {
 		let headers = JSON.parse(context.settings.searchHeaders);
 		headers.Cookie = context.settings.loginCookiesContent;
-		const requestUrlParam: RequestUrlParam = {
-			url: url,
-			method: "GET",
-			headers: headers,
-			throw: true
-		};
-		return request(requestUrlParam)
+		return HttpUtil.httpRequestGet(url, headers, context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.parseSubjectFromHtml(data, context))
 			.catch(e => log

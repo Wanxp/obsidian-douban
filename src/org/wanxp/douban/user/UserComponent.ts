@@ -1,5 +1,5 @@
 import SettingsManager from "../setting/SettingsManager";
-import {request, RequestUrlParam} from "obsidian";
+import {RequestUrlParam} from "obsidian";
 import {CheerioAPI, load} from "cheerio";
 import {log} from "../../utils/Logutil";
 import {i18nHelper} from "../../lang/helper";
@@ -7,6 +7,8 @@ import User from "./User";
 import StringUtil from "../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {doubanHeaders} from "../../constant/Douban";
+import { request } from "https";
+import HttpUtil from "../../utils/HttpUtil";
 
 export default class UserComponent {
 	private settingsManager: SettingsManager;
@@ -79,39 +81,17 @@ export default class UserComponent {
 
 
 	 async loadUserInfo(cookie: any): Promise<User> {
-		const headers1 = {
-			'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-			'Accept-Language': 'zh-CN,zh;q=0.9',
-			'Cookie': cookie,
-			'Referer': 'https://accounts.douban.com/',
-			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
-		}
-	 	// Object.assign(headers, doubanHeaders, {'Cookie': cookie}, {'Referer': 'https://accounts.douban.com/'})
-		let requestUrlParam: RequestUrlParam = {
-			url: 'https://www.douban.com/mine/',
-			method: "GET",
-			headers: headers1,
-			throw: true
-		};
-		 this.settingsManager.debug('loadUserInfo:尝试获取用户信息:https://www.douban.com/mine/');
-		 return request(requestUrlParam)
-			 .then(requestUrlResponse => {
-				 if (requestUrlResponse.indexOf('https://sec.douban.com/a') > 0) {
-					 this.settingsManager.debug(`loadUserInfo:登录Douban获取异常网页如下:\n${requestUrlResponse}`);
-					 log.notice(i18nHelper.getMessage('130105'))
-				 }
-				 this.settingsManager.debug(`loadUserInfo:登录Douban获取网页如下:\n${requestUrlResponse}`);
-				 return requestUrlResponse;
-			 })
+		 const headers1 = {
+			 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+			 'Accept-Language': 'zh-CN,zh;q=0.9',
+			 'Cookie': cookie,
+			 'Referer': 'https://accounts.douban.com/',
+			 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+		 }
+		// const headers1 = StringUtil.parseHeaders(cookie)
+		return HttpUtil.httpRequestGet('https://www.douban.com/mine/', headers1, this.settingsManager)
 			.then(load)
-			.then(this.getUserInfo)
-			.catch(e =>  {
-				if(e.toString().indexOf('403') > 0) {
-					throw log.error(i18nHelper.getMessage('130105'), e)
-				}else {
-					throw log.error(i18nHelper.getMessage('130101').replace('{0}',   e.toString()), e)
-				}
-			});
+			.then(this.getUserInfo);
 	};
 
 
