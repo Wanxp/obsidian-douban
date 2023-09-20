@@ -1,6 +1,5 @@
 import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
 import {PersonNameMode, SupportType} from "./Constsant";
-import {doubanHeaders} from "./Douban";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	movieTemplateFile: ``,
@@ -10,7 +9,6 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	gameTemplateFile: ``,
 	teleplayTemplateFile: ``,
 	searchUrl: 'https://www.douban.com/search?q=',
-	searchHeaders: JSON.stringify(doubanHeaders),
 	dateFormat: "yyyy-MM-DD",
 	timeFormat: "HH:mm:ss",
 	arraySpilt: ", ",
@@ -28,6 +26,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		{name: 'myType', value: 'teleplay', field: SupportType.TELEPLAY},
 	],
 	loginCookiesContent: '',
+	loginHeadersContent: '',
 	cacheImage: true,
 	cacheHighQuantityImage: true,
 	attachmentPath: 'assets',

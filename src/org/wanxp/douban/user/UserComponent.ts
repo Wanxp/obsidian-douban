@@ -9,6 +9,7 @@ import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {doubanHeaders} from "../../constant/Douban";
 import { request } from "https";
 import HttpUtil from "../../utils/HttpUtil";
+import {DEFAULT_DOUBAN_HEADERS} from "../../constant/Constsant";
 
 export default class UserComponent {
 	private settingsManager: SettingsManager;
@@ -38,13 +39,15 @@ export default class UserComponent {
 		}
 		this.user = null;
 		this.settingsManager.updateSetting('loginCookiesContent', '');
+		this.settingsManager.updateSetting('loginHeadersContent', '');
+
 	}
 
 
 
 	needLogin() {
-		const cookie:any = this.settingsManager.getSetting('loginCookiesContent') ;
-		if(!cookie) {
+		const headers:any = this.settingsManager.getSetting('loginHeadersContent') ;
+		if(!headers) {
 			return false;
 		}
 		return !this.isLogin();
@@ -62,6 +65,43 @@ export default class UserComponent {
 			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
 		return this.user;
+	}
+	async loginByHeaders() {
+		// @ts-ignore
+		let headersStr:string = this.settingsManager.getSetting('loginHeadersContent');
+		if(!headersStr) {
+			this.settingsManager.debug('主界面:loginByCookie:无豆瓣headers信息，获取用户信息失败');
+			return new User();
+		}
+		this.settingsManager.debug('主界面:loginByCookie:豆瓣cookies信息正常，尝试获取用户信息');
+		const headers:object = JSON.parse(headersStr);
+		await this.loadUserInfoByHeaders(headers).then(user => {
+			this.user = user;
+			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
+		});
+		return this.user;
+
+	}
+
+	async loginHeaders(headers: object):Promise<User> {
+		if(!headers) {
+			return new User();
+		}
+		this.settingsManager.debug('配置界面:loginCookie:豆瓣headers信息正常，尝试获取用户信息,headers:' + headers);
+		await this.loadUserInfoByHeaders(headers).then(user => {
+			this.user = user;
+			this.settingsManager.debug(`配置界面:loginCookie:豆瓣headers信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
+		});
+		if(this.user) {
+			this.settingsManager.updateSetting('loginHeadersContent', JSON.stringify(headers));
+		}
+		return this.user;
+	}
+
+	async loadUserInfoByHeaders(headers: object): Promise<User> {
+		return HttpUtil.httpRequestGet('https://www.douban.com/mine/', headers, this.settingsManager)
+			.then(load)
+			.then(this.getUserInfo);
 	}
 
 	async loginCookie(cookie: any):Promise<User> {
@@ -82,13 +122,9 @@ export default class UserComponent {
 
 	 async loadUserInfo(cookie: any): Promise<User> {
 		 const headers1 = {
-			 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-			 'Accept-Language': 'zh-CN,zh;q=0.9',
-			 'Cookie': cookie,
-			 'Referer': 'https://accounts.douban.com/',
-			 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+			 ...DEFAULT_DOUBAN_HEADERS,
+			 Cookie: cookie
 		 }
-		// const headers1 = StringUtil.parseHeaders(cookie)
 		return HttpUtil.httpRequestGet('https://www.douban.com/mine/', headers1, this.settingsManager)
 			.then(load)
 			.then(this.getUserInfo);
@@ -119,5 +155,6 @@ export default class UserComponent {
 			login: true
 		};
 	};
+
 
 }

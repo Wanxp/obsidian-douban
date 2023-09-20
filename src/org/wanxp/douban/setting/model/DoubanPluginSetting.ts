@@ -12,7 +12,6 @@ export interface DoubanPluginSetting {
 	timeFormat: string,
 	searchUrl: string,
 	arraySpilt: string,
-	searchHeaders?: string,
 	personNameMode: string,
 	dataFilePath: string,
 	dataFileNamePath: string,
@@ -20,6 +19,7 @@ export interface DoubanPluginSetting {
 	debugMode: boolean,
 	customProperties: CustomProperty[],
 	loginCookiesContent: string,
+	loginHeadersContent: string,
 	cacheImage: boolean,
 	cacheHighQuantityImage: boolean,
 

@@ -46,9 +46,7 @@ export default abstract class DoubanAbstractListHandler implements DoubanListHan
 	abstract getSyncType():string;
 
 	async getPageList(url: string, context: HandleContext):Promise<SubjectListItem[]>  {
-		let headers = JSON.parse(context.settings.searchHeaders);
-		headers.Cookie = context.settings.loginCookiesContent;
-		return HttpUtil.httpRequestGet(url, headers, context.plugin.settingsManager)
+		return HttpUtil.httpRequestGet(url,  context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.parseSubjectFromHtml(data, context))
 			.catch(e => log

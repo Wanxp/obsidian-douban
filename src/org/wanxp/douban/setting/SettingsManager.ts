@@ -3,6 +3,8 @@ import { DEFAULT_SETTINGS } from "src/org/wanxp/constant/DefaultSettings";
 import DoubanPlugin from "../../main";
 import Logger from "../../utils/Logutil";
 import { DoubanPluginSetting } from "./model/DoubanPluginSetting";
+import StringUtil from "../../utils/StringUtil";
+import {DEFAULT_DOUBAN_HEADERS} from "../../constant/Constsant";
 
 export default class SettingsManager {
 	app: App;
@@ -27,6 +29,16 @@ export default class SettingsManager {
 	getSetting(key: keyof DoubanPluginSetting) {
 
 		return this.settings[key];
+	}
+
+	getHeaders():object {
+		if (this.settings.loginHeadersContent) {
+			// return StringUtil.parseHeaders(this.settings.loginHeadersContent);
+			return JSON.parse(this.settings.loginHeadersContent);
+		}else {
+			return DEFAULT_DOUBAN_HEADERS;
+		}
+
 	}
 
 

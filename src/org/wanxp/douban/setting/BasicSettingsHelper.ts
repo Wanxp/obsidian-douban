@@ -255,6 +255,7 @@ ${i18nHelper.getMessage('100125')}`;
 				.onClick(async () => {
 					button.setDisabled(true);
 					manager.updateSetting('loginCookiesContent', '');
+					manager.updateSetting('loginHeadersContent', '');
 					constructDoubanTokenSettingsUI(containerEl, manager);
 				});
 		});

@@ -59,16 +59,14 @@ export default class DoubanLoginModel {
 
 		const session = this.modal.webContents.session;
 		const filter = {
-			urls: ['https://www.douban.com/','https://accounts.douban.com/','https://accounts.douban.com/passport/login']
+			urls: ['https://www.douban.com/']
 		};
 		session.webRequest.onSendHeaders(filter, async (details:any) => {
 			this.settingsManager.debug(`配置界面:登录界面请求头检测:${details.url}`)
-			const cookies = details.requestHeaders['Cookie'];
-			const cookieArr = this.parseCookies(cookies);
-			// const wr_name = cookieArr.find((cookie) => cookie.name == 'wr_name').value;
-			if (cookieArr) {
+			const headers = details.requestHeaders;
+			if (headers) {
 				this.settingsManager.debug(`配置界面:登录界面请求检测，获取到Cookie`)
-				let user = await settingsManager.plugin.userComponent.loginCookie(cookieArr);
+				let user = await settingsManager.plugin.userComponent.loginHeaders(headers);
 				if (user && user.login) {
 					this.settingsManager.debug(`配置界面:登录界面豆瓣登录成功, 信息:id:${StringUtil.confuse(user.id)}:, 用户名:${StringUtil.confuse(user.name)}`)
 					session.clearStorageData(() => {
@@ -77,7 +75,7 @@ export default class DoubanLoginModel {
 					this.onClose();
 					return;
 				}
-				this.settingsManager.debug(`配置界面:登录界面豆瓣登录失败, cookies未能成功获取用户信息`)
+				this.settingsManager.debug(`配置界面:登录界面豆瓣登录失败, headers未能成功获取用户信息`)
 			}
 		});
 	}

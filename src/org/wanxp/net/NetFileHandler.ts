@@ -4,6 +4,7 @@ import {i18nHelper} from "../lang/helper";
 import FileHandler from "../file/FileHandler";
 import {FileUtil} from "../utils/FileUtil";
 import HandleContext from "../douban/data/model/HandleContext";
+import HttpUtil from "../utils/HttpUtil";
 
 export default class NetFileHandler {
 	private fileHandler: FileHandler;
@@ -13,24 +14,10 @@ export default class NetFileHandler {
 	}
 
 	async downloadFile(url: string, folder:string, filename: string, context:HandleContext, showError:boolean, headers?:any): Promise<{ success: boolean, error:string, filepath: string }> {
-		const headersCookie = {Cookie: context.settings.loginCookiesContent}
-		const headersInner = {};
-		if(headers) {
-			Object.assign(headersInner, headers, headersCookie);
-		}else {
-			Object.assign(headersInner, headersCookie);
-		}
-
-		const requestUrlParam: RequestUrlParam = {
-			url: url,
-			method: "GET",
-			throw: true,
-			headers: headersInner
-		};
 		const filePath:string = FileUtil.join(folder, filename);
-		return requestUrl(requestUrlParam)
-			.then((response) => {
-				this.fileHandler.creatAttachmentWithData(filePath, response.arrayBuffer);
+		return HttpUtil.httpRequestGetBuffer(url, headers, context.plugin.settingsManager)
+			.then((buffer) => {
+				this.fileHandler.creatAttachmentWithData(filePath, buffer);
 			}).then(() => {
 				return {success: true, error: '', filepath: filePath};
 			})
