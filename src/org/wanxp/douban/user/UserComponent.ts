@@ -47,41 +47,15 @@ export default class UserComponent {
 
 	needLogin() {
 		const headers:any = this.settingsManager.getSetting('loginHeadersContent') ;
-		if(!headers) {
+		const cookies:any = this.settingsManager.getSetting('loginCookiesContent') ;
+
+		if(!headers && !cookies) {
 			return false;
 		}
 		return !this.isLogin();
 	}
 
-	async loginByCookie():Promise<User> {
-		let cookie = this.settingsManager.getSetting('loginCookiesContent');
-		if(!cookie) {
-			this.settingsManager.debug('主界面:loginByCookie:无豆瓣cookies信息，获取用户信息失败');
-			return new User();
-		}
-		this.settingsManager.debug('主界面:loginByCookie:豆瓣cookies信息正常，尝试获取用户信息');
-		await this.loadUserInfo(cookie).then(user => {
-			this.user = user;
-			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
-		});
-		return this.user;
-	}
-	async loginByHeaders() {
-		// @ts-ignore
-		let headersStr:string = this.settingsManager.getSetting('loginHeadersContent');
-		if(!headersStr) {
-			this.settingsManager.debug('主界面:loginByCookie:无豆瓣headers信息，获取用户信息失败');
-			return new User();
-		}
-		this.settingsManager.debug('主界面:loginByCookie:豆瓣cookies信息正常，尝试获取用户信息');
-		const headers:object = JSON.parse(headersStr);
-		await this.loadUserInfoByHeaders(headers).then(user => {
-			this.user = user;
-			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
-		});
-		return this.user;
 
-	}
 
 	async loginHeaders(headers: object):Promise<User> {
 		if(!headers) {
@@ -105,18 +79,14 @@ export default class UserComponent {
 	}
 
 	async loginCookie(cookie: any):Promise<User> {
-		if(!cookie) {
-			return new User();
-		}
-		this.settingsManager.debug('配置界面:loginCookie:豆瓣cookies信息正常，尝试获取用户信息,cookie:' + cookie);
-		await this.loadUserInfo(cookie).then(user => {
-			this.user = user;
-			this.settingsManager.debug(`配置界面:loginCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
-		});
-		if(this.user) {
-			this.settingsManager.updateSetting('loginCookiesContent', cookie);
-		}
-		return this.user;
+		const headers: object = this.settingsManager.getHeadersByCookie(cookie);
+		return this.loginHeaders(headers)
+			.then(user => {
+				if(this.user) {
+					this.settingsManager.updateSetting('loginCookiesContent', cookie);
+				}
+				return user;
+			});
 	}
 
 
@@ -157,4 +127,17 @@ export default class UserComponent {
 	};
 
 
+	async login() {
+		let headers:object = this.settingsManager.getHeaders();
+		if(!headers) {
+			this.settingsManager.debug('主界面:login:无豆瓣信息，获取用户信息失败');
+			return new User();
+		}
+		this.settingsManager.debug('主界面:login:豆瓣headers信息正常，尝试获取用户信息');
+		await this.loadUserInfoByHeaders(headers).then(user => {
+			this.user = user;
+			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
+		});
+		return this.user;
+	}
 }

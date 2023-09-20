@@ -35,11 +35,21 @@ export default class SettingsManager {
 		if (this.settings.loginHeadersContent) {
 			// return StringUtil.parseHeaders(this.settings.loginHeadersContent);
 			return JSON.parse(this.settings.loginHeadersContent);
+		}else if (this.settings.loginCookiesContent) {
+			return {Cookie: this.settings.loginCookiesContent, ...DEFAULT_DOUBAN_HEADERS};
 		}else {
 			return DEFAULT_DOUBAN_HEADERS;
 		}
-
 	}
+
+	getHeadersByCookie(cookie:string):object {
+		if (cookie) {
+			return {...DEFAULT_DOUBAN_HEADERS, Cookie: cookie};
+		}else {
+			return DEFAULT_DOUBAN_HEADERS;
+		}
+	}
+
 
 
 

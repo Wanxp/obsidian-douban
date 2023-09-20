@@ -209,7 +209,7 @@ export default class DoubanPlugin extends Plugin {
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
 		if (this.userComponent.needLogin()) {
 			try {
-				await this.userComponent.loginByCookie();
+				await this.userComponent.login();
 			}catch (e) {
 				log.debug(i18nHelper.getMessage('100101'));
 			}
@@ -280,38 +280,19 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async checkLogin(context: HandleContext):Promise<boolean> {
-		// return await this.checkLoginByCookie(context);
-		return await this.checkLoginByHeaders(context);
-
-	}
-
-	private async checkLoginByCookie(context: HandleContext) {
 		this.settingsManager.debug('主界面:同步时的登录状态检测');
 		if (!context.userComponent.needLogin()) {
-			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 无用户信息, 尝试使用cookie获取用户信息');
-			await context.userComponent.loginByCookie();
+			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 无用户信息, 尝试获取用户信息');
+			await context.userComponent.login();
 		}
 		if (!context.userComponent.isLogin()) {
-			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 尝试使用cookie获取用户信息失败');
+			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 尝试获取用户信息失败');
 			new Notice(i18nHelper.getMessage('140303'));
 			return false;
 		}
 		return true;
 	}
 
-	private async checkLoginByHeaders(context: HandleContext) {
-		this.settingsManager.debug('主界面:同步时的登录状态检测');
-		if (!context.userComponent.needLogin()) {
-			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 无用户信息, 尝试使用headers获取用户信息');
-			await context.userComponent.loginByHeaders();
-		}
-		if (!context.userComponent.isLogin()) {
-			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 尝试使用headers获取用户信息失败');
-			new Notice(i18nHelper.getMessage('140303'));
-			return false;
-		}
-		return true;
-	}
 
 	private initSyncDefaultSettings(syncConfig: SyncConfig) {
 		syncConfig.dataFilePath = syncConfig.dataFilePath ? syncConfig.dataFilePath : DEFAULT_SETTINGS.dataFilePath;
