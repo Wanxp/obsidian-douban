@@ -4,7 +4,11 @@ import DoubanPlugin from "../../main";
 import Logger from "../../utils/Logutil";
 import { DoubanPluginSetting } from "./model/DoubanPluginSetting";
 import StringUtil from "../../utils/StringUtil";
-import {DEFAULT_DOUBAN_HEADERS} from "../../constant/Constsant";
+import {DEFAULT_DOUBAN_HEADERS, ONLINE_SETTING_DEFAULT, SupportType} from "../../constant/Constsant";
+import GithubUtil from "../../utils/GithubUtil";
+import {DoubanPluginOnlineData} from "./model/DoubanPluginOnlineData";
+import {DoubanPluginOnlineSettings} from "./model/DoubanPluginOnlineSettings";
+import {DoubanPluginSubjectProperty} from "./model/DoubanPluginSubjectProperty";
 
 export default class SettingsManager {
 	app: App;
@@ -12,14 +16,16 @@ export default class SettingsManager {
 	settings:  DoubanPluginSetting;
 	cleanupFns: Array<() => void> = [];
 	innerLogger: Logger = new Logger();
-
 	cookieTemp:string;
+	onlineSettings: DoubanPluginOnlineSettings;
 
 	constructor(app: App, plugin: DoubanPlugin) {
 		this.app = app;
 		this.plugin = plugin;
 		this.settings = plugin.settings;
 	}
+
+
 
 	getSettingWithDefault(key: keyof DoubanPluginSetting) {
 
@@ -73,6 +79,16 @@ export default class SettingsManager {
 
 	getCookieTemp():string {
 		return this.cookieTemp;
+	}
+
+	getSelector(itemType: SupportType, propertyName: string):string[] {
+		if (this.onlineSettings && this.onlineSettings.properties) {
+			const doubanPluginSubjectProperty:DoubanPluginSubjectProperty = this.onlineSettings.properties.find(subjectProperty => subjectProperty.type === itemType && subjectProperty.name === propertyName);
+			if(doubanPluginSubjectProperty) {
+				return doubanPluginSubjectProperty.selectors;
+			}
+		}
+		return ONLINE_SETTING_DEFAULT.properties.find(subjectProperty => subjectProperty.type === itemType && subjectProperty.name === propertyName).selectors;
 	}
 
 }

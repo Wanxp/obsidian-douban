@@ -8,7 +8,7 @@ import {CheerioAPI, load} from "cheerio";
 import YamlUtil from "../../../utils/YamlUtil";
 import {
 	BasicConst,
-	PersonNameMode,
+	PersonNameMode, PropertyName,
 	SearchHandleMode,
 	SupportType,
 	TemplateKey,
@@ -20,12 +20,17 @@ import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateConten
 import StringUtil from "../../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
 import {DoubanUserParameter, UserStateSubject} from "../model/UserStateSubject";
-import {DoubanSubjectState, DoubanSubjectStateRecords} from "../../../constant/DoubanUserState";
+import {
+	DoubanSubjectState,
+	DoubanSubjectStateRecords,
+	DoubanSubjectStateRecords_KEY_WORD_TYPE
+} from "../../../constant/DoubanUserState";
 import DoubanLoginModel from "../../component/DoubanLoginModel";
 import DoubanHumanCheckModel from "../../component/DoubanHumanCheckModel";
 import DoubanMovieSubject from "../model/DoubanMovieSubject";
 import {Person} from "schema-dts";
 import HttpUtil from "../../../utils/HttpUtil";
+import HtmlUtil from "../../../utils/HtmlUtil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -139,15 +144,20 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract support(extract: DoubanSubject): boolean;
 
-	async handle(url: string, context: HandleContext): Promise<void> {
+	async handle(url: string, context: HandleContext): Promise<T> {
 		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
 		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求header:${context.settings.loginHeadersContent}`)
-		await HttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
+		return await HttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
+				let guessType = this.getSupportType();
+				if (context.syncActive) {
+					guessType = this.getGuessType(data);
+				}
 				let sub = this.parseSubjectFromHtml(data, context);
 				sub.userState = userState;
+				sub.guessType = guessType;
 				return sub;
 			})
 			.then(content => this.toEditor(context, content))
@@ -160,9 +170,29 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				}else {
 					context.syncStatusHolder?context.syncStatusHolder.syncStatus.handled(1):null;
 				}
+				return e;
 			});
 		;
 
+	}
+
+	/**
+	 * 通过判断 data中是否包含关键字符串 “我看过的电视剧” 判断是不是 movie
+	 * @param data
+	 * @private
+	 */
+	private getGuessType(data: CheerioAPI):SupportType {
+		if (data) {
+			let text = data.html();
+			if (text) {
+				for (let [key, value] of DoubanSubjectStateRecords_KEY_WORD_TYPE) {
+					if (text.indexOf(key) >= 0) {
+						return value;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 
@@ -500,5 +530,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					p.name = this.getPersonName2(p.name, persons[0], context);
 				}
 			})
+	}
+
+	protected getPropertyValue(html: CheerioAPI, name: PropertyName): string {
+		return HtmlUtil.getHtmlText(html, this.doubanPlugin.settingsManager.getSelector(this.getSupportType(), name));
 	}
 }

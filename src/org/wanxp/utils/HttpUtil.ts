@@ -23,7 +23,7 @@ export default class HttpUtil {
     let options = {
       headers: headersInner
     }
-
+	settingsManager.debug(`Obsidian-Douban:从网络获取网页开始:\nurl:${url}\nheaders:${JSON.stringify(headers)}`);
     return new Promise((resolve, rejects) => {
       https.get(url, { ...options }, function (response: any) {
         let chunks: any = [],
@@ -39,6 +39,9 @@ export default class HttpUtil {
         response.on("end", function () {
           let data = Buffer.concat(chunks, size)
           let html = data.toString()
+			if (settingsManager) {
+				settingsManager.debug(`Obsidian-Douban:从网络获取网页完成:\nhtml:\n${html}`);
+			}
           resolve(html)
         })
       })
@@ -55,7 +58,9 @@ export default class HttpUtil {
 		let options = {
 			headers: headers
 		}
-
+		if (settingsManager) {
+			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}`);
+		}
 		return new Promise((resolve, rejects) => {
 			https.get(url, { ...options }, function (response: any) {
 				let chunks: any = [],
@@ -70,6 +75,9 @@ export default class HttpUtil {
 
 				response.on("end", function () {
 					let data = Buffer.concat(chunks, size)
+					if (settingsManager) {
+						settingsManager.debug(`Obsidian-Douban:从网络获取文件完成:\n${url}`);
+					}
 					resolve(data)
 				})
 			})

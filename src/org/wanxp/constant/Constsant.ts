@@ -1,6 +1,7 @@
 import {i18nHelper} from "../lang/helper";
 import DoubanSearchResultSubject from "../douban/data/model/DoubanSearchResultSubject";
 import StringUtil from "../utils/StringUtil";
+import {DoubanPluginOnlineSettings} from "../douban/setting/model/DoubanPluginOnlineSettings";
 
 /**
  * 常量池
@@ -39,19 +40,19 @@ export const BasicConst = {
  * 预估程序处理时间长度
  * @private
  */
-export const  ESTIMATE_TIME_PER:number = 2000;
+export const ESTIMATE_TIME_PER: number = 2000;
 
 /**
  * 预估每次请求+处理时间长度(慢速模式)
  * @private
  */
-export const ESTIMATE_TIME_PER_WITH_REQUEST_SLOW:number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY_SLOW + BasicConst.CALL_DOUBAN_DELAY_RANGE_SLOW / 2;
+export const ESTIMATE_TIME_PER_WITH_REQUEST_SLOW: number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY_SLOW + BasicConst.CALL_DOUBAN_DELAY_RANGE_SLOW / 2;
 
 /**
  * 预估每次请求+处理时间长度(正常模式)
  * @private
  */
-export const  ESTIMATE_TIME_PER_WITH_REQUEST:number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE / 2;
+export const ESTIMATE_TIME_PER_WITH_REQUEST: number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE / 2;
 
 /**
  * 模板类型
@@ -89,7 +90,7 @@ export enum PersonNameMode {
  *
  */
 export enum TemplateKey {
-	movieTemplateFile= 'movieTemplateFile',
+	movieTemplateFile = 'movieTemplateFile',
 	bookTemplateFile = 'bookTemplateFile',
 	musicTemplateFile = 'musicTemplateFile',
 	noteTemplateFile = 'noteTemplateFile',
@@ -98,14 +99,81 @@ export enum TemplateKey {
 }
 
 export enum SupportType {
-	ALL = "ALL",
-	MOVIE = 'MOVIE',
-	BOOK = 'BOOK',
-	MUSIC = 'MUSIC',
-	NOTE = 'NOTE',
-	GAME = 'GAME',
-	TELEPLAY = 'TELEPLAY',
-	THEATER = 'THEATER',
+	ALL = "All",
+	MOVIE = 'movie',
+	BOOK = 'book',
+	MUSIC = 'music',
+	NOTE = 'note',
+	GAME = 'game',
+	TELEPLAY = 'teleplay',
+	THEATER = 'theater',
+}
+
+export enum PropertyName {
+	//base
+	id = "id",
+	title = "title",
+	type = "type",
+	score = "score",
+	image = "image",
+	imageUrl = "imageUrl",
+	url = "url",
+	desc = "desc",
+	publisher = "publisher",
+	datePublished = "datePublished",
+	genre = "genre",
+
+	//user
+	tags = "tags",
+	rate = "rate",
+	state = "state",
+	collectionDate = "collectionDate",
+	comment = "comment",
+
+
+	//book
+	author = "author",
+	translator = "translator",
+	isbn = "isbn",
+	originalTitle = "originalTitle",
+	subTitle = "subTitle",
+	totalPage = "totalPage",
+	series = "series",
+	menu = "menu",
+	price = "price",
+	binding = "binding",
+	producer = "producer",
+
+	//movie
+	director = "director",
+	actor = "actor",
+	aggregateRating = "aggregateRating",
+	aliases = "aliases",
+	country = "country",
+	language = "language",
+	time = "time",
+	IMDb = "IMDb",
+
+	//music
+	albumType = "albumType",
+	medium = "medium",
+	records = "records",
+	barcode = "barcode",
+
+	//game
+	platform = "platform",
+	developer = "developer",
+
+
+	//teleplay
+	episode = "episode",
+
+	//theater
+
+
+	//note
+	authorUrl = "authorUrl",
+	content = "content",
 }
 
 /**
@@ -118,11 +186,11 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 }
 
 export enum SyncType {
-	movie= 'movie',
-	book= 'book',
-	broadcast= 'broadcast',
-	note= 'note',
-	music= 'music',
+	movie = 'movie',
+	book = 'book',
+	broadcast = 'broadcast',
+	note = 'note',
+	music = 'music',
 }
 
 /**
@@ -140,31 +208,31 @@ export const SyncTypeRecords: { [key in SyncType]: string } = {
 /**
  * 同步豆瓣每页的大小
  */
-export const PAGE_SIZE:number = 30;
+export const PAGE_SIZE: number = 30;
 
 /**
  * 多少条后同步速率变慢，防止403
  */
 
 
-
 /**
  * 动作
  */
 export enum Action {
-	SearchAndReplace='SearchAndReplace',
-	SearchAndCrate='SearchAndCrate',
-	Sync='Sync',
-	SearchEditorAndReplace='SearchEditorAndReplace'
+	SearchAndReplace = 'SearchAndReplace',
+	SearchAndCrate = 'SearchAndCrate',
+	Sync = 'Sync',
+	SearchEditorAndReplace = 'SearchEditorAndReplace'
 }
 
 export enum SyncItemStatus {
-	exists= 'exists',
-	replace= 'replace',
-	create= 'create',
-	fail= 'fail',
-	unHandle='unHandle',
+	exists = 'exists',
+	replace = 'replace',
+	create = 'create',
+	fail = 'fail',
+	unHandle = 'unHandle',
 }
+
 export enum NavigateType {
 	previous = "previous",
 	next = "next",
@@ -172,7 +240,7 @@ export enum NavigateType {
 	nextNeedLogin = "nextNeedLogin"
 }
 
-export const DoubanSearchResultSubjectPreviousPage:DoubanSearchResultSubject = {
+export const DoubanSearchResultSubjectPreviousPage: DoubanSearchResultSubject = {
 	cast: "",
 	datePublished: undefined,
 	desc: "",
@@ -187,7 +255,7 @@ export const DoubanSearchResultSubjectPreviousPage:DoubanSearchResultSubject = {
 	url: NavigateType.previous
 }
 
-export const DoubanSearchResultSubjectNextPage:DoubanSearchResultSubject = {
+export const DoubanSearchResultSubjectNextPage: DoubanSearchResultSubject = {
 	cast: "",
 	datePublished: undefined,
 	desc: "",
@@ -202,7 +270,7 @@ export const DoubanSearchResultSubjectNextPage:DoubanSearchResultSubject = {
 	url: NavigateType.next
 }
 
-export const DoubanSearchResultSubjectNextPageNeedLogin:DoubanSearchResultSubject = {
+export const DoubanSearchResultSubjectNextPageNeedLogin: DoubanSearchResultSubject = {
 	cast: "",
 	datePublished: undefined,
 	desc: "",
@@ -217,13 +285,13 @@ export const DoubanSearchResultSubjectNextPageNeedLogin:DoubanSearchResultSubjec
 	url: NavigateType.nextNeedLogin
 }
 
-export const SEARCH_ITEM_PAGE_SIZE:number = 20;
+export const SEARCH_ITEM_PAGE_SIZE: number = 20;
 
 /**
  * 豆瓣默认请求头
  * @type {string}
  **/
-export const  DEFAULT_DOUBAN_HEADERS = StringUtil.parseHeaders(`
+export const DEFAULT_DOUBAN_HEADERS = StringUtil.parseHeaders(`
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
 Accept-Language: zh-CN,zh;q=0.9
 Cache-Control: max-age=0
@@ -240,6 +308,36 @@ sec-ch-ua-mobile: ?0
 sec-ch-ua-platform: "Windows"
 `)
 
+/**
+ * 属性设置
+ */
+export const ONLINE_SETTING_DEFAULT: DoubanPluginOnlineSettings = {
+	properties: [
+		{
+			type: SupportType.BOOK,
+			name: PropertyName.comment,
+			selectors: ['#interest_sect_level > div > span:nth-child(7)'
+			]
+		},
+		{
+			type: SupportType.MOVIE,
+			name: PropertyName.comment,
+			selectors: ['#interest_sect_level > div > span:nth-child(8)',
+				'#interest_sect_level > div > span:nth-child(7)',
+				'#interest_sect_level > div > span:nth-child(9)'
+			]
+		}
+	]
+}
+
+/**
+ * 处理状态
+ */
+export enum SubjectHandledStatus {
+	init = 'init',
+	saved = 'saved',
+	syncTypeDiffAbort = 'syncTypeDiffAbort',
+}
 
 
 

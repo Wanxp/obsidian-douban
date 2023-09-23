@@ -1,9 +1,7 @@
-import {CheerioAPI} from "cheerio";
-import DoubanSyncSubject from "../model/DoubanSyncSubject";
 import DoubanPlugin from "../../../main";
-import {BasicConst, SyncType} from "../../../constant/Constsant";
+import {BasicConst, SubjectHandledStatus, SyncType} from "../../../constant/Constsant";
 import {DoubanSyncHandler} from "./DoubanSyncHandler";
-import { SyncConfig } from "../model/SyncConfig";
+import {SyncConfig} from "../model/SyncConfig";
 import HandleContext from "../../data/model/HandleContext";
 import {SubjectListItem} from "../../data/model/SubjectListItem";
 import {sleepRange} from "../../../utils/TimeUtil";
@@ -74,7 +72,7 @@ export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implem
 				return;
 			}
 			if(syncStatus.shouldSync(item.id)) {
-				await this.doubanSubjectLoadHandler.handle(item.url, context);
+				let subject: DoubanSubject  = await this.doubanSubjectLoadHandler.handle(item.url, context);
 				await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
 			}else {
 				syncStatus.unHandle(item.id, item.title);

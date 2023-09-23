@@ -1,9 +1,9 @@
-import {Action, BasicConst, SearchHandleMode, SyncTypeRecords} from "./constant/Constsant";
+import {Action, BasicConst, SearchHandleMode, SubjectHandledStatus, SyncTypeRecords} from "./constant/Constsant";
 import {Editor, Notice, Plugin} from "obsidian";
 
 import {DEFAULT_SETTINGS} from "./constant/DefaultSettings";
 import {DoubanFuzzySuggester} from "./douban/data/search/DoubanSearchFuzzySuggestModal";
-import { DoubanPluginSetting } from "./douban/setting/model/DoubanPluginSetting";
+import {DoubanPluginSetting} from "./douban/setting/model/DoubanPluginSetting";
 import {DoubanSearchChooseItemHandler} from "./douban/data/handler/DoubanSearchChooseItemHandler";
 import {DoubanSearchModal} from "./douban/data/search/DoubanSearchModal";
 import DoubanSearchResultSubject from "./douban/data/model/DoubanSearchResultSubject";
@@ -24,6 +24,8 @@ import SyncHandler from "./douban/sync/handler/SyncHandler";
 import UserComponent from "./douban/user/UserComponent";
 import {i18nHelper} from './lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
+import GithubUtil from "./utils/GithubUtil";
+import {DoubanPluginOnlineData} from "./douban/setting/model/DoubanPluginOnlineData";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -34,6 +36,7 @@ export default class DoubanPlugin extends Plugin {
 	public settingsManager: SettingsManager;
 	public netFileHandler: NetFileHandler;
 	public statusHolder: GlobalStatusHolder;
+	public onlineData: DoubanPluginOnlineData;
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
@@ -44,6 +47,11 @@ export default class DoubanPlugin extends Plugin {
 				log.warn(i18nHelper.getMessage('140101'));
 				return;
 			}
+			if (context.syncActive && extract.guessType && extract.guessType != extract.type) {
+				extract.handledStatus = SubjectHandledStatus.syncTypeDiffAbort;
+				console.log(i18nHelper.getMessage('140102', extract.type, extract.title, extract.guessType));
+				return;
+			}
 			if (Action.Sync == context.action) {
 				this.showStatus(i18nHelper.getMessage('140207', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
 			}else {
@@ -52,6 +60,7 @@ export default class DoubanPlugin extends Plugin {
 			const result  = await this.doubanExtractHandler.parseText(extract, context)
 			if (result) {
 				await this.putContentToObsidian(context, result);
+				extract.handledStatus = SubjectHandledStatus.saved;
 			}
 			if (Action.Sync == context.action) {
 				this.showStatus(i18nHelper.getMessage('140208', syncStatus.getHasHandle(),  syncStatus.getTotal(), extract.title));
@@ -205,6 +214,7 @@ export default class DoubanPlugin extends Plugin {
 		});
 
 		this.settingsManager = new SettingsManager(app, this);
+		this.fetchOnlineData(this.settingsManager);
 		this.userComponent = new UserComponent(this.settingsManager);
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
 		if (this.userComponent.needLogin()) {
@@ -276,7 +286,8 @@ export default class DoubanPlugin extends Plugin {
 		} finally {
 			await context.plugin.statusHolder.completeSync();
 			this.clearStatusBarDelay();
-		}
+			context.syncActive = false;
+			}
 	}
 
 	async checkLogin(context: HandleContext):Promise<boolean> {
@@ -299,6 +310,24 @@ export default class DoubanPlugin extends Plugin {
 		syncConfig.templateFile = syncConfig.templateFile ? syncConfig.templateFile : '';
 		syncConfig.attachmentPath = syncConfig.attachmentPath ? syncConfig.attachmentPath : DEFAULT_SETTINGS.attachmentPath;
 		syncConfig.dataFileNamePath = syncConfig.dataFileNamePath ? syncConfig.dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
+	}
+
+	private fetchOnlineData(settingsManager: SettingsManager) {
+		// const gistId: string = this.settings.onlineSettingsGistId??DEFAULT_SETTINGS.onlineSettingsGistId;
+		// const fileName: string = this.settings.onlineSettingsFileName??DEFAULT_SETTINGS.onlineSettingsFileName;
+		const gistId: string = DEFAULT_SETTINGS.onlineSettingsGistId;
+		const fileName: string = DEFAULT_SETTINGS.onlineSettingsFileName;
+		GithubUtil.getGistsData(gistId, fileName)
+			.then(data => {
+				this.onlineData = JSON.parse(data);
+				this.fillOnlineData(this.onlineData, settingsManager);
+			})
+	}
+
+	private fillOnlineData(onlineData: DoubanPluginOnlineData, settingsManager: SettingsManager) {
+		if (onlineData.settings) {
+			settingsManager.onlineSettings = onlineData.settings;
+		}
 	}
 }
 

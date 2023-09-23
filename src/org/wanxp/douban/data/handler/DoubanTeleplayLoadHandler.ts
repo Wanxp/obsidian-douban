@@ -83,7 +83,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 
 				const result: DoubanTeleplaySubject = {
 					id: id ? id[0] : '',
-					type: 'Teleplay',
+					type: this.getSupportType(),
 					title: title,
 					originalTitle: originalTitle,
 					desc: obj.description,

@@ -92,7 +92,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			score: Number(score),
 			records: valueMap.has('records') ? Number(valueMap.get('records')) : null,
 			id: id ? id[0] : "",
-			type: "Music",
+			type: this.getSupportType(),
 			title: title,
 			desc: desc,
 			url: url,

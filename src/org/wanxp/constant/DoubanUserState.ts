@@ -114,6 +114,35 @@ export const DoubanSubjectStateRecords_MUSIC_SYNC: { [key in DoubanSubjectState]
 	[DoubanSubjectState.collect]: i18nHelper.getMessage('500404'),
 }
 
+export const DoubanSubjectStateRecords_KEY_WORD_TYPE: Map<string, SupportType> = new Map<string, SupportType> (
+	[['我看过这部电视剧', SupportType.TELEPLAY],
+	['我最近看过这部电视剧', SupportType.TELEPLAY],
+	['我想看这部电视剧', SupportType.TELEPLAY],
+	['我在看这部电视剧', SupportType.TELEPLAY],
+	['我最近在看这部电视剧', SupportType.TELEPLAY],
+
+	['我最近看过这部电影', SupportType.MOVIE],
+	['我看过这部电影', SupportType.MOVIE],
+	['我想看这部电影', SupportType.MOVIE],
+
+	['我读过这本书', SupportType.BOOK],
+	['我想读这本书', SupportType.BOOK],
+	['我在读这本书', SupportType.BOOK],
+	['我最近在读这本书', SupportType.BOOK],
+
+	['我最近听过这张唱片', SupportType.MUSIC],
+	['我听过这张唱片', SupportType.MUSIC],
+	['我想听这张唱片', SupportType.MUSIC],
+	['我在听这张唱片', SupportType.MUSIC],
+	['我最近在听这张唱片', SupportType.MUSIC],
+
+	['我最近玩过这个游戏', SupportType.GAME],
+	['我玩过这个游戏', SupportType.GAME],
+	['我想玩这个游戏', SupportType.GAME],
+	['我在玩这个游戏', SupportType.GAME],
+	['我最近在玩这个游戏', SupportType.GAME],]
+)
+
 
 
 

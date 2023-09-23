@@ -3,7 +3,7 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject, {DoubanBookParameter} from "../model/DoubanBookSubject";
 import DoubanPlugin from "../../../main";
 import DoubanSubject from "../model/DoubanSubject";
-import {SupportType, TemplateTextMode} from "../../../constant/Constsant";
+import {PropertyName, SupportType, TemplateTextMode} from "../../../constant/Constsant";
 import HandleContext from "../model/HandleContext";
 import StringUtil from "../../../utils/StringUtil";
 import {UserStateSubject} from "../model/UserStateSubject";
@@ -57,7 +57,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
 		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
 		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = html('span#rating').next().next().next().text().trim();
+		let comment = this.getComment(html);
 
 
 		const userState: UserStateSubject = {
@@ -65,7 +65,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			rate: rate?Number(rate):null,
 			state: userState1,
 			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
-			comment: component
+			comment: comment
 		}
 		return {data: html, userState: userState};
 	}
@@ -124,7 +124,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			menu: menu,
 			price: valueMap.has('price') ? Number(valueMap.get('price').replace('元', '')) : null,
 			id: id,
-			type: "Book",
+			type: this.getSupportType(),
 			title: title,
 			desc: desc,
 			url: url,
@@ -135,8 +135,19 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return result;
 	}
 
+	private getComment(html: CheerioAPI) {
+		let comment = html('span#rating').next().next().next().text().trim();
+		if (comment) {
+			return comment;
+		}
+		return this.getPropertyValue(html, PropertyName.comment);
+	}
+
+
 
 }
+
+
 
 
 const BookKeyValueMap: Map<string, string> = new Map(

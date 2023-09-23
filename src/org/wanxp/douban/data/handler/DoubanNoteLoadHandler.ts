@@ -57,7 +57,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 			datePublished: timePublished ? new Date(timePublished) : undefined,
 			content: content ? html2markdown(content.toString()) : "",
 			id: id ? id[0] : "",
-			type: "Article",
+			type: this.getSupportType(),
 			title: title,
 			desc: desc,
 			url: url,

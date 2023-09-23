@@ -23,6 +23,7 @@ export default interface HandleContext {
 	action:string;
 	syncConfig?: SyncConfig;
 	listItem?:DoubanSubject;
+	syncActive?:boolean;
 
 	searchPage?:SearchPageInfo;
 

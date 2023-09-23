@@ -6,11 +6,10 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "../model/HandleContext";
-import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
+import {PersonNameMode, PropertyName, SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
 import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
-import { Person } from 'schema-dts';
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -52,7 +51,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
 		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').text().trim();
 		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = html('div#interest_sect_level > div.a_stars > span.color_gray').next().next().text().trim();
+		let component = this.getComment(html, context);
 
 
 		const userState: UserStateSubject = {
@@ -65,6 +64,14 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		return {data: html, userState: userState};
 	}
 
+
+	private getComment(html: CheerioAPI, context: HandleContext) {
+		let component = html('div#interest_sect_level > div.a_stars > span.color_gray').next().next().text().trim();
+		if (component) {
+			return component;
+		}
+		return this.getPropertyValue(html, PropertyName.comment);
+	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMovieSubject {
 		 const movie:DoubanMovieSubject = html('script')
@@ -83,7 +90,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				const result: DoubanMovieSubject = {
 					id: id ? id[0] : '',
 					title: title,
-					type: 'Movie',
+					type: this.getSupportType(),
 					score: obj.aggregateRating ? obj.aggregateRating.ratingValue : undefined,
 					originalTitle: originalTitle,
 					desc: obj.description,

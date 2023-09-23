@@ -2,6 +2,8 @@ import {CustomProperty} from "./CustomProperty";
 import {SyncHandledData} from "./SyncHandledData";
 
 export interface DoubanPluginSetting {
+	onlineSettingsFileName: string;
+	onlineSettingsGistId: string;
 	movieTemplateFile: string,
 	bookTemplateFile: string,
 	musicTemplateFile: string,

@@ -89,7 +89,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 		const result: DoubanGameSubject = {
 			id: id,
-			type: "Game",
+			type: this.getSupportType(),
 			title: title,
 			desc: desc,
 			url: url,

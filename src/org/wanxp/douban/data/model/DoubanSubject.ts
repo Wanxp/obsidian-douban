@@ -1,4 +1,5 @@
 import {UserStateSubject} from "./UserStateSubject";
+import {SubjectHandledStatus} from "../../../constant/Constsant";
 
 export default class DoubanSubject {
 	id: string;
@@ -13,6 +14,8 @@ export default class DoubanSubject {
 	datePublished: Date;
 	genre: string[];
 	userState?: UserStateSubject;
+	guessType?: string;
+	handledStatus?: SubjectHandledStatus = SubjectHandledStatus.init;
 }
 
 const ParameterMap: Map<string, string> = new Map([

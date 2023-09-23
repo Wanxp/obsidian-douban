@@ -150,6 +150,7 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 	private updateContextByConfig(syncConfig: SyncConfig) {
 		const { context} = this;
 		context.syncConfig = syncConfig;
+		context.syncActive = true;
 	}
 
 	private showConfigPan(contentEl: HTMLElement, config:SyncConfig, disable:boolean) {

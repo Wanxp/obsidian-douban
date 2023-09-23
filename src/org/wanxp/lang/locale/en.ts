@@ -234,6 +234,7 @@ PS: This file could be delete if you want to.
 	//error
 	'130101': `Fetch Data Error, {0}`,
 	'140101': `Not support for current type. You can add Issues at Github:Wanxp/obsidian-douban`,
+	'140102': `subject type is different, will not sync this, chosen sync type is {0} but this {1} subject type is {2}`,
 	'130105': `Can not use Douban this time, Please try again after 12 hour or 24 hour. Or you can reset your connection `,
 	'130106': `Can not use Douban this time, Please try Login In Douban Plugin. If not working please again after 12 hour or 24 hour. Or you can reset your connection `,
 
