@@ -178,9 +178,9 @@ PS: This file could be delete if you want to.
 	'120507': `Your current syntax looks like this`,
 	'120508': `format reference`,
 	'120601': `Array Spilt String`,
-	'120602': `string to join between array type, such as authors, actors. 
-    example: ','
-    the list of actor's name will be shown as: 'actor1,actor2,actor3'`,
+	'120602': `string to join between array type, start、end string for array, such as authors, actors. . 
+    example: start:'['  spilt:','  end:']'
+    the list of actor's name will be shown as: '[actor1,actor2,actor3]'`,
 	'120701': `Douban Request Headers`,
 	'120801': `This type of import is not supported temporarily, please go to github to submit issues for help`,
 	'120901': `Douban`,

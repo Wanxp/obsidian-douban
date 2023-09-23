@@ -25,8 +25,8 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {
 		const {settings} = context;
 		return beforeContent
-			.replaceAll("{{platform}}", extract.platform ? extract.platform.join(settings.arraySpilt) : "")
-			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.join(settings.arraySpilt) : "")
+			.replaceAll("{{platform}}", this.handleArray(extract.platform, context))
+			.replaceAll("{{aliases}}", this.handleArray(extract.aliases, context))
 			.replaceAll("{{developer}}", extract.developer ? extract.developer : "");
 	}
 

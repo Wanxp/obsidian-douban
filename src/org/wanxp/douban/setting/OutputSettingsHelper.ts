@@ -21,13 +21,30 @@ export function constructOutUI(containerEl: HTMLElement, manager: SettingsManage
 		.setName(i18nHelper.getMessage('120601'))
 		.setDesc(i18nHelper.getMessage('120602'))
 		.addText((textField) => {
+			textField.setPlaceholder(DEFAULT_SETTINGS.arrayStart)
+				.setValue(manager.plugin.settings.arrayStart)
+				.onChange(async (value) => {
+					manager.plugin.settings.arrayStart = value;
+					await manager.plugin.saveSettings();
+				});
+		})
+		.addText((textField) => {
 			textField.setPlaceholder(DEFAULT_SETTINGS.arraySpilt)
 				.setValue(manager.plugin.settings.arraySpilt)
 				.onChange(async (value) => {
 					manager.plugin.settings.arraySpilt = value;
 					await manager.plugin.saveSettings();
 				});
-		});
+		})
+		.addText((textField) => {
+			textField.setPlaceholder(DEFAULT_SETTINGS.arrayEnd)
+				.setValue(manager.plugin.settings.arrayEnd)
+				.onChange(async (value) => {
+					manager.plugin.settings.arrayEnd = value;
+					await manager.plugin.saveSettings();
+				});
+		})
+	;
 
 	new Setting(containerEl).setName(i18nHelper.getMessage('121201')).then((setting) => {
 		setting.addDropdown((dropdwon) => {

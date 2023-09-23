@@ -30,14 +30,14 @@ export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<
 		const {settings} = context;
 		return beforeContent
 			.replaceAll("{{originalTitle}}", extract.originalTitle ? extract.originalTitle : "")
-			.replaceAll("{{director}}", extract.director ? extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{actor}}", extract.actor ? extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{author}}", extract.author ? extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c).join(settings.arraySpilt) : "")
-			.replaceAll("{{aliases}}", extract.aliases ? extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')).join(settings.arraySpilt) : "")
-			.replaceAll("{{country}}", extract.country ? extract.country.join(settings.arraySpilt) : "")
-			.replaceAll("{{language}}", extract.language ? extract.language.join(settings.arraySpilt) : "")
-			.replaceAll("{{IMDb}}", extract.IMDb ? extract.IMDb : "")
-			.replaceAll("{{time}}", extract.time ? extract.time : "")
+			.replaceAll("{{director}}", this.handleArray( extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
+			.replaceAll("{{actor}}", this.handleArray( extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
+			.replaceAll("{{author}}", this.handleArray(  extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
+			.replaceAll("{{aliases}}", this.handleArray( extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')), context))
+			.replaceAll("{{country}}",this.handleArray( extract.country, context))
+			.replaceAll("{{language}}",this.handleArray(  extract.language, context))
+			.replaceAll("{{IMDb}}", extract.IMDb ?? "")
+			.replaceAll("{{time}}", extract.time ?? "")
 			;
 	}
 

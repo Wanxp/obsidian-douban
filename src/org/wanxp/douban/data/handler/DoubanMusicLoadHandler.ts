@@ -25,7 +25,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {
 		const {settings} = context;
 		return beforeContent
-			.replaceAll("{{actor}}", extract.actor ? extract.actor.join(settings.arraySpilt) : "")
+			.replaceAll("{{actor}}", this.handleArray(extract.actor, context ))
 			.replaceAll("{{barcode}}", extract.barcode ? extract.barcode : "")
 			.replaceAll("{{medium}}", extract.medium ? extract.medium : "")
 			.replaceAll("{{albumType}}", extract.albumType ? extract.albumType : "")

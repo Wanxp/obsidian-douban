@@ -112,7 +112,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			// 	result = array.map(YamlUtil.handleText).join(', ');
 			// 	break;
 			default:
-				result = array.join(context.settings.arraySpilt);
+				result = this.handleArray(array, context);
 		}
 		return result;
 	}
@@ -534,5 +534,12 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	protected getPropertyValue(html: CheerioAPI, name: PropertyName): string {
 		return HtmlUtil.getHtmlText(html, this.doubanPlugin.settingsManager.getSelector(this.getSupportType(), name));
+	}
+
+	protected handleArray(arr: string[], context: HandleContext): string {
+		const {settings} = context;
+		let content :string = arr ? arr.join(settings.arraySpilt) : "";
+		content = settings.arrayStart + content + settings.arrayEnd;
+		return content;
 	}
 }
