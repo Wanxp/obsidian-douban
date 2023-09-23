@@ -119,6 +119,11 @@ PS: This file could be delete if you want to.
 	'124105': `Input custom variable value`,
 	'124106': `Active type`,
 	'124107': `Delete custom variable`,
+	'124109': `ArrayBegin:`,
+	'124110': `ElementBegin:`,
+	'124111': `Spilt:`,
+	'124112': `ElementEnd:`,
+	'124113': `ArrayEnd:`,
 
 	'121101': `Template File`,
 	'121102': `This template will be used when creating new notes. If keep empty, it will use default template`,
@@ -178,9 +183,8 @@ PS: This file could be delete if you want to.
 	'120507': `Your current syntax looks like this`,
 	'120508': `format reference`,
 	'120601': `Array Spilt String`,
-	'120602': `string to join between array type, start、end string for array, such as authors, actors. . 
-    example: start:'['  spilt:','  end:']'
-    the list of actor's name will be shown as: '[actor1,actor2,actor3]'`,
+	'120602': `string to join between array type, start、end string for array, such as authors, actors. 
+    support \n (enter)`,
 	'120701': `Douban Request Headers`,
 	'120801': `This type of import is not supported temporarily, please go to github to submit issues for help`,
 	'120901': `Douban`,
@@ -214,6 +218,8 @@ PS: This file could be delete if you want to.
 	'121601': `Note Name`,
 	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath),
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/{{title}}`,
+	'120603': `Array Display Example`,
+
 	'121603': `assets`,
 
 	'121701': `Search Template File`,

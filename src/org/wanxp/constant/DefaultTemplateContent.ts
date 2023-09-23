@@ -12,7 +12,8 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{type}}
+tags: 
+  - {{type}}
 url: {{url}}
 aliases: {{aliases}}
 country: {{country}}
@@ -42,7 +43,8 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags: Book
+tags:  
+  - {{type}}
 binding: {{binding}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
@@ -66,7 +68,8 @@ publisher: {{publisher}}
 barcode: {{barcode}}
 url: {{url}}
 records: {{records}}
-tags: Music
+tags:  
+  - {{type}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -81,7 +84,8 @@ author: {{author}}
 authorUrl: {{authorUrl}}
 dateTimePublished: {{datePublished}} {{timePublished}}
 url: {{url}}
-tags: Article
+tags:  
+  - {{type}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -100,7 +104,8 @@ genre: {{genre}}
 developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
-tags: Game
+tags:  
+  - {{type}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -117,7 +122,8 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{type}}
+tags:  
+  - {{type}}
 url: {{url}}
 aliases: {{aliases}}
 country: {{country}}
@@ -146,7 +152,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{type}}, {{myTags}}
+tags: {{myTags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}
@@ -183,7 +189,7 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags: Book, {{myTags}}
+tags: {{myTags}}
 state: {{myState}}
 binding: {{binding}}
 createTime: {{currentDate}} {{currentTime}}
@@ -214,7 +220,7 @@ publisher: {{publisher}}
 barcode: {{barcode}}
 url: {{url}}
 records: {{records}}
-tags: Music, {{myTags}}
+tags: {{myTags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
@@ -236,7 +242,8 @@ author: {{author}}
 authorUrl: {{authorUrl}}
 dateTimePublished: {{datePublished}} {{timePublished}}
 url: {{url}}
-tags: Article
+tags: 
+  - {{type}}
 createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
@@ -256,7 +263,7 @@ genre: {{genre}}
 developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
-tags: Game, {{myTags}}
+tags: {{myTags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
@@ -280,7 +287,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{type}}, {{myTags}}
+tags: {{myTags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}

@@ -9,6 +9,8 @@ import GithubUtil from "../../utils/GithubUtil";
 import {DoubanPluginOnlineData} from "./model/DoubanPluginOnlineData";
 import {DoubanPluginOnlineSettings} from "./model/DoubanPluginOnlineSettings";
 import {DoubanPluginSubjectProperty} from "./model/DoubanPluginSubjectProperty";
+import HandleContext from "../data/model/HandleContext";
+import HtmlUtil from "../../utils/HtmlUtil";
 
 export default class SettingsManager {
 	app: App;
@@ -89,6 +91,11 @@ export default class SettingsManager {
 			}
 		}
 		return ONLINE_SETTING_DEFAULT.properties.find(subjectProperty => subjectProperty.type === itemType && subjectProperty.name === propertyName).selectors;
+	}
+
+	handleArray(arr: string[]): string {
+		let result:string =  StringUtil.handleArray(arr, this.settings);
+		return HtmlUtil.strToHtml(result);
 	}
 
 }

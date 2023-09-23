@@ -1,3 +1,5 @@
+import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
+
 export default class StringUtil {
 
 	/**
@@ -66,4 +68,53 @@ export default class StringUtil {
 		}
 		return newTexts.join('');
 	}
+
+	/**
+	 * 转义字符串 替换为 实际转义
+	 */
+	public static escape(text: string): string {
+		if (!text) {
+			return text;
+		}
+		let newText = text;
+		EscapeMap.forEach((value, key) => {
+			newText = newText.replace(key, value);
+		});
+		return newText;
+	}
+
+	public static  handleArray(arr: string[], settings: DoubanPluginSetting): string {
+		let content :string = "";
+		const elementStart:string = StringUtil.escape(settings.arrayElementStart);
+		const elementEnd:string = StringUtil.escape(settings.arrayElementEnd);
+		const spilt:string = StringUtil.escape(settings.arraySpiltV2);
+		const start:string = StringUtil.escape(settings.arrayStart);
+		const end:string = StringUtil.escape(settings.arrayEnd);
+		for (let i = 0; i < arr.length; i++) {
+			let el = arr[i];
+			if (!el) {
+				continue;
+			}
+			if (i == arr.length - 1) {
+				content += elementStart + el + elementEnd
+			} else {
+				content +=  elementStart + el + elementEnd + spilt;
+			}
+		}
+		content = start + content + end;
+		return content;
+	}
+
+
 }
+
+export const EscapeMap:Map< { [Symbol.replace](string: string, replaceValue: string): string; }, string> = new Map([
+	[/\\n/g, "\n"],
+	[/\\t/g, "\t"],
+	[/\\r/g, "\r"],
+	[/\\f/g, "\f"],
+	[/\\b/g, "\b"],
+	[/\\'/g, "'"],
+	[/\\"/g, '"'],
+	[/\\\\/g, "\\"],
+])

@@ -19,8 +19,15 @@ export default class HtmlUtil {
 				}
 			}
 		}
-
 	}
+
+	public static strToHtml(str: string): string {
+		let result = str.replace(/\n/g, '<br/>');
+		result.replace(/\s/g, '&nbsp;');
+		return result;
+	}
+
+
 
 
 }

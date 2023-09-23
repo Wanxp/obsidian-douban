@@ -334,7 +334,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!userState) {
 			return resultContent;
 		}
-		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(userState.tags, textMode, context))
+		let tags: string[] = [];
+		if (userState.tags && userState.tags.length > 0 ) {
+			tags = [extract.type, ...userState.tags.map(tag => tag.trim())];
+		}else {
+			tags = [extract.type];
+		}
+		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(tags, textMode, context))
 			.replaceAll(DoubanUserParameter.MY_RATING, this.handleSpecialContent(userState.rate, textMode))
 			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
 			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
@@ -538,8 +544,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	protected handleArray(arr: string[], context: HandleContext): string {
 		const {settings} = context;
-		let content :string = arr ? arr.join(settings.arraySpilt) : "";
-		content = settings.arrayStart + content + settings.arrayEnd;
-		return content;
+		return StringUtil.handleArray(arr, settings);
 	}
+
+
 }
