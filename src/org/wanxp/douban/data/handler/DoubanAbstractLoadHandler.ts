@@ -361,8 +361,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		customProperties.filter(customProperty => customProperty.name &&
 			customProperty.field
-			&& (customProperty.field == SupportType.ALL ||
-				customProperty.field == this.getSupportType())).forEach(customProperty => {
+			&& (customProperty.field.toLowerCase() == SupportType.ALL ||
+				customProperty.field.toLowerCase() == this.getSupportType())).forEach(customProperty => {
 			resultContent = resultContent.replaceAll(`{{${customProperty.name}}}`, customProperty.value);
 		});
 		return resultContent;

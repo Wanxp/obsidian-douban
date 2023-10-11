@@ -99,7 +99,7 @@ export enum TemplateKey {
 }
 
 export enum SupportType {
-	ALL = "All",
+	ALL = "all",
 	MOVIE = 'movie',
 	BOOK = 'book',
 	MUSIC = 'music',
