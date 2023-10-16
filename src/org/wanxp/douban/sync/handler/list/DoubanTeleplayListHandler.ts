@@ -1,9 +1,9 @@
 import DoubanAbstractListHandler from "./DoubanAbstractListHandler";
 import { SyncType} from "../../../../constant/Constsant";
 
-export abstract class DoubanMusicListHandler extends DoubanAbstractListHandler {
+export abstract class DoubanTeleplayListHandler extends DoubanAbstractListHandler {
 	getSyncType(): SyncType {
-		return SyncType.music;
+		return SyncType.teleplay;
 	}
 
 	abstract getDoType(): string;

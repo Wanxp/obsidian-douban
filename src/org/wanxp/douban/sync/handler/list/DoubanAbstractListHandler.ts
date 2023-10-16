@@ -4,7 +4,7 @@ import {log} from "src/org/wanxp/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
 import HandleContext from "../../../data/model/HandleContext";
 import {doubanSubjectSyncListUrl} from "../../../../constant/Douban";
-import {BasicConst, PAGE_SIZE} from "../../../../constant/Constsant";
+import {BasicConst, PAGE_SIZE, SyncType, SyncTypeUrlDomain} from "../../../../constant/Constsant";
 import {SubjectListItem} from "../../../data/model/SubjectListItem";
 import {DoubanListHandler} from "./DoubanListHandler";
 import {SyncConfig} from "../../model/SyncConfig";
@@ -38,12 +38,16 @@ export default abstract class DoubanAbstractListHandler implements DoubanListHan
 	}
 
 	private getUrl(context: HandleContext,  start:number) {
-		return doubanSubjectSyncListUrl(this.getSyncType(), context.userComponent.getUserId(), this.getDoType(), start);
+		return doubanSubjectSyncListUrl(this.getSyncTypeDomain(), context.userComponent.getUserId(), this.getDoType(), start);
 	}
 
 	abstract getDoType():string;
 
-	abstract getSyncType():string;
+	abstract getSyncType():SyncType;
+
+	getSyncTypeDomain():string {
+		return SyncTypeUrlDomain.get(this.getSyncType());
+	}
 
 	async getPageList(url: string, context: HandleContext):Promise<SubjectListItem[]>  {
 		return HttpUtil.httpRequestGet(url,  context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)

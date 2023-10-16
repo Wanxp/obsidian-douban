@@ -1,8 +1,8 @@
 import DoubanAbstractListHandler from "./DoubanAbstractListHandler";
-import { SyncType} from "../../../../constant/Constsant";
+import {SyncType, SyncTypeUrlDomain} from "../../../../constant/Constsant";
 
 export abstract class DoubanBookListHandler extends DoubanAbstractListHandler {
-	getSyncType(): string {
+	getSyncType(): SyncType {
 		return SyncType.book;
 	}
 

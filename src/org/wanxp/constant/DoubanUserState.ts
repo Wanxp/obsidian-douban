@@ -89,6 +89,15 @@ export const DoubanSubjectStateRecords_MOVIE_SYNC: { [key in DoubanSubjectState]
 }
 
 // @ts-ignore
+export const DoubanSubjectStateRecords_TELEPLAY_SYNC: { [key in DoubanSubjectState]: string } = {
+	// @ts-ignore
+	[ALL]: i18nHelper.getMessage('500004'),
+	[DoubanSubjectState.wish]: i18nHelper.getMessage('500202'),
+	[DoubanSubjectState.do]: i18nHelper.getMessage('500203'),
+	[DoubanSubjectState.collect]: i18nHelper.getMessage('500204'),
+}
+
+// @ts-ignore
 export const DoubanSubjectStateRecords_BOOK_SYNC: { [key in DoubanSubjectState]: string } = {
 	// @ts-ignore
 	[ALL]: i18nHelper.getMessage('500004'),

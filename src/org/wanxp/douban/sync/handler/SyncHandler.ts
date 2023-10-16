@@ -8,6 +8,7 @@ import { DoubanMovieSyncHandler } from "./DoubanMovieSyncHandler";
 import { DoubanMusicSyncHandler } from "./DoubanMusicSyncHandler";
 import { DoubanBookSyncHandler } from "./DoubanBookSyncHandler";
 import {i18nHelper} from "../../../lang/helper";
+import {DoubanTeleplaySyncHandler} from "./DoubanTeleplaySyncHandler";
 
 export default class SyncHandler {
 	private app: App;
@@ -30,6 +31,7 @@ export default class SyncHandler {
 				 // new DoubanBroadcastSyncHandler(plugin),
 				 // new DoubanNoteSyncHandler(plugin),
 				 new DoubanMusicSyncHandler(plugin),
+				 new DoubanTeleplaySyncHandler(plugin),
 				 this.defaultSyncHandler
 			 ];
 	 }

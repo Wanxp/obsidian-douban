@@ -538,6 +538,7 @@ PS: This file could be delete if you want to.
 	'500001': `Sync Config`,
 	'504102': `My Book`,
 	'504103': `My Movie`,
+	'504107': `My Teleplay`,
 	'504104': `My Broadcast`,
 	'504105': `My Note`,
 	'504106': `My Music`,

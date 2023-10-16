@@ -191,7 +191,17 @@ export enum SyncType {
 	broadcast = 'broadcast',
 	note = 'note',
 	music = 'music',
+	teleplay = 'teleplay'
 }
+
+export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
+	[SyncType.movie , 'movie'],
+	[SyncType.book , 'book'],
+	[SyncType.broadcast , 'broadcast'],
+	[SyncType.note , 'note'],
+	[SyncType.music , 'music'],
+	[SyncType.teleplay , 'movie']]
+)
 
 /**
  * 同步模式选项
@@ -199,6 +209,7 @@ export enum SyncType {
 // @ts-ignore
 export const SyncTypeRecords: { [key in SyncType]: string } = {
 	[SyncType.movie]: i18nHelper.getMessage('504103'),
+	[SyncType.teleplay]: i18nHelper.getMessage('504107'),
 	[SyncType.book]: i18nHelper.getMessage('504102'),
 	// [SyncType.broadcast]: i18nHelper.getMessage('504104'),
 	// [SyncType.note]: i18nHelper.getMessage('504105'),

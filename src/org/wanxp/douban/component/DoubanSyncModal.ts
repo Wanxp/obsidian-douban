@@ -10,8 +10,12 @@ import HandleContext from "../data/model/HandleContext";
 import {SyncType, SyncTypeRecords} from "../../constant/Constsant";
 import {
 	ALL,
-	DoubanSubjectStateRecords_BOOK_SYNC, DoubanSubjectStateRecords_BROADCAST_SYNC,
-	DoubanSubjectStateRecords_MOVIE_SYNC, DoubanSubjectStateRecords_MUSIC_SYNC, DoubanSubjectStateRecords_NOTE_SYNC
+	DoubanSubjectStateRecords_BOOK_SYNC,
+	DoubanSubjectStateRecords_BROADCAST_SYNC,
+	DoubanSubjectStateRecords_MOVIE_SYNC,
+	DoubanSubjectStateRecords_MUSIC_SYNC,
+	DoubanSubjectStateRecords_NOTE_SYNC,
+	DoubanSubjectStateRecords_TELEPLAY_SYNC
 } from "../../constant/DoubanUserState";
 import {SyncConfig} from "../sync/model/SyncConfig";
 import {clearInterval} from "timers";
@@ -189,6 +193,10 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			case SyncType.music:
 				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_MUSIC_SYNC, config, disable);
 				break;
+			case SyncType.teleplay:
+				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_TELEPLAY_SYNC, config, disable);
+				break;
+
 		}
 	}
 
@@ -224,6 +232,9 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 				break;
 			case SyncType.music:
 				result = (settings.musicTemplateFile == '' || settings.musicTemplateFile == null) ? DEFAULT_SETTINGS.musicTemplateFile : settings.musicTemplateFile
+				break;
+			case SyncType.teleplay:
+				result = (settings.teleplayTemplateFile == '' || settings.teleplayTemplateFile == null) ? DEFAULT_SETTINGS.teleplayTemplateFile : settings.teleplayTemplateFile
 				break;
 		}
 		return result;
