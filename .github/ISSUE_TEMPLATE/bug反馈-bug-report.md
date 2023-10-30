@@ -1,7 +1,7 @@
 ---
 name: bug反馈/Bug report
 about: 使用遇到问题时反馈问题/Create a report to help us improve
-title: bug
+title: "[Bug]:"
 labels: ''
 assignees: Wanxp
 
