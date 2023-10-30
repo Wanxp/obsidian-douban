@@ -42,7 +42,7 @@ comment: {{myComment}}
 如相关的插件设置...
 
 5. 操作系统版本
-- [ ] windows
+- [x] windows
 - [ ] ubuntu
 - [ ] mac
 - [ ] android
