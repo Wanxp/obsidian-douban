@@ -1,5 +1,5 @@
 ---
-name: bug反馈/Bug report
+name: 异常反馈/Bug report
 about: 使用遇到问题时反馈问题/Create a report to help us improve
 title: "[Bug]:简要描述你的问题"
 labels: ''
@@ -16,6 +16,7 @@ assignees: Wanxp
 ```text
 ---
 title: 英雄
+comment: 
 ---
 ```
 
@@ -26,6 +27,7 @@ title: 英雄
 ```txt
 ---
 title: {{name}}
+comment: {{myComment}}
 ---
 ```
 4. 其它
