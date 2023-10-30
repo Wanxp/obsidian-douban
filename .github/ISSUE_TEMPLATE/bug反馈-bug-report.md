@@ -1,27 +1,41 @@
 ---
 name: bug反馈/Bug report
 about: 使用遇到问题时反馈问题/Create a report to help us improve
-title: "[Bug]:"
+title: "[Bug]:简要描述你的问题"
 labels: ''
 assignees: Wanxp
 
 ---
 
 1. 问题说明
-我的操作是..., 结果如何..., 想要达到的效果是...
+1.1 操作
+比如进行同步电影时，无法获取我自己的评论...
+
+1.2 结果 
+截图或者文本...
+```text
+---
+title: 英雄
+---
+```
+
 2. 书影音名称
-...
+《英雄》
+
 3. 模板展示
 ```txt
 ---
 title: {{name}}
 ---
 ```
-3. 操作系统版本
+4. 其它
+如相关的插件设置...
+
+5. 操作系统版本
 - [ ] windows
 - [ ] ubuntu
 - [ ] mac
 - [ ] android
 - [ ] ios
-4. obisidian版本
+6. obisidian版本
 ...
