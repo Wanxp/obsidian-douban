@@ -72,7 +72,13 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanBookSubject {
-		let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+		let desc = html('#link-report > span.all.hidden > div > div[class= "intro"]').html();
+		if (desc) {
+			//替换p标签 为换行符
+			desc = desc.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
+			//去掉开头的换行符
+			desc = desc.replace(/^\n/, '');
+		}
 		let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
 		let item = html(html("head > script[type='application/ld+json']").get(0)).text();
 		item = super.html_decode(item);
