@@ -34,6 +34,11 @@
 }
 
 .obsidian_douban_search_input {
+	margin-left: 5px;
+	float: left;
+}
+
+.obsidian_douban_search_input_content {
     margin-left: 5px;
     margin-right: 5px;
     width: 90%;

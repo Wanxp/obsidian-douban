@@ -562,6 +562,9 @@ export default {
 	'NOTE': `笔记`,
 	'GAME': `游戏`,
 	'TELEPLAY': `电视剧`,
+	'THEATER': `戏剧`,
+	'MOVIE_AND_TELEPLAY': `影视剧`,
+
 
 	'DAY': `天`,
 	'HOUR': `时`,

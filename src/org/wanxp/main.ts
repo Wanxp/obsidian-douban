@@ -1,4 +1,12 @@
-import {Action, BasicConst, SearchHandleMode, SubjectHandledStatus, SyncTypeRecords} from "./constant/Constsant";
+import {
+	Action,
+	BasicConst,
+	SEARCH_ITEM_PAGE_SIZE,
+	SearchHandleMode,
+	SubjectHandledStatus,
+	SupportType,
+	SyncTypeRecords
+} from "./constant/Constsant";
 import {Editor, Notice, Plugin} from "obsidian";
 
 import {DEFAULT_SETTINGS} from "./constant/DefaultSettings";
@@ -6,7 +14,6 @@ import {DoubanFuzzySuggester} from "./douban/data/search/DoubanSearchFuzzySugges
 import {DoubanPluginSetting} from "./douban/setting/model/DoubanPluginSetting";
 import {DoubanSearchChooseItemHandler} from "./douban/data/handler/DoubanSearchChooseItemHandler";
 import {DoubanSearchModal} from "./douban/data/search/DoubanSearchModal";
-import DoubanSearchResultSubject from "./douban/data/model/DoubanSearchResultSubject";
 import {DoubanSettingTab} from "./douban/setting/DoubanSettingTab";
 import DoubanSubject from "./douban/data/model/DoubanSubject";
 import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
@@ -16,8 +23,6 @@ import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
 import HandleContext from "./douban/data/model/HandleContext";
 import HandleResult from "./douban/data/model/HandleResult";
 import NetFileHandler from "./net/NetFileHandler";
-import {SearchPageInfo} from "./douban/data/model/SearchPageInfo";
-import Searcher from "./douban/data/search/Search";
 import SettingsManager from "./douban/setting/SettingsManager";
 import {SyncConfig} from "./douban/sync/model/SyncConfig";
 import SyncHandler from "./douban/sync/handler/SyncHandler";
@@ -26,6 +31,8 @@ import {i18nHelper} from './lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
 import GithubUtil from "./utils/GithubUtil";
 import {DoubanPluginOnlineData} from "./douban/setting/model/DoubanPluginOnlineData";
+import SearcherV2 from "./douban/data/search/SearchV2";
+import {SearchPage} from "./douban/data/model/SearchPage";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -119,13 +126,13 @@ export default class DoubanPlugin extends Plugin {
 		}
 	}
 
-	async search(searchTerm: string, context: HandleContext) {
+	async search(searchTerm: string, searchType: SupportType, context: HandleContext) {
 		try {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
-			const resultList:DoubanSearchResultSubject[] = await Searcher.search(searchTerm, this.settings, context.plugin.settingsManager);
-			this.showStatus(i18nHelper.getMessage('140202', resultList.length.toString()));
-			context.searchPage = new SearchPageInfo(21,-1,20);
-			new DoubanFuzzySuggester(this, context, searchTerm).showSearchList(resultList);
+			const result:SearchPage = await SearcherV2.search(searchTerm, searchType, 1, SEARCH_ITEM_PAGE_SIZE, this.settings, context.plugin.settingsManager);
+			this.showStatus(i18nHelper.getMessage('140202', result.list.toString()));
+			context.searchPage = result;
+			new DoubanFuzzySuggester(this, context, searchTerm).showSearchPage(result);
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206').replace('{0}', e.message), e);
 		} finally {
@@ -138,7 +145,7 @@ export default class DoubanPlugin extends Plugin {
 		if (activeFile) {
 			const searchTerm = activeFile.basename;
 			if (searchTerm) {
-				await this.search(searchTerm, context);
+				await this.search(searchTerm, SupportType.ALL, context);
 			}
 		}
 	}
@@ -162,7 +169,7 @@ export default class DoubanPlugin extends Plugin {
 		}
 
 		this.addCommand({
-			id: "search-douban-import-and-create-file",
+			id: "searcher-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
 			callback: () =>
 				this.getDoubanTextForCreateNewNote({plugin: this,
@@ -175,7 +182,7 @@ export default class DoubanPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "search-douban-and-input-current-file",
+			id: "searcher-douban-and-input-current-file",
 			name: i18nHelper.getMessage("110002"),
 			editorCallback: (editor: Editor) =>
 				this.getDoubanTextForSearchTerm({plugin: this,
@@ -188,7 +195,7 @@ export default class DoubanPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "search-douban-by-current-file-name",
+			id: "searcher-douban-by-current-file-name",
 			name: i18nHelper.getMessage("110001"),
 			editorCallback: (editor: Editor) =>
 				this.getDoubanTextForActiveFile({plugin: this,

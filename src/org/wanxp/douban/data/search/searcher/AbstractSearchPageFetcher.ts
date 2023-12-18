@@ -1,0 +1,32 @@
+import { SupportType } from "src/org/wanxp/constant/Constsant";
+import SettingsManager from "../../../setting/SettingsManager";
+import {SearchPageFetcherInterface} from "./SearchPageFetcherInterface";
+import HttpUtil from "../../../../utils/HttpUtil";
+import {log} from "../../../../utils/Logutil";
+import {i18nHelper} from "../../../../lang/helper";
+
+export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInterface {
+
+	protected settingsManager: SettingsManager;
+
+	constructor(settingsManager: SettingsManager) {
+		this.settingsManager = settingsManager;
+	}
+
+	support(type: SupportType): boolean {
+        throw new Error("Method not implemented.");
+    }
+    fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
+		const url:string = this.getUrl(keyword, pageNum, pageSize);
+		if (!url) {
+			return Promise.resolve("");
+		}
+		return HttpUtil.httpRequestGet(url, this.settingsManager.getHeaders(), this.settingsManager)
+			.catch(e => {
+				throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e);
+			});    }
+
+	abstract getUrl(keyword: string, pageNum: number, pageSize: number):string;
+
+
+}

@@ -54,6 +54,7 @@ export const ESTIMATE_TIME_PER_WITH_REQUEST_SLOW: number = ESTIMATE_TIME_PER + B
  */
 export const ESTIMATE_TIME_PER_WITH_REQUEST: number = ESTIMATE_TIME_PER + BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE / 2;
 
+
 /**
  * 模板类型
  */
@@ -179,6 +180,20 @@ export enum PropertyName {
 /**
  * 名称模式选项
  */
+export const SearchTypeRecords: { [key in SupportType]: string } = {
+	[SupportType.ALL]: i18nHelper.getMessage('ALL'),
+	[SupportType.MOVIE]: i18nHelper.getMessage('MOVIE_AND_TELEPLAY'),
+	[SupportType.BOOK]: i18nHelper.getMessage('BOOK'),
+	[SupportType.MUSIC]: i18nHelper.getMessage('MUSIC'),
+	[SupportType.NOTE]: i18nHelper.getMessage('NOTE'),
+	[SupportType.GAME]: i18nHelper.getMessage('GAME'),
+	[SupportType.TELEPLAY]: i18nHelper.getMessage('TELEPLAY'),
+	[SupportType.THEATER]: i18nHelper.getMessage('THEATER'),
+}
+
+/**
+ * 名称模式选项
+ */
 export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 	[PersonNameMode.CH_NAME]: i18nHelper.getMessage('121206'),
 	[PersonNameMode.EN_NAME]: i18nHelper.getMessage('121207'),
@@ -296,7 +311,7 @@ export const DoubanSearchResultSubjectNextPageNeedLogin: DoubanSearchResultSubje
 	url: NavigateType.nextNeedLogin
 }
 
-export const SEARCH_ITEM_PAGE_SIZE: number = 20;
+export const SEARCH_ITEM_PAGE_SIZE: number = 10;
 
 /**
  * 豆瓣默认请求头

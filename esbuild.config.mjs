@@ -35,7 +35,7 @@ esbuild.build({
 		'@codemirror/panel',
 		'@codemirror/rangeset',
 		'@codemirror/rectangular-selection',
-		'@codemirror/search',
+		'@codemirror/searcher',
 		'@codemirror/state',
 		'@codemirror/stream-parser',
 		'@codemirror/text',
