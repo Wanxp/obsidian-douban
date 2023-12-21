@@ -1,13 +1,13 @@
 //简体中文
 export default {
 	//main.ts
-	'110001': 'searcher douban by current file name',
-	'110002': 'searcher douban and import to current file',
+	'110001': 'search douban by current file name',
+	'110002': 'search douban and import to current file',
 	'110003': `Enter Search Term:`,
 	'110004': `Search`,
 	'110005': `Cancel`,
 	'110006': `sync douban personal book-movie-music to Obsidian`,
-	'110101': 'searcher douban and create file',
+	'110101': 'search douban and create file',
 	'110201': `{0} already exists`,
 	'110202': `{0} template can not read`,
 	'110103': 'sync personal data from douban',
