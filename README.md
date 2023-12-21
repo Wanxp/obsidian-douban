@@ -19,7 +19,8 @@
    </a>    
 </p>    
 
-在[Obsidian](https://obsidian.md/)使用并导入豆瓣中的 _电影/书籍/音乐/电视剧/日记/游戏_ 甚至是 _你标记过的书影音_ , 包含你的评分/发布日期/演员表等信息.   
+在[Obsidian](https://obsidian.md/)使用并导入[豆瓣]()中的 _电影、书籍、音乐、电视剧、日记、游戏_  
+甚至是 _你标记过的书影音_ , 包含你的评分、观看日期、评论、阅读状态等信息.   
 ![background](./doc/background.png)
 
 ---  
@@ -27,27 +28,19 @@
 如果觉得喜欢或对您有帮助，欢迎一键三连-点亮 ⭐Star
 
 - [异常, 问题 & 新的想法](https://github.com/Wanxp/obsidian-douban/issues)
-- 阅读其它语言的介绍请点击 [English](./doc/README.en.md) | [简体中文](./README.md)
+- 阅读其它语言的介绍请点击 [English](./doc/README.en.md) | 简体中文
 
 ## 功能
-- ☑️ 同步个人看过的电影
-- ☑️ 同步个人阅读过的书籍
-- ☑️ 同步个人听过的音乐
-- ☑️ 导入电影
-- ☑️ 导入电视剧
-- ☑️ 导入书籍
-- ☑️ 导入音乐
-- ☑️ 导入日记
-- ☑️ 导入游戏
+- ☑️ 导入电影、电视剧、书籍、音乐、游戏、日记
+- ☑️ 同步个人听过/看过的电影、电视剧、书籍、音乐
 - ☑️ 导入个人的评论,评论时间,阅读状态,个人评分
 - ☑️ 支持保存封面至本地
 - ☑️ 支持自定义参数
-- ❌ 广播
 
-## 拓展
+## 效果
 1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md))
 <!--2.  结合DataView插件，__构建个人电子书架（书库数据）__，请参照[结合dateview插件实现个人书架效果](./doc/Obsidian-Douban-DataView.md))-->
-
+2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](./doc/Obsidian-Douban-TimeLine.md))
 
 ## 如何使用
 ### 同步
@@ -56,21 +49,14 @@
   ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
 ### 搜索
 - 搜索数据并创建笔记  
+- 通过当前文件名搜索
+- 通过输入文本搜索
   ![search_and_create](doc/img/search_and_create_note.gif)
-- 通过当前文件名搜索    
-  ![Search Movie By File Name](doc/img/search_by_file_name.gif)
-
-- 通过输入文本搜索    
-  ![Search Movie By Input Text](doc/img/search_by_input.gif)
 
 ## 设置
-- 设置案例1(自定义模板)    
-  ![Setting Example1](doc/img/setting_zh.gif)
-
-
-- 设置案例2(其它配置)    
-  ![Setting Example2](doc/img/setting_en.gif)
-
+- 设置豆瓣账号
+- 设置导入模板
+- 设置导入参数
 
 
 ## 支持的字段
