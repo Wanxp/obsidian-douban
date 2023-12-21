@@ -27,7 +27,7 @@ export class DoubanSearchModal extends Modal {
 		const searchInput = new TextComponent(inputs).onChange((searchTerm) => {
 			this.searchTerm = searchTerm;
 		});
-		inputs.addClass("obsidian_douban_search_input");
+		inputs.addClass("obsidian_douban_search_input_content");
 		searchInput.inputEl.size = 40;
 
 		searchInput.inputEl.addEventListener("keydown", (event) => {
@@ -35,6 +35,7 @@ export class DoubanSearchModal extends Modal {
 				this.close();
 			}
 		});
+		inputs.addClass("obsidian_douban_search_input")
 
 		const typeSelect = content.createDiv("type-select");
 		const typeSelectInput = new DropdownComponent(typeSelect)
@@ -43,10 +44,11 @@ export class DoubanSearchModal extends Modal {
 			.onChange((value:SupportType) => {
 			this.searchType = value;
 		});
-		typeSelect.addClass('obsidian_douban_search_input');
+		typeSelect.addClass('obsidian_douban_search_input_type');
 
 
 		const controls = contentEl.createDiv("controls");
+		controls.addClass("obsidian_douban_search_controls")
 		const searchButton = controls.createEl("button", {
 			text: i18nHelper.getMessage('110004'),
 			cls: "mod-cta",
@@ -59,7 +61,7 @@ export class DoubanSearchModal extends Modal {
 		searchButton.addEventListener("click", this.close.bind(this));
 		const cancelButton = controls.createEl("button", {text: i18nHelper.getMessage('110005')});
 		cancelButton.addEventListener("click", this.close.bind(this));
-		cancelButton.addClass("obsidian_douban_search_button");
+		cancelButton.addClass("obsidian_douban_cancel_button");
 		searchInput.inputEl.focus();
 
 	}

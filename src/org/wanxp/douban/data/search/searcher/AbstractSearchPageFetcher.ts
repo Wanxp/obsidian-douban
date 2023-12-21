@@ -13,7 +13,7 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 		this.settingsManager = settingsManager;
 	}
 
-	support(type: SupportType): boolean {
+	support(type: SupportType, pageNum?:number): boolean {
         throw new Error("Method not implemented.");
     }
     fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {

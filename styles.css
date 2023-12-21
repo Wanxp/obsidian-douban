@@ -35,19 +35,35 @@
 
 .obsidian_douban_search_input {
 	margin-left: 5px;
-	float: left;
+}
+
+.obsidian_douban_search_input_type {
+	margin-left: 5px;
+	float: right;
 }
 
 .obsidian_douban_search_input_content {
     margin-left: 5px;
-    margin-right: 5px;
-    width: 90%;
+    width: 80%;
+	float: left;
+
+}
+
+.obsidian_douban_search_controls {
+	margin-top: 20px;
+	margin-right: 5px;
 }
 
 .obsidian_douban_search_button {
-    margin-top: 30px;
-    margin-right: 10px;
+	margin-top: 20px;
+	margin-right: 5px;
 	float:right;
+}
+
+.obsidian_douban_cancel_button {
+	margin-top: 20px;
+	margin-right: 5px;
+	float: right;
 }
 
 .obsidian_douban_status_button {

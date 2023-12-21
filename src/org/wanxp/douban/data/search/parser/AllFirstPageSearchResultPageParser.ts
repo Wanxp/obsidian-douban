@@ -3,7 +3,7 @@ import {SearchResultPageParserInterface} from "./SearchResultPageParserInterface
 import {SearchPage} from "../../model/SearchPage";
 import SearchParserHandlerV2 from "../SearchParserV2";
 
-export class FistAllPageSearchResultPageParser implements SearchResultPageParserInterface {
+export class AllFirstPageSearchResultPageParser implements SearchResultPageParserInterface {
 	support(type:SupportType, pageNum:number):boolean {
 		return pageNum == 1 && type == SupportType.ALL;
 	}

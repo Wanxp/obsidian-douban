@@ -561,7 +561,7 @@ PS: This file could be delete if you want to.
 	'TELEPLAY': `teleplay`,
 	'THEATER': `theater`,
 
-	'MOVIE_AND_TELEPLAY': `movie&teleplay`,
+	'MOVIE_AND_TELEPLAY': `movie&tv`,
 
 
 	'DAY': `D`,
