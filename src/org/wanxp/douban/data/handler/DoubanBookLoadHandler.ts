@@ -23,6 +23,10 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return `https://img9.doubanio.com/view/subject/l/public/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://book.douban.com/subject/${id}/`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {
 		return beforeContent
 			.replaceAll(DoubanBookParameter.author,
@@ -42,7 +46,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	support(extract: DoubanSubject): boolean {
-		return extract && extract.type && (extract.type.contains("书籍") || extract.type.contains("Book") || extract.type.contains("book"));
+		return extract && extract.type && (extract.type.contains("图书") || extract.type.contains("书籍") || extract.type.contains("Book") || extract.type.contains("book"));
 	}
 
 	handleSpecialAuthorName(authorName: string): string {

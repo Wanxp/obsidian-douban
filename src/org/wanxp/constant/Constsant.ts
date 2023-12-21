@@ -281,6 +281,36 @@ export const DoubanSearchResultSubjectPreviousPage: DoubanSearchResultSubject = 
 	url: NavigateType.previous
 }
 
+export const DoubanSearchGroupPublishResultSubjectPreviousPage: DoubanSearchResultSubject = {
+	cast: "",
+	datePublished: undefined,
+	desc: "",
+	genre: [],
+	id: "",
+	image: "",
+	imageUrl: "",
+	publisher: "",
+	score: 0,
+	title: i18nHelper.getMessage("150106"),
+	type: "navigate",
+	url: NavigateType.previous
+}
+
+export const DoubanSearchGroupPublishResultSubjectNextPage: DoubanSearchResultSubject = {
+	cast: "",
+	datePublished: undefined,
+	desc: "",
+	genre: [],
+	id: "",
+	image: "",
+	imageUrl: "",
+	publisher: "",
+	score: 0,
+	title: i18nHelper.getMessage("150105"),
+	type: "navigate",
+	url: NavigateType.next
+}
+
 export const DoubanSearchResultSubjectNextPage: DoubanSearchResultSubject = {
 	cast: "",
 	datePublished: undefined,
@@ -311,7 +341,7 @@ export const DoubanSearchResultSubjectNextPageNeedLogin: DoubanSearchResultSubje
 	url: NavigateType.nextNeedLogin
 }
 
-export const SEARCH_ITEM_PAGE_SIZE: number = 10;
+export const SEARCH_ITEM_PAGE_SIZE: number = 20;
 
 /**
  * 豆瓣默认请求头

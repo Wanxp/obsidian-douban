@@ -17,7 +17,8 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
         throw new Error("Method not implemented.");
     }
     fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
-		const url:string = this.getUrl(keyword, pageNum, pageSize);
+		const start:number = (pageNum - 1) * pageSize;
+		const url:string = this.getUrl(keyword, start, pageSize);
 		if (!url) {
 			return Promise.resolve("");
 		}
@@ -26,7 +27,8 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 				throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e);
 			});    }
 
-	abstract getUrl(keyword: string, pageNum: number, pageSize: number):string;
+	abstract getUrl(keyword: string, start: number, pageSize: number):string;
+
 
 
 }

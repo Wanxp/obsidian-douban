@@ -25,6 +25,10 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://movie.douban.com/subject/${id}/`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanMovieSubject, context: HandleContext): string {
 		const {settings} = context;
 		return beforeContent

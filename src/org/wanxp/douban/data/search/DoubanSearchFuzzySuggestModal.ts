@@ -1,4 +1,5 @@
 import {
+	DoubanSearchGroupPublishResultSubjectNextPage, DoubanSearchGroupPublishResultSubjectPreviousPage,
 	DoubanSearchResultSubjectNextPage,
 	DoubanSearchResultSubjectNextPageNeedLogin,
 	DoubanSearchResultSubjectPreviousPage,
@@ -57,12 +58,6 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 			}
 			return;
 		}
-		if(this.isTypeSelect(item)) {
-			if (await this.handleTypeSelect(item)) {
-				this.start();
-			}
-			return;
-		}
 		this.plugin.showStatus(i18nHelper.getMessage('140204', item.title));
 		this.context.listItem = item;
 		if (item) {
@@ -89,10 +84,10 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 				break;
 		}
 		if (result) {
-			// const searchPageResult: SearchPage =
-			// 	await SearcherV2.loadSearchItem(this.searchItem, currentPage.start, SEARCH_ITEM_PAGE_SIZE, this.plugin.settings, this.plugin.settingsManager);
-			// this.context.searchPage = new SearchPageInfo(searchPageResult.total, currentPage.pageNum, searchPageResult.pageSize, item.type);
-			// this.updatePageResult(searchPageResult);
+			const searchPageResult: SearchPage =
+				await SearcherV2.search(this.searchItem, currentPage.type, currentPage.pageNum, SEARCH_ITEM_PAGE_SIZE, this.plugin.settings, this.plugin.settingsManager);
+			this.context.searchPage = searchPageResult;
+			this.updatePageResult(searchPageResult);
 		}
 		return result;
 	}
@@ -113,24 +108,26 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		const doubanList: DoubanSearchResultSubject[] = searchPage.list;
 		if (searchPage.hasNext) {
 			if (this.plugin.userComponent.isLogin()) {
-				doubanList.push(DoubanSearchResultSubjectNextPage)
+				if (searchPage.type == SupportType.ALL && searchPage.pageNum == 1) {
+					doubanList.push(DoubanSearchGroupPublishResultSubjectNextPage)
+				}else {
+					doubanList.push(DoubanSearchResultSubjectNextPage)
+				}
 			}else {
 				doubanList.push(DoubanSearchResultSubjectNextPageNeedLogin)
 			}
 		}
-		this.initTypeSelect(doubanList, searchPage);
 		if (searchPage.hasPrevious) {
-			doubanList.unshift(DoubanSearchResultSubjectPreviousPage);
+			if (searchPage.type == SupportType.ALL && searchPage.pageNum == 2) {
+				doubanList.unshift(DoubanSearchGroupPublishResultSubjectPreviousPage)
+			}else {
+				doubanList.unshift(DoubanSearchResultSubjectPreviousPage);
+			}
 		}
 		this.doubanSearchResultExtract = doubanList;
 
 	}
 
-	private initTypeSelect(doubanList: DoubanSearchResultSubject[], searchPage: SearchPage) {
-		if (SupportType.ALL == searchPage.type) {
-
-		}
-	}
 
 	public start(): void {
 		try {
@@ -140,29 +137,4 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 		}
 	}
 
-	private isTypeSelect(item: DoubanSearchResultSubject) {
-		return item.type == "type";
-	}
-
-	private async handleTypeSelect(item: DoubanSearchResultSubject) {
-		const {searchPage} = this.context;
-		let currentPage:SearchPageInfo = searchPage;
-		let result:boolean = false;
-		switch (item.url) {
-			case SupportType.ALL:
-				currentPage = searchPage.previousPage();
-				result = true;
-				break;
-			case NavigateType.next:
-				currentPage = searchPage.nextPage();
-				result = true;
-				break;
-			case NavigateType.nextNeedLogin:
-				log.warn(i18nHelper.getMessage("140304"));
-				break;
-		}
-		if (result) {
-		}
-		return result;
-	}
 }

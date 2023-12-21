@@ -23,16 +23,6 @@ export class DoubanSearchModal extends Modal {
 		contentEl.createEl("h3", {text: i18nHelper.getMessage('110003')});
 		const content = contentEl.createDiv("content");
 
-		const typeSelect = content.createDiv("type-select");
-		const typeSelectInput = new DropdownComponent(typeSelect)
-			.addOptions(SearchTypeRecords)
-			.setValue(SupportType.ALL)
-			.onChange((value:SupportType) => {
-			this.searchType = value;
-		});
-		typeSelect.addClass('obsidian_douban_search_input');
-
-
 		const inputs = content.createDiv("inputs");
 		const searchInput = new TextComponent(inputs).onChange((searchTerm) => {
 			this.searchTerm = searchTerm;
@@ -46,8 +36,14 @@ export class DoubanSearchModal extends Modal {
 			}
 		});
 
-
-
+		const typeSelect = content.createDiv("type-select");
+		const typeSelectInput = new DropdownComponent(typeSelect)
+			.addOptions(SearchTypeRecords)
+			.setValue(SupportType.ALL)
+			.onChange((value:SupportType) => {
+			this.searchType = value;
+		});
+		typeSelect.addClass('obsidian_douban_search_input');
 
 
 		const controls = contentEl.createDiv("controls");

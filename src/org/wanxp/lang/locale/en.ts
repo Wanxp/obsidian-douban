@@ -262,8 +262,10 @@ PS: This file could be delete if you want to.
 
 
 	'150101': `Choose an item...`,
+	'150106': `[Previous Page (Item Result)]...`,
 	'150102': `[Previous Page]...`,
 	'150103': `[Next Page]...`,
+	'150105': `[Next Page (Group Post)]...`,
 	'150104': `[Next Page (Please Login First)]...`,
 
 

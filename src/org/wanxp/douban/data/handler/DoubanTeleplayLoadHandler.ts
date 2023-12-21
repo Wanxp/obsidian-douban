@@ -47,6 +47,10 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://movie.douban.com/subject/${id}/`;
+	}
+
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
 		let rate = html('input#n_rating').val();
 		const rating = html('span#rating');

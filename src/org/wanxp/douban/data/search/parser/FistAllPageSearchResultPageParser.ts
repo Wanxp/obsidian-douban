@@ -17,7 +17,7 @@ export class FistAllPageSearchResultPageParser implements SearchResultPageParser
 			return SearchPage.empty(type);
 		}
 		const doubanSearchResultSubjects = SearchParserHandlerV2.itemMapToSearchResult(items);
-		return new SearchPage(items.length, pageNum, pageSize, type, doubanSearchResultSubjects);
+		return new SearchPage(2000, pageNum, pageSize, type, doubanSearchResultSubjects);
 	}
 
 

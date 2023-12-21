@@ -1,5 +1,5 @@
 import {SearchPageFetcherInterface} from "./SearchPageFetcherInterface";
-import {FistAllPageSearchPageFetcher} from "./FistAllPageSearchPageFetcher";
+import {AllPageSearchPageFetcher} from "./AllPageSearchPageFetcher";
 import SettingsManager from "../../../setting/SettingsManager";
 import {SupportType} from "../../../../constant/Constsant";
 import {MoviePageSearchPageFetcher} from "./MoviePageSearchPageFetcher";
@@ -10,7 +10,7 @@ export class SearchPageFetcher {
 	private fetchers:SearchPageFetcherInterface[] = [];
 
 	constructor(settingsManager:SettingsManager) {
-		this.fetchers.push(new FistAllPageSearchPageFetcher(settingsManager));
+		this.fetchers.push(new AllPageSearchPageFetcher(settingsManager));
 		this.fetchers.push(new MoviePageSearchPageFetcher(settingsManager));
 		this.fetchers.push(new BookPageSearchPageFetcher(settingsManager))
 	}

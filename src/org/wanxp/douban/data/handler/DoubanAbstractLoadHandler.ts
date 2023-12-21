@@ -144,7 +144,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract support(extract: DoubanSubject): boolean;
 
-	async handle(url: string, context: HandleContext): Promise<T> {
+	async handle(id: string, context: HandleContext): Promise<T> {
+		const url:string = this.getSubjectUrl(id);
 		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
 		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求header:${context.settings.loginHeadersContent}`)
 		return await HttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
@@ -515,7 +516,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getHighQuantityImageUrl(fileName:string):string;
 
-
+	abstract getSubjectUrl(id:string):string;
 
 	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
 								   metaProperty:string, objectProperty:string) {

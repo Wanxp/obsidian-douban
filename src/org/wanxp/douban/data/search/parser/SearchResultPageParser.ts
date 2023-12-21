@@ -3,6 +3,7 @@ import {FistAllPageSearchResultPageParser} from "./FistAllPageSearchResultPagePa
 import {OtherAllPageSearchResultPageParser} from "./OtherAllPageSearchResultPageParser";
 import {SearchPage} from "../../model/SearchPage";
 import {SupportType} from "../../../../constant/Constsant";
+import {NotAllPageSearchResultPageParser} from "./NotAllPageSearchResultPageParser";
 
 export class SearchResultPageParser {
 
@@ -11,6 +12,7 @@ export class SearchResultPageParser {
 	constructor() {
 		this.parsers.push(new FistAllPageSearchResultPageParser());
 		this.parsers.push(new OtherAllPageSearchResultPageParser());
+		this.parsers.push(new NotAllPageSearchResultPageParser());
 	}
 
 	public parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {

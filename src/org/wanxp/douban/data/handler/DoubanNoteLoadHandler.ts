@@ -23,6 +23,10 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return ``;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://www.douban.com/note/${id}/`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {
 		return beforeContent
 			.replaceAll("{{authorUrl}}", extract.authorUrl ? extract.authorUrl : "")

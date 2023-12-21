@@ -23,6 +23,10 @@ export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://www.douban.com/location/drama/${id}/`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanTheaterSubject, context: HandleContext): string {
 		return beforeContent
 			.replaceAll("{{originalTitle}}", extract.originalTitle ? extract.originalTitle : "")

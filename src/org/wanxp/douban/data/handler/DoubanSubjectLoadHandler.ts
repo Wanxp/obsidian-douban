@@ -8,7 +8,6 @@ export default interface DoubanSubjectLoadHandler<T extends DoubanSubject> {
 
 	support(extract: DoubanSubject): boolean;
 
-	handle(url: string, context: HandleContext): Promise<T>;
-
+	handle(id: string, context: HandleContext): Promise<T>;
 
 }

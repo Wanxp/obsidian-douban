@@ -72,7 +72,7 @@ export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implem
 				return;
 			}
 			if(syncStatus.shouldSync(item.id)) {
-				let subject: DoubanSubject  = await this.doubanSubjectLoadHandler.handle(item.url, context);
+				let subject: DoubanSubject  = await this.doubanSubjectLoadHandler.handle(item.id, context);
 				await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
 			}else {
 				syncStatus.unHandle(item.id, item.title);

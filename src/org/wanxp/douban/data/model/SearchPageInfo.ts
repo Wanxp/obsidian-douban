@@ -12,7 +12,7 @@ export class SearchPageInfo {
 		this._total = total;
 		this._pageNum = pageNum;
 		this._pageSize = pageSize;
-		this._hasNext = ((pageNum + 1) * pageSize) < total;
+		this._hasNext = (pageNum * pageSize) < total;
 		this._type = type;
 	}
 
@@ -23,6 +23,7 @@ export class SearchPageInfo {
 		return new SearchPageInfo(this.total, this._pageNum + 1,
 			this._pageSize, this._type);
 	}
+
 
 	public previousPage(): SearchPageInfo {
 		if (this._pageNum == 0) {
@@ -43,12 +44,12 @@ export class SearchPageInfo {
 	}
 
 	public get hasPrevious() {
-		return this._pageNum > 0;
+		return this._pageNum > 1;
 	}
 
 
 	public get start() {
-		return this._pageNum * this._pageSize + 1;
+		return (this._pageNum - 1) * this._pageSize + 1;
 	}
 
 	public get total() {

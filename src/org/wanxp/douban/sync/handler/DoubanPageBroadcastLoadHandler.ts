@@ -10,6 +10,9 @@ import { UserStateSubject } from '../../data/model/UserStateSubject';
 
 //TODO will support in future version
 class DoubanPageBroadcastLoadHandler extends DoubanAbstractLoadHandler<DoubanPageBroadcastSubject> {
+    getSubjectUrl(id: string): string {
+        throw new Error('Method not implemented.');
+    }
     getHighQuantityImageUrl(fileName: string): string {
         throw new Error('Method not implemented.');
     }

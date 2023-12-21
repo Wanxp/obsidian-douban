@@ -28,6 +28,10 @@ export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<Do
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://book.douban.com/subject/${id}/`;
+	}
+
 	parseSubjectFromHtml(data: CheerioAPI, context: HandleContext): DoubanSubject {
 		log.notice(i18nHelper.getMessage('140101'));
 		return undefined;

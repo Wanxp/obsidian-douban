@@ -1,7 +1,7 @@
 import {AbstractSearchPageFetcher} from "./AbstractSearchPageFetcher";
 import { SupportType } from "src/org/wanxp/constant/Constsant";
 
-export class FistAllPageSearchPageFetcher extends AbstractSearchPageFetcher  {
+export class AllPageSearchPageFetcher extends AbstractSearchPageFetcher  {
     getUrl(keyword: string, pageNum: number, pageSize: number): string {
        return  `https://m.douban.com/rexxar/api/v2/search?q=${keyword}&start=${pageNum}&count=${pageSize}`;
     }

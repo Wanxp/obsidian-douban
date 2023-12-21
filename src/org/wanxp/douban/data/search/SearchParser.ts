@@ -1,8 +1,8 @@
 import {CheerioAPI, load} from "cheerio";
 import DoubanSearchResultSubject from "../model/DoubanSearchResultSubject";
 import {SearchPage} from "../model/SearchPage";
-import {SEARCH_ITEM_PAGE_SIZE, SupportType} from "../../../constant/Constsant";
 import {log} from "../../../utils/Logutil";
+import {SupportType} from "../../../constant/Constsant";
 
 export default class SearchParserHandler {
 	static parseSearch(dataHtml: CheerioAPI): DoubanSearchResultSubject[] {
@@ -36,7 +36,7 @@ export default class SearchParserHandler {
 				};
 				return result;
 			})
-	};
+	}
 
 	static parseSearchJson(result: string, type:SupportType, start:number): SearchPage {
 		log.debug("解析给多页面结果");

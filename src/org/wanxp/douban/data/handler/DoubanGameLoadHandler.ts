@@ -22,6 +22,10 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return `https://img9.doubanio.com/lpic/${fileName}`;
 	}
 
+	getSubjectUrl(id:string):string{
+		return `https://www.douban.com/game/${id}/`;
+	}
+
 	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {
 		const {settings} = context;
 		return beforeContent

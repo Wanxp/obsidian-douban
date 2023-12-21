@@ -42,9 +42,9 @@ export class DoubanSearchChooseItemHandler {
 		let doubanSubjectHandlers: DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
 			.filter(h => h.support(searchExtract));
 		if (doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-			await doubanSubjectHandlers[0].handle(searchExtract.url, context);
+			await doubanSubjectHandlers[0].handle(searchExtract.id, context);
 		} else {
-			await this._doubanSubjectHandlerDefault.handle(searchExtract.url, context);
+			await this._doubanSubjectHandlerDefault.handle(searchExtract.id, context);
 		}
 	}
 
