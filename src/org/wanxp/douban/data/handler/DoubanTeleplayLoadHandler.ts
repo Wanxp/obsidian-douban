@@ -78,12 +78,12 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			.map(i => {
 				let item = html(i).text();
 				item = super.html_decode(item);
-				let obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
-				let idPattern = /(\d){5,10}/g;
-				let id = idPattern.exec(obj.url);
-				let name = obj.name;
-				let title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context)??name;
-				let originalTitle =  super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
+				const obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
+				const idPattern = /(\d){5,10}/g;
+				const id = idPattern.exec(obj.url);
+				const name = obj.name;
+				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context)??name;
+				const originalTitle =  super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
 
 				const result: DoubanTeleplaySubject = {
 					id: id ? id[0] : '',
@@ -114,19 +114,22 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 
 		this.handlePersonNameByMeta(html, teleplay,  context, 'video:actor', 'actor');
 		this.handlePersonNameByMeta(html, teleplay,  context, 'video:director', 'director');
+		const desc:string = html("span[property='v:summary']").text();
+		if (desc) {
+			teleplay.desc = desc;
+		}
 
+		const detailDom = html(html("#info").get(0));
+		const publish = detailDom.find("span.pl");
 
-		let detailDom = html(html("#info").get(0));
-		let publish = detailDom.find("span.pl");
-
-		let valueMap = new Map<string, any>();
+		const valueMap = new Map<string, any>();
 
 		publish.map((index, info) => {
-			let key = html(info).text().trim();
+			const key = html(info).text().trim();
 			let value;
 			if (key.indexOf('又名') >= 0 || key.indexOf('语言') >= 0 || key.indexOf('制片国家') >= 0) {
 				// value = html(info.next.next).text().trim();
-				let vas = html(info.next).text().trim();
+				const vas = html(info.next).text().trim();
 				value = vas.split("/").map((v) => v.trim());
 			}else {
 				value = html(info.next).text().trim();

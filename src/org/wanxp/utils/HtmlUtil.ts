@@ -8,6 +8,9 @@ export default class HtmlUtil {
 	 * @param selector
 	 */
 	public static getHtmlText(html: CheerioAPI, selector: string | string[]): string {
+		if (!selector) {
+			return null;
+		}
 		if (typeof selector == 'string') {
 			return html(selector).text().trim();
 		}else {

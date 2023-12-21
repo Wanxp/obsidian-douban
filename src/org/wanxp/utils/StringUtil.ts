@@ -25,6 +25,8 @@ export default class StringUtil {
 		return id;
 	}
 
+
+
 	/**
 	 * request headers 字符串 转 json
 	 * @param text

@@ -42,13 +42,13 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
-		let rate = html('input#n_rating').val();
-		let tagsStr = html('span#rating').next().next().text().trim();
-		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
-		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
-		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
-		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = html('span#rating').next().next().next().next().text().trim();
+		const rate = html('input#n_rating').val();
+		const tagsStr = html('span#rating').next().next().text().trim();
+		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
+		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
+		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		const component = html('span#rating').next().next().next().next().text().trim();
 
 		const userState: UserStateSubject = {
 			tags: tags,
@@ -61,15 +61,22 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMusicSubject {
-		let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
-		let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
-		let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
-		let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
-		let score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
-		let detailDom = html(html("#info").get(0));
-		let publish = detailDom.find("span.pl");
+		const title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+		let desc:string = html("span.all.hidden").text();
+		if (!desc) {
+			desc = html("span[property='v:summary']").text();
+		}
+		if (!desc) {
+			desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+		}
 
-		let valueMap = new Map<string, string>();
+		const url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+		const image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+		const score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
+		const detailDom = html(html("#info").get(0));
+		const publish = detailDom.find("span.pl");
+
+		const valueMap = new Map<string, string>();
 
 		publish.map((index, info) => {
 			let key = html(info).text().trim();
@@ -106,6 +113,9 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			medium: valueMap.has('medium') ? valueMap.get('medium') : "",
 			barcode: valueMap.has('barcode') ? valueMap.get('barcode') : ""
 		};
+
+
+
 		return result;
 	}
 

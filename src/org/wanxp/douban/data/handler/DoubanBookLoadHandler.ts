@@ -55,13 +55,13 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
-		let rate = html('input#n_rating').val();
-		let tagsStr = html('span#rating').next().text().trim();
-		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
-		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
-		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
-		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let comment = this.getComment(html);
+		const rate = html('input#n_rating').val();
+		const tagsStr = html('span#rating').next().text().trim();
+		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
+		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
+		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		const comment = this.getComment(html);
 
 
 		const userState: UserStateSubject = {
@@ -76,28 +76,25 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanBookSubject {
-		let desc = html('#link-report > span.all.hidden > div > div[class= "intro"]').html();
-		if (desc) {
-			//替换p标签 为换行符
-			desc = desc.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
-			//去掉开头的换行符
-			desc = desc.replace(/^\n/, '');
+		let desc = html(".intro p").text();
+		if (!desc) {
+			desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
 		}
-		let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+		const image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
 		let item = html(html("head > script[type='application/ld+json']").get(0)).text();
 		item = super.html_decode(item);
-		let obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
-		let title = obj.name;
-		let url = obj.url;
-		let author = obj.author.map((a: any) => a.name);
-		let isbn = obj.isbn;
+		const obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
+		const title = obj.name;
+		const url = obj.url;
+		const author = obj.author.map((a: any) => a.name);
+		const isbn = obj.isbn;
 
 
-		let score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
-		let detailDom = html(html("#info").get(0));
-		let publish = detailDom.find("span.pl");
+		const score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
+		const detailDom = html(html("#info").get(0));
+		const publish = detailDom.find("span.pl");
 
-		let valueMap = new Map<string, any>();
+		const valueMap = new Map<string, any>();
 
 		publish.map((index, info) => {
 			let key = html(info).text().trim();

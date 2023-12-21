@@ -49,11 +49,10 @@ export class DoubanSearchChooseItemHandler {
 	}
 
 	public async parseText(extract: DoubanSubject, context: HandleContext): Promise<HandleResult> {
-		let doubanSubjectHandlers: DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
+		const doubanSubjectHandlers: DoubanSubjectLoadHandler<DoubanSubject>[] = this._doubanSubjectHandlers
 			.filter(h => h.support(extract));
-		let result:string='';
 		if (doubanSubjectHandlers && doubanSubjectHandlers.length > 0) {
-			let result = await doubanSubjectHandlers.map(h => h.parse(extract, context));
+			const result = await doubanSubjectHandlers.map(h => h.parse(extract, context));
 			if (result && result.length > 0) {
 				return result[0];
 			} else {

@@ -42,10 +42,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
-		let template: string = await this.getTemplate(extract, context);
+		const template: string = await this.getTemplate(extract, context);
 		await this.saveImage(extract, context);
-		let frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
-		let frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
+		const frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
+		const frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
 		let frontMatter: string = '';
 		let frontMatterBefore: string = '';
 		let frontMatterAfter: string = '';
@@ -156,7 +156,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				if (context.syncActive) {
 					guessType = this.getGuessType(data);
 				}
-				let sub = this.parseSubjectFromHtml(data, context);
+				const sub = this.parseSubjectFromHtml(data, context);
 				sub.userState = userState;
 				sub.guessType = guessType;
 				return sub;
@@ -166,14 +166,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			.catch(e =>  {
 				log.error(i18nHelper.getMessage('130101',  e.toString()), e);
 				if (url) {
-					let id = StringUtil.analyzeIdByUrl(url);
+					const id = StringUtil.analyzeIdByUrl(url);
 					context.syncStatusHolder?context.syncStatusHolder.syncStatus.fail(id, ''):null;
 				}else {
 					context.syncStatusHolder?context.syncStatusHolder.syncStatus.handled(1):null;
 				}
 				return e;
 			});
-		;
+
 
 	}
 
@@ -223,7 +223,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				resultName = chineseName;
 				break;
 			case PersonNameMode.EN_NAME:
-				resultName  = originalName.trim().replaceAll(chineseName, '').trim();
+				resultName  = originalName.trim().replace(chineseName, '').trim();
 				if (!resultName) {
 					resultName = originalName;
 				}
@@ -538,6 +538,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				}
 			})
 	}
+
 
 	protected getPropertyValue(html: CheerioAPI, name: PropertyName): string {
 		return HtmlUtil.getHtmlText(html, this.doubanPlugin.settingsManager.getSelector(this.getSupportType(), name));

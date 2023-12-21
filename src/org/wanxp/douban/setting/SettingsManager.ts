@@ -90,7 +90,11 @@ export default class SettingsManager {
 				return doubanPluginSubjectProperty.selectors;
 			}
 		}
-		return ONLINE_SETTING_DEFAULT.properties.find(subjectProperty => subjectProperty.type === itemType && subjectProperty.name === propertyName).selectors;
+		const doubanPluginSubjectProperty = ONLINE_SETTING_DEFAULT.properties.find(subjectProperty => subjectProperty.type === itemType && subjectProperty.name === propertyName);
+		if(doubanPluginSubjectProperty) {
+			return doubanPluginSubjectProperty.selectors;
+		}
+		return [];
 	}
 
 	handleArray(arr: string[]): string {
