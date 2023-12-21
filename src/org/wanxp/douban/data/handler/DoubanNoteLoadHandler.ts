@@ -7,7 +7,6 @@ import html2markdown from '@notable/html2markdown';
 import HandleContext from "../model/HandleContext";
 import {SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
-import {moment} from "obsidian";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
@@ -36,7 +35,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	support(extract: DoubanSubject): boolean {
-		return extract && extract.type && (extract.type.contains("日记") || extract.type.contains("Note") || extract.type.contains("Article"));
+		return extract && extract.type && (extract.type.contains("日记") || extract.type.contains("Note") || extract.type.contains("Article") || extract.type.contains("note") || extract.type.contains("article"));
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {

@@ -29,8 +29,8 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		return beforeContent
 			.replaceAll("{{originalTitle}}", extract.originalTitle ??  "")
 			.replaceAll("{{director}}", this.handleArray( extract.director.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
-			.replaceAll("{{actor}}", this.handleArray( extract.actor.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
-			.replaceAll("{{author}}", this.handleArray( extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
+			.replaceAll("{{actor}}", this.handleArray( extract.actor.map(SchemaOrg.getPersonName).filter(c => c), context))
+			.replaceAll("{{author}}", this.handleArray( extract.author.map(SchemaOrg.getPersonName).filter(c => c), context))
 			.replaceAll("{{aliases}}", this.handleArray( extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')), context))
 			.replaceAll("{{country}}", this.handleArray( extract.country, context))
 			.replaceAll("{{language}}", this.handleArray(extract.language, context))
