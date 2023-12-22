@@ -43,16 +43,16 @@
 2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](./doc/Obsidian-Douban-TimeLine.md)
 
 ## 如何使用
-### 同步
-- 同步个人的观影、观剧、阅读、游戏、音乐记录    
-  ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
+
 ### 搜索
 使用方式： 输入<kbd>Ctrl</kbd> + <kbd>P</kbd>，输入“豆瓣”或“Douban”，选择搜索并使用
 - 搜索数据并创建笔记  
 - 通过当前文件名搜索
 - 通过输入文本搜索
   ![search_and_create](doc/img/search_and_create_note.gif)
-
+### 同步
+- 同步个人的观影、观剧、阅读、游戏、音乐记录    
+  ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
 ## 设置
 - 设置豆瓣账号(可选，可使用少部分功能)
 - 设置导入模板(可选，不设置的情况下使用默认模板)
