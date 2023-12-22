@@ -38,25 +38,25 @@
 - ☑️ 支持自定义参数
 
 ## 效果
-1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md))
+1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md)
 <!--2.  结合DataView插件，__构建个人电子书架（书库数据）__，请参照[结合dateview插件实现个人书架效果](./doc/Obsidian-Douban-DataView.md))-->
-2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](./doc/Obsidian-Douban-TimeLine.md))
+2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](./doc/Obsidian-Douban-TimeLine.md)
 
 ## 如何使用
 ### 同步
-- 同步个人的观影、阅读、游戏、音乐记录    
-  从豆瓣同步数据(如何利用Timeline插件构建阅读/观影时间线，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md))    
+- 同步个人的观影、观剧、阅读、游戏、音乐记录    
   ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
 ### 搜索
+使用方式： 输入<kbd>Ctrl</kbd> + <kbd>P</kbd>，输入“豆瓣”或“Douban”，选择搜索并使用
 - 搜索数据并创建笔记  
 - 通过当前文件名搜索
 - 通过输入文本搜索
   ![search_and_create](doc/img/search_and_create_note.gif)
 
 ## 设置
-- 设置豆瓣账号
-- 设置导入模板
-- 设置导入参数
+- 设置豆瓣账号(可选，可使用少部分功能)
+- 设置导入模板(可选，不设置的情况下使用默认模板)
+- 设置导入路径(可选，不设置的情况下使用默认路径)
 
 
 ## 支持的字段

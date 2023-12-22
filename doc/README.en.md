@@ -41,10 +41,11 @@ If you want some features or have any questions about this plugin, create issues
   Sync data from Douban (to learn how to use the TimeLine plugin to build a reading/movie watching timeline, please refer to [here](Obsidian-Douban-TimeLine.en.md)).
   ![Sync Data From Douban](img/sync_data_from_douban.gif)
 ### Search
+Use the following method: Enter <kbd>Ctrl</kbd> + <kbd>P</kbd>, enter "Douban", select search and use
 - Search Data And Create Note  
 - Search Data By File Name    
 - Search Movie By Input Text       
-  ![Search Movie By File Name](img/search_by_file_name.gif)
+  ![Search Movie By File Name](img/search_and_create_note.gif)
 
 
 ## Support Field
