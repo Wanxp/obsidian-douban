@@ -15,10 +15,14 @@ export default class YamlUtil {
 	}
 
 	public static handleText(text: string) {
-		return YamlUtil.hasSpecialChar(text) ? YamlUtil.handleSpecialChar(text.replaceAll('"', '\\"'))
-			.replaceAll(/\s+/g,' ')
-			.replaceAll('\n', '。')
-			.replaceAll('。。', '。') : text;
+		return YamlUtil.hasSpecialChar(text)
+			? YamlUtil.handleSpecialChar(text.replaceAll('"', '\\"'))
+				.replaceAll(/\s+/g,' ')
+				.replaceAll('\n', '。')
+				.replaceAll('。。', '。')
+				.replace(/^" /, '"') // Remove leading "
+				.replace(/ "$/, '"') // Remove trailing "
+			: text;
 	}
 
 }

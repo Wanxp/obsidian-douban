@@ -7,6 +7,7 @@ import html2markdown from '@notable/html2markdown';
 import HandleContext from "../model/HandleContext";
 import {SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
+import {DataField} from "../../../utils/model/DataField";
 
 export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<DoubanNoteSubject> {
 
@@ -26,12 +27,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return `https://www.douban.com/note/${id}/`;
 	}
 
-	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {
-		return beforeContent
-			.replaceAll("{{authorUrl}}", extract.authorUrl ? extract.authorUrl : "")
-			.replaceAll("{{content}}", extract.content ? extract.content : "")
-			.replaceAll("{{author}}", extract.author ? extract.author : "")
-			;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanNoteSubject, context: HandleContext): void {
 	}
 
 	support(extract: DoubanSubject): boolean {
@@ -43,16 +39,16 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanNoteSubject {
-		let title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
-		let desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
-		let url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
-		let image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
-		let type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
-		let authorA = html(html("a.note-author").get(0));
-		let timePublished = html(html(".pub-date").get(0)).text();
-		let content = html(html(".note").get(1));
-		let idPattern = /(\d){5,10}/g;
-		let id = idPattern.exec(url);
+		const title = html(html("head > meta[property= 'og:title']").get(0)).attr("content");
+		const desc = html(html("head > meta[property= 'og:description']").get(0)).attr("content");
+		const url = html(html("head > meta[property= 'og:url']").get(0)).attr("content");
+		const image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
+		const type = html(html("head > meta[property= 'og:type']").get(0)).attr("content");
+		const authorA = html(html("a.note-author").get(0));
+		const timePublished = html(html(".pub-date").get(0)).text();
+		const content = html(html(".note").get(1));
+		const idPattern = /(\d){5,10}/g;
+		const id = idPattern.exec(url);
 
 		const result: DoubanNoteSubject = {
 			image: image,

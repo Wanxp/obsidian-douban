@@ -6,10 +6,11 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "../model/HandleContext";
-import {PersonNameMode, PropertyName, SupportType, TemplateKey} from "../../../constant/Constsant";
+import {DataValueType, PersonNameMode, PropertyName, SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
 import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import {DataField} from "../../../utils/model/DataField";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -29,19 +30,34 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		return `https://movie.douban.com/subject/${id}/`;
 	}
 
-	parseText(beforeContent: string, extract: DoubanMovieSubject, context: HandleContext): string {
-		const {settings} = context;
-		return beforeContent
-			.replaceAll("{{originalTitle}}", extract.originalTitle ??  "")
-			.replaceAll("{{director}}", this.handleArray(extract.director.map(SchemaOrg.getPersonName).filter(c => c), context))
-			.replaceAll("{{actor}}", this.handleArray( extract.actor.map(SchemaOrg.getPersonName).filter(c => c), context))
-			.replaceAll("{{author}}", this.handleArray(extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
-			.replaceAll("{{aliases}}", this.handleArray(extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')), context))
-			.replaceAll("{{country}}", this.handleArray( extract.country, context))
-			.replaceAll("{{language}}",this.handleArray( extract.language, context))
-			.replaceAll("{{IMDb}}", extract.IMDb ??"")
-			.replaceAll("{{time}}", extract.time ??"")
-			;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanMovieSubject, context: HandleContext): void {
+		variableMap.set("director", new DataField(
+			"director",
+			DataValueType.array,
+			extract.director,
+			extract.director.map(SchemaOrg.getPersonName).filter(c => c)
+		));
+
+		variableMap.set("actor", new DataField(
+			"actor",
+			DataValueType.array,
+			extract.actor,
+			extract.actor.map(SchemaOrg.getPersonName).filter(c => c)
+		));
+
+		variableMap.set("author", new DataField(
+			"author",
+			DataValueType.array,
+			extract.author,
+			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
+		));
+
+		variableMap.set("aliases", new DataField(
+			"aliases",
+			DataValueType.array,
+			extract.aliases,
+			extract.aliases.map(a => a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))
+		));
 	}
 
 	support(extract: DoubanSubject): boolean {

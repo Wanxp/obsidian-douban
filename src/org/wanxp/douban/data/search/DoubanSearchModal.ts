@@ -1,9 +1,10 @@
-import {App, DropdownComponent, Modal, TextComponent} from "obsidian";
+import {App, ButtonComponent, DropdownComponent, Modal, Setting, TextComponent} from "obsidian";
 
 import DoubanPlugin from "../../../main";
 import {i18nHelper} from "src/org/wanxp/lang/helper";
 import HandleContext from "../model/HandleContext";
 import {SearchTypeRecords, SupportType} from "../../../constant/Constsant";
+import {sleep} from "../../../utils/TimeUtil";
 
 export class DoubanSearchModal extends Modal {
 	searchTerm: string;
@@ -32,6 +33,7 @@ export class DoubanSearchModal extends Modal {
 
 		searchInput.inputEl.addEventListener("keydown", (event) => {
 			if (event.key === "Enter") {
+				sleep(1000);
 				this.close();
 			}
 		});
@@ -49,21 +51,17 @@ export class DoubanSearchModal extends Modal {
 
 		const controls = contentEl.createDiv("controls");
 		controls.addClass("obsidian_douban_search_controls")
-		const searchButton = controls.createEl("button", {
-			text: i18nHelper.getMessage('110004'),
-			cls: "mod-cta",
-			attr: {
-				autofocus: true,
-			},
-		});
-		searchButton.addClass("obsidian_douban_search_button");
-
-		searchButton.addEventListener("click", this.close.bind(this));
-		const cancelButton = controls.createEl("button", {text: i18nHelper.getMessage('110005')});
-		cancelButton.addEventListener("click", this.close.bind(this));
-		cancelButton.addClass("obsidian_douban_cancel_button");
-		searchInput.inputEl.focus();
-
+				new ButtonComponent(controls)
+					.setButtonText(i18nHelper.getMessage('110004'))
+					.setCta()
+					.onClick(() => {
+						this.close();
+					}).setClass( "obsidian_douban_search_button");
+		new ButtonComponent(controls)
+			.setButtonText(i18nHelper.getMessage('110005'))
+			.onClick(() => {
+				this.close();
+			}).setClass( "obsidian_douban_cancel_button");
 	}
 
 
@@ -76,3 +74,4 @@ export class DoubanSearchModal extends Modal {
 	}
 
 }
+

@@ -11,6 +11,12 @@ import {DoubanPluginOnlineSettings} from "./model/DoubanPluginOnlineSettings";
 import {DoubanPluginSubjectProperty} from "./model/DoubanPluginSubjectProperty";
 import HandleContext from "../data/model/HandleContext";
 import HtmlUtil from "../../utils/HtmlUtil";
+import {
+	ARRAY_NAME_PREFIX_NAME,
+	ArraySetting,
+	ArraySettingFieldName,
+	DEFAULT_SETTINGS_ARRAY_NAME
+} from "./model/ArraySetting";
 
 export default class SettingsManager {
 	app: App;
@@ -97,9 +103,69 @@ export default class SettingsManager {
 		return [];
 	}
 
-	handleArray(arr: string[]): string {
-		let result:string =  StringUtil.handleArray(arr, this.settings);
+	handleArray(arr: string[], arraySetting:ArraySetting): string {
+		let result:string =  StringUtil.handleArray(arr, arraySetting);
 		return HtmlUtil.strToHtml(result);
 	}
 
+	async updateArraySetting(arraySetting: ArraySetting) {
+		if (arraySetting.arrayName == DEFAULT_SETTINGS_ARRAY_NAME) {
+			this.settings.arrayStart = arraySetting.arrayStart;
+			this.settings.arrayElementStart = arraySetting.arrayElementStart;
+			this.settings.arraySpiltV2 = arraySetting.arraySpiltV2;
+			this.settings.arrayElementEnd = arraySetting.arrayElementEnd;
+			this.settings.arrayEnd = arraySetting.arrayEnd;
+		}else {
+			const index = this.settings.arraySettings.findIndex(as => as.arrayName == arraySetting.arrayName);
+			if (index == -1) {
+				this.settings.arraySettings.push(arraySetting);
+			} else {
+				this.settings.arraySettings[index] = arraySetting;
+			}
+		}
+		await this.plugin.saveSettings();
+	}
+
+	async removeArraySetting(arrayName: string) {
+		if (arrayName == DEFAULT_SETTINGS_ARRAY_NAME) {
+			return;
+		}else {
+			this.settings.arraySettings = this.settings.arraySettings.filter(arraySetting => arraySetting.arrayName !== arrayName);
+		}
+		await this.plugin.saveSettings();
+	}
+
+	getArraySetting(arrayName: string) {
+		if (!this.settings.arraySettings) {
+			this.settings.arraySettings = [];
+		}
+		if (arrayName == DEFAULT_SETTINGS_ARRAY_NAME) {
+			return this.getDefaultArraySetting(DEFAULT_SETTINGS_ARRAY_NAME, 0);
+		}else {
+			const arraySetting = this.settings.arraySettings.find(arraySetting => arraySetting.arrayName == arrayName);
+			if (arraySetting) {
+				return arraySetting;
+			}
+		}
+		return null;
+	}
+
+	getDefaultArraySetting(arrayName:string, index:number): ArraySetting {
+		return {arrayName: arrayName,
+			arrayStart: this.settings.arrayStart,
+			arrayElementStart: this.settings.arrayElementStart,
+			arraySpiltV2: this.settings.arraySpiltV2,
+			arrayElementEnd: this.settings.arrayElementEnd,
+			arrayEnd: this.settings.arrayEnd,
+			index: index
+		};
+	}
+
+	async addArraySetting() {
+		const index = this.settings.arraySettings.length + 1;
+		const arraySetting = this.getDefaultArraySetting(ARRAY_NAME_PREFIX_NAME  + index, index);
+		this.settings.arraySettings.push(arraySetting);
+		await this.plugin.saveSettings();
+		return arraySetting;
+	}
 }

@@ -25,7 +25,7 @@ class DoubanPageBroadcastLoadHandler extends DoubanAbstractLoadHandler<DoubanPag
 		return null;
 	}
 
-	parseText(beforeContent: string, extract: DoubanNoteSubject, context: HandleContext): string {
+	parseVariable(beforeContent: string, variableMap:Map<string, any>, extract: DoubanNoteSubject, context: HandleContext): void {
 		return null;
 	}
 

@@ -1,14 +1,16 @@
 import DoubanPlugin from "../../../main";
-import DoubanSubject, {DoubanParameter} from '../model/DoubanSubject';
+import DoubanSubject, {DoubanParameterName} from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
-import {moment, request, RequestUrlParam, TFile} from "obsidian";
+import {moment, TFile} from "obsidian";
 import {i18nHelper} from 'src/org/wanxp/lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
 import YamlUtil from "../../../utils/YamlUtil";
 import {
 	BasicConst,
-	PersonNameMode, PropertyName,
+	DataValueType,
+	PersonNameMode,
+	PropertyName,
 	SearchHandleMode,
 	SupportType,
 	TemplateKey,
@@ -19,18 +21,17 @@ import HandleResult from "../model/HandleResult";
 import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
 import StringUtil from "../../../utils/StringUtil";
 import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
-import {DoubanUserParameter, UserStateSubject} from "../model/UserStateSubject";
+import {DoubanUserParameter, DoubanUserParameterName, UserStateSubject} from "../model/UserStateSubject";
 import {
 	DoubanSubjectState,
 	DoubanSubjectStateRecords,
 	DoubanSubjectStateRecords_KEY_WORD_TYPE
 } from "../../../constant/DoubanUserState";
-import DoubanLoginModel from "../../component/DoubanLoginModel";
-import DoubanHumanCheckModel from "../../component/DoubanHumanCheckModel";
-import DoubanMovieSubject from "../model/DoubanMovieSubject";
 import {Person} from "schema-dts";
 import HttpUtil from "../../../utils/HttpUtil";
 import HtmlUtil from "../../../utils/HtmlUtil";
+import {VariableUtil} from "../../../utils/VariableUtil";
+import {DataField} from "../../../utils/model/DataField";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -46,10 +47,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		await this.saveImage(extract, context);
 		const frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
 		const frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
-		let frontMatter: string = '';
-		let frontMatterBefore: string = '';
-		let frontMatterAfter: string = '';
-		let result: string = '';
+		let frontMatter = '';
+		let frontMatterBefore = '';
+		let frontMatterAfter = '';
+		let result = '';
 		if (frontMatterStart > -1 && frontMatterEnd > -1) {
 			frontMatterBefore = template.substring(0, frontMatterStart);
 			frontMatter = template.substring(frontMatterStart, frontMatterEnd + 3);
@@ -67,7 +68,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		} else {
 			result = this.parsePartText(template, extract, context);
 		}
-		let fileName: string = '';
+		let fileName = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
 			fileName = this.parsePartText(this.getFileName(context), extract, context);
 		}
@@ -99,48 +100,11 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return result;
 	}
 
-	/**
-	 * 处理内容数组
-	 * @param array
-	 * @param settings
-	 * @param textMode
-	 */
-	handleContentArray(array: any[], context: HandleContext, textMode: TemplateTextMode): string {
-		let result;
-		switch (textMode) {
-			// case TemplateTextMode.YAML:
-			// 	result = array.map(YamlUtil.handleText).join(', ');
-			// 	break;
-			default:
-				result = this.handleArray(array, context);
-		}
-		return result;
-	}
 
-	/**
-	 * 处理特殊内容
-	 * @param value
-	 * @param textMode
-	 * @param settings
-	 */
-	handleSpecialContent(value: any, textMode: TemplateTextMode = TemplateTextMode.NORMAL, context: HandleContext = null): string {
-		let result;
-		if (!value) {
-			return '';
-		}
-		if (value instanceof Array) {
-			result = this.handleContentArray(value, context, textMode);
-		} else if (value instanceof Number) {
-			result = value.toString();
-		} else {
-			result = this.handleSpecialText(value, textMode);
-		}
-		return result;
-	}
 
 	abstract getSupportType(): SupportType;
 
-	abstract parseText(beforeContent: string, extract: T, context: HandleContext, textMode: TemplateTextMode): string;
+	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext, textMode: TemplateTextMode): void;
 
 	abstract support(extract: DoubanSubject): boolean;
 
@@ -184,9 +148,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 */
 	private getGuessType(data: CheerioAPI):SupportType {
 		if (data) {
-			let text = data.html();
+			const text = data.html();
 			if (text) {
-				for (let [key, value] of DoubanSubjectStateRecords_KEY_WORD_TYPE) {
+				for (const [key, value] of DoubanSubjectStateRecords_KEY_WORD_TYPE) {
 					if (text.indexOf(key) >= 0) {
 						return value;
 					}
@@ -243,7 +207,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		let regValue: RegExpExecArray;
 		switch (personNameMode) {
 			case PersonNameMode.CH_NAME:
-				regValue = /[\u4e00-\u9fa50-9\. ·\:\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5\(\)]{2,}/g.exec(name);
+				regValue = /[\u4e00-\u9fa50-9. ·:\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5()]{2,}/g.exec(name);
 				resultName = regValue ? regValue[0] : name;
 				break;
 			case PersonNameMode.EN_NAME:
@@ -294,35 +258,63 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		s = s.replace(/&lt;/g, "<");
 		s = s.replace(/&gt;/g, ">");
 		s = s.replace(/&nbsp;/g, " ");
-		s = s.replace(/&#39;/g, "\'");
+		s = s.replace(/&#39;/g, "'");
 		s = s.replace(/&quot;/g, "\"");
 		s = s.replace(/<br\/>/g, "\n");
 		return s;
 	}
 
 	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
-		let resultContent = this.handleCustomVariable(template, context);
-		resultContent = resultContent.replaceAll(DoubanParameter.ID, extract.id)
-			.replaceAll(DoubanParameter.TITLE, this.handleSpecialContent(extract.title, textMode))
-			.replaceAll(DoubanParameter.TYPE, extract.type)
-			.replaceAll(DoubanParameter.SCORE, this.handleSpecialContent(extract.score))
-			.replaceAll(DoubanParameter.IMAGE, extract.image)
-			.replaceAll(DoubanParameter.IMAGE_URL, extract.imageUrl)
-			.replaceAll(DoubanParameter.URL, extract.url)
-			.replaceAll(DoubanParameter.DESC, this.handleSpecialContent(extract.desc, textMode))
-			.replaceAll(DoubanParameter.PUBLISHER, extract.publisher)
-			.replaceAll(DoubanParameter.YEAR_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format('yyyy') : '')
-			.replaceAll(DoubanParameter.DATE_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(context.settings.dateFormat) : '')
-			.replaceAll(DoubanParameter.TIME_PUBLISHED, extract.datePublished ? moment(extract.datePublished).format(context.settings.timeFormat) : '')
-			.replaceAll(DoubanParameter.CURRENT_DATE, moment(new Date()).format(context.settings.dateFormat))
-			.replaceAll(DoubanParameter.CURRENT_TIME, moment(new Date()).format(context.settings.timeFormat))
-			.replaceAll(DoubanParameter.GENRE, this.handleSpecialContent(extract.genre, textMode, context))
-		;
-		resultContent = this.parseUserInfo(resultContent, extract, context, textMode);
-		return this.parseText(resultContent, extract, context, textMode);
+		const variableMap:Map<string, DataField> = new Map();
+		for (const [key, value] of Object.entries(extract)) {
+			const type:DataValueType = VariableUtil.getType(value);
+			variableMap.set(key, new DataField(key, type, value, value));
+		}
+		variableMap.set(DoubanParameterName.IMAGE_URL, new DataField(
+			DoubanParameterName.IMAGE_URL,
+			DataValueType.url,
+			extract.imageUrl,
+			extract.imageUrl
+		));
+		variableMap.set(DoubanParameterName.YEAR_PUBLISHED, new DataField(
+			DoubanParameterName.YEAR_PUBLISHED,
+			DataValueType.date,
+			extract.datePublished,
+			extract.datePublished ? moment(extract.datePublished).format('yyyy') : ''
+		));
+		variableMap.set(DoubanParameterName.DATE_PUBLISHED, new DataField(
+			DoubanParameterName.DATE_PUBLISHED,
+			DataValueType.date,
+			extract.datePublished,
+			extract.datePublished ? moment(extract.datePublished).format(context.settings.dateFormat) : ''
+		));
+		variableMap.set(DoubanParameterName.TIME_PUBLISHED, new DataField(
+			DoubanParameterName.TIME_PUBLISHED,
+			DataValueType.date,
+			extract.datePublished,
+			extract.datePublished ? moment(extract.datePublished).format(context.settings.timeFormat) : ''
+		));
+		const currentDate = new Date();
+		variableMap.set(DoubanParameterName.CURRENT_DATE, new DataField(
+			DoubanParameterName.CURRENT_DATE,
+			DataValueType.date,
+			currentDate,
+			moment(currentDate).format(context.settings.dateFormat)
+		));
+		variableMap.set(DoubanParameterName.CURRENT_TIME, new DataField(
+			DoubanParameterName.CURRENT_TIME,
+			DataValueType.date,
+			currentDate,
+			moment(currentDate).format(context.settings.timeFormat)
+		));
+		this.parseUserInfo(template, variableMap, extract, context, textMode);
+		this.parseVariable(template, variableMap, extract, context, textMode);
+		this.handleCustomVariable(template, variableMap, context);
+		return VariableUtil.replace(variableMap, template, this.doubanPlugin.settingsManager);
+
 	}
 
-	private parseUserInfo(resultContent: string, extract: T, context: HandleContext, textMode: TemplateTextMode) {
+	private parseUserInfo(resultContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext, textMode: TemplateTextMode) {
 		const userState = extract.userState;
 		if ((resultContent.indexOf(DoubanUserParameter.MY_TAGS) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_RATING) >= 0 ||
@@ -341,11 +333,23 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}else {
 			tags = [extract.type];
 		}
-		return resultContent.replaceAll(DoubanUserParameter.MY_TAGS, this.handleSpecialContent(tags, textMode, context))
-			.replaceAll(DoubanUserParameter.MY_RATING, this.handleSpecialContent(userState.rate, textMode))
-			.replaceAll(DoubanUserParameter.MY_STATE, this.getUserStateName(userState.state))
-			.replaceAll(DoubanUserParameter.MY_COMMENT, this.handleSpecialContent(userState.comment, textMode))
-			.replaceAll(DoubanUserParameter.MY_COLLECTION_DATE, userState.collectionDate?moment(userState.collectionDate).format(context.settings.dateFormat): '')
+		Object.entries(userState).forEach(([key, value]) => {
+			variableMap.set(key, value);
+		});
+		variableMap.set(DoubanUserParameterName.MY_TAGS, new DataField(DoubanUserParameterName.MY_TAGS, DataValueType.array, tags, tags));
+		variableMap.set(DoubanUserParameterName.MY_STATE, new DataField(
+			DoubanUserParameterName.MY_STATE,
+			DataValueType.string,
+			userState,
+			this.getUserStateName(userState.state)
+		));
+
+		variableMap.set(DoubanUserParameterName.MY_COLLECTION_DATE, new DataField(
+			DoubanUserParameterName.MY_COLLECTION_DATE,
+			DataValueType.date,
+			userState.collectionDate,
+			userState.collectionDate ? moment(userState.collectionDate).format(context.settings.dateFormat) : ''
+		));
 	}
 
 	/**
@@ -354,19 +358,24 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 * @param context
 	 * @private
 	 */
-	private handleCustomVariable(template: string, context: HandleContext): string {
-		let customProperties = context.settings.customProperties;
-		let resultContent = template;
+	private handleCustomVariable(template: string, variableMap:Map<string, DataField>, context: HandleContext): void {
+		const customProperties = context.settings.customProperties;
 		if (!customProperties) {
-			return resultContent;
+			return ;
 		}
+		const customPropertiesMap= new Map();
 		customProperties.filter(customProperty => customProperty.name &&
 			customProperty.field
 			&& (customProperty.field.toLowerCase() == SupportType.ALL ||
 				customProperty.field.toLowerCase() == this.getSupportType())).forEach(customProperty => {
-			resultContent = resultContent.replaceAll(`{{${customProperty.name}}}`, customProperty.value);
+			customPropertiesMap.set(customProperty.name, customProperty.value);
 		});
-		return resultContent;
+		customPropertiesMap.forEach((value, key) => {
+			variableMap.set(key,
+				new DataField(
+					key, DataValueType.string, value,
+					VariableUtil.replace(variableMap, value,  this.doubanPlugin.settingsManager)));
+		})
 	}
 
 	private getTemplateKey():TemplateKey {
@@ -421,7 +430,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			return getDefaultTemplateContent(tempKey, useUserState);
 		}
 		const defaultContent = getDefaultTemplateContent(tempKey, useUserState);
-		let firstLinkpathDest: TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
+		const firstLinkpathDest: TFile = this.doubanPlugin.app.metadataCache.getFirstLinkpathDest(templatePath, '');
 		if (!firstLinkpathDest) {
 			return defaultContent;
 		} else {
@@ -465,7 +474,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!state) {
 			return '';
 		}
-		let v = DoubanSubjectStateRecords[this.getSupportType()];
+		const v = DoubanSubjectStateRecords[this.getSupportType()];
 		switch (state) {
 			case DoubanSubjectState.wish:
 				return v.wish;
@@ -520,7 +529,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
 								   metaProperty:string, objectProperty:string) {
-		let metaProperties: string[] = html(`head > meta[property='${metaProperty}']`).get()
+		const metaProperties: string[] = html(`head > meta[property='${metaProperty}']`).get()
 			.map((e) => {
 				return html(e).attr('content');
 			});
@@ -544,10 +553,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return HtmlUtil.getHtmlText(html, this.doubanPlugin.settingsManager.getSelector(this.getSupportType(), name));
 	}
 
-	protected handleArray(arr: string[], context: HandleContext): string {
-		const {settings} = context;
-		return StringUtil.handleArray(arr, settings);
-	}
+
 
 
 }

@@ -15,3 +15,11 @@ export const DoubanUserParameter = {
 	MY_COMMENT: '{{myComment}}',
 	MY_COLLECTION_DATE: '{{myCollectionDate}}',
 }
+
+export const DoubanUserParameterName = {
+	MY_TAGS: 'myTags',
+	MY_RATING: 'myRating',
+	MY_STATE: 'myState',
+	MY_COMMENT: 'myComment',
+	MY_COLLECTION_DATE: 'myCollectionDate',
+}

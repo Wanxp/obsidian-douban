@@ -1,8 +1,5 @@
 import NumberUtil from "./NumberUtil";
-import {log} from "./Logutil";
 import {BasicConst, ESTIMATE_TIME_PER_WITH_REQUEST, ESTIMATE_TIME_PER_WITH_REQUEST_SLOW} from "../constant/Constsant";
-import {moment} from "obsidian";
-import {Moment} from "moment";
 import {i18nHelper} from "../lang/helper";
 
 export default class TimeUtil {

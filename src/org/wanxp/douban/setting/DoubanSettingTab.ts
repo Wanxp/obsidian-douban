@@ -1,18 +1,14 @@
-import {App, PluginSettingTab, SearchComponent, Setting} from "obsidian";
+import {App, PluginSettingTab,  Setting} from "obsidian";
 
 import DoubanPlugin from "../../main";
-import {i18nHelper} from "src/org/wanxp/lang/helper";
-import {PersonNameMode, PersonNameModeRecords} from "../../constant/Constsant";
 import SettingsManager from "./SettingsManager";
-import {FolderSuggest} from "./model/FolderSuggest";
-import { DEFAULT_SETTINGS } from "src/org/wanxp/constant/DefaultSettings";
 import { constructOutUI } from "./OutputSettingsHelper";
 import { constructTemplateUI } from "./TemplateSettingHelper";
 import { constructBasicUI } from "./BasicSettingsHelper";
 import { constructTemplateVariablesUI } from "./TemplateVariableSettingsHelper";
-import {constructCustomPropertySettingsUI, constructCustomPropertyUI} from "./CustomPropertySettingsHelper";
-import {log} from "../../utils/Logutil";
+import {constructCustomPropertySettingsUI } from "./CustomPropertySettingsHelper";
 import { constructAdvancedUI } from "./AdvancedSettingsHelper";
+import {arraySettingDisplay, arraySettingDisplayUI} from "./ArrayDisplayTypeSettingsHelper";
 
 /**
  * 部分逻辑参考以下项目
@@ -36,9 +32,11 @@ export class DoubanSettingTab extends PluginSettingTab {
 		constructBasicUI(containerEl, this.settingsManager);
 		constructTemplateUI(containerEl, this.settingsManager);
 		constructOutUI(containerEl, this.settingsManager);
+		arraySettingDisplayUI(containerEl,  this.settingsManager);
 		constructCustomPropertySettingsUI(containerEl, this.settingsManager);
 		constructTemplateVariablesUI(containerEl, this.settingsManager);
 		constructAdvancedUI(containerEl, this.settingsManager);
+
 	}
 
 	hide(): void {

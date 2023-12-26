@@ -2,6 +2,17 @@ import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
 import {PersonNameMode, SupportType} from "./Constsant";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
+	arraySettings: [
+		{
+			"arrayName": "ArrayType1",
+			"arrayStart": "",
+			"arrayElementStart": "[[",
+			"arraySpiltV2": ",",
+			"arrayElementEnd": "]]",
+			"arrayEnd": "",
+			"index": 1
+		}
+	],
 	onlineSettingsFileName: "obsidian_douban_plugin_online_settings.json",
 	onlineSettingsGistId: "35693f9ece9bd6abba98f94e81afde19",
 	movieTemplateFile: ``,

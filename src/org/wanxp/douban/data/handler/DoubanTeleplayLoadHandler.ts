@@ -5,11 +5,11 @@ import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/org/wanxp/utils/SchemaOrg";
 import HandleContext from "../model/HandleContext";
-import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
-import {aliases} from "css-select";
+import {DataValueType, PersonNameMode, SupportType} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
-import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import {DataField} from "../../../utils/model/DataField";
 
 /**
  * teleplay
@@ -24,20 +24,28 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		return SupportType.TELEPLAY;
 	}
 
-	parseText(beforeContent: string, extract: DoubanTeleplaySubject, context: HandleContext): string {
-		const {settings} = context;
-		return beforeContent
-			.replaceAll("{{originalTitle}}", extract.originalTitle ??  "")
-			.replaceAll("{{director}}", this.handleArray( extract.director.map(SchemaOrg.getPersonName).filter(c => c), context))
-			.replaceAll("{{actor}}", this.handleArray( extract.actor.map(SchemaOrg.getPersonName).filter(c => c), context))
-			.replaceAll("{{author}}", this.handleArray( extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c), context))
-			.replaceAll("{{aliases}}", this.handleArray( extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')), context))
-			.replaceAll("{{country}}", this.handleArray( extract.country, context))
-			.replaceAll("{{language}}", this.handleArray(extract.language, context))
-			.replaceAll("{{IMDb}}", extract.IMDb?? "")
-			.replaceAll("{{time}}", extract.time ?? "")
-			.replaceAll("{{episode}}", extract.episode ?? "")
-;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanTeleplaySubject, context: HandleContext): void {
+		variableMap.set("director", new DataField("director", DataValueType.array, extract.director,extract.director.map(SchemaOrg.getPersonName).filter(c => c)));
+		variableMap.set("actor", new DataField(
+			"actor",
+			DataValueType.array,
+			extract.actor,
+			extract.actor.map(SchemaOrg.getPersonName).filter(c => c)
+		));
+
+		variableMap.set("author", new DataField(
+			"author",
+			DataValueType.array,
+			extract.author,
+			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
+		));
+
+		variableMap.set("aliases", new DataField(
+			"aliases",
+			DataValueType.array,
+			extract.aliases,
+			extract.aliases.map(a => a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))
+		));
 	}
 
 	support(extract: DoubanSubject): boolean {
@@ -52,14 +60,14 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
-		let rate = html('input#n_rating').val();
+		const rate = html('input#n_rating').val();
 		const rating = html('span#rating');
-		let tagsStr = rating.next().next().text().trim();
-		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
-		let stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
-		let collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').text().trim();
-		let userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		let component = rating.next().next().next().next().text().trim();
+		const tagsStr = rating.next().next().text().trim();
+		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
+		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').text().trim();
+		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		const component = rating.next().next().next().next().text().trim();
 
 		const userState: UserStateSubject = {
 			tags: tags,

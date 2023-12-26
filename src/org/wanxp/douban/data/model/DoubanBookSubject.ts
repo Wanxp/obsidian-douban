@@ -15,15 +15,15 @@ export default class DoubanBookSubject extends DoubanSubject {
 }
 
 export const DoubanBookParameter = {
-	author: '{{author}}',
-	translator: '{{translator}}',
-	isbn: '{{isbn}}',
-	originalTitle: '{{originalTitle}}',
-	subTitle: '{{subTitle}}',
-	totalPage: '{{totalPage}}',
-	series: '{{series}}',
-	menu: '{{menu}}',
-	price: '{{price}}',
-	binding: '{{binding}}',
-	producer: '{{producer}}',
+	author: 'author',
+	translator: 'translator',
+	isbn: 'isbn',
+	originalTitle: 'originalTitle',
+	subTitle: 'subTitle',
+	totalPage: 'totalPage',
+	series: 'series',
+	menu: 'menu',
+	price: 'price',
+	binding: 'binding',
+	producer: 'producer',
 }

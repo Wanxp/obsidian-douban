@@ -395,5 +395,22 @@ export enum SubjectHandledStatus {
 	syncTypeDiffAbort = 'syncTypeDiffAbort',
 }
 
+export const DEFAULT_SETTINGS_ARRAY_INPUT_SIZE = 2;
 
+
+export enum DataValueType {
+	date,
+	number,
+	string,
+	person,
+	array,
+	url,
+	path,
+}
+
+export enum DataTargetType {
+	fileName,
+	yaml,
+	content,
+}
 

@@ -6,6 +6,7 @@ import {log} from "src/org/wanxp/utils/Logutil";
 import HandleContext from "../model/HandleContext";
 import {SupportType, TemplateKey} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
+import {DataField} from "../../../utils/model/DataField";
 
 /**
  * 默认的处理器
@@ -15,9 +16,8 @@ export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<Do
 		return SupportType.ALL;
 	}
 
-	parseText(beforeContent: string, extract: DoubanSubject, context: HandleContext): string {
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanSubject, context: HandleContext): void {
 		log.warn(i18nHelper.getMessage('140101'));
-		return "";
 	}
 
 	support(extract: DoubanSubject): boolean {

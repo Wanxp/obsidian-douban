@@ -39,3 +39,22 @@ export const DoubanParameter = {
 	CURRENT_DATE: '{{currentDate}}',
 	CURRENT_TIME: '{{currentTime}}',
 }
+
+export const DoubanParameterName = {
+	ID: 'id',
+	TITLE: 'title',
+	TYPE: 'type',
+	SCORE: 'score',
+	IMAGE: 'image',
+	IMAGE_URL: 'imageData.url',
+	URL: 'url',
+	DESC: 'desc',
+	PUBLISHER: 'publisher',
+	DATE_PUBLISHED: 'datePublished',
+	TIME_PUBLISHED: 'timePublished',
+	YEAR_PUBLISHED: 'yearPublished',
+	GENRE: 'genre',
+	CURRENT_DATE: 'currentDate',
+	CURRENT_TIME: 'currentTime',
+}
+

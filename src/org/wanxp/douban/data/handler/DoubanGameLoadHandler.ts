@@ -3,11 +3,12 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "../../../main";
 import DoubanSubject from '../model/DoubanSubject';
 import DoubanGameSubject from '../model/DoubanGameSubject';
-import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "../model/HandleContext";
-import {PersonNameMode, SupportType, TemplateKey} from "../../../constant/Constsant";
+import {DataValueType, PersonNameMode, SupportType} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
+import {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import {DataField} from "../../../utils/model/DataField";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -26,12 +27,8 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return `https://www.douban.com/game/${id}/`;
 	}
 
-	parseText(beforeContent: string, extract: DoubanGameSubject, context: HandleContext): string {
-		const {settings} = context;
-		return beforeContent
-			.replaceAll("{{platform}}", this.handleArray(extract.platform, context))
-			.replaceAll("{{aliases}}", this.handleArray(extract.aliases, context))
-			.replaceAll("{{developer}}", extract.developer ? extract.developer : "");
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanGameSubject, context: HandleContext): void {
+		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases, extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))));
 	}
 
 	support(extract: DoubanSubject): boolean {

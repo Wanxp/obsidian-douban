@@ -4,9 +4,10 @@ import DoubanMusicSubject from '../model/DoubanMusicSubject';
 import DoubanPlugin from "../../../main";
 import DoubanSubject from '../model/DoubanSubject';
 import HandleContext from "../model/HandleContext";
-import {SupportType, TemplateKey} from "../../../constant/Constsant";
+import {SupportType} from "../../../constant/Constsant";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
+import {DataField} from "../../../utils/model/DataField";
 
 export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<DoubanMusicSubject> {
 
@@ -26,15 +27,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		return `https://music.douban.com/subject/${id}/`;
 	}
 
-	parseText(beforeContent: string, extract: DoubanMusicSubject, context: HandleContext): string {
-		const {settings} = context;
-		return beforeContent
-			.replaceAll("{{actor}}", this.handleArray(extract.actor, context ))
-			.replaceAll("{{barcode}}", extract.barcode ? extract.barcode : "")
-			.replaceAll("{{medium}}", extract.medium ? extract.medium : "")
-			.replaceAll("{{albumType}}", extract.albumType ? extract.albumType : "")
-			.replaceAll("{{records}}", extract.records ? extract.records + "" : "")
-			;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanMusicSubject, context: HandleContext): void {
 	}
 
 	support(extract: DoubanSubject): boolean {
@@ -83,7 +76,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			let value = '';
 			if (key.indexOf('表演者') >= 0) {
 				// value = html(info.next.next).text().trim();
-				let vas: string[] = key.split("\n                                    \n                                    ");
+				const vas: string[] = key.split("\n                                    \n                                    ");
 				value = vas && vas.length > 1 ? vas[1] : "";
 				key = vas && vas.length > 0 ? vas[0] : "";
 			} else {
@@ -92,8 +85,8 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			valueMap.set(MusicKeyValueMap.get(key), value);
 		})
 
-		let idPattern = /(\d){5,10}/g;
-		let id = idPattern.exec(url);
+		const idPattern = /(\d){5,10}/g;
+		const id = idPattern.exec(url);
 
 		const result: DoubanMusicSubject = {
 			image: image,

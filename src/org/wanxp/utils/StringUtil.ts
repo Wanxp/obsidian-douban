@@ -1,4 +1,5 @@
 import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
+import {ArraySetting} from "../douban/setting/model/ArraySetting";
 
 export default class StringUtil {
 
@@ -85,13 +86,13 @@ export default class StringUtil {
 		return newText;
 	}
 
-	public static  handleArray(arr: string[], settings: DoubanPluginSetting): string {
+	public static  handleArray(arr: string[], arraySetting: ArraySetting): string {
 		let content :string = "";
-		const elementStart:string = StringUtil.escape(settings.arrayElementStart);
-		const elementEnd:string = StringUtil.escape(settings.arrayElementEnd);
-		const spilt:string = StringUtil.escape(settings.arraySpiltV2);
-		const start:string = StringUtil.escape(settings.arrayStart);
-		const end:string = StringUtil.escape(settings.arrayEnd);
+		const elementStart:string = StringUtil.escape(arraySetting.arrayElementStart);
+		const elementEnd:string = StringUtil.escape(arraySetting.arrayElementEnd);
+		const spilt:string = StringUtil.escape(arraySetting.arraySpiltV2);
+		const start:string = StringUtil.escape(arraySetting.arrayStart);
+		const end:string = StringUtil.escape(arraySetting.arrayEnd);
 		for (let i = 0; i < arr.length; i++) {
 			let el = arr[i];
 			if (!el) {

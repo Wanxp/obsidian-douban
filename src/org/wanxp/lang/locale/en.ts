@@ -218,7 +218,13 @@ PS: This file could be delete if you want to.
 	'121601': `Note Name`,
 	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath),
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/{{title}}`,
-	'120603': `Array Display Example`,
+	'120603': `Display Preview`,
+	'120604': `ArrayTypeName:`,
+	'120605': `Template use example： propertyName:{{actor`,
+	'120606': `Delete Array Display Type`,
+	'120607': `Add Array Display Type`,
+	'120608': `Display/Hidden Array Setting`,
+
 
 	'121603': `assets`,
 
@@ -244,6 +250,7 @@ PS: This file could be delete if you want to.
 	'130105': `Can not use Douban this time, Please try again after 12 hour or 24 hour. Or you can reset your connection `,
 	'130106': `Can not use Douban this time, Please try Login In Douban Plugin. If not working please again after 12 hour or 24 hour. Or you can reset your connection `,
 
+	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,
 
 
 	'140201': `[OB-Douban]: searching '{0}'...`,

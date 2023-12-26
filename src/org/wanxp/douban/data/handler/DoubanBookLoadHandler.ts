@@ -3,11 +3,12 @@ import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanBookSubject, {DoubanBookParameter} from "../model/DoubanBookSubject";
 import DoubanPlugin from "../../../main";
 import DoubanSubject from "../model/DoubanSubject";
-import {PropertyName, SupportType, TemplateTextMode} from "../../../constant/Constsant";
+import {DataValueType, PropertyName, SupportType, TemplateTextMode} from "../../../constant/Constsant";
 import HandleContext from "../model/HandleContext";
 import StringUtil from "../../../utils/StringUtil";
 import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
+import {DataField} from "../../../utils/model/DataField";
 
 export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<DoubanBookSubject> {
 
@@ -27,22 +28,9 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		return `https://book.douban.com/subject/${id}/`;
 	}
 
-	parseText(beforeContent: string, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): string {
-		return beforeContent
-			.replaceAll(DoubanBookParameter.author,
-				super.handleSpecialContent(
-					extract.author.map(this.handleSpecialAuthorName), textMode, context))
-			.replaceAll(DoubanBookParameter.translator, super.handleSpecialContent(extract.translator, textMode, context))
-			.replaceAll(DoubanBookParameter.isbn, extract.isbn)
-			.replaceAll(DoubanBookParameter.originalTitle, super.handleSpecialContent(extract.originalTitle, textMode))
-			.replaceAll(DoubanBookParameter.subTitle, super.handleSpecialContent(extract.subTitle, textMode))
-			.replaceAll(DoubanBookParameter.totalPage, super.handleSpecialContent(extract.totalPage, textMode))
-			.replaceAll(DoubanBookParameter.menu, extract.menu.join('\n'))
-			.replaceAll(DoubanBookParameter.price, super.handleSpecialContent(extract.price, textMode))
-			.replaceAll(DoubanBookParameter.series, super.handleSpecialContent(extract.series, textMode))
-			.replaceAll(DoubanBookParameter.binding, super.handleSpecialContent(extract.binding, textMode))
-			.replaceAll(DoubanBookParameter.producer, super.handleSpecialContent(extract.producer, textMode))
-			;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): void {
+		variableMap.set(DoubanBookParameter.author, new DataField(DoubanBookParameter.author,
+			DataValueType.array, extract.author, extract.author.map(this.handleSpecialAuthorName)));
 	}
 
 	support(extract: DoubanSubject): boolean {
