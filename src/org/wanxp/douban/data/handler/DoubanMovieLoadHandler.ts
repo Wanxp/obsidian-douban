@@ -100,7 +100,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			.map(i => {
 				let item = html(i).text();
 				item = super.html_decode(item);
-				const obj = JSON.parse(item.replace(/[\r\n+]/g, ''));
+				const obj = JSON.parse(item.replace(/[\r\n]+/g, ''));
 				const idPattern = /(\d){5,10}/g;
 				const id = idPattern.exec(obj.url);
 				const name = obj.name;

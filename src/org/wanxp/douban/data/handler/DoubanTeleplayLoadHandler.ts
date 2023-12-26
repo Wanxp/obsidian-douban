@@ -86,7 +86,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			.map(i => {
 				let item = html(i).text();
 				item = super.html_decode(item);
-				const obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
+				const obj = JSON.parse(item.replace(/[\r\n]+/g, ''));
 				const idPattern = /(\d){5,10}/g;
 				const id = idPattern.exec(obj.url);
 				const name = obj.name;

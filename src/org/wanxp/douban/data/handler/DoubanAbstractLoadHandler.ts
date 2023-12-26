@@ -85,20 +85,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
 
-	/**
-	 * 处理特殊字符
-	 * @param text
-	 * @param textMode
-	 */
-	handleSpecialText(text: string, textMode: TemplateTextMode): string {
-		let result = text;
-		switch (textMode) {
-			case TemplateTextMode.YAML:
-				result = YamlUtil.handleText(text);
-				break;
-		}
-		return result;
-	}
+
 
 
 
@@ -267,6 +254,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
 		const variableMap:Map<string, DataField> = new Map();
 		for (const [key, value] of Object.entries(extract)) {
+			if (!value) {
+				continue;
+			}
 			const type:DataValueType = VariableUtil.getType(value);
 			variableMap.set(key, new DataField(key, type, value, value));
 		}
