@@ -47,6 +47,7 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 	const scoreSettingsUI = containerEl.createDiv('score-settings');
 	const scoreShowUI = containerEl.createDiv('score-show');
 
+	//@ts-ignore
 	const scoreSetting:ScoreSetting = manager.getSetting('scoreSetting');
 	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124120')})
 	const starFullUI = new TextComponent(scoreSettingsUI);

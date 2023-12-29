@@ -264,7 +264,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					DoubanParameterName.SCORE_STAR,
 					DataValueType.string,
 					value,
-					NumberUtil.getRateMaxFiveStar(value, 10)
+					NumberUtil.getRateStar(value, 10, {scoreSetting: context.settings.scoreSetting})
 				));
 			}
 			variableMap.set(key, new DataField(key, type, value, value));
@@ -346,7 +346,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			DoubanUserParameterName.MY_STATE,
 			DataValueType.string,
 			userState.rate,
-			NumberUtil.getRateStarMaxFiveMaxFiveStar(userState.rate)
+			NumberUtil.getRateStar(userState.rate, 5, {scoreSetting: context.settings.scoreSetting})
 		));
 
 		variableMap.set(DoubanUserParameterName.MY_COLLECTION_DATE, new DataField(
