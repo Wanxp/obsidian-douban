@@ -333,34 +333,53 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			tags = [extract.type];
 		}
 		Object.entries(userState).forEach(([key, value]) => {
-			variableMap.set(key, value);
+			if (!value) {
+				return;
+			}
+			variableMap.set(key, new DataField(key, VariableUtil.getType(value), value, value));
 		});
-		variableMap.set(DoubanUserParameterName.MY_TAGS, new DataField(DoubanUserParameterName.MY_TAGS, DataValueType.array, tags, tags));
-		variableMap.set(DoubanUserParameterName.MY_STATE, new DataField(
-			DoubanUserParameterName.MY_STATE,
-			DataValueType.string,
-			userState.state,
-			this.getUserStateName(userState.state)
-		));
-		variableMap.set(DoubanUserParameterName.MY_RATING, new DataField(
-			DoubanUserParameterName.MY_RATING,
-			DataValueType.number,
-			userState.rate,
-			userState.rate)
-		);
-		variableMap.set(DoubanUserParameterName.MY_RATING_STAR, new DataField(
-			DoubanUserParameterName.MY_RATING_STAR,
-			DataValueType.string,
-			userState.rate,
-			NumberUtil.getRateStar(userState.rate, 5, {scoreSetting: context.settings.scoreSetting})
-		));
+		if (userState.tags && userState.tags.length > 0 ) {
+			variableMap.set(DoubanUserParameterName.MY_TAGS, new DataField(DoubanUserParameterName.MY_TAGS, DataValueType.array, tags, tags));
+		}
+		if (userState.comment) {
+			variableMap.set(DoubanUserParameterName.MY_COMMENT, new DataField(
+				DoubanUserParameterName.MY_COMMENT,
+				DataValueType.string,
+				userState.comment,
+				userState.comment
+			));
+		}
+		if (userState.state) {
+			variableMap.set(DoubanUserParameterName.MY_STATE, new DataField(
+				DoubanUserParameterName.MY_STATE,
+				DataValueType.string,
+				userState.state,
+				this.getUserStateName(userState.state)
+			));
+		}
+		if (userState.rate) {
+			variableMap.set(DoubanUserParameterName.MY_RATING, new DataField(
+				DoubanUserParameterName.MY_RATING,
+				DataValueType.number,
+				userState.rate,
+				userState.rate)
+			);
+			variableMap.set(DoubanUserParameterName.MY_RATING_STAR, new DataField(
+				DoubanUserParameterName.MY_RATING_STAR,
+				DataValueType.string,
+				userState.rate,
+				NumberUtil.getRateStar(userState.rate, 5, {scoreSetting: context.settings.scoreSetting})
+			));
+		}
+		if (userState.collectionDate) {
+			variableMap.set(DoubanUserParameterName.MY_COLLECTION_DATE, new DataField(
+				DoubanUserParameterName.MY_COLLECTION_DATE,
+				DataValueType.date,
+				userState.collectionDate,
+				userState.collectionDate ? moment(userState.collectionDate).format(context.settings.dateFormat) : ''
+			));
+		}
 
-		variableMap.set(DoubanUserParameterName.MY_COLLECTION_DATE, new DataField(
-			DoubanUserParameterName.MY_COLLECTION_DATE,
-			DataValueType.date,
-			userState.collectionDate,
-			userState.collectionDate ? moment(userState.collectionDate).format(context.settings.dateFormat) : ''
-		));
 	}
 
 
