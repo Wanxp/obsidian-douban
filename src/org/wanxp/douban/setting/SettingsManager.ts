@@ -168,4 +168,28 @@ export default class SettingsManager {
 		await this.plugin.saveSettings();
 		return arraySetting;
 	}
+
+	getSettingStr(field: keyof DoubanPluginSetting): string {
+		const setting = this.getSetting(field);
+		if (setting) {
+			if (typeof setting == 'string') {
+				return setting;
+			}else {
+				return setting.toString();
+			}
+		}
+		return '';
+	}
+
+	getSettingBoolean(field: keyof DoubanPluginSetting): boolean {
+		const setting = this.getSetting(field);
+		if (setting) {
+			if (typeof setting == 'boolean') {
+				return setting;
+			}else {
+				return !!setting;
+			}
+		}
+		return false;
+	}
 }

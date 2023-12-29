@@ -40,6 +40,8 @@
 {{myComment}}
 ````
 5. 设置模板为上面的模板
+6. 增加数组输出形式
+进入插件设置界面，找到[数组输出]
 
 ## 模板参考
 ### 书籍
@@ -53,6 +55,7 @@ series: {{series}}
 type: {{type}}
 author: {{author}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
 datePublished: {{datePublished}}
 translator: {{translator}}

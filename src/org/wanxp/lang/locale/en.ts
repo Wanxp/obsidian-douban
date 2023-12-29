@@ -125,6 +125,15 @@ PS: This file could be delete if you want to.
 	'124112': `ElementEnd:`,
 	'124113': `ArrayEnd:`,
 
+	'1243': `Score Display`,
+	'124120': `FullValue:`,
+	'124121': `EmptyValue:`,
+	'124122': `DisplayEmpty:`,
+	'124310': `The setting will effect variables {{scoreStar}} and {{myRatingStar}}. When the score is {0}/{1}, template is \`score: {{scoreStar}}\``,
+	'124311': `MaxStar:`,
+	'124312': `Integer:`,
+
+
 	'121101': `Template File`,
 	'121102': `This template will be used when creating new notes. If keep empty, it will use default template`,
 
@@ -296,6 +305,7 @@ PS: This file could be delete if you want to.
 
 
 	'410101': `Unknown`,
+	'410200': `评分⭐`,
 
 	//参数
 	'300101': `参数`,
@@ -542,6 +552,7 @@ PS: This file could be delete if you want to.
 	'160228': `My state at book-reading/video-watching.`,
 	'160229': `Comment`,
 	'160230': `Rate Date`,
+	'160231': `The rate that I rate to subject.(1⭐-5⭐)`,
 
 
 	'500001': `Sync Config`,

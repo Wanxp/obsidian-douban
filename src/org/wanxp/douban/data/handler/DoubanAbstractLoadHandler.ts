@@ -32,6 +32,7 @@ import HttpUtil from "../../../utils/HttpUtil";
 import HtmlUtil from "../../../utils/HtmlUtil";
 import {VariableUtil} from "../../../utils/VariableUtil";
 import {DataField} from "../../../utils/model/DataField";
+import NumberUtil from "../../../utils/NumberUtil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -258,6 +259,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				continue;
 			}
 			const type:DataValueType = VariableUtil.getType(value);
+			if (key == 'score') {
+				variableMap.set(DoubanParameterName.SCORE_STAR, new DataField(
+					DoubanParameterName.SCORE_STAR,
+					DataValueType.string,
+					value,
+					NumberUtil.getRateMaxFiveStar(value, 10)
+				));
+			}
 			variableMap.set(key, new DataField(key, type, value, value));
 		}
 		variableMap.set(DoubanParameterName.IMAGE_URL, new DataField(
@@ -297,10 +306,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			currentDate,
 			moment(currentDate).format(context.settings.timeFormat)
 		));
+
 		this.parseUserInfo(template, variableMap, extract, context, textMode);
 		this.parseVariable(template, variableMap, extract, context, textMode);
-		this.handleCustomVariable(template, variableMap, context);
-		return VariableUtil.replace(variableMap, template, this.doubanPlugin.settingsManager);
+		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager);
 
 	}
 
@@ -330,8 +339,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		variableMap.set(DoubanUserParameterName.MY_STATE, new DataField(
 			DoubanUserParameterName.MY_STATE,
 			DataValueType.string,
-			userState,
+			userState.state,
 			this.getUserStateName(userState.state)
+		));
+		variableMap.set(DoubanUserParameterName.MY_RATING_STAR, new DataField(
+			DoubanUserParameterName.MY_STATE,
+			DataValueType.string,
+			userState.rate,
+			NumberUtil.getRateStarMaxFiveMaxFiveStar(userState.rate)
 		));
 
 		variableMap.set(DoubanUserParameterName.MY_COLLECTION_DATE, new DataField(
@@ -342,31 +357,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		));
 	}
 
-	/**
-	 * 处理自定义参数
-	 * @param template
-	 * @param context
-	 * @private
-	 */
-	private handleCustomVariable(template: string, variableMap:Map<string, DataField>, context: HandleContext): void {
-		const customProperties = context.settings.customProperties;
-		if (!customProperties) {
-			return ;
-		}
-		const customPropertiesMap= new Map();
-		customProperties.filter(customProperty => customProperty.name &&
-			customProperty.field
-			&& (customProperty.field.toLowerCase() == SupportType.ALL ||
-				customProperty.field.toLowerCase() == this.getSupportType())).forEach(customProperty => {
-			customPropertiesMap.set(customProperty.name, customProperty.value);
-		});
-		customPropertiesMap.forEach((value, key) => {
-			variableMap.set(key,
-				new DataField(
-					key, DataValueType.string, value,
-					VariableUtil.replace(variableMap, value,  this.doubanPlugin.settingsManager)));
-		})
-	}
+
 
 	private getTemplateKey():TemplateKey {
 		let templateKey: TemplateKey;

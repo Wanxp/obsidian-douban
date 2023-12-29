@@ -2,6 +2,7 @@ import {i18nHelper} from "../lang/helper";
 import DoubanSearchResultSubject from "../douban/data/model/DoubanSearchResultSubject";
 import StringUtil from "../utils/StringUtil";
 import {DoubanPluginOnlineSettings} from "../douban/setting/model/DoubanPluginOnlineSettings";
+import {DataField} from "../utils/model/DataField";
 
 /**
  * 常量池
@@ -414,3 +415,28 @@ export enum DataTargetType {
 	content,
 }
 
+export const EXAMPLE_RATE = 8.5;
+export const EXAMPLE_RATE_MAX = 10;
+
+export const EXAMPLE_SUBJECT_MAP: Map<string, DataField> = new Map([
+	["id", new DataField("id", DataValueType.string, DataValueType.string, "2253379")],
+	["title", new DataField("title", DataValueType.string, DataValueType.string, "简爱")],
+	["type", new DataField("type", DataValueType.string, DataValueType.string, "book")],
+	["score", new DataField("score", DataValueType.number, DataValueType.number, EXAMPLE_RATE)],
+	["image", new DataField("image", DataValueType.url, DataValueType.url, "https://img9.doubanio.com/view/subject/s/public/s1070959.jpg")],
+	["imageUrl", new DataField("imageUrl", DataValueType.url, DataValueType.url, "https://img9.doubanio.com/view/subject/s/public/s1070959.jpg")],
+	["url", new DataField("url", DataValueType.url, DataValueType.url, "https://book.douban.com/subject/2253379/")],
+	["desc", new DataField("desc", DataValueType.string, DataValueType.string, "简爱是一部关于爱、关于成长、关于追求自由与尊严的伟大小说。")],
+	["publisher", new DataField("publisher", DataValueType.string, DataValueType.string, "人民文学出版社")],
+	["datePublished", new DataField("datePublished", DataValueType.date, DataValueType.date, "2020-1-1")],
+	["genre", new DataField("genre", DataValueType.array, DataValueType.array, "小说")],
+	["tags", new DataField("tags", DataValueType.array, DataValueType.array, "小说")],
+	["rate", new DataField("rate", DataValueType.number, DataValueType.number, 9.0)],
+	["state", new DataField("state", DataValueType.string, DataValueType.string, "wish")],
+	["collectionDate", new DataField("collectionDate", DataValueType.date, DataValueType.date, "2020-1-1")],
+	["comment", new DataField("comment", DataValueType.string, DataValueType.string, "简爱是一部关于爱、关于成长、关于追求自由与尊严的伟大小说。")],
+	["author", new DataField("author", DataValueType.person, DataValueType.person, "夏洛蒂·勃朗特")],
+	["translator", new DataField("translator", DataValueType.person, DataValueType.person, "李继宏")],
+]);
+
+export const MAX_STAR_NUMBER = 100;

@@ -47,5 +47,14 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	cacheImage: true,
 	cacheHighQuantityImage: true,
 	attachmentPath: 'assets',
-	syncHandledDataArray: []
+	syncHandledDataArray: [],
+	scoreSetting: {
+		starFull: '⭐',
+		starEmpty: '☆',
+		displayStarEmpty: true,
+		maxStar: 5,
+	}
+
 }
+
+

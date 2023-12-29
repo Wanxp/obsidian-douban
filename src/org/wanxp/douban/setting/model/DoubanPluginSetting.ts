@@ -1,6 +1,7 @@
 import {CustomProperty} from "./CustomProperty";
 import {SyncHandledData} from "./SyncHandledData";
 import {ArraySetting} from "./ArraySetting";
+import {ScoreSetting} from "./ScoreSetting";
 
 export interface DoubanPluginSetting {
 	onlineSettingsFileName: string;
@@ -31,5 +32,6 @@ export interface DoubanPluginSetting {
 	cacheHighQuantityImage: boolean,
 	attachmentPath: string,
 	syncHandledDataArray: SyncHandledData[],
-	arraySettings: ArraySetting[]
+	arraySettings: ArraySetting[],
+    scoreSetting: ScoreSetting,
 }

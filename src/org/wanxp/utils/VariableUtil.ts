@@ -4,11 +4,40 @@ import StringUtil from "./StringUtil";
 import YamlUtil from "./YamlUtil";
 import {log} from "./Logutil";
 import {i18nHelper} from "../lang/helper";
-import {DataValueType} from "../constant/Constsant";
+import {DataValueType, SupportType} from "../constant/Constsant";
 import {DataField} from "./model/DataField";
 import {FieldVariable} from "./model/FieldVariable";
+import {CustomProperty} from "../douban/setting/model/CustomProperty";
 
 export class VariableUtil {
+
+	/**
+
+	 *
+	 * @param obj
+	 * @param content
+	 * @param settingManager
+	 */
+
+	static replaceSubject(obj: any, content: string, subjectType: SupportType, settingManager:SettingsManager): string {
+		if (!content || !obj) {
+			return content;
+		}
+		const allVariables = this.getAllVariables(content, settingManager);
+		if (!allVariables || allVariables.length == 0) {
+			return content;
+		}
+		if (obj instanceof Map) {
+			this.handleCustomVariable(subjectType, obj, settingManager)
+			content = this.replaceMap(obj, allVariables, content, settingManager);
+		}else {
+			const map = this.objToMap(obj);
+			this.handleCustomVariable(subjectType, map, settingManager)
+			content = this.replaceMap(map, allVariables, content, settingManager);
+		}
+		return content;
+	}
+
 	/**
 
 	 *
@@ -28,8 +57,8 @@ export class VariableUtil {
 		if (obj instanceof Map) {
 			content = this.replaceMap(obj, allVariables, content, settingManager);
 		}else {
-			content = this.replaceObject(obj, allVariables, content, settingManager);
-		}
+			const map = this.objToMap(obj);
+			content = this.replaceMap(map, allVariables, content, settingManager);		}
 
 		return content;
 	}
@@ -142,18 +171,6 @@ export class VariableUtil {
 		}
 	}
 
-	private static replaceObject(obj: any, allVariables:FieldVariable[], content: string, settingManager: SettingsManager) {
-		allVariables.forEach(variable => {
-			const key = variable.key;
-			const value = obj.get(key);
-			if (obj.hasOwnProperty(key)) {
-				const value = obj[key];
-				content = this.replaceVariable(variable,value, content, settingManager);
-			}
-			content = this.replaceVariable(variable, value, content, settingManager);
-		});
-		return content;
-	}
 
 	private static replaceMap(obj: Map<string, any>, allVariables:FieldVariable[], content: string, settingManager: SettingsManager) {
 		allVariables.forEach(variable => {
@@ -210,5 +227,40 @@ export class VariableUtil {
 		}
 
 		return content;
+	}
+
+	/**
+	 * 处理自定义参数
+	 * @param template
+	 * @param context
+	 * @private
+	 */
+	static handleCustomVariable(subjectType: SupportType, variableMap:Map<string, DataField>, settingMananger: SettingsManager): void {
+		// @ts-ignore
+		const customProperties: CustomProperty[] = settingMananger.getSetting('customProperties');
+		if (!customProperties) {
+			return ;
+		}
+		const customPropertiesMap= new Map();
+		customProperties.filter(customProperty => customProperty.name &&
+			customProperty.field
+			&& (customProperty.field.toLowerCase() == SupportType.ALL ||
+				customProperty.field.toLowerCase() == subjectType)).forEach(customProperty => {
+			customPropertiesMap.set(customProperty.name, customProperty.value);
+		});
+		customPropertiesMap.forEach((value, key) => {
+			variableMap.set(key,
+				new DataField(
+					key, DataValueType.string, value,
+					VariableUtil.replace(variableMap, value, settingMananger)));
+		})
+	}
+
+	private static objToMap(obj: any):Map<string, any> {
+		const map = new Map<string, any>();
+		Object.keys(obj).forEach(key => {
+			map.set(key, obj[key]);
+		});
+		return map;
 	}
 }

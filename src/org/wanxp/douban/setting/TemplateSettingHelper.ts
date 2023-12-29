@@ -6,6 +6,7 @@ import { log } from "src/org/wanxp/utils/Logutil";
 import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
 import {FolderSuggest} from "./model/FolderSuggest";
 import SettingsManager from "./SettingsManager";
+import {showFileExample} from "./OutputSettingsHelper";
 
 
 export function constructTemplateUI(containerEl: HTMLElement, manager: SettingsManager) {
@@ -67,7 +68,7 @@ export function createFileSelectionSetting({name, desc, placeholder, key, manage
 
 export function createFolderSelectionSetting({
 											  name, desc, placeholder, key, manager,
-										  }: CreateTemplateSelectParams) {
+										  }: CreateTemplateSelectParams, filePathDisplayExample?:HTMLDivElement) {
 	return (setting: Setting) => {
 		// @ts-ignore
 		setting.setName( i18nHelper.getMessage(name));
@@ -86,7 +87,9 @@ export function createFolderSelectionSetting({
 				.setPlaceholder(i18nHelper.getMessage(placeholder))
 				.onChange(async (value: string) => {
 					manager.updateSetting(key, value);
-
+					if (filePathDisplayExample) {
+						showFileExample(filePathDisplayExample, manager);
+					}
 				});
 		});
 	};

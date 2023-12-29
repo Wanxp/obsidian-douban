@@ -45,6 +45,7 @@ export const DoubanParameterName = {
 	TITLE: 'title',
 	TYPE: 'type',
 	SCORE: 'score',
+	SCORE_STAR: 'scoreStar',
 	IMAGE: 'image',
 	IMAGE_URL: 'imageData.url',
 	URL: 'url',

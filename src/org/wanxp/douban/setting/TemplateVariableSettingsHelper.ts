@@ -62,6 +62,16 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310604')}</td>
 		<td>${i18nHelper.getMessage('310704')}</td>
 	</tr>
+		<tr>
+		<td>scoreStar</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+		<td>${i18nHelper.getMessage('410200')}</td>
+	</tr>
 	<tr>
 		<td>image</td>
 		<td>${i18nHelper.getMessage('310105')}</td>
@@ -305,6 +315,7 @@ ${i18nHelper.getMessage('160225')}
 <br>
 <strong>myTags</strong> → ${i18nHelper.getMessage('160226')}<br>
 <strong>myRating</strong> → ${i18nHelper.getMessage('160227')}<br>
+<strong>myRatingStar</strong> → ${i18nHelper.getMessage('160231')}<br>
 <strong>myState</strong> → ${i18nHelper.getMessage('160228')}<br>
 <strong>myComment</strong> → ${i18nHelper.getMessage('160229')}<br>
 <strong>myCollectionDate</strong> → ${i18nHelper.getMessage('160230')}<br>

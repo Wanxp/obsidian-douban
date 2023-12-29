@@ -6,6 +6,7 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}
@@ -35,6 +36,7 @@ series: {{series}}
 type: {{type}}
 author: {{author}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 datePublished: {{datePublished}}
 translator: {{translator}}
 publisher: {{publisher}}
@@ -60,6 +62,7 @@ title: {{title}}
 type: {{type}}
 actor: {{actor}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 genre: {{genre}}
 medium: {{medium}}
 albumType: {{albumType}}
@@ -98,6 +101,7 @@ title: {{title}}
 aliases: {{aliases}}
 type: {{type}}  
 score: {{score}}
+scoreStar: {{scoreStar}}
 dateTimePublished: {{datePublished}}
 publisher: {{publisher}}
 genre: {{genre}}
@@ -116,6 +120,7 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}
@@ -145,7 +150,9 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
+myRatingStar: {{myRatingStar}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}
@@ -180,7 +187,9 @@ series: {{series}}
 type: {{type}}
 author: {{author}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
+myRatingStar: {{myRatingStar}}
 datePublished: {{datePublished}}
 translator: {{translator}}
 publisher: {{publisher}}
@@ -211,7 +220,9 @@ title: {{title}}
 type: {{type}}
 actor: {{actor}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
+myRatingStar: {{myRatingStar}}
 genre: {{genre}}
 medium: {{medium}}
 albumType: {{albumType}}
@@ -256,7 +267,9 @@ title: {{title}}
 aliases: {{aliases}}
 type: {{type}}  
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
+myRatingStar: {{myRatingStar}}
 dateTimePublished: {{datePublished}}
 publisher: {{publisher}}
 genre: {{genre}}
@@ -280,7 +293,9 @@ doubanId: {{id}}
 title: {{title}}
 type: {{type}}
 score: {{score}}
+scoreStar: {{scoreStar}}
 myRating: {{myRating}}
+myRatingStar: {{myRatingStar}}
 originalTitle: {{originalTitle}}
 genre: {{genre}}
 datePublished: {{datePublished}}

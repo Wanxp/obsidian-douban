@@ -19,6 +19,7 @@ export const DoubanUserParameter = {
 export const DoubanUserParameterName = {
 	MY_TAGS: 'myTags',
 	MY_RATING: 'myRating',
+	MY_RATING_STAR: 'myRatingStar',
 	MY_STATE: 'myState',
 	MY_COMMENT: 'myComment',
 	MY_COLLECTION_DATE: 'myCollectionDate',
