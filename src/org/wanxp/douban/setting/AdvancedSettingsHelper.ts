@@ -7,6 +7,7 @@ import DoubanLogoutModel from "../component/DoubanLogoutModel";
 import User from "../user/User";
 import {createFolderSelectionSetting} from "./TemplateSettingHelper";
 import { log } from "../../utils/Logutil";
+import {ConfirmDialogModal} from "../component/ConfirmDialogModal";
 
 
 
@@ -31,6 +32,7 @@ export function constructAdvancedUI(containerEl: HTMLElement, manager: SettingsM
 
 function showAdvancedSettings(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.empty();
+	const promise:Promise<any> = new Promise<any>((resolve, reject) => {resolve(null)});
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('125001'))
 		.setDesc(i18nHelper.getMessage('125002'))
@@ -48,10 +50,63 @@ function showAdvancedSettings(containerEl: HTMLElement, manager: SettingsManager
 					await manager.plugin.saveSettings();
 				});
 		});
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('125011'))
+		.setDesc(i18nHelper.getMessage('125012'))
+		.addButton((buttonComponent) => {
+			buttonComponent
+				.setIcon('reset')
+				.setTooltip(i18nHelper.getMessage('125013'))
+				.onClick(async (value) => {
+					showConfirmDialog(i18nHelper.getMessage('125012'),
+						promise.then(() => {
+							manager.resetSetting();
+						}), manager)
+				});
+		});
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('125021'))
+		.setDesc(i18nHelper.getMessage('125022'))
+		.addButton((buttonComponent) => {
+			buttonComponent
+				.setIcon('reset')
+				.setTooltip(i18nHelper.getMessage('125022'))
+				.onClick(async (value) => {
+					showConfirmDialog(i18nHelper.getMessage('125022'),
+						promise.then(() => {
+							manager.clearLoginInfo();
+							manager.plugin.userComponent.logout()
+						}), manager)
+				});
+		});
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('125031'))
+		.setDesc(i18nHelper.getMessage('125032'))
+		.addButton((buttonComponent) => {
+			buttonComponent
+				.setIcon('reset')
+				.setTooltip(i18nHelper.getMessage('125032'))
+				.onClick(async (value) => {
+					showConfirmDialog(i18nHelper.getMessage('125032'), promise.then(() => {
+						manager.clearSyncCache();
+					}), manager);
+				});
+		});
 }
 
 function resetAdvanced( manager: SettingsManager) {
 	log.info("调试模式关闭");
 	manager.plugin.settings.debugMode = false;
+}
+
+function showConfirmDialog(message:string, promise:Promise<any>, manager: SettingsManager) {
+	new ConfirmDialogModal(manager.plugin.app, message, promise
+		.then( () => {
+			manager.plugin.saveSettings();
+		})
+		.then( () => {
+			manager.plugin.settingTab.display();
+		})
+	).open();
 }
 

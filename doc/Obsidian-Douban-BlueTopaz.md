@@ -12,8 +12,8 @@
 ---
 
 #  {{title}}
-<div style="text-align: center;"> {{originalTitle}} </div>  
-<div style="text-align: center;">⭐⭐⭐⭐⭐</div>
+<div style="text-align: center;">{{originalTitle}}</div>  
+<div style="text-align: center;">{{scoreStar}}</div>
 
 ---
 

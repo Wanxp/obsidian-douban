@@ -42,6 +42,8 @@ PS: This file could be delete if you want to.
 	'110050': `Type`,
 	'110051': `Number`,
 	'110052': `Description`,
+	'110152': `Confirm`,
+
 
 	'exists':`[exists]`,
 	'unHandle':`[unHandle]`,
@@ -227,6 +229,7 @@ PS: This file could be delete if you want to.
 	'121601': `Note Name`,
 	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath),
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/{{title}}`,
+	'121604': `Note Path Previous`,
 	'120603': `Display Preview`,
 	'120604': `ArrayTypeName:`,
 	'120605': `Template use example： propertyName:{{actor`,
@@ -251,6 +254,17 @@ PS: This file could be delete if you want to.
 	'125001': `Debug Mode`,
 	'125002': `Open Debug Mode, so that this plugin will log some message in console`,
 
+	'125011': `Reset Setting`,
+	'125012': `Reset Setting to default value, but not include \`Custom Variables\``,
+	'125013': `Reset Setting to default value`,
+
+	'125021': `Clear Login Cache`,
+	'125022': `Clear Login Info, so that you can login again`,
+
+	'125031': `Clear Sync Cache`,
+	'125032': `Clear Sync Cache, It will clear all the sync data, so that you can sync again`,
+
+	'125033': `Are you sure you want to perform this operation?`,
 
 	//error
 	'130101': `Fetch Data Error, {0}`,

@@ -192,4 +192,40 @@ export default class SettingsManager {
 		}
 		return false;
 	}
+
+	resetSetting() {
+		this.settings.scoreSetting = DEFAULT_SETTINGS.scoreSetting;
+		this.settings.arraySettings = DEFAULT_SETTINGS.arraySettings;
+		this.settings.arrayStart = DEFAULT_SETTINGS.arrayStart;
+		this.settings.arrayElementStart = DEFAULT_SETTINGS.arrayElementStart;
+		this.settings.arraySpiltV2 = DEFAULT_SETTINGS.arraySpiltV2;
+		this.settings.arrayElementEnd = DEFAULT_SETTINGS.arrayElementEnd;
+		this.settings.arrayEnd = DEFAULT_SETTINGS.arrayEnd;
+		this.settings.attachmentPath = DEFAULT_SETTINGS.attachmentPath;
+		this.settings.bookTemplateFile = DEFAULT_SETTINGS.bookTemplateFile;
+		this.settings.movieTemplateFile = DEFAULT_SETTINGS.movieTemplateFile;
+		this.settings.musicTemplateFile = DEFAULT_SETTINGS.musicTemplateFile;
+		this.settings.noteTemplateFile = DEFAULT_SETTINGS.noteTemplateFile;
+		this.settings.gameTemplateFile = DEFAULT_SETTINGS.gameTemplateFile;
+		this.settings.teleplayTemplateFile = DEFAULT_SETTINGS.teleplayTemplateFile;
+		this.settings.dateFormat = DEFAULT_SETTINGS.dateFormat;
+		this.settings.timeFormat = DEFAULT_SETTINGS.timeFormat;
+		this.settings.searchUrl = DEFAULT_SETTINGS.searchUrl;
+		this.settings.personNameMode = DEFAULT_SETTINGS.personNameMode;
+		this.settings.dataFilePath = DEFAULT_SETTINGS.dataFilePath;
+		this.settings.dataFileNamePath = DEFAULT_SETTINGS.dataFileNamePath;
+		this.settings.statusBar = DEFAULT_SETTINGS.statusBar;
+		this.settings.debugMode = DEFAULT_SETTINGS.debugMode;
+		this.settings.cacheImage = DEFAULT_SETTINGS.cacheImage;
+		this.settings.cacheHighQuantityImage = DEFAULT_SETTINGS.cacheHighQuantityImage;
+	}
+
+	clearLoginInfo() {
+		this.settings.loginCookiesContent = DEFAULT_SETTINGS.loginHeadersContent;
+		this.settings.loginHeadersContent = DEFAULT_SETTINGS.loginHeadersContent;
+	}
+
+	clearSyncCache() {
+		this.settings.syncHandledDataArray = [];
+	}
 }

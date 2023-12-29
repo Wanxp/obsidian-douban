@@ -44,6 +44,7 @@ export default class DoubanPlugin extends Plugin {
 	public netFileHandler: NetFileHandler;
 	public statusHolder: GlobalStatusHolder;
 	public onlineData: DoubanPluginOnlineData;
+	public settingTab: DoubanSettingTab;
 
 
 	async putToObsidian(context: HandleContext, extract: DoubanSubject) {
@@ -231,8 +232,8 @@ export default class DoubanPlugin extends Plugin {
 				log.debug(i18nHelper.getMessage('100101'));
 			}
 		}
-
-		this.addSettingTab(new DoubanSettingTab(this.app, this));
+		this.settingTab = new DoubanSettingTab(this.app, this);
+		this.addSettingTab(this.settingTab);
 		this.statusHolder = new GlobalStatusHolder(this.app, this);
 	}
 

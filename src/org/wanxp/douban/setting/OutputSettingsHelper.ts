@@ -1,5 +1,5 @@
 import {i18nHelper} from "../../lang/helper";
-import {Setting, TextComponent, ToggleComponent, ValueComponent} from "obsidian";
+import {Setting, TextComponent, ToggleComponent} from "obsidian";
 import {createFolderSelectionSetting} from "./TemplateSettingHelper";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {
@@ -31,7 +31,7 @@ export function showFileExample(containerEl: HTMLElement, manager: SettingsManag
 	containerEl.empty();
 	const document = new DocumentFragment();
 	document.createDiv('file-path-example')
-		.innerHTML = `文件路径预览<a href="https://book.douban.com/subject/2253379/">《简爱》</a>: ${VariableUtil.replaceSubject(EXAMPLE_SUBJECT_MAP, 
+		.innerHTML = `${i18nHelper.getMessage('121604')}<a href="https://book.douban.com/subject/2253379/">《简爱》</a>: ${VariableUtil.replaceSubject(EXAMPLE_SUBJECT_MAP, 
 		FileUtil.join(manager.plugin.settings.dataFilePath, manager.plugin.settings.dataFileNamePath + ".md"), SupportType.BOOK, 
 		manager)}`;
 
@@ -47,7 +47,7 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 	const scoreSettingsUI = containerEl.createDiv('score-settings');
 	const scoreShowUI = containerEl.createDiv('score-show');
 
-	//@ts-ignore
+	//@ts-ignore1·
 	const scoreSetting:ScoreSetting = manager.getSetting('scoreSetting');
 	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124120')})
 	const starFullUI = new TextComponent(scoreSettingsUI);

@@ -51,7 +51,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	scoreSetting: {
 		starFull: '⭐',
 		starEmpty: '☆',
-		displayStarEmpty: true,
+		displayStarEmpty: false,
 		maxStar: 5,
 	}
 
