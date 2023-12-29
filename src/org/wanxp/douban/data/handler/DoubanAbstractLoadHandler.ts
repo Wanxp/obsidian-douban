@@ -342,8 +342,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			userState.state,
 			this.getUserStateName(userState.state)
 		));
+		variableMap.set(DoubanUserParameterName.MY_RATING, new DataField(
+			DoubanUserParameterName.MY_RATING,
+			DataValueType.number,
+			userState.rate,
+			userState.rate)
+		);
 		variableMap.set(DoubanUserParameterName.MY_RATING_STAR, new DataField(
-			DoubanUserParameterName.MY_STATE,
+			DoubanUserParameterName.MY_RATING_STAR,
 			DataValueType.string,
 			userState.rate,
 			NumberUtil.getRateStar(userState.rate, 5, {scoreSetting: context.settings.scoreSetting})
