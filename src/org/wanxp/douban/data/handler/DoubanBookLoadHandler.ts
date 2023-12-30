@@ -31,6 +31,8 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanBookSubject, context: HandleContext, textMode: TemplateTextMode): void {
 		variableMap.set(DoubanBookParameter.author, new DataField(DoubanBookParameter.author,
 			DataValueType.array, extract.author, extract.author.map(this.handleSpecialAuthorName)));
+		variableMap.set(DoubanBookParameter.translator, new DataField(DoubanBookParameter.translator,
+			DataValueType.array, extract.translator, extract.translator.map(this.handleSpecialAuthorName)));
 	}
 
 	support(extract: DoubanSubject): boolean {
