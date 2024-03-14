@@ -5,7 +5,7 @@ import { request, RequestUrlParam } from "obsidian";
 import DoubanHumanCheckModel from "../douban/component/DoubanHumanCheckModel";
 import {LoginUtil} from "./LoginUtil";
 
-const {https} = require("follow-redirects");
+const get = require('simple-get')
 
 export default class HttpUtil {
 
@@ -26,7 +26,7 @@ export default class HttpUtil {
     }
 	settingsManager.debug(`Obsidian-Douban:从网络获取网页开始:\nurl:${url}\nheaders:${JSON.stringify(headers)}`);
     return new Promise((resolve, rejects) => {
-      https.get(url, { ...options }, function (response: any) {
+      get(url, { ...options }, function (err:any, response: any) {
         let chunks: any = [],
           size = 0;
 		if (response.status == 403) {
@@ -66,7 +66,7 @@ export default class HttpUtil {
 		}
 		settingsManager.debug(`Obsidian-Douban:从网络获取json开始:\nurl:${url}\nheaders:${JSON.stringify(headers)}`);
 		return new Promise((resolve, rejects) => {
-			https.get(url, { ...options }, function (response: any) {
+			get(url, { ...options }, function (err:any, response: any) {
 				const chunks: any = [];
 				let	size = 0;
 				if (response.status == 403) {
@@ -106,7 +106,7 @@ export default class HttpUtil {
 			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}`);
 		}
 		return new Promise((resolve, rejects) => {
-			https.get(url, { ...options }, function (response: any) {
+			get(url, { ...options }, function (err:any, response: any) {
 				let chunks: any = [],
 					size = 0;
 				if (response.status == 403) {
