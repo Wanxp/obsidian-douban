@@ -1,0 +1,71 @@
+import SettingsManager from "../../douban/setting/SettingsManager";
+import {requestUrl, RequestUrlParam, RequestUrlResponse} from "obsidian";
+import {log} from "../Logutil";
+import {i18nHelper} from "../../lang/helper";
+import DoubanHumanCheckModel from "../../douban/component/DoubanHumanCheckModel";
+
+export default class MobileHttpUtil {
+	/**
+	 * get请求
+	 * @param url 请求地址
+	 * @param headers 请求参数
+	 * @param settingsManager 设置管理器
+	 */
+	public static httpRequestGet(url: string, headers: any, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
+		return this.httpRequestGetInner(url, headers, 0, settingsManager);
+	}
+	private static httpRequestGetInner(url: string, headers: any, times:number, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
+		let requestUrlParam: RequestUrlParam = {
+			url: url,
+			method: "GET",
+			headers: { ...headers},
+			throw: true
+		};
+		return requestUrl(requestUrlParam)
+			// .then(res => res.text)
+			.then(response => {
+				if (response && response.text.indexOf('https://sec.douban.com/a') > 0) {
+					log.notice(i18nHelper.getMessage('130105'))
+					if (settingsManager) {
+						settingsManager.debug(`Obsidian-Douban:获取异常网页如下:\n${response}`);
+					}
+				}
+				if (response.status == 301 || response.status == 302 || response.status == 303 || response.status == 307) {
+					if (times > 2) {
+						throw new Error('重定向次数过多');
+					}
+					let location = response.headers['location'];
+					settingsManager.debug(`Obsidian-Douban:获取重定向地址如下:\n${location}`);
+					if (location.indexOf('http') != 0) {
+						return this.httpRequestGetInner(location, headers, times + 1, settingsManager);
+					} else {
+						throw new Error('重定地址错误');
+					}
+				}
+				settingsManager.debug(`Obsidian-Douban:获取网页如下:\n${response}`);
+				return response;
+			})
+			.then(s => this.humanCheck(s, url, settingsManager))
+			.catch(e => {
+				if (e.toString().indexOf('403') > 0) {
+					throw log.error(i18nHelper.getMessage('130105'), e)
+				} else {
+					throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e)
+				}
+			})
+	}
+
+
+	private static async humanCheck(html: any, url: string, settingsManager?: SettingsManager): Promise<any> {
+		if (settingsManager) {
+			settingsManager.debug(html);
+		}
+		if (html && html.indexOf("<title>禁止访问</title>") != -1) {
+			const loginModel = new DoubanHumanCheckModel(url);
+			await loginModel.load();
+			return '';
+		} else {
+			return html;
+		}
+	}
+}
