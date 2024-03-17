@@ -274,7 +274,7 @@ PS: This file could be delete if you want to.
 	'130106': `Can not use Douban this time, Please try Login In Douban Plugin. If not working please again after 12 hour or 24 hour. Or you can reset your connection `,
 
 	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,
-
+	'130108': `Redirect times too much, please check your network or proxy`,
 
 	'140201': `[OB-Douban]: searching '{0}'...`,
 	'140202': `[OB-Douban]: result {0} rows`,

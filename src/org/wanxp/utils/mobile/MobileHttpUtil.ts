@@ -14,14 +14,14 @@ export default class MobileHttpUtil {
 	public static httpRequestGet(url: string, headers: any, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
 		return this.httpRequestGetInner(url, headers, 0, settingsManager);
 	}
-	private static httpRequestGetInner(url: string, headers: any, times:number, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
+	private static async httpRequestGetInner(url: string, headers: any, times:number, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
 		let requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
 			headers: { ...headers},
 			throw: true
 		};
-		return requestUrl(requestUrlParam)
+		return await requestUrl(requestUrlParam)
 			// .then(res => res.text)
 			.then(response => {
 				if (response && response.text.indexOf('https://sec.douban.com/a') > 0) {
@@ -52,15 +52,18 @@ export default class MobileHttpUtil {
 				} else {
 					throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e)
 				}
-			})
+			});
 	}
 
 
-	private static async humanCheck(html: any, url: string, settingsManager?: SettingsManager): Promise<any> {
+	public static async humanCheck(html: any, url: string, settingsManager?: SettingsManager): Promise<any> {
+		if (!html) {
+			return html;
+		}
 		if (settingsManager) {
 			settingsManager.debug(html);
 		}
-		if (html && html.indexOf("<title>禁止访问</title>") != -1) {
+		if (html && html.toString().indexOf("<title>禁止访问</title>") != -1) {
 			const loginModel = new DoubanHumanCheckModel(url);
 			await loginModel.load();
 			return '';
@@ -68,4 +71,6 @@ export default class MobileHttpUtil {
 			return html;
 		}
 	}
+
+
 }

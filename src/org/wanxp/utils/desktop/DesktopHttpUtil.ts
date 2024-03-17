@@ -3,10 +3,11 @@ import {i18nHelper} from "../../lang/helper";
 import {LoginUtil} from "../LoginUtil";
 import DoubanHumanCheckModel from "../../douban/component/DoubanHumanCheckModel";
 
-
-const {https} = require("follow-redirects");
+var https:any = null;
 
 export default class DesktopHttpUtil {
+
+
 
 
 
@@ -23,33 +24,48 @@ export default class DesktopHttpUtil {
 		let options = {
 			headers: headersInner
 		}
-		settingsManager.debug(`Obsidian-Douban:从网络获取网页开始:\nurl:${url}\nheaders:${JSON.stringify(headers)}`);
 		return new Promise((resolve, rejects) => {
-			https.get(url, { ...options }, function (response: any) {
-				let chunks: any = [],
-					size = 0;
-				if (response.status == 403) {
-					rejects(new Error(i18nHelper.getMessage('130106')));
-				}
-				response.on("data", function (chunk: any) {
-					chunks.push(chunk)
-					size += chunk.length
-				})
+			this.httpRequestGetInner(url, options, 0, resolve, rejects, settingsManager);
+		})
+	}
 
-				response.on("end", function () {
-					const data = Buffer.concat(chunks, size)
-					const html = data.toString()
-					if (settingsManager) {
-						settingsManager.debug(`Obsidian-Douban:从网络获取网页完成:\nhtml:\n${html}`);
-					}
-					if (LoginUtil.contentNeedLogin(html)) {
-						rejects(new Error(i18nHelper.getMessage('140304')));
-					}
-					resolve(html)
-				})
+	private  static httpRequestGetInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
+		settingsManager.debug(`Obsidian-Douban:从网络获取网页[开始]${times}:url:${url}\nheaders:${JSON.stringify(options)}`);
+		if (!https) {
+			https = require("follow-redirects").https;
+		}
+
+		https.get(url, { ...options }, function (response: any) {
+			let chunks: any = [],
+				size = 0;
+			if (settingsManager) {
+				settingsManager.debug(`Obsidian-Douban:从网络获取网页[完成]${times}:url:${url}\nresponse-header:${JSON.stringify(response.headers)}`);
+				settingsManager.debug(`Obsidian-Douban:从网络获取网页[完成]${times}:response-body:\n${response.text}`);
+			}
+			if (response.statusCode == 403) {
+				rejects(new Error(i18nHelper.getMessage('130106')));
+				return
+			}
+
+			response.on("data", function (chunk: any) {
+				chunks.push(chunk)
+				size += chunk.length
+			})
+
+			response.on("end", function () {
+				const data = Buffer.concat(chunks, size)
+				const html = data.toString()
+				if (settingsManager) {
+					settingsManager.debug(`Obsidian-Douban:从网络获取网页完成:\nhtml:\n${html}`);
+				}
+				if (LoginUtil.contentNeedLogin(html)) {
+					rejects(new Error(i18nHelper.getMessage('140304')));
+				}
+				resolve(html)
 			})
 		})
 	}
+
 
 	/**
 	 * get请求
@@ -63,30 +79,43 @@ export default class DesktopHttpUtil {
 		const options = {
 			headers: headersInner
 		}
-		settingsManager.debug(`Obsidian-Douban:从网络获取json开始:\nurl:${url}\nheaders:${JSON.stringify(headers)}`);
 		return new Promise((resolve, rejects) => {
-			https.get(url, { ...options }, function (response: any) {
-				const chunks: any = [];
-				let	size = 0;
-				if (response.status == 403) {
-					rejects(new Error(i18nHelper.getMessage('130106')));
-				}
-				response.on("data", function (chunk: any) {
-					chunks.push(chunk)
-					size += chunk.length
-				})
+			this.httpRequestGetJsonInner(url, options, 0, resolve, rejects, settingsManager);
+		})
+	}
 
-				response.on("end", function () {
-					const data = Buffer.concat(chunks, size)
-					const html = data.toString()
-					if (settingsManager) {
-						settingsManager.debug(`Obsidian-Douban:从网络获取json完成:\nhtml:\n${html}`);
-					}
-					if (LoginUtil.contentNeedLogin(html)) {
-						rejects(new Error(i18nHelper.getMessage('140304')));
-					}
-					resolve(html)
-				})
+	private  static httpRequestGetJsonInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
+		settingsManager.debug(`Obsidian-Douban:从网络获取json开始:\nurl:${url}\nheaders:${JSON.stringify(options)}`);
+		if (!https) {
+			https = require("follow-redirects").https;
+		}
+		https.get(url, { ...options }, function (response: any) {
+			let chunks: any = [],
+				size = 0;
+			if (settingsManager) {
+				settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:url:\n${url}`);
+				settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:header:\n${JSON.stringify(response.headers)}`);
+				settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:body:\n${response.text}`);
+			}
+			if (response.statusCode == 403) {
+				rejects(new Error(i18nHelper.getMessage('130106')));
+				return
+			}
+			response.on("data", function (chunk: any) {
+				chunks.push(chunk)
+				size += chunk.length
+			})
+
+			response.on("end", function () {
+				const data = Buffer.concat(chunks, size)
+				const html = data.toString()
+				if (settingsManager) {
+					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成:\nhtml:\n${html}`);
+				}
+				if (LoginUtil.contentNeedLogin(html)) {
+					rejects(new Error(i18nHelper.getMessage('140304')));
+				}
+				resolve(html)
 			})
 		})
 	}
@@ -101,42 +130,56 @@ export default class DesktopHttpUtil {
 		let options = {
 			headers: headers
 		}
-		if (settingsManager) {
-			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}`);
-		}
+
 		return new Promise((resolve, rejects) => {
-			https.get(url, { ...options }, function (response: any) {
+			this.httpRequestGetBufferInner(url, options, 0, resolve, rejects, settingsManager);
+		})
+	}
+
+	private  static httpRequestGetBufferInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
+		if (settingsManager) {
+			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}\nheaders:${JSON.stringify(options)}`);
+			if (!https) {
+				https = require("follow-redirects").https;
+			}
+			https.get(url, {...options}, function (response: any) {
 				let chunks: any = [],
 					size = 0;
-				if (response.status == 403) {
-					rejects(new Error(i18nHelper.getMessage('130106')));
+				if (settingsManager) {
+					settingsManager.debug(`Obsidian-Douban:从网络获取文件完成${times}:url:\n${url}`);
+					settingsManager.debug(`Obsidian-Douban:从网络获取文件完成${times}:header:\n${JSON.stringify(response.headers)}`);
 				}
+				if (response.statusCode == 403) {
+					rejects(new Error(i18nHelper.getMessage('130106')));
+					return
+				}
+
 				response.on("data", function (chunk: any) {
 					chunks.push(chunk)
 					size += chunk.length
 				})
 
 				response.on("end", function () {
-					let data = Buffer.concat(chunks, size)
+					const data = Buffer.concat(chunks, size)
 					if (settingsManager) {
-						settingsManager.debug(`Obsidian-Douban:从网络获取文件完成:\n${url}`);
+						settingsManager.debug(`Obsidian-Douban:从网络获取文件完成:`);
 					}
 					resolve(data)
 				})
 			})
-		})
+		}
 	}
 
 
 
-
-
-
 	public static async humanCheck(html: any, url: string, settingsManager?: SettingsManager): Promise<any> {
+		if (!html) {
+			return html;
+		}
 		if (settingsManager) {
 			settingsManager.debug(html);
 		}
-		if (html && html.indexOf("<title>禁止访问</title>") != -1) {
+		if (html && html.toString().indexOf("<title>禁止访问</title>") != -1) {
 			const loginModel = new DoubanHumanCheckModel(url);
 			await loginModel.load();
 			return '';
