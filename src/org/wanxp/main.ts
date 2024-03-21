@@ -164,11 +164,13 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async onload() {
+		console.log("----douban-plugins-load------")
 		await this.loadSettings();
 		if (this.settings.statusBar) {
 			this.doubanStatusBar = this.addStatusBarItem();
 		}
 
+		
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
