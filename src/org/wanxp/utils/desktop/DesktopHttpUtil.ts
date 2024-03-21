@@ -19,6 +19,9 @@ export default class DesktopHttpUtil {
 	 */
 	// Cookie: 'll="108296"; bid=xHRJLeWBrjQ; _pk_id.100001.8cb4=f8f83e81ec224a1a.1691572669.; __utmv=30149280.13103; __yadk_uid=ce95W7OsgT0iKFceWgbMSUdw1oOqxNTk; __gads=ID=62585f60f3f637d0-2234f63fc6e200a5:T=1691572672:RT=1691572672:S=ALNI_MaIqTxSWHsfpnX9nAmMHcPQEsaezg; __gpi=UID=00000c29a9f98e5b:T=1691572672:RT=1691572672:S=ALNI_MbLAq8XNoKrRPKNqGCMdgXSPZvidw; ap_v=0,6.0; __utma=30149280.135860784.1691572641.1691572641.1694509646.2; __utmc=30149280; __utmz=30149280.1694509646.2.2.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1694509648%2C%22https%3A%2F%2Fmovie.douban.com%2Ftv%2F%22%5D; _pk_ses.100001.8cb4=1; __utmt=1; dbcl2="131038721:LUssju34QFw"; ck=dCQj; push_noty_num=0; push_doumail_num=0; __utmb=30149280.3.10.1694509646'
 	public static httpRequestGet(url: string, headers: any, settingsManager?: SettingsManager): Promise<string> {
+		if (!https) {
+			https = require("follow-redirects").https;
+		}
 		settingsManager.debug(`请求地址:${url}`);
 		const {['Accept-Encoding']: acceptEncoding, ...headersInner} = headers;
 		let options = {
@@ -31,10 +34,6 @@ export default class DesktopHttpUtil {
 
 	private  static httpRequestGetInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
 		settingsManager.debug(`Obsidian-Douban:从网络获取网页[开始]${times}:url:${url}\nheaders:${JSON.stringify(options)}`);
-		if (!https) {
-			https = require("follow-redirects").https;
-		}
-
 		https.get(url, { ...options }, function (response: any) {
 			let chunks: any = [],
 				size = 0;
@@ -75,6 +74,9 @@ export default class DesktopHttpUtil {
 	 */
 	// Cookie: 'll="108296"; bid=xHRJLeWBrjQ; _pk_id.100001.8cb4=f8f83e81ec224a1a.1691572669.; __utmv=30149280.13103; __yadk_uid=ce95W7OsgT0iKFceWgbMSUdw1oOqxNTk; __gads=ID=62585f60f3f637d0-2234f63fc6e200a5:T=1691572672:RT=1691572672:S=ALNI_MaIqTxSWHsfpnX9nAmMHcPQEsaezg; __gpi=UID=00000c29a9f98e5b:T=1691572672:RT=1691572672:S=ALNI_MbLAq8XNoKrRPKNqGCMdgXSPZvidw; ap_v=0,6.0; __utma=30149280.135860784.1691572641.1691572641.1694509646.2; __utmc=30149280; __utmz=30149280.1694509646.2.2.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1694509648%2C%22https%3A%2F%2Fmovie.douban.com%2Ftv%2F%22%5D; _pk_ses.100001.8cb4=1; __utmt=1; dbcl2="131038721:LUssju34QFw"; ck=dCQj; push_noty_num=0; push_doumail_num=0; __utmb=30149280.3.10.1694509646'
 	public static httpRequestGetJson(url: string, headers: any, settingsManager?: SettingsManager): Promise<any> {
+		if (!https) {
+			https = require("follow-redirects").https;
+		}
 		const {['Accept-Encoding']: acceptEncoding, ...headersInner} = headers;
 		const options = {
 			headers: headersInner
@@ -86,9 +88,7 @@ export default class DesktopHttpUtil {
 
 	private  static httpRequestGetJsonInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
 		settingsManager.debug(`Obsidian-Douban:从网络获取json开始:\nurl:${url}\nheaders:${JSON.stringify(options)}`);
-		if (!https) {
-			https = require("follow-redirects").https;
-		}
+
 		https.get(url, { ...options }, function (response: any) {
 			let chunks: any = [],
 				size = 0;
@@ -127,6 +127,9 @@ export default class DesktopHttpUtil {
 	 * @param settingsManager 设置管理器
 	 */
 	public static httpRequestGetBuffer(url: string, headers: any, settingsManager?: SettingsManager): Promise<ArrayBuffer> {
+		if (!https) {
+			https = require("follow-redirects").https;
+		}
 		let options = {
 			headers: headers
 		}
@@ -139,9 +142,7 @@ export default class DesktopHttpUtil {
 	private  static httpRequestGetBufferInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
 		if (settingsManager) {
 			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}\nheaders:${JSON.stringify(options)}`);
-			if (!https) {
-				https = require("follow-redirects").https;
-			}
+
 			https.get(url, {...options}, function (response: any) {
 				let chunks: any = [],
 					size = 0;
