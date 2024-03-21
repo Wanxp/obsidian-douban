@@ -73,7 +73,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 		const image = html(html("head > meta[property= 'og:image']").get(0)).attr("content");
 		let item = html(html("head > script[type='application/ld+json']").get(0)).text();
 		item = super.html_decode(item);
-		const obj = JSON.parse(item.replace(/[\r\n\s+]/g, ''));
+		const obj = JSON.parse(item.replace(/[\r\n\t\s+]/g, ''));
 		const title = obj.name;
 		const url = obj.url;
 		const author = obj.author.map((a: any) => a.name);

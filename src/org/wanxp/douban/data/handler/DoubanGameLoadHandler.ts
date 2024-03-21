@@ -64,7 +64,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 		let idP = idPattern.exec(idContent);
 		let id = idP ? idP[0] : "";
 		let score = html(html("#interest_sectl > div > div.rating_self.clearfix > strong[property= 'v:average']").get(0)).text();
-		let detailDom = html(html("dl.game-attr").get(0));
+		let detailDom = html(html("dl.thing-attr").get(0));
 		let dt = detailDom.find("dt");
 		let image = html(html("#content > div > div.article > div.mod.item-subject > div.item-subject-info > div > a > img").get(0)).attr("src");
 		let desc = html(html("#link-report > p").get(0)).text();

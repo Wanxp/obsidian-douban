@@ -281,7 +281,7 @@ PS: This file could be delete if you want to.
 	'140203': `[OB-Douban]: request '{0}'`,
 	'140204': `[OB-Douban]: replace '{0}'`,
 	'140205': `[OB-Douban]: complete '{0}'`,
-	'140206': `[OB-Douban]: occur error '{0}'`,
+	'140206': `[OB-Douban]: occur error, please try login'{0}'`,
 	'140207': `[OB-Douban]: [{0}/{1}] {2}`,
 	'140208': `[OB-Douban]: [{0}/{1}] {2}`,
 
