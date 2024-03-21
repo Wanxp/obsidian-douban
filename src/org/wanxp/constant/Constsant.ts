@@ -181,6 +181,7 @@ export enum PropertyName {
 /**
  * 名称模式选项
  */
+// @ts-ignore
 export const SearchTypeRecords: { [key in SupportType]: string } = {
 	[SupportType.ALL]: i18nHelper.getMessage('ALL'),
 	[SupportType.MOVIE]: i18nHelper.getMessage('MOVIE_AND_TELEPLAY'),
@@ -188,8 +189,7 @@ export const SearchTypeRecords: { [key in SupportType]: string } = {
 	[SupportType.MUSIC]: i18nHelper.getMessage('MUSIC'),
 	[SupportType.NOTE]: i18nHelper.getMessage('NOTE'),
 	[SupportType.GAME]: i18nHelper.getMessage('GAME'),
-	[SupportType.TELEPLAY]: i18nHelper.getMessage('TELEPLAY'),
-	[SupportType.THEATER]: i18nHelper.getMessage('THEATER'),
+	// [SupportType.THEATER]: i18nHelper.getMessage('THEATER'),
 }
 
 /**
