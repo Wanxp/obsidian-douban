@@ -1,7 +1,8 @@
 ---
 title: 鸣谢
-layout: home
-nav_order: 800
+layout: default
+nav_order: 810
+parent: 其它
 ---
 ## 鸣谢
 ### IDE支持

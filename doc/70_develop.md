@@ -1,6 +1,6 @@
 ---
 title: 开发
-layout: home
+layout: default
 nav_order: 700
 ---
 

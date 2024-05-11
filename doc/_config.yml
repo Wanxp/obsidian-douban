@@ -6,3 +6,5 @@ url: https://wanxp.github.io/obsidian-douban
 
 aux_links: # remove if you don't want this link to appear on your pages
   Github Repository: https://github.com/Wanxp/obsidian-douban
+search:
+  focus_shortcut_key: 'k'

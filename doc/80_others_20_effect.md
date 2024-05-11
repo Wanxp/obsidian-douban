@@ -1,7 +1,8 @@
 ---
 title: 数据影响
-layout: home
-nav_order: 600
+layout: default
+nav_order: 800
+parent: 其它
 ---
 
 ## 数据影响

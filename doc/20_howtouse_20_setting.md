@@ -1,7 +1,8 @@
 ---
 title: 设置
-layout: home
+layout: default
 nav_order: 350
+parent: 如何使用
 ---
 
 ## 设置

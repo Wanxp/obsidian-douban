@@ -1,12 +1,12 @@
 ---
 title: 简介
 layout: home
-nav_order: 100
+nav_order: 10
 ---
 
 
-这是一款[Obsidian](https://obsidian.md/)的插件, 用于导入[豆瓣](https://www.douban.com/)中的 _电影、书籍、音乐、电视剧、日记、游戏_
-甚至是 _你标记过的书影音_ , 包含你的评分、观看日期、评论、阅读状态等信息.   
+这是一款[Obsidian](https://obsidian.md/)的插件, 用于导入[豆瓣](https://www.douban.com/)中的 _电影、书籍、音乐、电视剧、日记、游戏   
+甚至是你标记过的书影音, 包含你的评分、观看日期、评论、阅读状态等信息.   
 
 ![background](./background.png)
 

@@ -1,7 +1,8 @@
 ---
 title: 支持的参数
-layout: home
+layout: default
 nav_order: 500
+parent: 功能
 ---
 
 ## 支持的字段

@@ -1,7 +1,8 @@
 ---
 title: 免责声明
-layout: home
-nav_order: 900
+layout: default
+nav_order: 820
+parent: 其它
 ---
 
 ## 免责声明

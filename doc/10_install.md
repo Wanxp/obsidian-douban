@@ -1,6 +1,6 @@
 ---
 title: 如何安装
-layout: home
+layout: default
 nav_order: 200
 ---
 
