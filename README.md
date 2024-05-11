@@ -20,7 +20,8 @@
 </p>    
 
 这是一款[Obsidian](https://obsidian.md/)插件，支持在Obsidian中导入[豆瓣]()中的 _电影、书籍、音乐、电视剧、日记、游戏_  
-甚至是 _你标记过的书影音_ , 包含你的评分、观看日期、评论、阅读状态等信息. 访问[Get started/指导手册](https://wanxp.github.io/obsidian-douban/)  获取更多信息  
+甚至是 _你标记过的书影音_ , 包含你的评分、观看日期、评论、阅读状态等信息.  
+访问[Get started/指导手册](https://wanxp.github.io/obsidian-douban/)  获取更多信息  
 ![background](./doc/background.png)
 
 ---  
