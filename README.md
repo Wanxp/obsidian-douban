@@ -19,12 +19,12 @@
    </a>    
 </p>    
 
-在[Obsidian](https://obsidian.md/)使用并导入[豆瓣]()中的 _电影、书籍、音乐、电视剧、日记、游戏_  
+这是一款[Obsidian](https://obsidian.md/)插件，支持在Obsidian中导入[豆瓣]()中的 _电影、书籍、音乐、电视剧、日记、游戏_  
 甚至是 _你标记过的书影音_ , 包含你的评分、观看日期、评论、阅读状态等信息.   
 ![background](./doc/background.png)
 
 ---  
-关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中.  
+关于当前的插件如果有任何疑问, 缺少想要的导入内容或者想要什么功能, 欢迎提issues或加入到开发当中. 或访问[Get started/使用指导](https://wanxp.github.io/obsidian-douban/)  获取更多信息
 如果觉得喜欢或对您有帮助，欢迎一键三连-点亮 ⭐Star
 
 - [异常, 问题 & 新的想法](https://github.com/Wanxp/obsidian-douban/issues)
