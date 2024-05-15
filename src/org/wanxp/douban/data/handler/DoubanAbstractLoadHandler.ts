@@ -538,7 +538,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			const checked = await context.netFileHandler.downloadDBUploadPicGoByClipboardBefore(context);
 			if (!checked) {
 				//TODO 国际化
-				log.notice('未检测到PicGo软件, 请检查是否已开启PicGo的Server服务或者检查插件中配置地址是否正确，现使用默认的下载到本地的方式');
+				log.notice('连接PicGo软件失败, 请检查是否已开启PicGo的Server服务 或 检查插件中配置地址是否正确，现使用默认的下载到本地的方式');
 				return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
 			}
 			return await context.netFileHandler.downloadDBUploadPicGoByClipboard(image, filename, context, showError, headers);
