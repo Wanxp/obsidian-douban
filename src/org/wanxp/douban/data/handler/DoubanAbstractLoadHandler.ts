@@ -506,6 +506,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
+		folder = this.parsePartText(folder, extract, context)
+
 		const referHeaders = {'referer': image};
 		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
