@@ -10,6 +10,7 @@ import {doubanHeaders} from "../../constant/Douban";
 import { request } from "https";
 import HttpUtil from "../../utils/HttpUtil";
 import {DEFAULT_DOUBAN_HEADERS} from "../../constant/Constsant";
+import {DoubanHttpUtil} from "../../utils/DoubanHttpUtil";
 
 export default class UserComponent {
 	private settingsManager: SettingsManager;
@@ -73,7 +74,7 @@ export default class UserComponent {
 	}
 
 	async loadUserInfoByHeaders(headers: object): Promise<User> {
-		return HttpUtil.httpRequestGet('https://www.douban.com/mine/', headers, this.settingsManager)
+		return DoubanHttpUtil.httpRequestGet('https://www.douban.com/mine/', headers, this.settingsManager)
 			.then(load)
 			.then(this.getUserInfo);
 	}
@@ -95,7 +96,7 @@ export default class UserComponent {
 			 ...DEFAULT_DOUBAN_HEADERS,
 			 Cookie: cookie
 		 }
-		return HttpUtil.httpRequestGet('https://www.douban.com/mine/', headers1, this.settingsManager)
+		return DoubanHttpUtil.httpRequestGet('https://www.douban.com/mine/', headers1, this.settingsManager)
 			.then(load)
 			.then(this.getUserInfo);
 	};

@@ -440,3 +440,15 @@ export const EXAMPLE_SUBJECT_MAP: Map<string, DataField> = new Map([
 ]);
 
 export const MAX_STAR_NUMBER = 100;
+
+export enum PictureBedType {
+	PicGo = "PicGo"
+}
+
+export const PictureBedSetting_PicGo ={
+	url: "http://127.0.0.1:36677/upload"
+}
+
+export const PictureBedTypeRecords: { [key in PictureBedType]: string } = {
+	[PictureBedType.PicGo]: PictureBedType.PicGo
+}

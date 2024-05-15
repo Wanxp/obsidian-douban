@@ -33,6 +33,7 @@ import HtmlUtil from "../../../utils/HtmlUtil";
 import {VariableUtil} from "../../../utils/VariableUtil";
 import {DataField} from "../../../utils/model/DataField";
 import NumberUtil from "../../../utils/NumberUtil";
+import {DoubanHttpUtil} from "../../../utils/DoubanHttpUtil";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -100,7 +101,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		const url:string = this.getSubjectUrl(id);
 		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
 		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求header:${context.settings.loginHeadersContent}`)
-		return await HttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
+		return await DoubanHttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
 			.then(({data, userState}) => {
@@ -513,20 +514,30 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				const highFilename = fileNameSpilt.first() + '.jpg';
 
 				const highImage = this.getHighQuantityImageUrl(highFilename);
-				const resultValue = await context.netFileHandler.downloadFile(highImage, folder, highFilename, context, false, referHeaders);
+				const resultValue = await this.handleImage(highImage, folder, highFilename, context, false, referHeaders);
 				if (resultValue && resultValue.success) {
 					extract.image = resultValue.filepath;
 					return;
 				}
+
 			}catch (e) {
 				console.error(e);
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
 		}
-		const resultValue = await context.netFileHandler.downloadFile(image, folder, filename, context, true, referHeaders);
+		const resultValue = await this.handleImage(image, folder, filename, context, true, referHeaders);
 		if (resultValue && resultValue.success) {
 			extract.image = resultValue.filepath;
 		}
+	}
+
+	private async handleImage(image: string, folder: string, filename: string, context: HandleContext, showError: boolean, headers?: any) {
+		if (context.settings.pictureBedFlag) {
+			return await context.netFileHandler.downloadDBUploadPicGoByClipboard(image, filename, context, showError, headers);
+		}else {
+			return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
+		}
+
 	}
 
 	abstract getHighQuantityImageUrl(fileName:string):string;

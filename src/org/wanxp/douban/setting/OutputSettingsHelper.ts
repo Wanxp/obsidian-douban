@@ -6,7 +6,7 @@ import {
 	DEFAULT_SETTINGS_ARRAY_INPUT_SIZE, EXAMPLE_RATE, EXAMPLE_RATE_MAX,
 	EXAMPLE_SUBJECT_MAP, MAX_STAR_NUMBER,
 	PersonNameMode,
-	PersonNameModeRecords,
+	PersonNameModeRecords, PictureBedSetting_PicGo, PictureBedType, PictureBedTypeRecords,
 	SupportType
 } from "../../constant/Constsant";
 import SettingsManager from "./SettingsManager";
@@ -199,7 +199,25 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 		});
 
 	if(manager.plugin.settings.cacheImage) {
-		new Setting(containerEl).then(createFolderSelectionSetting({name: '121432', desc: '121433', placeholder: '121434', key: 'attachmentPath', manager: manager}));
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121440'))
+			.setDesc(i18nHelper.getMessage('121441'))
+			.addToggle((toggleComponent) => {
+				toggleComponent
+					// .setTooltip(i18nHelper.getMessage('121403'))
+					.setValue(manager.plugin.settings.pictureBedFlag)
+					.onChange(async (value) => {
+						manager.plugin.settings.pictureBedFlag = value;
+						await manager.plugin.saveSettings();
+						constructAttachmentFileSettingsUI(containerEl, manager);
+					});
+			});
+		if (manager.plugin.settings.pictureBedFlag) {
+			constructAttachmentFilePictureBedSettingsUI(containerEl, manager);
+		}else {
+			new Setting(containerEl).then(createFolderSelectionSetting({name: '121432', desc: '121433', placeholder: '121434', key: 'attachmentPath', manager: manager}));
+		}
+
 		new Setting(containerEl)
 			.setName(i18nHelper.getMessage('121435'))
 			.setDesc(i18nHelper.getMessage('121436'))
@@ -216,3 +234,47 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 	}
 }
 
+export function constructAttachmentFilePictureBedSettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+
+	var pictureBedSetting = manager.plugin.settings.pictureBedSetting
+	var pictureBedType = manager.plugin.settings.pictureBedType
+	if (manager.plugin.settings.pictureBedFlag && !pictureBedType) {
+		pictureBedType = PictureBedType.PicGo
+		if (pictureBedSetting == null) {
+			pictureBedSetting = PictureBedSetting_PicGo
+		}
+	}
+	var pictureBedTypeSettingsUI = new Setting(containerEl);
+	var pictureBedPropertySettingsUI =  new Setting(containerEl).settingEl;
+	pictureBedTypeSettingsUI.setName(i18nHelper.getMessage('121451')).then((setting) => {
+		setting.addDropdown((dropdwon) => {
+			dropdwon.addOptions(PictureBedTypeRecords)
+			dropdwon.setValue(manager.plugin.settings.pictureBedType)
+				.onChange(async (value: string) => {
+					manager.plugin.settings.pictureBedType = value as PictureBedType;
+					constructAttachmentFilePictureBedPropertySettingsUI(pictureBedPropertySettingsUI, manager);
+					await manager.plugin.saveSettings();
+				});
+		});
+	});
+	constructAttachmentFilePictureBedPropertySettingsUI(pictureBedPropertySettingsUI, manager);
+}
+
+export function constructAttachmentFilePictureBedPropertySettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
+	containerEl.empty();
+	const pictureBedSetting = manager.plugin.settings.pictureBedSetting
+	const pictureBedType = manager.plugin.settings.pictureBedType
+	if (pictureBedType == PictureBedType.PicGo) {
+		new Setting(containerEl)
+			.setName(i18nHelper.getMessage('121461'))
+			.addText((textField) => {
+				textField.setPlaceholder(PictureBedSetting_PicGo.url)
+					.setValue(pictureBedSetting.url)
+					.onChange(async (value) => {
+						pictureBedSetting.url = value;
+						await manager.plugin.saveSettings();
+						constructAttachmentFilePictureBedPropertySettingsUI(containerEl, manager);
+					});
+			});
+	}
+}

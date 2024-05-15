@@ -4,6 +4,7 @@ import {SearchPageFetcherInterface} from "./SearchPageFetcherInterface";
 import HttpUtil from "../../../../utils/HttpUtil";
 import {log} from "../../../../utils/Logutil";
 import {i18nHelper} from "../../../../lang/helper";
+import {DoubanHttpUtil} from "../../../../utils/DoubanHttpUtil";
 
 export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInterface {
 
@@ -22,7 +23,7 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 		if (!url) {
 			return Promise.resolve("");
 		}
-		return HttpUtil.httpRequestGet(url, this.settingsManager.getHeaders(), this.settingsManager)
+		return DoubanHttpUtil.httpRequestGet(url, this.settingsManager.getHeaders(), this.settingsManager)
 			.catch(e => {
 				throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e);
 			});    }

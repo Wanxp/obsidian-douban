@@ -220,6 +220,11 @@ PS: This file could be delete if you want to.
 	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
 	'121437': `Please login first, Then this function could be enable`,
 	'121438': `High Definition Cover looks better but it will take more space`,
+	'121440': `Use Picture Bed`,
+	'121441': `Save attachment file to picture bed`,
+	'121450': `Picture Bed Type`,
+	'121451': `Select picture bed type`,
+	'121461': `PicGo Upload Url`,
 
 
 	'121501': `Note folder`,

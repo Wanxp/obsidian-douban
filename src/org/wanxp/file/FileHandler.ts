@@ -197,6 +197,25 @@ export default class FileHandler {
 		}
 	}
 
+	async deleteFile(filePath: string): Promise<void> {
+		const {vault} = this._app;
+		const {adapter} = vault;
+		const fileExists = await adapter.exists(filePath);
+		if (fileExists) {
+			await adapter.remove(filePath);
+		}
+	}
+
+
+
+	getRootPath(): string {
+		const {vault} = this._app;
+		return  vault.getRoot().path;
+	}
+
+	getTmpPath(): string {
+		return FileUtil.join('.tmp', 'obsidian-douban');
+	}
 
 
 }

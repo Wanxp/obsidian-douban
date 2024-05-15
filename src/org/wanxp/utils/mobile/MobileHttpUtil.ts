@@ -2,7 +2,7 @@ import SettingsManager from "../../douban/setting/SettingsManager";
 import {requestUrl, RequestUrlParam, RequestUrlResponse} from "obsidian";
 import {log} from "../Logutil";
 import {i18nHelper} from "../../lang/helper";
-import DoubanHumanCheckModel from "../../douban/component/DoubanHumanCheckModel";
+import {DoubanHttpUtil} from "../DoubanHttpUtil";
 
 export default class MobileHttpUtil {
 	/**
@@ -45,7 +45,7 @@ export default class MobileHttpUtil {
 				settingsManager.debug(`Obsidian-Douban:获取网页如下:\n${response}`);
 				return response;
 			})
-			.then(s => this.humanCheck(s, url, settingsManager))
+			.then(s => DoubanHttpUtil.humanCheck(s, url, settingsManager))
 			.catch(e => {
 				if (e.toString().indexOf('403') > 0) {
 					throw log.error(i18nHelper.getMessage('130105'), e)
@@ -56,21 +56,6 @@ export default class MobileHttpUtil {
 	}
 
 
-	public static async humanCheck(html: any, url: string, settingsManager?: SettingsManager): Promise<any> {
-		if (!html) {
-			return html;
-		}
-		if (settingsManager) {
-			settingsManager.debug(html);
-		}
-		if (html && html.toString().indexOf("<title>禁止访问</title>") != -1) {
-			const loginModel = new DoubanHumanCheckModel(url);
-			await loginModel.load();
-			return '';
-		} else {
-			return html;
-		}
-	}
 
 
 }

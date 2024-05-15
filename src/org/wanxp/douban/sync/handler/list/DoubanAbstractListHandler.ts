@@ -11,6 +11,7 @@ import {SyncConfig} from "../../model/SyncConfig";
 import  { sleepRange} from "../../../../utils/TimeUtil";
 import {ALL} from "../../../../constant/DoubanUserState";
 import HttpUtil from "../../../../utils/HttpUtil";
+import {DoubanHttpUtil} from "../../../../utils/DoubanHttpUtil";
 
 export default abstract class DoubanAbstractListHandler implements DoubanListHandler{
 
@@ -50,7 +51,7 @@ export default abstract class DoubanAbstractListHandler implements DoubanListHan
 	}
 
 	async getPageList(url: string, context: HandleContext):Promise<SubjectListItem[]>  {
-		return HttpUtil.httpRequestGet(url,  context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
+		return DoubanHttpUtil.httpRequestGet(url,  context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.parseSubjectFromHtml(data, context))
 			.catch(e => log

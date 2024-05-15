@@ -1,7 +1,10 @@
 import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
-import {PersonNameMode, SupportType} from "./Constsant";
+import {PersonNameMode, PictureBedSetting_PicGo, PictureBedType, SupportType} from "./Constsant";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
+	pictureBedFlag: false,
+	pictureBedSetting: PictureBedSetting_PicGo,
+	pictureBedType: PictureBedType.PicGo,
 	arraySettings: [
 		{
 			"arrayName": "ArrayType1",
