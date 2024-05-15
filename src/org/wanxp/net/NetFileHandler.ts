@@ -88,7 +88,7 @@ export default class NetFileHandler {
 		//临时限定只支持PicGo
 		try {
 			const response = await HttpUtil.httpRequest(
-				HttpUtil.replaceUrlPath(context.settings.pictureBedSetting.url, 'heartbeat'), {}, context.plugin.settingsManager, {method: "post"});
+				HttpUtil.replaceUrlPath(context.settings.pictureBedSetting.url, '/heartbeat'), {}, context.plugin.settingsManager, {method: "post"});
 			const data = response.textJson as ResultI;
 			return data? data.success: false;
 		}catch (e) {
