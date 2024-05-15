@@ -8,7 +8,7 @@ parent: 如何使用
 ## Cookie登录Douban
 此方式仅在Obsidian-Douban中点击`登录按钮`，弹窗后，扫码登录失败的用户
 ### 操作
-1. 打开浏览器(此处以及后续默认为Chrome浏览器)
+1. 打开浏览器(此处默认为您使用的浏览器为Chrome或Chromium衍生浏览器)
 2. 访问[豆瓣网站](https://www.douban.com/)
 3. 在豆瓣网站中 登录豆瓣
 4. 再次访问`https://douban.com`
