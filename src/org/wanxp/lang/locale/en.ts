@@ -214,7 +214,7 @@ PS: This file could be delete if you want to.
 	'121430': `Save Attachment File`,
 	'121431': `Save attachment file to local disk, such as image ? If you do not enable this feature, it will not show cover image in note`,
 	'121432': `Attachment folder`,
-	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault.`,
+	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. example: {{myType}}/attachments`,
 	'121434': `assets`,
 	'121435': `Save High Definition Cover`,
 	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
