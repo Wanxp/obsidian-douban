@@ -34,6 +34,7 @@ import {VariableUtil} from "../../../utils/VariableUtil";
 import {DataField} from "../../../utils/model/DataField";
 import NumberUtil from "../../../utils/NumberUtil";
 import {DoubanHttpUtil} from "../../../utils/DoubanHttpUtil";
+import {logger} from "bs-logger";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -533,6 +534,13 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private async handleImage(image: string, folder: string, filename: string, context: HandleContext, showError: boolean, headers?: any) {
 		if (context.settings.pictureBedFlag) {
+			//临时限定只支持PicGo
+			const checked = await context.netFileHandler.downloadDBUploadPicGoByClipboardBefore(context);
+			if (!checked) {
+				//TODO 国际化
+				log.notice('未检测到PicGo软件, 请检查是否已开启PicGo的Server服务或者检查插件中配置地址是否正确，现使用默认的下载到本地的方式');
+				return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
+			}
 			return await context.netFileHandler.downloadDBUploadPicGoByClipboard(image, filename, context, showError, headers);
 		}else {
 			return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);

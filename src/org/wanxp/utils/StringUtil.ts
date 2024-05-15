@@ -109,6 +109,14 @@ export default class StringUtil {
 	}
 
 
+	public static notJsonString(str: string) {
+		try {
+			JSON.parse(str);
+			return false;
+		} catch (error) {
+			return true;
+		}
+	}
 }
 
 export const EscapeMap:Map< { [Symbol.replace](string: string, replaceValue: string): string; }, string> = new Map([

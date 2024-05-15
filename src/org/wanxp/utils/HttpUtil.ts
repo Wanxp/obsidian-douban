@@ -77,6 +77,15 @@ export default class HttpUtil {
 		throw new Error('Invalid URL');
 	}
 
+	public static replaceUrlPath(url: string, newPath: string): string {
+		const regex = /^(https?:\/\/[^\/]+)(:\d+)?(\/.*)$/;
+		const matches = url.match(regex);
+		if (matches && matches.length === 4) {
+			return matches[1] + (matches[2] || '') + newPath;
+		}
+		return url;
+	}
+
 	/**
 	 * 提取url
 	 * @param str

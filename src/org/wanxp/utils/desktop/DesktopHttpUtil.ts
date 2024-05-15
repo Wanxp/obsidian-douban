@@ -5,8 +5,8 @@ import DoubanHumanCheckModel from "../../douban/component/DoubanHumanCheckModel"
 import HttpUtil from "../HttpUtil";
 import {HttpResponse} from "../model/HttpResponse";
 
-var https:any = null;
-var http:any = null;
+var https: any = null;
+var http: any = null;
 
 export default class DesktopHttpUtil {
 
@@ -29,7 +29,7 @@ export default class DesktopHttpUtil {
 		})
 	}
 
-	private static httpRequest(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
+	private static httpRequest(url: string, options: any, times: number, resolve: any, rejects: any, settingsManager?: SettingsManager) {
 		settingsManager.debug(`Obsidian-Douban:从网络获取json开始:\nurl:${url}\nheaders:${JSON.stringify(options)}`);
 
 		var method = options.method;
@@ -48,56 +48,69 @@ export default class DesktopHttpUtil {
 					'Content-Type': 'application/json'
 				}
 			};
+			let req = null;
+			try {
 
-			const req = DesktopHttpUtil.getHttpClient(url).request(optionsInner, function (response: any)  {
-				let chunks: any = [],
-					size = 0;
-				if (settingsManager) {
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:url:\n${url}`);
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:header:\n${JSON.stringify(response.headers)}`);
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:body:\n${response.text}`);
-				}
+				req = DesktopHttpUtil.getHttpClient(url).request(optionsInner, function (response: any) {
+					let chunks: any = [],
+						size = 0;
+					if (settingsManager) {
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:url:\n${url}`);
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:header:\n${JSON.stringify(response.headers)}`);
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:body:\n${response.text}`);
+					}
 
-				response.on("data", function (chunk: any) {
-					chunks.push(chunk)
-					size += chunk.length
-				})
+					response.on("data", function (chunk: any) {
+						chunks.push(chunk)
+						size += chunk.length
+					})
 
-				response.on("end", function () {
-					const data = Buffer.concat(chunks, size)
-					const html = data.toString()
-					resolve(new HttpResponse(response.statusCode, response.headers, html))
-				})
-			});
-			const body = options.body;
-			if (body) {
-				req.write(body);
-			}else {
-				req.write('');
+					response.on("end", function () {
+						const data = Buffer.concat(chunks, size)
+						const html = data.toString()
+						resolve(new HttpResponse(response.statusCode, response.headers, html))
+					})
+				});
+			} catch (e) {
+				rejects(e);
 			}
-			req.end();
-		}else {
-			this.getHttpClient(url).get(url, { ...options }, function (response:any)  {
-				let chunks: any = [],
-					size = 0;
-				if (settingsManager) {
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:url:\n${url}`);
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:header:\n${JSON.stringify(response.headers)}`);
-					settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:body:\n${response.text}`);
+			if (req) {
+				const body = options.body;
+				if (body) {
+					req.write(body);
+				} else {
+					req.write('');
 				}
+				req.end();
+			}
+		} else {
+			try {
 
-				response.on("data", function (chunk: any) {
-					chunks.push(chunk)
-					size += chunk.length
-				})
+				this.getHttpClient(url).get(url, {...options}, function (response: any) {
+					let chunks: any = [],
+						size = 0;
+					if (settingsManager) {
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:url:\n${url}`);
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:header:\n${JSON.stringify(response.headers)}`);
+						settingsManager.debug(`Obsidian-Douban:从网络获取JSON完成${times}:body:\n${response.text}`);
+					}
 
-				response.on("end", function () {
-					const data = Buffer.concat(chunks, size)
-					const html = data.toString()
-					resolve(new HttpResponse(response.statusCode, response.headers, html))
-				})
-			});
+					response.on("data", function (chunk: any) {
+						chunks.push(chunk)
+						size += chunk.length
+					})
+
+					response.on("end", function () {
+						const data = Buffer.concat(chunks, size)
+						const html = data.toString()
+						resolve(new HttpResponse(response.statusCode, response.headers, html))
+					})
+				});
+			} catch (e) {
+				rejects(e);
+			}
 		}
+
 	}
 
 	private static getHttpClient(url?: string) {
@@ -106,7 +119,7 @@ export default class DesktopHttpUtil {
 				https = require("follow-redirects").https;
 			}
 			return https;
-		}else {
+		} else {
 			if (!http) {
 				http = require("follow-redirects").http;
 			}
@@ -131,7 +144,7 @@ export default class DesktopHttpUtil {
 		})
 	}
 
-	private  static httpRequestGetBufferInner(url: string, options: any, times:number, resolve:any, rejects:any, settingsManager?: SettingsManager) {
+	private static httpRequestGetBufferInner(url: string, options: any, times: number, resolve: any, rejects: any, settingsManager?: SettingsManager) {
 		if (settingsManager) {
 			settingsManager.debug(`Obsidian-Douban:从网络获取文件开始:\n${url}\nheaders:${JSON.stringify(options)}`);
 
