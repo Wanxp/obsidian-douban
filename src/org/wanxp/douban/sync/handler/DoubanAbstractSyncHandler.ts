@@ -8,6 +8,8 @@ import {sleepRange} from "../../../utils/TimeUtil";
 import DoubanSubjectLoadHandler from "../../data/handler/DoubanSubjectLoadHandler";
 import {DoubanListHandler} from "./list/DoubanListHandler";
 import DoubanSubject from "../../data/model/DoubanSubject";
+import {log} from "../../../utils/Logutil";
+import {i18nHelper} from "../../../lang/helper";
 
 export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implements  DoubanSyncHandler{
 
@@ -71,11 +73,15 @@ export abstract class DoubanAbstractSyncHandler<T extends  DoubanSubject> implem
 			if (!context.plugin.statusHolder.syncing()) {
 				return;
 			}
-			if(syncStatus.shouldSync(item.id)) {
-				let subject: DoubanSubject  = await this.doubanSubjectLoadHandler.handle(item.id, context);
-				await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
-			}else {
-				syncStatus.unHandle(item.id, item.title);
+			try {
+				if(syncStatus.shouldSync(item.id)) {
+					let subject: DoubanSubject  = await this.doubanSubjectLoadHandler.handle(item.id, context);
+					await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
+				}else {
+					syncStatus.unHandle(item.id, item.title);
+				}
+			}catch (e) {
+				log.notice(i18nHelper.getMessage('130120'))
 			}
 		}
 	}
