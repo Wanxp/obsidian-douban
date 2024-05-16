@@ -214,8 +214,9 @@ PS: This file could be delete if you want to.
 	'121430': `Save Attachment File`,
 	'121431': `Save attachment file to local disk, such as image ? If you do not enable this feature, it will not show cover image in note`,
 	'121432': `Attachment folder`,
-	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder, If blank, they will be placed in the default location for this vault. example: {{myType}}/attachments`,
-	'121434': `assets`,
+	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder,
+	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/assets`,
+	 '121434': `assets`,
 	'121435': `Save High Definition Cover`,
 	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
 	'121437': `Please login first, Then this function could be enable`,
@@ -232,7 +233,7 @@ PS: This file could be delete if you want to.
 	'121503': `Default Folder`,
 
 	'121601': `Note Name`,
-	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath),
+	'121602': `Nodes created from Obsidian-Douban will use this fileName as template(also support filePath), and support 
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/{{title}}`,
 	'121604': `Note Path Previous`,
 	'120603': `Display Preview`,
@@ -280,6 +281,7 @@ PS: This file could be delete if you want to.
 
 	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,
 	'130108': `Redirect times too much, please check your network or proxy`,
+	'130120': `An error occurred during Sync, but Sync will continue. Error item is {}`,
 
 	'140201': `[OB-Douban]: searching '{0}'...`,
 	'140202': `[OB-Douban]: result {0} rows`,
