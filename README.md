@@ -135,8 +135,8 @@
 8. 享受开发吧
 
 ## 交流社群
-<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px"> 
-<img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="245px">  
+<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="245px">
+<img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="200px">  
 
 
 [//]: # (<img src="doc/img/obsidian-douban-discord-qr_code.svg" width="300px">     )

@@ -119,8 +119,8 @@ Use the following method: Enter <kbd>Ctrl</kbd> + <kbd>P</kbd>, enter "Douban", 
 7. Enjoy your develop  
 
 ## Community
- <img src="img/obsidian-douban-qq-qr_code.svg" width="300px">   <img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="245px">  
-
+ <img src="img/obsidian-douban-qq-qr_code.svg" width="245px">
+<img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="200px">  
 
 
 ## Disclaimer
