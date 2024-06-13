@@ -18,8 +18,7 @@ nav_order: 10
 - ☑️ 支持自定义参数
   
 ## 交流社群
-<img src="img/obsidian-douban-qq-qr_code.svg" width="245px">
-<img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="200px">  
+<img src="img/obsidian-douban-qq-qr_code.svg" width="300px">  <img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="245px">  
 
 
 
