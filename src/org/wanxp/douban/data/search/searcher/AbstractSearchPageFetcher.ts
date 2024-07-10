@@ -5,6 +5,7 @@ import HttpUtil from "../../../../utils/HttpUtil";
 import {log} from "../../../../utils/Logutil";
 import {i18nHelper} from "../../../../lang/helper";
 import {DoubanHttpUtil} from "../../../../utils/DoubanHttpUtil";
+import {Platform} from "obsidian";
 
 export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInterface {
 
@@ -19,7 +20,7 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
     }
     fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
 		const start:number = (pageNum - 1) * pageSize;
-		const url:string = this.getUrl(keyword, start, pageSize);
+		const url:string = this.getSearchUrl(keyword, start, pageSize);
 		if (!url) {
 			return Promise.resolve("");
 		}
@@ -28,8 +29,18 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 				throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e);
 			});    }
 
-	abstract getUrl(keyword: string, start: number, pageSize: number):string;
+	getSearchUrl(keyword: string, start: number, pageSize: number):string {
+		keyword = keyword.trim();
+		if (keyword.length == 0) {
+			return "";
+		}
+		if (Platform.isMacOS) {
+			keyword = HttpUtil.encodeUrl(keyword);
+		}
+		return this.getUrl(keyword, start, pageSize)
+	}
 
+	abstract getUrl(keyword: string, start: number, pageSize: number):string;
 
 
 }

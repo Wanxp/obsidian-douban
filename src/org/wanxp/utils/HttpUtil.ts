@@ -99,5 +99,14 @@ export default class HttpUtil {
 		return str;
 	}
 
-
+	/**
+	 * 将字符进行url编码
+	 * @param keyword
+	 */
+	static encodeUrl(keyword: string) {
+		if (!keyword) {
+			return '';
+		}
+		return encodeURIComponent(keyword);
+	}
 }
