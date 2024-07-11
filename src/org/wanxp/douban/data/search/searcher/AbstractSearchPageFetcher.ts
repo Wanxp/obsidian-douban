@@ -34,9 +34,7 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 		if (keyword.length == 0) {
 			return "";
 		}
-		if (Platform.isMacOS) {
-			keyword = HttpUtil.encodeUrl(keyword);
-		}
+		keyword = HttpUtil.encodeUrl(keyword);
 		return this.getUrl(keyword, start, pageSize)
 	}
 
