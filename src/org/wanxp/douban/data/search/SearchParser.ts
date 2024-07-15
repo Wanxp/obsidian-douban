@@ -38,7 +38,7 @@ export default class SearchParserHandler {
 			})
 	}
 
-	static parseSearchJson(result: string, type:SupportType, start:number): SearchPage {
+	static parseSearchJson(result: string, type:SupportType, pageNum:number): SearchPage {
 		log.debug("解析给多页面结果");
 		const data:{total:number, limit:number, more:boolean, items:string[]} = JSON.parse(result);
 		const list:string[] = data.items;
@@ -46,7 +46,7 @@ export default class SearchParserHandler {
 			.map(e => load(e))
 			.map(e=>this.parseSearch(e))
 			.map(e => e? e[0]:null);
-			return new SearchPage(data.total, start / data.limit, data.limit, type, resultList);
+			return new SearchPage(data.total, pageNum, data.limit, type, resultList);
 		};
 
 }

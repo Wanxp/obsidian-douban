@@ -19,7 +19,7 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
         throw new Error("Method not implemented.");
     }
     fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
-		const start:number = (pageNum - 1) * pageSize;
+		const start:number = Math.floor((pageNum - 1) * pageSize);
 		const url:string = this.getSearchUrl(keyword, start, pageSize);
 		if (!url) {
 			return Promise.resolve("");
