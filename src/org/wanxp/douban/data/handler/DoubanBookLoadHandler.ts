@@ -133,7 +133,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	private getComment(html: CheerioAPI) {
-		let comment = html('span#rating').next().next().next().text().trim();
+		const comment = html("#interest_sect_level > div > span:last-child").text().trim();
 		if (comment) {
 			return comment;
 		}
