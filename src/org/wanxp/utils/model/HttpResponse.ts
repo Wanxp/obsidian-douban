@@ -1,3 +1,5 @@
+import {Platform} from "obsidian";
+
 export class HttpResponse {
 	private readonly _status:number;
 	private readonly _headers:Record<string, string>;
@@ -32,8 +34,10 @@ export class HttpResponse {
 	}
 
 	get textArrayBuffer():ArrayBuffer {
-		if (this.text instanceof Buffer) {
-			return this.text as Buffer;
+		if (Platform.isDesktopApp) {
+			if (this.text instanceof Buffer) {
+				return this.text as Buffer;
+			}
 		}
 		if (this.text instanceof ArrayBuffer) {
 			return this.text as ArrayBuffer;

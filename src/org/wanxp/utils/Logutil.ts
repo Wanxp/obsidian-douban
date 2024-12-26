@@ -36,7 +36,8 @@ export default class Logger {
 			console.error(e);
 		}else {
 			try {
-				console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}:${typeof e == 'string' ? e : JSON.stringify(e)}`);
+				let showMessage = typeof e == 'string' ? e : e.toString();
+				console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}: ${showMessage}`);
 			}catch (e) {
 				console.log(`OB-Douban:${moment(new Date()).format('YYYY-MM-DD HH:mm:SS')}:` + e.toString());
 			}
