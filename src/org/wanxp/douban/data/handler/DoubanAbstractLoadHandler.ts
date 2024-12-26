@@ -1,7 +1,7 @@
 import DoubanPlugin from "../../../main";
 import DoubanSubject, {DoubanParameterName} from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
-import {moment, TFile} from "obsidian";
+import {moment, Platform, TFile} from "obsidian";
 import {i18nHelper} from 'src/org/wanxp/lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
@@ -535,7 +535,8 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private async handleImage(image: string, folder: string, filename: string, context: HandleContext, showError: boolean, headers?: any) {
-		if (context.settings.pictureBedFlag) {
+		//只有在桌面版且开启了图片上传才会使用PicGo，并且开启图床功能
+		if (context.settings.pictureBedFlag && Platform.isDesktopApp) {
 			//临时限定只支持PicGo
 			const checked = await context.netFileHandler.downloadDBUploadPicGoByClipboardBefore(context);
 			if (!checked) {

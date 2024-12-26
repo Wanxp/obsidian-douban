@@ -3,6 +3,7 @@ import {requestUrl, RequestUrlParam, RequestUrlResponse} from "obsidian";
 import {log} from "../Logutil";
 import {i18nHelper} from "../../lang/helper";
 import {DoubanHttpUtil} from "../DoubanHttpUtil";
+import {request} from "https";
 
 export default class MobileHttpUtil {
 	/**
@@ -15,11 +16,14 @@ export default class MobileHttpUtil {
 		return this.httpRequestGetInner(url, headers, 0, settingsManager);
 	}
 	private static async httpRequestGetInner(url: string, headers: any, times:number, settingsManager?: SettingsManager): Promise<RequestUrlResponse> {
+
+		const {Cookie, ...headersInner} = headers;
+
 		let requestUrlParam: RequestUrlParam = {
 			url: url,
 			method: "GET",
-			headers: { ...headers},
-			throw: true
+			headers: {'Cookie': Cookie},
+			throw: true,
 		};
 		return await requestUrl(requestUrlParam)
 			// .then(res => res.text)

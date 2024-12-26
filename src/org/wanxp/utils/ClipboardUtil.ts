@@ -1,8 +1,10 @@
-const { clipboard, nativeImage } = require('electron');
+
 
 export class ClipboardUtil {
 
 	public static async writeImage(data:ArrayBuffer, options: ClipboardOptions = defaultClipboardOptions) {
+		const { clipboard, nativeImage } = require('electron');
+
 		await clipboard.writeImage(nativeImage.createFromBuffer(data));
 		console.log(`Copied to clipboard as HTML`);
 	}
