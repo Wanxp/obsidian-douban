@@ -207,7 +207,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			default:
 				resultName = name;
 		}
-		return resultName;
+		return resultName.trim();
 	}
 
 	getTitleNameByMode(name: string, personNameMode: string, context: HandleContext): string {
