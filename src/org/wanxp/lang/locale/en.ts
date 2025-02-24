@@ -100,13 +100,14 @@ PS: This file could be delete if you want to.
 	'100132': `Load Douban Login Page Failed`,
 
 
-	'1210': `Basic Setting`,
-	'1203': `Template Setting`,
-	'1220': `Output Setting`,
-	'1230': `Usable Variables`,
-	'1204': `Set template file path. If keep empty, it will use the default template file to create file. All the usable variables at the end.👇`,
+	'1210': `Basic`,
+	'1203': `Template`,
+	'1220': `Output`,
+	'1230': `Description`,
+	'1260': `Login`,
+	'1204': `Set template file path. The template file will be used when creating new notes . If keep empty, it will use the default template file to create file. All the usable variables at tab "Description" and "Custom Variables"`,
 	'1205': `🧡Tip: You can click the 'Copy' button to copy default template content, then create and paste to your own template file. After that, back to select the file. `,
-	'1250': `Advanced Setting`,
+	'1250': `Advanced`,
 	'1252': `Some Debug or Other Settings`,
 	'1251': `☢The Advanced Setting only could be changed after you know what you are doing`,
 
@@ -139,18 +140,18 @@ PS: This file could be delete if you want to.
 	'121101': `Template File`,
 	'121102': `This template will be used when creating new notes. If keep empty, it will use default template`,
 
-	'120101': `Movie Template File`,
+	'120101': `Movie`,
 	'120102': `This template will be used when creating new notes for Movie from Obsidian-Douban.`,
 	'120103': `Available template variables are :`,
 	'120104': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
 	'120105': `{{url}}, {{desc}}, {{datePublished}}, {{genre}}, `,
 	'120106': `{{originalTitle}},{{director}}, {{author}},`,
 	'120107': ` {{actor}}`,
-	'120110': `Movie Template File`,
+	'120110': `Movie`,
 
 
 
-	'120201': `Book Template File`,
+	'120201': `Book`,
 	'120202': `This template will be used when creating new notes for Movie from Obsidian-Douban. `,
 	'120203': `Available Book template variables are :`,
 	'120204': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -159,7 +160,7 @@ PS: This file could be delete if you want to.
 	'120207': `{{translator}}, {{isbn}}, {{price}}, {{totalPage}}`,
 	'120208': `{{series}}, {{binding}}, {{menu}}`,
 
-	'120301': `Music Template File`,
+	'120301': `Music`,
 	'120302': `This template will be used when creating new notes for Music from Obsidian-Douban.`,
 	'120303': `Available Music template variables are :`,
 	'120304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
@@ -167,7 +168,7 @@ PS: This file could be delete if you want to.
 	'120306': `{{actor}}, {{medium}}, {{albumType}},`,
 	'120307': `{{barcode}}, {{records}}`,
 
-	'120401': `Article Template File`,
+	'120401': `Article`,
 	'120402': `This template will be used when creating new notes for Article from Obsidian-Douban.`,
 	'120403': `Available Article template variables are :`,
 	'120404': `{{id}}, {{title}}, {{type}}, {{image}},`,
@@ -175,14 +176,14 @@ PS: This file could be delete if you want to.
 	'120406': `{{author}}, {{authorUrl}}, {{content}}`,
 	'120407': `{{timePublished}}`,
 
-	'121301': `Game Template File`,
+	'121301': `Game`,
 	'121302': `This template will be used when creating new notes for Game from Obsidian-Douban.`,
 	'121303': `Available Game template variables are :`,
 	'121304': `{{id}}, {{title}}, {{type}}, {{score}}, {{image}},`,
 	'121305': `{{url}}, {{desc}}, {{publisher}}, {{datePublished}}`,
 	'121306': `{{genre}}, {{aliases}}, {{developer}}, {{platform}}`,
 
-	'121801': `Teleplay Template File`,
+	'121801': `Teleplay`,
 	'121802': `This template will be used when creating new notes for Teleplay from Obsidian-Douban.`,
 
 	'120501': `Date Format`,
@@ -193,7 +194,7 @@ PS: This file could be delete if you want to.
 	'120506': `For more syntax, refer to`,
 	'120507': `Your current syntax looks like this`,
 	'120508': `format reference`,
-	'120601': `Array Spilt String`,
+	'120601': `Array`,
 	'120602': `string to join between array type, start、end string for array, such as authors, actors. 
     support \n (enter)`,
 	'120701': `Douban Request Headers`,
@@ -271,6 +272,21 @@ PS: This file could be delete if you want to.
 	'125032': `Clear Sync Cache, It will clear all the sync data, so that you can sync again`,
 
 	'125033': `Are you sure you want to perform this operation?`,
+
+	"125034": `Export Settings`,
+	"125035": `Export current plugin all settings to a local file, including all settings, sync records cache, and login status`,
+	"125047": `Choose Folder..`,
+	"125036": `Import Settings`,
+	"125037": `Import a previously backed up settings file, which will cover all current settings, sync records cache, and login status. For safety, it is recommended to backup the current settings before attempting to import`,
+	"125038": `Import Settings File`,
+	"125039": `Select File..`,
+	"125040": `Import`,
+	"125041": `Settings Import Successful`,
+	"125042": `Settings Import Failed`,
+	"125043": `Settings File Import Failed, please check if the file is correct`,
+	"125044": `Settings File Import Successful`,
+	"125045": `Settings File Import Successful, please reload the page`,
+	"125046": `Are you sure you import the settings file? Please make sure you have export settings before import config file. Note: Importing the settings file will **cover** all current settings, sync records cache, and login status`,
 
 	//error
 	'130101': `Fetch Data Error, {0}`,
