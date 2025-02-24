@@ -17,6 +17,8 @@ import {
 	ArraySettingFieldName,
 	DEFAULT_SETTINGS_ARRAY_NAME
 } from "./model/ArraySetting";
+import {logger} from "bs-logger";
+import {i18nHelper} from "../../lang/helper";
 
 export default class SettingsManager {
 	app: App;
@@ -227,5 +229,22 @@ export default class SettingsManager {
 
 	clearSyncCache() {
 		this.settings.syncHandledDataArray = [];
+	}
+
+	async loadAndSaveSettings(config: object) {
+		this.validateSettings(config);
+		// @ts-ignore
+		this.settings = Object.assign({}, config);
+		await this.plugin.saveSettings();
+	}
+
+	private validateSettings(config: object) {
+		if (!config) {
+			this.innerLogger.warn(i18nHelper.getMessage('125040'));
+		}
+	}
+
+	getSettings() {
+		return this.settings;
 	}
 }
