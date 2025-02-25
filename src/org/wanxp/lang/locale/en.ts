@@ -33,7 +33,7 @@ export default {
 PS: This file could be delete if you want to.
 `,
 	'110038': `DoubanSyncResult`,
-	'110039': `SyncNotSync:`,
+	'110039': `Incremental Sync:`,
 	'110040': `Only sync that haven't been synced yet. if not enabled, will sync all the subject'`,
 	'110041': `IncrementalSync`,
 	'110042': `EstimateTime`,
@@ -44,6 +44,17 @@ PS: This file could be delete if you want to.
 	'110052': `Description`,
 	'110152': `Confirm`,
 
+	'110070': `Sync Scope:`,
+	'110071': `All`,
+	'110072': `Recent Changes`,
+	'110075': `Last 10 Items`,
+	'110074': `Custom Time`,
+	'110076': `Custom Count`,
+	'110077': `From`,
+	'110078': `No.`,
+	'110079': `To`,
+	'110073': `Items`,
+	'110080': `Number`,
 
 	'exists':`[exists]`,
 	'unHandle':`[unHandle]`,
