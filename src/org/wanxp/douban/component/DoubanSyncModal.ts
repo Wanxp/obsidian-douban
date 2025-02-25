@@ -1,13 +1,19 @@
 import {
 	App,
-	ButtonComponent,
-	Modal, SearchComponent, Setting,
+	ButtonComponent, DropdownComponent,
+	Modal, SearchComponent, Setting, TextComponent, ValueComponent,
 } from "obsidian";
 
 import DoubanPlugin from "../../main";
 import {i18nHelper} from "src/org/wanxp/lang/helper";
 import HandleContext from "../data/model/HandleContext";
-import {SyncType, SyncTypeRecords} from "../../constant/Constsant";
+import {
+	DEFAULT_SETTINGS_ARRAY_INPUT_SIZE,
+	SupportType, SyncConditionType,
+	SyncConditionTypeRecords,
+	SyncType,
+	SyncTypeRecords
+} from "../../constant/Constsant";
 import {
 	ALL,
 	DoubanSubjectStateRecords_BOOK_SYNC,
@@ -25,6 +31,11 @@ import {createFileSelectionSetting} from "../setting/TemplateSettingHelper";
 import {FileSuggest} from "../setting/model/FileSuggest";
 import {getDefaultTemplateContent} from "../../constant/DefaultTemplateContent";
 import TimeUtil from "../../utils/TimeUtil";
+import SettingsManager from "../setting/SettingsManager";
+import {ArraySetting, DEFAULT_SETTINGS_ARRAY_NAME} from "../setting/model/ArraySetting";
+import {arraySettingDisplay} from "../setting/ArrayDisplayTypeSettingsHelper";
+import {DatePickComponent} from "./DatePickComponent";
+import {NumberComponent} from "./NumberComponent";
 
 export class DoubanSyncModal extends Modal {
 	plugin: DoubanPlugin;
@@ -122,6 +133,11 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
 			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
 			incrementalUpdate: true,
+			syncConditionType: SyncConditionType.LAST_UPDATE,
+			syncConditionDateFromValue: null,
+			syncConditionDateToValue: null,
+			syncConditionCountFromValue: null,
+			syncConditionCountToValue: null
 		};
 		this.showConfigPan(contentEl.createDiv('config'), syncConfig, false);
 		const controls = contentEl.createDiv("controls");
@@ -160,10 +176,10 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 	private showConfigPan(contentEl: HTMLElement, config:SyncConfig, disable:boolean) {
 		new Setting(contentEl);
 		this.showTypeDropdown(contentEl, config, disable);
-
-		this.showOutputFolderSelections(contentEl, config, disable);
-		this.showOutiFleName(contentEl, config, disable);
-		this.showAttachmentsFileConfig(contentEl, config, disable);
+		this.showCondition(contentEl, config, disable);
+		// this.showOutputFolderSelections(contentEl, config, disable);
+		// this.showOutiFleName(contentEl, config, disable);
+		// this.showAttachmentsFileConfig(contentEl, config, disable);
 		this.showUpdateAllConfig(contentEl, config, disable);
 		this.showForceUpdateConfig(contentEl, config, disable);
 	}
@@ -217,7 +233,7 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 					});
 			}).setDisabled(disable);
 		this.openScopeDropdown(scopeSelections, config, disable);
-		this.showTemplateFileSelectionSetting(templateFile, config, disable);
+		// this.showTemplateFileSelectionSetting(templateFile, config, disable);
 	}
 
 	private getDefaultTemplatePath(value: string) {
@@ -411,5 +427,107 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			})
 			.setDisabled(disable);
 	}
+
+	private showCondition(contentEl: HTMLElement, config: SyncConfig, disable: boolean) {
+		showConditionItem(contentEl.createDiv("sync-douban-condition"), this.plugin.settingsManager, config, disable);
+	}
+}
+
+function showConditionItem(containerEl: HTMLElement, manager: SettingsManager, config: SyncConfig, disable: boolean) {
+	containerEl.empty();
+	const condition = new Setting(containerEl).setName(i18nHelper.getMessage('110070'))
+
+	const conditionDesc = condition.descEl.createDiv('sync-douban-condition-desc');
+	new DropdownComponent(conditionDesc).addOptions(SyncConditionTypeRecords)
+		.setValue(config.syncConditionType)
+		.onChange((value) => {
+			config.syncConditionType = value;
+			showConditionItem(containerEl, manager, config, disable);
+		}).setDisabled(disable);
+	showConditionItemInput(conditionDesc, config, disable);
+}
+
+function showConditionItemInput(containerEl: HTMLElement, config: SyncConfig, disable: boolean) {
+	if (config.syncConditionType == SyncConditionType.CUSTOM_ITEM) {
+		showCustomInputCount(containerEl, config, disable);
+	}else if (config.syncConditionType == SyncConditionType.CUSTOM_TIME) {
+		showCustomInputTime(containerEl, config, disable);
+	}
+}
+
+function showCustomInputCount(containerEl: HTMLElement, config: SyncConfig, disable: boolean) {
+	containerEl.createEl('span', { text: '   ' })
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110077') })
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110078') })
+	const fromField = new TextComponent(containerEl);
+	fromField.setPlaceholder(i18nHelper.getMessage('110080'))
+		.setValue(config.syncConditionCountFromValue)
+		.onChange(async (value) => {
+			if (!value) {
+				return;
+			}
+			config.syncConditionCountFromValue = value;
+		}).setDisabled(disable);
+	let fromEl = fromField.inputEl;
+	fromEl.addClass('obsidian_douban_settings_input')
+	fromEl.style.width ='20%';
+	containerEl.appendChild(fromEl);
+	const lang = window.localStorage.getItem('language');
+	if (lang == 'zh') {
+		containerEl.createEl('span', {text: i18nHelper.getMessage('110073')})
+	}
+
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110079') })
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110078') })
+	const toField = new TextComponent(containerEl);
+	toField.setPlaceholder(i18nHelper.getMessage('110080'))
+		.setValue(config.syncConditionCountToValue)
+		.onChange(async (value) => {
+			if (!value) {
+				return;
+			}
+			config.syncConditionCountToValue = value;
+		}).setDisabled(disable);
+	let toEl = toField.inputEl;
+	toEl.addClass('obsidian_douban_settings_input')
+	toEl.style.width ='20%';
+	containerEl.appendChild(toEl);
+	if (lang == 'zh') {
+		containerEl.createEl('span', {text: i18nHelper.getMessage('110073')})
+	}
+}
+
+function showCustomInputTime(containerEl: HTMLElement, config: SyncConfig, disable: boolean) {
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110077') })
+	const fromDateField = new TextComponent(containerEl);
+	const fromDateEl = fromDateField.inputEl;
+	fromDateEl.type = 'date';
+	fromDateEl.value = config.syncConditionDateFromValue??TimeUtil.getLastMonth().toISOString().substring(0, 10);
+	fromDateField.setPlaceholder(i18nHelper.getMessage('110075'))
+		.setValue(config.syncConditionDateFromValue)
+		.onChange(async (value) => {
+			if (!value) {
+				return;
+			}
+			config.syncConditionDateFromValue = value;
+		}).setDisabled(disable);
+	fromDateEl.addClass('obsidian_douban_settings_input')
+	containerEl.appendChild(fromDateEl);
+
+	containerEl.createEl('span', { text: i18nHelper.getMessage('110079') })
+	const toDateField = new TextComponent(containerEl);
+	let toDateEl = toDateField.inputEl;
+	toDateEl.type = 'date';
+	toDateEl.value = config.syncConditionDateToValue??new Date().toISOString().substring(0, 10);
+	toDateField.setPlaceholder(i18nHelper.getMessage('110075'))
+		.setValue(config.syncConditionDateFromValue)
+		.onChange(async (value) => {
+			if (!value) {
+				return;
+			}
+			config.syncConditionDateFromValue = value;
+		}).setDisabled(disable);
+	toDateEl.addClass('obsidian_douban_settings_input')
+	containerEl.appendChild(toDateEl);
 
 }

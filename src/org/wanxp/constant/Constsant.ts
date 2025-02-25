@@ -452,3 +452,44 @@ export const PictureBedSetting_PicGo ={
 export const PictureBedTypeRecords: { [key in PictureBedType]: string } = {
 	[PictureBedType.PicGo]: PictureBedType.PicGo
 }
+
+
+export enum SyncConditionType {
+	/**
+	 * 最近新变动
+	 */
+	ALL = "all",
+	/**
+	 * 最近新变动
+	 */
+	LAST_UPDATE = "lastUpdate",
+
+	/**
+	 * 最近10条
+	 */
+	LAST_TEN = "lastTen",
+
+	/**
+	 * 自定义时间
+	 */
+	CUSTOM_TIME = "customTime",
+
+	/**
+	 * 自定义条数
+	 */
+	CUSTOM_ITEM = "customItem",
+
+}
+
+/**
+ * 名称模式选项
+ */
+// @ts-ignore
+export const SyncConditionTypeRecords: { [key in SyncConditionType]: string } = {
+	[SyncConditionType.ALL]: i18nHelper.getMessage('110071'),
+	[SyncConditionType.LAST_UPDATE]: i18nHelper.getMessage('110072'),
+	[SyncConditionType.LAST_TEN]: i18nHelper.getMessage('110075'),
+	[SyncConditionType.CUSTOM_ITEM]: i18nHelper.getMessage('110076'),
+	[SyncConditionType.CUSTOM_TIME]: i18nHelper.getMessage('110074'),
+
+}
