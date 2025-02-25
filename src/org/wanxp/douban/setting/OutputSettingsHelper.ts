@@ -1,6 +1,6 @@
 import {i18nHelper} from "../../lang/helper";
 import {Setting, TextComponent, ToggleComponent} from "obsidian";
-import {createFolderSelectionSetting} from "./TemplateSettingHelper";
+import {createFolderSelectionSetting, createFolderSelectionSettingInput} from "./TemplateSettingHelper";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {
 	DEFAULT_SETTINGS_ARRAY_INPUT_SIZE, EXAMPLE_RATE, EXAMPLE_RATE_MAX,
@@ -14,6 +14,7 @@ import NumberUtil from "../../utils/NumberUtil";
 import {VariableUtil} from "../../utils/VariableUtil";
 import {FileUtil} from "../../utils/FileUtil";
 import {ScoreSetting} from "./model/ScoreSetting";
+import DoubanPlugin from "../../main";
 
 
 function showStarExample(containerEl: HTMLElement, manager: SettingsManager) {
@@ -111,16 +112,21 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 }
 
 export function constructOutUI(containerEl: HTMLElement, manager: SettingsManager) {
-	containerEl.createEl('h3', { text: i18nHelper.getMessage('1220') });
+	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1220') });
 
 	new Setting(containerEl);
 	const attachmentFileSetting = containerEl.createDiv({ cls: 'settings-item-attachment' });
 	constructAttachmentFileSettingsUI(attachmentFileSetting, manager);
 
 	const folder = new Setting(containerEl);
+	const folderInput = new Setting(containerEl);
+
 	const outFolder = containerEl.createDiv({ cls: 'settings-item' });
 	const filePathDisplayExample = containerEl.createDiv('filePath-display-example');
-	folder.then(createFolderSelectionSetting({name: '121501', desc: '121502', placeholder: '121503', key: 'dataFilePath', manager: manager}, filePathDisplayExample));
+
+	folder.then(createFolderSelectionSetting({containerEl: containerEl, name: '121501', desc: '121502', placeholder: null, key: null, manager: manager}, filePathDisplayExample));
+	folderInput.then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121503', key: 'dataFilePath', manager: manager}, filePathDisplayExample));
+
 	constructOutputFileNameUI(outFolder, filePathDisplayExample, manager);
 
 
@@ -215,7 +221,10 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 		if (manager.plugin.settings.pictureBedFlag) {
 			constructAttachmentFilePictureBedSettingsUI(containerEl, manager);
 		}else {
-			new Setting(containerEl).then(createFolderSelectionSetting({name: '121432', desc: '121433', placeholder: '121434', key: 'attachmentPath', manager: manager}));
+			new Setting(containerEl).then(createFolderSelectionSetting({containerEl: containerEl, name: '121432', desc: '121433', placeholder: null, key: null, manager: manager}));
+			new Setting(containerEl).then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121434', key: 'attachmentPath', manager: manager}));
+
+			;
 		}
 
 		new Setting(containerEl)

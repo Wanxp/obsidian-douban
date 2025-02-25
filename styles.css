@@ -107,6 +107,62 @@
 }
 
 
+/* Add this CSS to your stylesheet */
+.obsidian_douban_settings_tab_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.obsidian_douban_settings_tab_headers {
+  display: flex;
+  /*border-bottom: 1px solid #ccc;*/
+}
+
+.obsidian_douban_settings_tab_header {
+  padding: 10px;
+  cursor: pointer;
+  /*border: 1px solid #ccc;*/
+  border-bottom: none;
+  margin-right: 5px;
+}
+
+
+
+.obsidian_douban_settings_tab_contents {
+  display: flex;
+  flex-direction: column;
+}
+
+.obsidian_douban_settings_tab_content {
+  display: none;
+  padding: 10px;
+  /*border: 1px solid #ccc;*/
+}
+
+.obsidian_douban_settings_tab_header.active {
+  background-color: #282828;
+  font-weight: bold;
+  border: 1px solid #323232;
+  border-radius: 8px 8px 0 0; /* Rounded corners for the top */
+}
+
+.obsidian_douban_settings_tab_content.active {
+  background-color: #282828;
+  display: block;
+  padding: 10px;
+  border: 1px solid #323232;
+  border-radius: 0 8px 8px 8px; /* Rounded corners for the bottom */
+}
+
+.obsidian_douban_template_file_select {
+	width: 100%;
+}
+
+
+.setting-item-control.obsidian_douban_template_file_select > div.search-input-container {
+	width: 100%;
+}
+
 
 
 

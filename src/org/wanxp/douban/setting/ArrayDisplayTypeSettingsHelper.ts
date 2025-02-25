@@ -4,14 +4,15 @@ import {Setting, TextComponent} from "obsidian";
 import {i18nHelper} from "../../lang/helper";
 import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
 import {DEFAULT_SETTINGS_ARRAY_INPUT_SIZE} from "../../constant/Constsant";
+import DoubanPlugin from "../../main";
 
 
 export function arraySettingDisplayUI(containerEl: HTMLElement, manager: SettingsManager) {
-	containerEl.createEl('h3', {text: i18nHelper.getMessage('120601')});
-	arraySettingDisplay(containerEl.createDiv('array-settings'), manager, false);
+	// containerEl.createEl('h3', {text: i18nHelper.getMessage('120601')});
+	arraySettingDisplay(containerEl.createDiv('array-settings'), manager, true);
 }
 
-export function arraySettingDisplay(containerEl: HTMLElement, manager: SettingsManager, displayExtraListTypeFlag: boolean = false) {
+export function arraySettingDisplay(containerEl: HTMLElement, manager: SettingsManager, displayExtraListTypeFlag: boolean = true) {
 	containerEl.empty();
 	const arraySet = new Setting(containerEl)
 		.setName(i18nHelper.getMessage('120601'))
@@ -25,27 +26,28 @@ export function arraySettingDisplay(containerEl: HTMLElement, manager: SettingsM
 					arraySettingDisplay(containerEl, manager, true);
 				});
 		});
-	if (displayExtraListTypeFlag) {
-		arraySettingDisplayItem(containerEl, manager, manager.getArraySetting(DEFAULT_SETTINGS_ARRAY_NAME));
-		displayExtraListType(manager, containerEl);
-		arraySet.addButton((button) => {
-			button
-				.setIcon('down-chevron-glyph')
-				.setTooltip(i18nHelper.getMessage('120608'))
-				.onClick(async () => {
-					arraySettingDisplay(containerEl, manager, false);
-				});
-		});
-	}else {
-		arraySet.addButton((button) => {
-			button
-				.setIcon('right-chevron-glyph')
-				.setTooltip(i18nHelper.getMessage('120608'))
-				.onClick(async () => {
-					arraySettingDisplay(containerEl, manager, true);
-				});
-		});
-	}
+	// if (displayExtraListTypeFlag) {
+	new Setting(containerEl)
+	arraySettingDisplayItem(containerEl, manager, manager.getArraySetting(DEFAULT_SETTINGS_ARRAY_NAME));
+	displayExtraListType(manager, containerEl);
+		// arraySet.addButton((button) => {
+		// 	button
+		// 		.setIcon('down-chevron-glyph')
+		// 		.setTooltip(i18nHelper.getMessage('120608'))
+		// 		.onClick(async () => {
+		// 			arraySettingDisplay(containerEl, manager, false);
+		// 		});
+		// });
+	// }else {
+	// 	arraySet.addButton((button) => {
+	// 		button
+	// 			.setIcon('right-chevron-glyph')
+	// 			.setTooltip(i18nHelper.getMessage('120608'))
+	// 			.onClick(async () => {
+	// 				arraySettingDisplay(containerEl, manager, true);
+	// 			});
+	// 	});
+	// }
 }
 
 function arraySettingDisplayItem(containerEl: HTMLElement, manager: SettingsManager, arraySetting:ArraySetting) {

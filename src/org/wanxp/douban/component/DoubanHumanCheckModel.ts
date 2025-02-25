@@ -3,7 +3,7 @@ import { log } from 'src/org/wanxp/utils/Logutil';
 import {i18nHelper} from "../../lang/helper";
 import {DoubanSettingTab} from "../setting/DoubanSettingTab";
 import SettingsManager from "../setting/SettingsManager";
-import {constructDoubanTokenSettingsUI} from "../setting/BasicSettingsHelper";
+import {constructDoubanTokenSettingsUI} from "../setting/LoginSettingsHelper";
 
 // Credits go to zhaohongxuan's Weread Plugin : https://github.com/zhaohongxuan/obsidian-weread-plugin
 

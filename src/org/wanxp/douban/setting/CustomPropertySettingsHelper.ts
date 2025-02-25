@@ -3,9 +3,10 @@ import SettingsManager from "./SettingsManager";
 import {CustomProperty} from "./model/CustomProperty";
 import {ButtonComponent, DropdownComponent, ExtraButtonComponent, Setting, TextComponent} from "obsidian";
 import {SupportType} from "../../constant/Constsant";
+import DoubanPlugin from "../../main";
 
 export function constructCustomPropertySettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
-	containerEl.createEl('h3', { text: i18nHelper.getMessage('1240') });
+	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1240') });
 	containerEl.createEl('p', { text: i18nHelper.getMessage('1242') });
 	const customProperties = manager.plugin.settings.customProperties;
 	new Setting(containerEl)

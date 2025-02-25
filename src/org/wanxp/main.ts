@@ -224,16 +224,10 @@ export default class DoubanPlugin extends Plugin {
 		});
 
 		this.settingsManager = new SettingsManager(app, this);
-		this.fetchOnlineData(this.settingsManager);
+		// this.fetchOnlineData(this.settingsManager);
 		this.userComponent = new UserComponent(this.settingsManager);
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
-		if (this.userComponent.needLogin()) {
-			try {
-				await this.userComponent.login();
-			}catch (e) {
-				log.debug(i18nHelper.getMessage('100101'));
-			}
-		}
+
 		this.settingTab = new DoubanSettingTab(this.app, this);
 		this.addSettingTab(this.settingTab);
 		this.statusHolder = new GlobalStatusHolder(this.app, this);
@@ -322,22 +316,5 @@ export default class DoubanPlugin extends Plugin {
 		syncConfig.dataFileNamePath = syncConfig.dataFileNamePath ? syncConfig.dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
 
-	private fetchOnlineData(settingsManager: SettingsManager) {
-		// const gistId: string = this.settings.onlineSettingsGistId??DEFAULT_SETTINGS.onlineSettingsGistId;
-		// const fileName: string = this.settings.onlineSettingsFileName??DEFAULT_SETTINGS.onlineSettingsFileName;
-		const gistId: string = DEFAULT_SETTINGS.onlineSettingsGistId;
-		const fileName: string = DEFAULT_SETTINGS.onlineSettingsFileName;
-		GithubUtil.getGistsData(gistId, fileName)
-			.then(data => {
-				this.onlineData = JSON.parse(data);
-				this.fillOnlineData(this.onlineData, settingsManager);
-			})
-	}
-
-	private fillOnlineData(onlineData: DoubanPluginOnlineData, settingsManager: SettingsManager) {
-		if (onlineData.settings) {
-			settingsManager.onlineSettings = onlineData.settings;
-		}
-	}
 }
 

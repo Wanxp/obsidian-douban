@@ -1,7 +1,7 @@
 import {DoubanSettingTab} from "../setting/DoubanSettingTab";
 import {i18nHelper} from "../../lang/helper";
 import SettingsManager from "../setting/SettingsManager";
-import {constructDoubanTokenSettingsUI, constructLoginSettingsUI} from "../setting/BasicSettingsHelper";
+import {constructDoubanTokenSettingsUI, constructLoginSettingsUI} from "../setting/LoginSettingsHelper";
 import {log} from "../../utils/Logutil";
 
 // Credits go to zhaohongxuan's Weread Plugin : https://github.com/zhaohongxuan/obsidian-weread-plugin

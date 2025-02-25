@@ -1,9 +1,10 @@
 import SettingsManager from "./SettingsManager";
 import {i18nHelper} from "../../lang/helper";
 import {Setting} from "obsidian";
+import DoubanPlugin from "../../main";
 
 export function constructTemplateVariablesUI(containerEl: HTMLElement, manager: SettingsManager) {
-	containerEl.createEl('h3', { text: i18nHelper.getMessage('1230') });
+	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1230') });
 	containerEl.createEl('p', { text: i18nHelper.getMessage('122003') });
 
 	const basicVariablesTable = new DocumentFragment();
