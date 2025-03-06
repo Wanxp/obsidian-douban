@@ -1,7 +1,7 @@
-import {SyncItemStatus} from "../../../constant/Constsant";
+import { SyncItemStatus } from "../../../constant/Constsant";
 
 export interface SyncItemResult {
-	id:string,
-	title:string,
-	status:SyncItemStatus,
+	id: string;
+	title: string;
+	status: SyncItemStatus;
 }

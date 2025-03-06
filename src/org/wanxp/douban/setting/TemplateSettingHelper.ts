@@ -38,7 +38,7 @@ export function createFileSelectionSetting({containerEl, name, desc, placeholder
 			if (oldValue) {
 				v = oldValue;
 			}
-			new FileTreeSelectSuggest(manager.app, search.inputEl);
+			const fileTreeSelectSuggest = new FileTreeSelectSuggest(manager.app, search.inputEl, manager, key);
 			// @ts-ignore
 			search.setValue(v);
 			// @ts-ignore
@@ -48,6 +48,7 @@ export function createFileSelectionSetting({containerEl, name, desc, placeholder
 			search.onChange(async (value: string) => {
 					manager.updateSetting(key, value);
 				});
+
 		});
 
 		setting.addExtraButton((button) => {

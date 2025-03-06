@@ -1,3 +1,15 @@
+/* 获取主题颜色并定义新的颜色 */
+:root {
+	--obsidian-primary-color: var(--text-normal);
+	--obsidian-secondary-color: var(--background-primary);
+
+	/* 定义新的颜色，稍微调整亮度或饱和度 */
+	--plugin-primary-color: hsl(var(--obsidian-primary-color-h), var(--obsidian-primary-color-s), calc(var(--obsidian-primary-color-l) + 10%));
+	--plugin-secondary-color: hsl(var(--obsidian-secondary-color-h), var(--obsidian-secondary-color-s), calc(var(--obsidian-secondary-color-l) - 10%));
+}
+
+
+
 .obsidian_douban_settings_area {
     margin-left: 5px;
     margin-right: 5px;
@@ -140,17 +152,17 @@
 }
 
 .obsidian_douban_settings_tab_header.active {
-  background-color: #282828;
+  background-color: var(--plugin-primary-color);
   font-weight: bold;
-  border: 1px solid #323232;
+  border: 1px solid var(--plugin-secondary-color);
   border-radius: 8px 8px 0 0; /* Rounded corners for the top */
 }
 
 .obsidian_douban_settings_tab_content.active {
-  background-color: #282828;
+  background-color: var(--plugin-primary-color);
   display: block;
   padding: 10px;
-  border: 1px solid #323232;
+  border: 1px solid var(--plugin-secondary-color);
   border-radius: 0 8px 8px 8px; /* Rounded corners for the bottom */
 }
 

@@ -1,10 +1,10 @@
 export interface  SyncConfig {
 	syncType: string,
 	syncConditionType: string,
-	syncConditionCountFromValue: string,
-	syncConditionCountToValue: string,
-	syncConditionDateFromValue: string,
-	syncConditionDateToValue: string,
+	syncConditionCountFromValue: number,
+	syncConditionCountToValue: number,
+	syncConditionDateFromValue: Date,
+	syncConditionDateToValue: Date,
 	scope: string,
 	force: boolean,
 	dataFilePath: string;

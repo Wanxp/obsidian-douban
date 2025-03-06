@@ -223,7 +223,7 @@ export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
  * 同步模式选项
  */
 // @ts-ignore
-export const SyncTypeRecords: { [key in SyncType]: string } = {
+export const SyncTypeRecords: { [key in SyncType | string]: string } = {
 	[SyncType.movie]: i18nHelper.getMessage('504103'),
 	[SyncType.teleplay]: i18nHelper.getMessage('504107'),
 	[SyncType.book]: i18nHelper.getMessage('504102'),
@@ -257,6 +257,7 @@ export enum SyncItemStatus {
 	replace = 'replace',
 	create = 'create',
 	fail = 'fail',
+	failByDiffType = 'failByDiffType',
 	unHandle = 'unHandle',
 }
 
@@ -459,15 +460,15 @@ export enum SyncConditionType {
 	 * 最近新变动
 	 */
 	ALL = "all",
-	/**
-	 * 最近新变动
-	 */
-	LAST_UPDATE = "lastUpdate",
+	// /**
+	//  * 最近新变动
+	//  */
+	// LAST_UPDATE = "lastUpdate",
 
 	/**
 	 * 最近10条
 	 */
-	LAST_TEN = "lastTen",
+	LAST_THIRTY = "lastThirty",
 
 	/**
 	 * 自定义时间
@@ -485,10 +486,10 @@ export enum SyncConditionType {
  * 名称模式选项
  */
 // @ts-ignore
-export const SyncConditionTypeRecords: { [key in SyncConditionType]: string } = {
+export const SyncConditionTypeRecords: { [key in SyncConditionType|string]: string } = {
 	[SyncConditionType.ALL]: i18nHelper.getMessage('110071'),
-	[SyncConditionType.LAST_UPDATE]: i18nHelper.getMessage('110072'),
-	[SyncConditionType.LAST_TEN]: i18nHelper.getMessage('110075'),
+	// [SyncConditionType.LAST_UPDATE]: i18nHelper.getMessage('110072'),
+	[SyncConditionType.LAST_THIRTY]: i18nHelper.getMessage('110075'),
 	[SyncConditionType.CUSTOM_ITEM]: i18nHelper.getMessage('110076'),
 	[SyncConditionType.CUSTOM_TIME]: i18nHelper.getMessage('110074'),
 

@@ -1,21 +1,14 @@
-import {SearchPageInfo} from "./SearchPageInfo";
-import {SupportType} from "../../../constant/Constsant";
+import { SearchPageInfo } from "./SearchPageInfo";
+import { SupportType } from "../../../constant/Constsant";
+import {SearchPageTypeOf} from "./SearchPageTypeOf";
 
-export class SearchPage extends SearchPageInfo{
+export class SearchPage extends SearchPageTypeOf<any> {
 
-	private _list:any[];
-
-
-	constructor(total: number, pageNum: number, pageSize: number, type:SupportType, list: any[]) {
-		super(total, pageNum, pageSize, type);
-		this._list = list;
-	}
-
-	public get list() {
-		return this._list;
-	}
-
-	public static empty(type:SupportType):SearchPage {
+	public static empty(type: SupportType): SearchPage {
 		return new SearchPage(0, 0, 0, type, []);
+	}
+
+	static emptyWithNoType() {
+		return new SearchPage(0, 0, 0, null, []);
 	}
 }

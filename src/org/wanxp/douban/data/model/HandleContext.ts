@@ -26,5 +26,6 @@ export default interface HandleContext {
 	syncActive?:boolean;
 
 	searchPage?:SearchPageInfo;
+	syncOffset?:number;
 
 }
