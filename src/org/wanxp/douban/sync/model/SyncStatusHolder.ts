@@ -1,7 +1,18 @@
 import {SyncConfig} from "./SyncConfig";
 import {SyncItemResult} from "./SyncItemResult";
-import {BasicConst, SyncItemStatus} from "../../../constant/Constsant";
+import {
+	BasicConst,
+	SupportType,
+	SyncConditionTypeRecords,
+	SyncItemStatus,
+	SyncTypeRecords
+} from "../../../constant/Constsant";
 import {SyncHandledData} from "../../setting/model/SyncHandledData";
+import {
+	DoubanSubjectState,
+	DoubanSubjectStateRecords,
+	DoubanSubjectStateRecords_SYNC
+} from "../../../constant/DoubanUserState";
 
 export default class SyncStatusHolder {
 
@@ -12,15 +23,20 @@ export default class SyncStatusHolder {
 	[SyncItemStatus.replace, 0],
 	[SyncItemStatus.create, 0],
 	[SyncItemStatus.fail, 0],
-	[SyncItemStatus.unHandle, 0],
+		[SyncItemStatus.failByDiffType, 0],
+		[SyncItemStatus.unHandle, 0],
 	]);
 
 	private key: string;
+	//不管处不处理的总数，比如会包含已经存在的，或者条件没覆盖的部分，比如过滤条件选择了1-2条，但总共其实有10条
+	private allTotal: number;
 
 	public syncConfig: SyncConfig;
+	//处理的总数
 	private total:number;
 	private handle:number;
 	private needHandled:number;
+	private message:string = '';
 
 	constructor(syncConfig: SyncConfig) {
 		this.syncConfig = syncConfig;
@@ -45,6 +61,16 @@ export default class SyncStatusHolder {
 	getHandle():number {
 		return this.handle;
 	}
+
+	getAllTotal():number {
+		return this.allTotal;
+	}
+
+	setAllTotal(allTotal:number) {
+		this.allTotal = allTotal;
+	}
+
+
 
 	/**
 	 * 已处理总数，包含已经存在不需要同步的部分
@@ -84,6 +110,10 @@ export default class SyncStatusHolder {
 
 	public fail(id:string, title:string) {
 		this.updateResult(id, title, SyncItemStatus.fail);
+	}
+
+	public failByDiffType(id:string, title:string) {
+		this.updateResult(id, title, SyncItemStatus.failByDiffType);
 	}
 
 	private updateResult(id:string, title:string, status:SyncItemStatus) {
@@ -161,4 +191,26 @@ export default class SyncStatusHolder {
 		return false;
 	}
 
+	public setMessage(s: string) {
+		this.message = s;
+	}
+
+	public getMessage() {
+		return this.message;
+	}
+
+	public getScopeName():string {
+		//@ts-ignore
+		return DoubanSubjectStateRecords_SYNC[this.syncConfig.syncType][this.syncConfig.scope];
+	}
+
+	public getTypeName():string {
+		return SyncTypeRecords[this.syncConfig.syncType];
+
+
+	}
+
+	public getSyncConditionName() {
+		return SyncConditionTypeRecords[this.syncConfig.syncConditionType];
+	}
 }

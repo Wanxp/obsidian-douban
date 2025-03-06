@@ -56,6 +56,10 @@ export class SearchPageInfo {
 		return this._total;
 	}
 
+	public set total(total: number) {
+		this._total = total;
+	}
+
 	get pageSize(): number {
 		return this._pageSize;
 	}

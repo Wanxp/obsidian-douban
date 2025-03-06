@@ -1,10 +1,10 @@
 import HandleContext from "../../../data/model/HandleContext";
-import {SubjectListItem} from "../../../data/model/SubjectListItem";
 import {SyncConfig} from "../../model/SyncConfig";
+import {SearchPage} from "../../../data/model/SearchPage";
 
 export interface DoubanListHandler {
 
-	getAllPageList(context: HandleContext):Promise<SubjectListItem[]>;
+	getPageData(context: HandleContext):Promise<SearchPage>;
 
 	support(config:SyncConfig):boolean;
 }

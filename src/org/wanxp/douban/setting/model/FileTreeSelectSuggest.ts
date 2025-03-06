@@ -1,8 +1,17 @@
-import {TAbstractFile, TFile, TFolder} from "obsidian";
+import {App, TAbstractFile, TFile, TFolder} from "obsidian";
 import {TextInputSuggest} from "./TextInputSuggest";
+import SettingsManager from "../SettingsManager";
 
 export class FileTreeSelectSuggest extends TextInputSuggest<TAbstractFile> {
 	parentPath: string = "/";
+	settingKey: string = "";
+	manager: SettingsManager;
+
+	constructor(app: App, inputEl: HTMLInputElement, manager: SettingsManager, settingKey:string) {
+		super(app, inputEl);
+		this.manager = manager;
+		this.settingKey = settingKey;
+	}
 
 	getSuggestions(inputStr: string): TAbstractFile[] {
 		const files: TAbstractFile[] = [];
@@ -71,6 +80,8 @@ export class FileTreeSelectSuggest extends TextInputSuggest<TAbstractFile> {
 			this.inputEl.value += "/";
 			this.inputEl.trigger("input");
 		}else {
+			//@ts-ignore
+			this.manager.updateSetting(this.settingKey, file.path);
 			this.close();
 		}
 

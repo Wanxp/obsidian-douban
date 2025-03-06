@@ -57,7 +57,12 @@ export default class DoubanPlugin extends Plugin {
 			}
 			if (context.syncActive && extract.guessType && extract.guessType != extract.type) {
 				extract.handledStatus = SubjectHandledStatus.syncTypeDiffAbort;
-				console.log(i18nHelper.getMessage('140102', extract.type, extract.title, extract.guessType));
+				if (Action.Sync == context.action) {
+					this.showStatus(i18nHelper.getMessage('140207', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
+					syncStatus.failByDiffType(extract.id, extract.title);
+				}else {
+					console.log(i18nHelper.getMessage('140102', extract.type, extract.title, extract.guessType));
+				}
 				return;
 			}
 			if (Action.Sync == context.action) {

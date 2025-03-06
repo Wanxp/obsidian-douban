@@ -23,11 +23,14 @@ export default {
 	'110035': `FileName: (Tip:Support Variables And Path)`,
 	'110036': `Complete`,
 	'110037': `
-### Summary
+### Condition	
 {0}
 
-### Details
+### Summary
 {1}
+
+### Details
+{2}
 
 ---
 PS: This file could be delete if you want to.
@@ -38,16 +41,20 @@ PS: This file could be delete if you want to.
 	'110041': `IncrementalSync`,
 	'110042': `EstimateTime`,
 	'110043': `Loading Menu`,
+	'110044': `Custom Count Input End Must Bigger Than Start`,
+	'110045': `Custom Time Input End Must Bigger Than Start`,
 
 	'110050': `Type`,
 	'110051': `Number`,
 	'110052': `Description`,
 	'110152': `Confirm`,
+	'110055': `Enable`,
+	'110056': `Disable`,
 
 	'110070': `Sync Scope:`,
 	'110071': `All`,
 	'110072': `Recent Changes`,
-	'110075': `Last 10 Items`,
+	'110075': `Last 30 Items`,
 	'110074': `Custom Time`,
 	'110076': `Custom Count`,
 	'110077': `From`,
@@ -55,12 +62,21 @@ PS: This file could be delete if you want to.
 	'110079': `To`,
 	'110073': `Items`,
 	'110080': `Number`,
+	'112080': `Custom Count Input not a number`,
+	'110081': `Custom Time must input both start and end or only one`,
+	'110082': `Custom Time must input format: YYYY-MM-DD`,
+	'110083': `Not Support`,
+	'110090': `The total number of {0} for status {1} is {2}, and the number that needs to be synchronized is {3}`,
+	'110091': `Error`,
+	'110095': `The smaller the number, the closer to now. For example, the latest update on Douban is the first one, and the earliest update is the last one.`,
+	'110096': `This is the update time of our entry on Douban`,
 
 	'exists':`[exists]`,
 	'unHandle':`[unHandle]`,
 	'replace':`[replace]`,
 	'create':`[create]`,
 	'fail':`[fail]`,
+	'failByDiffType':	 `[fail by diff type]`,
 	'syncall':`[summary]`,
 	'notsync':`[notsync]`,
 
@@ -69,6 +85,7 @@ PS: This file could be delete if you want to.
 	'replace_desc': `replace`,
 	'create_desc':  `create`,
 	'fail_desc':	`fail`,
+	'failByDiffType_desc':	`fail because of different type`,
 	'notsync_desc': `notsync`,
 	'syncall_desc': `syncall`,
 
@@ -309,6 +326,7 @@ PS: This file could be delete if you want to.
 	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,
 	'130108': `Redirect times too much, please check your network or proxy`,
 	'130120': `An error occurred during Sync, but Sync will continue. Error item is {}`,
+	'130121': `An error occurred during Sync, Begin number is bigger than total number {0}, will not sync this item`,
 
 	'140201': `[OB-Douban]: searching '{0}'...`,
 	'140202': `[OB-Douban]: result {0} rows`,

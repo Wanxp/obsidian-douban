@@ -1,5 +1,5 @@
 import {i18nHelper} from "../lang/helper";
-import {SupportType} from "./Constsant";
+import {SupportType, SyncType} from "./Constsant";
 
 export enum DoubanSubjectState {
 	not = 'not',
@@ -122,6 +122,19 @@ export const DoubanSubjectStateRecords_MUSIC_SYNC: { [key in DoubanSubjectState]
 	[DoubanSubjectState.do]: i18nHelper.getMessage('500403'),
 	[DoubanSubjectState.collect]: i18nHelper.getMessage('500404'),
 }
+
+// @ts-ignore
+export const DoubanSubjectStateRecords_SYNC: { [key in SyncType]: Record<DoubanSubjectState, string> } = {
+	[SyncType.movie]:DoubanSubjectStateRecords_MOVIE_SYNC,
+	[SyncType.book]:DoubanSubjectStateRecords_BOOK_SYNC,
+	[SyncType.music]:DoubanSubjectStateRecords_MUSIC_SYNC,
+	// [SyncType.note]:DoubanSubjectStateRecords_NOTE_SYNC,
+	// [SyncType.game]:DoubanSubjectStateRecords_GAME_SYNC,
+	[SyncType.teleplay]:DoubanSubjectStateRecords_TELEPLAY_SYNC,
+	// [SyncType.theater]:DoubanSubjectStateRecords_THEATER_SYNC,
+}
+
+
 
 export const DoubanSubjectStateRecords_KEY_WORD_TYPE: Map<string, SupportType> = new Map<string, SupportType> (
 	[['我看过这部电视剧', SupportType.TELEPLAY],

@@ -15,7 +15,7 @@ import {
 	SyncTypeRecords
 } from "../../constant/Constsant";
 import {
-	ALL,
+	ALL, DoubanSubjectState, DoubanSubjectStateRecords,
 	DoubanSubjectStateRecords_BOOK_SYNC,
 	DoubanSubjectStateRecords_BROADCAST_SYNC,
 	DoubanSubjectStateRecords_MOVIE_SYNC,
@@ -36,6 +36,7 @@ import {ArraySetting, DEFAULT_SETTINGS_ARRAY_NAME} from "../setting/model/ArrayS
 import {arraySettingDisplay} from "../setting/ArrayDisplayTypeSettingsHelper";
 import {DatePickComponent} from "./DatePickComponent";
 import {NumberComponent} from "./NumberComponent";
+import {log} from "../../utils/Logutil";
 
 export class DoubanSyncModal extends Modal {
 	plugin: DoubanPlugin;
@@ -107,7 +108,16 @@ export class DoubanSyncModal extends Modal {
 			progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
     <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getHasHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')}  </span>
-</p>`
+</p>
+<p>
+<label for="file">${i18nHelper.getMessage('110092')}</label>
+<span>${i18nHelper.getMessage('110090', syncStatus.getTypeName(), syncStatus.getScopeName(), syncStatus.getAllTotal(), syncStatus.getTotal())}</span>
+</p>
+<p>
+<label for="file">${i18nHelper.getMessage('110091')}</label>
+<span>${syncStatus.getMessage()}</span>
+</p>
+`
 			backgroundButton.setDisabled(true);
 			stopButton.setButtonText(i18nHelper.getMessage('110036'))
 			return;
@@ -116,7 +126,16 @@ export class DoubanSyncModal extends Modal {
     <label for="file">${i18nHelper.getMessage('110033')}</label>
     <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getTotal() == 0 ? i18nHelper.getMessage('110043') : syncStatus.getHasHandle() + '/' + syncStatus.getTotal()}
 ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled()-syncStatus.getHandle(), syncStatus.getOverSize())} </span>
-</p>`}
+</p>
+<p>
+<label for="file">${i18nHelper.getMessage('110092')}</label>
+<span>${i18nHelper.getMessage('110090', syncStatus.getTypeName(), syncStatus.getScopeName(), syncStatus.getAllTotal(), syncStatus.getTotal())}</span>
+</p>
+<p>
+<label for="file">${i18nHelper.getMessage('110091')}</label>
+<span>${syncStatus.getMessage()}</span>
+</p>
+`}
 
 	private showSyncConfig(contentEl: HTMLElement) {
 		if (this.timer != null) {
@@ -133,11 +152,11 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
 			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
 			incrementalUpdate: true,
-			syncConditionType: SyncConditionType.LAST_UPDATE,
-			syncConditionDateFromValue: null,
-			syncConditionDateToValue: null,
-			syncConditionCountFromValue: null,
-			syncConditionCountToValue: null
+			syncConditionType: SyncConditionType.ALL,
+			syncConditionDateFromValue: TimeUtil.getLastMonth(),
+			syncConditionDateToValue: new Date(),
+			syncConditionCountFromValue: 1,
+			syncConditionCountToValue: 30
 		};
 		this.showConfigPan(contentEl.createDiv('config'), syncConfig, false);
 		const controls = contentEl.createDiv("controls");
@@ -149,6 +168,9 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 		const syncButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110007'))
 			.onClick(async () => {
+				if (!this.plugin.userComponent.isLogin()) {
+					await this.plugin.userComponent.login();
+				}
 				if(!await this.plugin.checkLogin(this.context)) {
 					return;
 				}
@@ -461,12 +483,17 @@ function showCustomInputCount(containerEl: HTMLElement, config: SyncConfig, disa
 	containerEl.createEl('span', { text: i18nHelper.getMessage('110078') })
 	const fromField = new TextComponent(containerEl);
 	fromField.setPlaceholder(i18nHelper.getMessage('110080'))
-		.setValue(config.syncConditionCountFromValue)
+		.setValue(config.syncConditionCountFromValue + '')
 		.onChange(async (value) => {
 			if (!value) {
+				config.syncConditionCountFromValue = 1;
 				return;
 			}
-			config.syncConditionCountFromValue = value;
+			try {
+				config.syncConditionCountFromValue = parseInt(value);
+			}catch (e) {
+				log.notice(i18nHelper.getMessage('112080'))
+			}
 		}).setDisabled(disable);
 	let fromEl = fromField.inputEl;
 	fromEl.addClass('obsidian_douban_settings_input')
@@ -481,12 +508,17 @@ function showCustomInputCount(containerEl: HTMLElement, config: SyncConfig, disa
 	containerEl.createEl('span', { text: i18nHelper.getMessage('110078') })
 	const toField = new TextComponent(containerEl);
 	toField.setPlaceholder(i18nHelper.getMessage('110080'))
-		.setValue(config.syncConditionCountToValue)
+		.setValue(config.syncConditionCountToValue + '')
 		.onChange(async (value) => {
 			if (!value) {
+				config.syncConditionCountToValue = 30;
 				return;
 			}
-			config.syncConditionCountToValue = value;
+			try {
+				config.syncConditionCountToValue = parseInt(value);
+			}catch (e) {
+				log.notice(i18nHelper.getMessage('112080'))
+			}
 		}).setDisabled(disable);
 	let toEl = toField.inputEl;
 	toEl.addClass('obsidian_douban_settings_input')
@@ -495,6 +527,9 @@ function showCustomInputCount(containerEl: HTMLElement, config: SyncConfig, disa
 	if (lang == 'zh') {
 		containerEl.createEl('span', {text: i18nHelper.getMessage('110073')})
 	}
+	containerEl.createEl('span', {text: '  '})
+	const buttopn = new ButtonComponent(containerEl).setIcon('help').setTooltip(i18nHelper.getMessage('110095'))
+	containerEl.appendChild(buttopn.buttonEl);
 }
 
 function showCustomInputTime(containerEl: HTMLElement, config: SyncConfig, disable: boolean) {
@@ -502,14 +537,18 @@ function showCustomInputTime(containerEl: HTMLElement, config: SyncConfig, disab
 	const fromDateField = new TextComponent(containerEl);
 	const fromDateEl = fromDateField.inputEl;
 	fromDateEl.type = 'date';
-	fromDateEl.value = config.syncConditionDateFromValue??TimeUtil.getLastMonth().toISOString().substring(0, 10);
+	fromDateEl.value = config.syncConditionDateFromValue ? config.syncConditionDateFromValue.toISOString().substring(0, 10) : TimeUtil.getLastMonth().toISOString().substring(0, 10);
 	fromDateField.setPlaceholder(i18nHelper.getMessage('110075'))
-		.setValue(config.syncConditionDateFromValue)
+		.setValue(config.syncConditionDateFromValue ? config.syncConditionDateFromValue.toISOString().substring(0, 10) : TimeUtil.getLastMonth().toISOString().substring(0, 10))
 		.onChange(async (value) => {
 			if (!value) {
 				return;
 			}
-			config.syncConditionDateFromValue = value;
+			try {
+				config.syncConditionDateFromValue = new Date(value);
+			}catch (e) {
+				log.notice(i18nHelper.getMessage('110082'))
+			}
 		}).setDisabled(disable);
 	fromDateEl.addClass('obsidian_douban_settings_input')
 	containerEl.appendChild(fromDateEl);
@@ -518,16 +557,21 @@ function showCustomInputTime(containerEl: HTMLElement, config: SyncConfig, disab
 	const toDateField = new TextComponent(containerEl);
 	let toDateEl = toDateField.inputEl;
 	toDateEl.type = 'date';
-	toDateEl.value = config.syncConditionDateToValue??new Date().toISOString().substring(0, 10);
+	toDateEl.value = config.syncConditionDateToValue ? config.syncConditionDateToValue.toISOString().substring(0, 10) : new Date().toISOString().substring(0, 10);
 	toDateField.setPlaceholder(i18nHelper.getMessage('110075'))
-		.setValue(config.syncConditionDateFromValue)
+		.setValue(config.syncConditionDateToValue ? config.syncConditionDateToValue.toISOString().substring(0, 10) : new Date().toISOString().substring(0, 10))
 		.onChange(async (value) => {
 			if (!value) {
 				return;
 			}
-			config.syncConditionDateFromValue = value;
+			try {
+				config.syncConditionDateToValue = new Date(value);
+			}catch (e) {
+				log.notice(i18nHelper.getMessage('110082'))
+			}
 		}).setDisabled(disable);
 	toDateEl.addClass('obsidian_douban_settings_input')
 	containerEl.appendChild(toDateEl);
+	new ButtonComponent(containerEl).setIcon('help').setTooltip(i18nHelper.getMessage('110095'))
 
 }

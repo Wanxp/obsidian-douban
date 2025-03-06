@@ -36,6 +36,7 @@ export interface DoubanPluginSetting {
 	pictureBedType: string;
 	pictureBedSetting: PictureBedSetting;
 	syncHandledDataArray: SyncHandledData[],
+	// syncLastUpdateTime: Map<string, string>,
 	arraySettings: ArraySetting[],
-    scoreSetting: ScoreSetting,
+	scoreSetting: ScoreSetting,
 }
