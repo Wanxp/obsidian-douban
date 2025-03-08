@@ -204,6 +204,7 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 export enum SyncType {
 	movie = 'movie',
 	book = 'book',
+	game = 'game',
 	broadcast = 'broadcast',
 	note = 'note',
 	music = 'music',
@@ -216,7 +217,9 @@ export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
 	[SyncType.broadcast , 'broadcast'],
 	[SyncType.note , 'note'],
 	[SyncType.music , 'music'],
-	[SyncType.teleplay , 'movie']]
+	[SyncType.teleplay , 'movie'],
+	[SyncType.game, 'game'],
+	]
 )
 
 /**
