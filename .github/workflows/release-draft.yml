@@ -85,8 +85,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./style.css
-          asset_name: style.css
+          asset_path: ./styles.css
+          asset_name: styles.css
           asset_content_type: text/css
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
