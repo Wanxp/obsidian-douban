@@ -1,4 +1,5 @@
-name: Release
+
+name: Release Draft
 
 on:
   push:
@@ -37,11 +38,16 @@ jobs:
         id: extract_version
         run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
+      - name: Set Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Create tag
-        run: git tag -a "v${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
+        run: git tag -a "${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
 
       - name: Push tag
-        run: git push origin "v${{ env.VERSION }}"
+        run: git push origin "${{ env.VERSION }}"
 
       - name: Create GitHub release
         id: create_release
@@ -51,8 +57,8 @@ jobs:
         with:
           tag_name: "v${{ env.VERSION }}"
           release_name: "${{ env.VERSION }}"
-          draft: false
-          prerelease: true
+          draft: true
+          prerelease: false
           body: ${{ github.event.head_commit.message }}
 
       - name: Upload release assets
