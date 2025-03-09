@@ -13,21 +13,26 @@ import DoubanMovieWishListHandler from "./list/DoubanMovieWishListHandler";
 import DoubanMovieDoListHandler from "./list/DoubanMovieDoListHandler";
 import TimeUtil, {sleepRange} from "../../../utils/TimeUtil";
 import {log} from "../../../utils/Logutil";
+import DoubanGameLoadHandler from "../../data/handler/DoubanGameLoadHandler";
+import DoubanGameCollectListHandler from "./list/DoubanGameCollectListHandler";
+import DoubanGameWishListHandler from "./list/DoubanGameWishListHandler";
+import DoubanGameDoListHandler from "./list/DoubanGameDoListHandler";
+import DoubanGameSubject from "../../data/model/DoubanGameSubject";
 
 //TODO will support in future version
-export class DoubanMovieSyncHandler extends DoubanAbstractSyncHandler<DoubanMovieSubject>{
+export class DoubanGameSyncHandler extends DoubanAbstractSyncHandler<DoubanGameSubject>{
 
 	constructor(plugin:DoubanPlugin) {
-		super(plugin, new DoubanMovieLoadHandler(plugin),[
-			new DoubanMovieCollectListHandler(),
-			new DoubanMovieWishListHandler(),
-			new DoubanMovieDoListHandler()]);
+		super(plugin, new DoubanGameLoadHandler(plugin),[
+			new DoubanGameCollectListHandler(),
+			new DoubanGameWishListHandler(),
+			new DoubanGameDoListHandler()]);
 	}
 
 
 
 	getSyncType(): SyncType {
-		return SyncType.movie;
+		return SyncType.game;
 	}
 
 

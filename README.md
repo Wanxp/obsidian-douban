@@ -135,6 +135,11 @@
 7. 进入Obsidian插件中心重新加载当前插件
 8. 享受开发吧
 
+## 支持开发者
+如果觉得插件对你有帮助，欢迎请我喝杯咖啡，让我有更多的动力去维护和更新插件
+
+![support_pay](./doc/img/support_pay_2.png)
+
 ## 交流社群
 <img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px">  <img src="doc/img/wechat_group.png" width="245px">  
 
@@ -164,10 +169,7 @@
 | 同步书影音数据 | 以上所有             | 以上所有                      | 以上所有                                                                                          |
 | 同步书影音数据 | `替换同名文档`值为勾选     | 已经存在 **同路径同文档名** ，直接覆盖    | 如已经存在在`data/Movie/蝙蝠侠.md`,配置`笔记名称`值为`/data/{{type}}/{{title}}`, 同步书影音记录时勾选 `替换同名文档`, 则`data/Movie/蝙蝠侠.md`会被替换成最新 |
 
-## 支持开发者
-如果觉得插件对你有帮助，欢迎请我喝杯咖啡，让我有更多的动力去维护和更新插件
 
-![support_pay](./doc/img/support_pay_2.png)
 
 [//]: # (### IDE支持)
 

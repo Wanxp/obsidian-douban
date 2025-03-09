@@ -218,7 +218,7 @@ export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
 	[SyncType.note , 'note'],
 	[SyncType.music , 'music'],
 	[SyncType.teleplay , 'movie'],
-	[SyncType.game, 'game'],
+	[SyncType.game, 'games'],
 	]
 )
 
