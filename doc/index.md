@@ -12,15 +12,21 @@ nav_order: 10
 
 ## 基本功能
 - ☑️ 导入电影、电视剧、书籍、音乐、游戏、日记
-- ☑️ 同步个人听过/看过的电影、电视剧、书籍、音乐
+- ☑️ 同步个人听过/看过的电影、电视剧、书籍、音乐、游戏
 - ☑️ 导入个人的评论,评论时间,阅读状态,个人评分
-- ☑️ 支持保存封面至本地或图床
+- ☑️ 支持保存封面至本地/图床
+    - ⬜ 支持图床自定义
 - ☑️ 支持自定义参数
-  
+- ☑️ 支持移动端导入
+
+## 支持
+如果觉得喜欢或对您有帮助，欢迎请我喝杯咖啡，让我有更多的动力去维护和更新插件
+
+![support_pay](./img/support_pay_2.png)
+
 ## 交流社群
-<img src="img/obsidian-douban-qq-qr_code.svg" width="300px">  <img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="245px">  
-
-
+<img src="img/obsidian-douban-qq-qr_code.svg" width="300px"> 
+<img src="img/wechat_group.png" width="245px">   
 
 
 
