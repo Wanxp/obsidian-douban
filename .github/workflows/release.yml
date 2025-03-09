@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  push:
+    paths:
+      - 'manifest.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: node18
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Extract version from package.json
+        id: extract_version
+        run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+      - name: Create tag
+        run: git tag -a "v${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
+
+      - name: Push tag
+        run: git push origin "v${{ env.VERSION }}"
+
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          release_name: "${{ env.VERSION }}"
+          draft: false
+          prerelease: true
+          body: ${{ github.event.head_commit.message }}
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./main.js
+          asset_name: main.js
+          asset_content_type: application/javascript
+
+      - name: Upload manifest.json
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./manifest.json
+          asset_name: manifest.json
+          asset_content_type: application/json
+
+      - name: Upload style.css
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./style.css
+          asset_name: style.css
+          asset_content_type: text/css
+
+      - name: Output release message
+        run: echo "发布预发布版本${{ env.VERSION }}正常"
