@@ -48,20 +48,6 @@ jobs:
       - name: Push tag
         run: git push origin "${{ env.VERSION }}"
 
-      - name: Generate release notes
-        id: generate_release_notes
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { generateReleaseNotes } = require('@actions/github/lib/utils');
-            const releaseNotes = await generateReleaseNotes({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `v${{ env.VERSION }}`,
-              previous_tag_name: `v${{ env.PREVIOUS_VERSION }}`
-            });
-            return releaseNotes.body;
-
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
@@ -72,7 +58,7 @@ jobs:
           release_name: "${{ env.VERSION }}"
           draft: true
           prerelease: false
-          body: ${{ steps.generate_release_notes.outputs.result }}
+          generate_release_notes: true
 
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
