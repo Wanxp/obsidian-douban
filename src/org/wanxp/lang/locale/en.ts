@@ -628,6 +628,7 @@ PS: This file could be delete if you want to.
 	'504104': `My Broadcast`,
 	'504105': `My Note`,
 	'504106': `My Music`,
+	'504108': `My Game`,
 
 	'500002': `Sync Status`,
 

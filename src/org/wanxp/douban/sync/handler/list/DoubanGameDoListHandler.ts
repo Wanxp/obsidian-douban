@@ -3,7 +3,7 @@ import { DoubanMovieListHandler } from "./DoubanMovieListHandler";
 import {DoubanGameListHandler} from "./DoubanGameListHandler";
 
 
-export default class DoubanGameDoListHandler extends DoubanMovieListHandler{
+export default class DoubanGameDoListHandler extends DoubanGameListHandler{
 	getDoType(): string {
 		return  DoubanSubjectState.do;
 	}

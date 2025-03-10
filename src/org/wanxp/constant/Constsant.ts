@@ -233,6 +233,7 @@ export const SyncTypeRecords: { [key in SyncType | string]: string } = {
 	// [SyncType.broadcast]: i18nHelper.getMessage('504104'),
 	// [SyncType.note]: i18nHelper.getMessage('504105'),
 	[SyncType.music]: i18nHelper.getMessage('504106'),
+	// [SyncType.game]: i18nHelper.getMessage('504108'),
 }
 
 /**

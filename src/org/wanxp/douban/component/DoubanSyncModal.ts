@@ -17,7 +17,7 @@ import {
 import {
 	ALL, DoubanSubjectState, DoubanSubjectStateRecords,
 	DoubanSubjectStateRecords_BOOK_SYNC,
-	DoubanSubjectStateRecords_BROADCAST_SYNC,
+	DoubanSubjectStateRecords_BROADCAST_SYNC, DoubanSubjectStateRecords_GAME_SYNC,
 	DoubanSubjectStateRecords_MOVIE_SYNC,
 	DoubanSubjectStateRecords_MUSIC_SYNC,
 	DoubanSubjectStateRecords_NOTE_SYNC,
@@ -234,14 +234,16 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			case SyncType.teleplay:
 				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_TELEPLAY_SYNC, config, disable);
 				break;
-
+			case SyncType.game:
+				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_GAME_SYNC, config, disable);
+				break;
 		}
 	}
 
 	private showTypeDropdown(containerEl:HTMLElement, config: SyncConfig, disable:boolean) {
 		const settings = new Setting(containerEl);
 		const scopeSelections = containerEl.createDiv("scope-selection");
-		const templateFile:HTMLDivElement = containerEl.createDiv('template-file-path-selection');
+		// const templateFile:HTMLDivElement = containerEl.createDiv('template-file-path-selection');
 		settings
 			.setName(i18nHelper.getMessage('110030'))
 			.addDropdown((dropdown) => {
@@ -251,7 +253,7 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 						config.syncType = value;
 						config.templateFile = this.getDefaultTemplatePath(value);
 						this.openScopeDropdown(scopeSelections, config, disable);
-						this.showTemplateFileSelectionSetting(templateFile, config, disable);
+						// this.showTemplateFileSelectionSetting(templateFile, config, disable);
 					});
 			}).setDisabled(disable);
 		this.openScopeDropdown(scopeSelections, config, disable);
@@ -273,6 +275,9 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 				break;
 			case SyncType.teleplay:
 				result = (settings.teleplayTemplateFile == '' || settings.teleplayTemplateFile == null) ? DEFAULT_SETTINGS.teleplayTemplateFile : settings.teleplayTemplateFile
+				break;
+			case SyncType.game:
+				result = (settings.gameTemplateFile == '' || settings.gameTemplateFile == null) ? DEFAULT_SETTINGS.gameTemplateFile : settings.gameTemplateFile
 				break;
 		}
 		return result;

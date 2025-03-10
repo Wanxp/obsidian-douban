@@ -10,6 +10,7 @@ import { DoubanBookSyncHandler } from "./DoubanBookSyncHandler";
 import {i18nHelper} from "../../../lang/helper";
 import {DoubanTeleplaySyncHandler} from "./DoubanTeleplaySyncHandler";
 import {SyncConditionType} from "../../../constant/Constsant";
+import {DoubanGameSyncHandler} from "./DoubanGameSyncHandler";
 
 export default class SyncHandler {
 	private app: App;
@@ -34,6 +35,7 @@ export default class SyncHandler {
 				 // new DoubanNoteSyncHandler(plugin),
 				 new DoubanMusicSyncHandler(plugin),
 				 new DoubanTeleplaySyncHandler(plugin),
+				 new DoubanGameSyncHandler(plugin),
 				 this.defaultSyncHandler
 			 ];
 	 }

@@ -40,7 +40,7 @@ export default abstract class DoubanAbstractListHandler
 
 	async delay(ms: number) {}
 
-	private getUrl(context: HandleContext, start: number) {
+	protected getUrl(context: HandleContext, start: number) {
 		return doubanSubjectSyncListUrl(
 			this.getSyncTypeDomain(),
 			context.userComponent.getUserId(),

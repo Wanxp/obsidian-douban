@@ -106,6 +106,15 @@ export const DoubanSubjectStateRecords_BOOK_SYNC: { [key in DoubanSubjectState]:
 	[DoubanSubjectState.collect]: i18nHelper.getMessage('500304'),
 }
 
+// @ts-ignore
+export const DoubanSubjectStateRecords_GAME_SYNC: { [key in DoubanSubjectState]: string } = {
+	// @ts-ignore
+	[ALL]: i18nHelper.getMessage('500004'),
+	[DoubanSubjectState.wish]: i18nHelper.getMessage('500602'),
+	[DoubanSubjectState.do]: i18nHelper.getMessage('500603'),
+	[DoubanSubjectState.collect]: i18nHelper.getMessage('500604'),
+}
+
 export const DoubanSubjectStateRecords_BROADCAST_SYNC: { [key :string]: string } = {
 	[ALL]: i18nHelper.getMessage('500004'),
 }
@@ -129,7 +138,7 @@ export const DoubanSubjectStateRecords_SYNC: { [key in SyncType]: Record<DoubanS
 	[SyncType.book]:DoubanSubjectStateRecords_BOOK_SYNC,
 	[SyncType.music]:DoubanSubjectStateRecords_MUSIC_SYNC,
 	// [SyncType.note]:DoubanSubjectStateRecords_NOTE_SYNC,
-	// [SyncType.game]:DoubanSubjectStateRecords_GAME_SYNC,
+	[SyncType.game]:DoubanSubjectStateRecords_GAME_SYNC,
 	[SyncType.teleplay]:DoubanSubjectStateRecords_TELEPLAY_SYNC,
 	// [SyncType.theater]:DoubanSubjectStateRecords_THEATER_SYNC,
 }
