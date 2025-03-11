@@ -244,7 +244,7 @@ export class VariableUtil {
 		const customPropertiesMap= new Map();
 		customProperties.filter(customProperty => customProperty.name &&
 			customProperty.field
-			&& (customProperty.field.toLowerCase() == SupportType.ALL ||
+			&& (customProperty.field.toLowerCase() == SupportType.all ||
 				customProperty.field.toLowerCase() == subjectType)).forEach(customProperty => {
 			customPropertiesMap.set(customProperty.name, customProperty.value);
 		});

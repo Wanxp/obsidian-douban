@@ -38,12 +38,12 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	statusBar: true,
 	debugMode: false,
 	customProperties: [
-		{name: 'myType', value: 'movie', field: SupportType.MOVIE},
-		{name: 'myType', value: 'book', field: SupportType.BOOK},
-		{name: 'myType', value: 'music', field: SupportType.MUSIC},
-		{name: 'myType', value: 'note', field: SupportType.NOTE},
-		{name: 'myType', value: 'game', field: SupportType.GAME},
-		{name: 'myType', value: 'teleplay', field: SupportType.TELEPLAY},
+		{name: 'myType', value: 'movie', field: SupportType.movie},
+		{name: 'myType', value: 'book', field: SupportType.book},
+		{name: 'myType', value: 'music', field: SupportType.music},
+		{name: 'myType', value: 'note', field: SupportType.note},
+		{name: 'myType', value: 'game', field: SupportType.game},
+		{name: 'myType', value: 'teleplay', field: SupportType.teleplay},
 	],
 	loginCookiesContent: '',
 	loginHeadersContent: '',
@@ -57,7 +57,8 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		starEmpty: '☆',
 		displayStarEmpty: false,
 		maxStar: 5,
-	}
+	},
+	searchDefaultType: SupportType.all,
 
 }
 

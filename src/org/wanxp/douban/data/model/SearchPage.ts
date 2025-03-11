@@ -5,10 +5,10 @@ import {SearchPageTypeOf} from "./SearchPageTypeOf";
 export class SearchPage extends SearchPageTypeOf<any> {
 
 	public static empty(type: SupportType): SearchPage {
-		return new SearchPage(0, 0, 0, type, []);
+		return new SearchPage(0, 1, 0, type, []);
 	}
 
 	static emptyWithNoType() {
-		return new SearchPage(0, 0, 0, null, []);
+		return new SearchPage(0, 1, 0, null, []);
 	}
 }

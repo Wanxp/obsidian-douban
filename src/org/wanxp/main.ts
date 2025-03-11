@@ -151,17 +151,21 @@ export default class DoubanPlugin extends Plugin {
 		if (activeFile) {
 			const searchTerm = activeFile.basename;
 			if (searchTerm) {
-				await this.search(searchTerm, SupportType.ALL, context);
+				await this.search(searchTerm, SupportType.all, context);
 			}
 		}
 	}
 
 	async getDoubanTextForCreateNewNote(context: HandleContext) {
-		new DoubanSearchModal(this.app, this, context).open();
+		new DoubanSearchModal(this.app, this, context, null).open();
+	}
+
+	async getDoubanTextForCreateNewNoteForType(context: HandleContext, type: SupportType) {
+		new DoubanSearchModal(this.app, this, context, type).open();
 	}
 
 	async getDoubanTextForSearchTerm(context: HandleContext) {
-		new DoubanSearchModal(this.app, this, context).open();
+		new DoubanSearchModal(this.app, this, context, null).open();
 	}
 
 	async showSyncModal(context: HandleContext) {
@@ -180,13 +184,13 @@ export default class DoubanPlugin extends Plugin {
 			id: "searcher-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNote({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 				netFileHandler: this.netFileHandler,
 				showAfterCreate:true,
-				action: Action.SearchAndCrate}),
+				action: Action.SearchAndCrate}, this.settings.searchDefaultType),
 		});
 
 		this.addCommand({
@@ -227,6 +231,61 @@ export default class DoubanPlugin extends Plugin {
 				action: Action.Sync,
 				syncStatusHolder: this.statusHolder}),
 		});
+
+		this.addCommand({
+			id: "searcher-douban-import-and-create-file-movie-tv",
+			name: i18nHelper.getMessage("110102"),
+			callback: () =>
+				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+					mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler,
+					showAfterCreate:true,
+					action: Action.SearchAndCrate}, SupportType.movie),
+		});
+
+		this.addCommand({
+			id: "searcher-douban-import-and-create-file-book",
+			name: i18nHelper.getMessage("110104"),
+			callback: () =>
+				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+					mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler,
+					showAfterCreate:true,
+					action: Action.SearchAndCrate}, SupportType.book),
+		});
+
+		this.addCommand({
+			id: "searcher-douban-import-and-create-file-music",
+			name: i18nHelper.getMessage("110105"),
+			callback: () =>
+				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+					mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler,
+					showAfterCreate:true,
+					action: Action.SearchAndCrate}, SupportType.music),
+		});
+
+		this.addCommand({
+			id: "searcher-douban-import-and-create-file-game",
+			name: i18nHelper.getMessage("110106"),
+			callback: () =>
+				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+					mode: SearchHandleMode.FOR_CREATE,
+					settings: this.settings,
+					userComponent: this.userComponent,
+					netFileHandler: this.netFileHandler,
+					showAfterCreate:true,
+					action: Action.SearchAndCrate}, SupportType.game),
+		});
+
+
+
 
 		this.settingsManager = new SettingsManager(app, this);
 		// this.fetchOnlineData(this.settingsManager);

@@ -1,4 +1,6 @@
-import {SupportType} from "../../../../constant/Constsant";
+import {
+	SupportType
+} from "../../../../constant/Constsant";
 import {SearchResultPageParserInterface} from "./SearchResultPageParserInterface";
 import {SearchPage} from "../../model/SearchPage";
 import SearchParserHandlerV2 from "../SearchParserV2";
@@ -7,7 +9,7 @@ import {log} from "../../../../utils/Logutil";
 
 export class AllFirstPageSearchResultPageParser implements SearchResultPageParserInterface {
 	support(type:SupportType, pageNum:number):boolean {
-		return pageNum == 1 && type == SupportType.ALL;
+		return pageNum == 1 && type == SupportType.all;
 	}
 	parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {
 		if (!source || StringUtil.notJsonString(source)) {

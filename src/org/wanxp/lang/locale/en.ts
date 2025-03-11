@@ -1,13 +1,18 @@
 //简体中文
 export default {
 	//main.ts
-	'110001': 'search douban by current file name',
-	'110002': 'search douban and import to current file',
+	'110001': 'search by current file name',
+	'110002': 'search and import to current file',
 	'110003': `Enter Search Term:`,
 	'110004': `Search`,
 	'110005': `Cancel`,
-	'110006': `sync douban personal book-movie-music to Obsidian`,
-	'110101': 'search douban and create file',
+	'110006': `sync personal book-movie-music to Obsidian`,
+	'110101': 'search and create file',
+	'110102': 'search movie or tv and create ',
+	'110104': 'search book and create',
+	'110105': 'search music and create ',
+	'110106': 'search game and create ',
+
 	'110201': `{0} already exists`,
 	'110202': `{0} template can not read`,
 	'110103': 'sync personal data from douban',
@@ -240,6 +245,9 @@ PS: This file could be delete if you want to.
 	'121401': `Status Bar`,
 	'121402': `Display status bar when import data ?`,
 
+	'121410': `Search Default Type`,
+	'121411': `Search defuault type when open command palette 'search douban and create file'`,
+
 	'121430': `Save Attachment File`,
 	'121431': `Save attachment file to local disk, such as image ? If you do not enable this feature, it will not show cover image in note`,
 	'121432': `Attachment folder`,
@@ -349,6 +357,8 @@ PS: This file could be delete if you want to.
 	'150103': `[Next Page]...`,
 	'150105': `[Next Page (Group Post)]...`,
 	'150104': `[Next Page (Please Login First)]...`,
+	'150107': `Result is empty. Please choose type before search`,
+	'150108': `If you can't find what you want, try changing the keyword or search type`,
 
 
 
@@ -647,6 +657,18 @@ PS: This file could be delete if you want to.
 	'THEATER': `theater`,
 
 	'MOVIE_AND_TELEPLAY': `movie&tv`,
+
+	'all': `all`,
+	'movie': `movie`,
+	'book': `book`,
+	'music': `music`,
+	'note': `note`,
+	'game': `game`,
+	'teleplay': `teleplay`,
+	'theater': `theater`,
+
+	'movie_and_teleplay': `movie&tv`,
+
 
 
 	'DAY': `D`,

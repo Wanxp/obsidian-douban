@@ -2,7 +2,7 @@ import {i18nHelper} from "../../lang/helper";
 import SettingsManager from "./SettingsManager";
 import {CustomProperty} from "./model/CustomProperty";
 import {ButtonComponent, DropdownComponent, ExtraButtonComponent, Setting, TextComponent} from "obsidian";
-import {SupportType} from "../../constant/Constsant";
+import {SupportType, SupportTypeMap} from "../../constant/Constsant";
 import DoubanPlugin from "../../main";
 
 export function constructCustomPropertySettingsUI(containerEl: HTMLElement, manager: SettingsManager) {
@@ -16,7 +16,7 @@ export function constructCustomPropertySettingsUI(containerEl: HTMLElement, mana
 			button.setTooltip(i18nHelper.getMessage('124101'));
 			button.setIcon('plus');
 			button.onClick(async () => {
-				customProperties.push({name: '', value: '', field: SupportType.ALL});
+				customProperties.push({name: '', value: '', field: SupportType.all});
 				constructCustomPropertyUI(list, customProperties, manager);
 			});
 		});
@@ -68,11 +68,15 @@ function addFilterInput(data: CustomProperty, el: HTMLElement, customProperties:
 
 	const fieldsDropdown = new DropdownComponent(el);
 	for (const fieldSelect in SupportType) {
-		// @ts-ignore
 		fieldsDropdown.addOption(fieldSelect, i18nHelper.getMessage(fieldSelect));
 	}
 	item.createEl('span', { text: i18nHelper.getMessage('124106') });
-	fieldsDropdown.setValue(data.field)
+	let dataFieldValue = data.field;
+	if(typeof dataFieldValue === 'string') {
+		// @ts-ignore
+		dataFieldValue = SupportTypeMap[dataFieldValue];
+	}
+	fieldsDropdown.setValue(dataFieldValue)
 		.onChange(async (value: SupportType) => {
 			customProperties[idx].field = value;
 			await manager.plugin.saveSettings();

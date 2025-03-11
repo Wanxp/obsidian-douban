@@ -19,7 +19,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.MOVIE;
+		return SupportType.movie;
 	}
 
 	getHighQuantityImageUrl(fileName:string):string{

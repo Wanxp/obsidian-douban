@@ -101,15 +101,34 @@ export enum TemplateKey {
 }
 
 export enum SupportType {
-	ALL = "all",
-	MOVIE = 'movie',
-	BOOK = 'book',
-	MUSIC = 'music',
-	NOTE = 'note',
-	GAME = 'game',
-	TELEPLAY = 'teleplay',
-	THEATER = 'theater',
+	all = "all",
+	movie = 'movie',
+	book = 'book',
+	music = 'music',
+	note = 'note',
+	game = 'game',
+	teleplay = 'teleplay',
+	theater = 'theater',
 }
+export const SupportTypeMap:object = {
+	"all": SupportType.all,
+	"movie": SupportType.movie,
+	"book": SupportType.book,
+	"music": SupportType.music,
+	"note": SupportType.note,
+	"game": SupportType.game,
+	"teleplay": SupportType.teleplay,
+	"theater": SupportType.theater,
+	"ALL": SupportType.all,
+	"MOVIE": SupportType.movie,
+	"BOOK": SupportType.book,
+	"MUSIC": SupportType.music,
+	"NOTE": SupportType.note,
+	"GAME": SupportType.game,
+	"TELEPLAY": SupportType.teleplay,
+	"THEATER": SupportType.theater,
+}
+
 
 export enum PropertyName {
 	//base
@@ -183,12 +202,12 @@ export enum PropertyName {
  */
 // @ts-ignore
 export const SearchTypeRecords: { [key in SupportType]: string } = {
-	[SupportType.ALL]: i18nHelper.getMessage('ALL'),
-	[SupportType.MOVIE]: i18nHelper.getMessage('MOVIE_AND_TELEPLAY'),
-	[SupportType.BOOK]: i18nHelper.getMessage('BOOK'),
-	[SupportType.MUSIC]: i18nHelper.getMessage('MUSIC'),
-	[SupportType.NOTE]: i18nHelper.getMessage('NOTE'),
-	[SupportType.GAME]: i18nHelper.getMessage('GAME'),
+	[SupportType.all]: i18nHelper.getMessage('ALL'),
+	[SupportType.movie]: i18nHelper.getMessage('MOVIE_AND_TELEPLAY'),
+	[SupportType.book]: i18nHelper.getMessage('BOOK'),
+	[SupportType.music]: i18nHelper.getMessage('MUSIC'),
+	[SupportType.note]: i18nHelper.getMessage('NOTE'),
+	[SupportType.game]: i18nHelper.getMessage('GAME'),
 	// [SupportType.THEATER]: i18nHelper.getMessage('THEATER'),
 }
 
@@ -233,7 +252,7 @@ export const SyncTypeRecords: { [key in SyncType | string]: string } = {
 	// [SyncType.broadcast]: i18nHelper.getMessage('504104'),
 	// [SyncType.note]: i18nHelper.getMessage('504105'),
 	[SyncType.music]: i18nHelper.getMessage('504106'),
-	// [SyncType.game]: i18nHelper.getMessage('504108'),
+	[SyncType.game]: i18nHelper.getMessage('504108'),
 }
 
 /**
@@ -376,13 +395,13 @@ sec-ch-ua-platform: "Windows"
 export const ONLINE_SETTING_DEFAULT: DoubanPluginOnlineSettings = {
 	properties: [
 		{
-			type: SupportType.BOOK,
+			type: SupportType.book,
 			name: PropertyName.comment,
 			selectors: ['#interest_sect_level > div > span:nth-child(7)'
 			]
 		},
 		{
-			type: SupportType.MOVIE,
+			type: SupportType.movie,
 			name: PropertyName.comment,
 			selectors: ['#interest_sect_level > div > span:nth-child(8)',
 				'#interest_sect_level > div > span:nth-child(7)',
@@ -498,3 +517,34 @@ export const SyncConditionTypeRecords: { [key in SyncConditionType|string]: stri
 	[SyncConditionType.CUSTOM_TIME]: i18nHelper.getMessage('110074'),
 
 }
+
+
+export const DoubanSearchResultSubject_EMPTY: DoubanSearchResultSubject = {
+	id: '',
+	title: i18nHelper.getMessage('150107'),
+	score: null,
+	cast: '',
+	type: 'navigate',
+	desc: '-',
+	url:  'https://www.douban.com',
+	image: "",
+	imageUrl: "",
+	publisher: "",
+	datePublished: undefined,
+	genre: []
+};
+
+export const DoubanSearchResultSubject_TIP_EMPTY: DoubanSearchResultSubject = {
+	id: '',
+	title: i18nHelper.getMessage('150108'),
+	score: null,
+	cast: '',
+	type: 'navigate',
+	desc: '-',
+	url:  'https://www.douban.com',
+	image: "",
+	imageUrl: "",
+	publisher: "",
+	datePublished: undefined,
+	genre: []
+};

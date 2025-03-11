@@ -20,10 +20,10 @@ export class SearchPageTypeOf<T> extends SearchPageInfo {
 	}
 
 	public static empty(type: SupportType): SearchPageTypeOf<any> {
-		return new SearchPageTypeOf(0, 0, 0, type, []);
+		return new SearchPageTypeOf(0, 1, 0, type, []);
 	}
 
 	static emptyWithNoType() {
-		return new SearchPageTypeOf(0, 0, 0, null, []);
+		return new SearchPageTypeOf(0, 1, 0, null, []);
 	}
 }

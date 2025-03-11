@@ -6,7 +6,7 @@ import SearchParserHandler from "../SearchParser";
 
 export class NotAllPageSearchResultPageParser implements SearchResultPageParserInterface {
 	support(type:SupportType, pageNum:number):boolean {
-		return type != SupportType.ALL && !(pageNum ==1 && type == SupportType.NOTE);
+		return type != SupportType.all && !(pageNum ==1 && type == SupportType.note);
 	}
 	parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {
 		log.debug("解析给多页面结果");

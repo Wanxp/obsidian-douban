@@ -9,6 +9,7 @@ import {createFolderSelectionSetting} from "./TemplateSettingHelper";
 import StringUtil from "../../utils/StringUtil";
 import {log} from "../../utils/Logutil";
 import DoubanPlugin from "../../main";
+import {SearchTypeRecords, SupportType, SupportTypeMap} from "../../constant/Constsant";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
@@ -97,6 +98,19 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 				});
 		});
 
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('121410'))
+		.setDesc(i18nHelper.getMessage('121411'))
+		.addDropdown((dropdown) => {
+			dropdown
+				.addOptions(SearchTypeRecords)
+				.setValue(manager.plugin.settings.searchDefaultType)
+				.onChange(async (value) => {
+					// @ts-ignore
+					manager.plugin.settings.searchDefaultType = SupportTypeMap[value];
+					await manager.plugin.saveSettings();
+				});
+		});
 
 }
 

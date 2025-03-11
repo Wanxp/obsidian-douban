@@ -17,7 +17,7 @@ export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.THEATER;
+		return SupportType.theater;
 	}
 
 	getHighQuantityImageUrl(fileName: string): string {

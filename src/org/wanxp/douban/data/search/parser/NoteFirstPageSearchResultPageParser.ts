@@ -7,7 +7,7 @@ import DoubanSearchResultSubject from "../../model/DoubanSearchResultSubject";
 
 export class NoteFirstPageSearchResultPageParser implements SearchResultPageParserInterface {
 	support(type:SupportType, pageNum:number):boolean {
-		return pageNum == 1 && type == SupportType.NOTE;
+		return pageNum == 1 && type == SupportType.note;
 	}
 	parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {
 		const pageData = load(source);

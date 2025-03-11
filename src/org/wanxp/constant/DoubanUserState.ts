@@ -66,14 +66,14 @@ export const DoubanSubjectStateRecords_THEATER: { [key in DoubanSubjectState]: s
 }
 
 export const DoubanSubjectStateRecords: { [key in SupportType]: Record<DoubanSubjectState, string> } = {
-	[SupportType.ALL]:DoubanSubjectStateRecords_ALL,
-	[SupportType.MOVIE]:DoubanSubjectStateRecords_MOVIE,
-	[SupportType.BOOK]:DoubanSubjectStateRecords_BOOK,
-	[SupportType.MUSIC]:DoubanSubjectStateRecords_MUSIC,
-	[SupportType.NOTE]:DoubanSubjectStateRecords_NOTE,
-	[SupportType.GAME]:DoubanSubjectStateRecords_GAME,
-	[SupportType.TELEPLAY]:DoubanSubjectStateRecords_TELEPLAY,
-	[SupportType.THEATER]:DoubanSubjectStateRecords_THEATER,
+	[SupportType.all]:DoubanSubjectStateRecords_ALL,
+	[SupportType.movie]:DoubanSubjectStateRecords_MOVIE,
+	[SupportType.book]:DoubanSubjectStateRecords_BOOK,
+	[SupportType.music]:DoubanSubjectStateRecords_MUSIC,
+	[SupportType.note]:DoubanSubjectStateRecords_NOTE,
+	[SupportType.game]:DoubanSubjectStateRecords_GAME,
+	[SupportType.teleplay]:DoubanSubjectStateRecords_TELEPLAY,
+	[SupportType.theater]:DoubanSubjectStateRecords_THEATER,
 
 }
 
@@ -109,7 +109,7 @@ export const DoubanSubjectStateRecords_BOOK_SYNC: { [key in DoubanSubjectState]:
 // @ts-ignore
 export const DoubanSubjectStateRecords_GAME_SYNC: { [key in DoubanSubjectState]: string } = {
 	// @ts-ignore
-	[ALL]: i18nHelper.getMessage('500004'),
+	// [ALL]: i18nHelper.getMessage('500004'),
 	[DoubanSubjectState.wish]: i18nHelper.getMessage('500602'),
 	[DoubanSubjectState.do]: i18nHelper.getMessage('500603'),
 	[DoubanSubjectState.collect]: i18nHelper.getMessage('500604'),
@@ -146,32 +146,32 @@ export const DoubanSubjectStateRecords_SYNC: { [key in SyncType]: Record<DoubanS
 
 
 export const DoubanSubjectStateRecords_KEY_WORD_TYPE: Map<string, SupportType> = new Map<string, SupportType> (
-	[['我看过这部电视剧', SupportType.TELEPLAY],
-	['我最近看过这部电视剧', SupportType.TELEPLAY],
-	['我想看这部电视剧', SupportType.TELEPLAY],
-	['我在看这部电视剧', SupportType.TELEPLAY],
-	['我最近在看这部电视剧', SupportType.TELEPLAY],
+	[['我看过这部电视剧', SupportType.teleplay],
+	['我最近看过这部电视剧', SupportType.teleplay],
+	['我想看这部电视剧', SupportType.teleplay],
+	['我在看这部电视剧', SupportType.teleplay],
+	['我最近在看这部电视剧', SupportType.teleplay],
 
-	['我最近看过这部电影', SupportType.MOVIE],
-	['我看过这部电影', SupportType.MOVIE],
-	['我想看这部电影', SupportType.MOVIE],
+	['我最近看过这部电影', SupportType.movie],
+	['我看过这部电影', SupportType.movie],
+	['我想看这部电影', SupportType.movie],
 
-	['我读过这本书', SupportType.BOOK],
-	['我想读这本书', SupportType.BOOK],
-	['我在读这本书', SupportType.BOOK],
-	['我最近在读这本书', SupportType.BOOK],
+	['我读过这本书', SupportType.book],
+	['我想读这本书', SupportType.book],
+	['我在读这本书', SupportType.book],
+	['我最近在读这本书', SupportType.book],
 
-	['我最近听过这张唱片', SupportType.MUSIC],
-	['我听过这张唱片', SupportType.MUSIC],
-	['我想听这张唱片', SupportType.MUSIC],
-	['我在听这张唱片', SupportType.MUSIC],
-	['我最近在听这张唱片', SupportType.MUSIC],
+	['我最近听过这张唱片', SupportType.music],
+	['我听过这张唱片', SupportType.music],
+	['我想听这张唱片', SupportType.music],
+	['我在听这张唱片', SupportType.music],
+	['我最近在听这张唱片', SupportType.music],
 
-	['我最近玩过这个游戏', SupportType.GAME],
-	['我玩过这个游戏', SupportType.GAME],
-	['我想玩这个游戏', SupportType.GAME],
-	['我在玩这个游戏', SupportType.GAME],
-	['我最近在玩这个游戏', SupportType.GAME],]
+	['我最近玩过这个游戏', SupportType.game],
+	['我玩过这个游戏', SupportType.game],
+	['我想玩这个游戏', SupportType.game],
+	['我在玩这个游戏', SupportType.game],
+	['我最近在玩这个游戏', SupportType.game],]
 )
 
 

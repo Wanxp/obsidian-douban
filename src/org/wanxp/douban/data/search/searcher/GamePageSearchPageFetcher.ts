@@ -6,7 +6,7 @@ export class GamePageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://www.douban.com/j/search?q=${keyword}&start=${start}&cat=3114`;
     }
     support(type: SupportType): boolean {
-		return type == SupportType.GAME;
+		return type == SupportType.game;
     }
 
 

@@ -6,7 +6,7 @@ export class MusicPageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://www.douban.com/j/search?q=${keyword}&start=${start}&cat=1003`;
     }
     support(type: SupportType): boolean {
-		return type == SupportType.MUSIC;
+		return type == SupportType.music;
     }
 
 

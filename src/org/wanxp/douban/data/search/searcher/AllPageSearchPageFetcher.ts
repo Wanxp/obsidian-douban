@@ -6,7 +6,7 @@ export class AllPageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://m.douban.com/rexxar/api/v2/search?q=${keyword}&start=${pageNum}&count=${pageSize}`;
     }
     support(type: SupportType): boolean {
-		return type == SupportType.ALL;
+		return type == SupportType.all;
     }
 
 

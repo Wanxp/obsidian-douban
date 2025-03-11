@@ -6,7 +6,7 @@ export class BookPageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://www.douban.com/j/search?q=${keyword}&start=${start}&cat=1001`;
     }
     support(type: SupportType): boolean {
-		return type == SupportType.BOOK;
+		return type == SupportType.book;
     }
 
 

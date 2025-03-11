@@ -389,22 +389,22 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	private getTemplateKey():TemplateKey {
 		let templateKey: TemplateKey;
 		switch (this.getSupportType()) {
-			case SupportType.MOVIE:
+			case SupportType.movie:
 				templateKey = TemplateKey.movieTemplateFile;
 				break;
-			case SupportType.BOOK:
+			case SupportType.book:
 				templateKey = TemplateKey.bookTemplateFile;
 				break;
-			case SupportType.MUSIC:
+			case SupportType.music:
 				templateKey = TemplateKey.musicTemplateFile;
 				break;
-			case SupportType.TELEPLAY:
+			case SupportType.teleplay:
 				templateKey = TemplateKey.teleplayTemplateFile;
 				break;
-			case SupportType.GAME:
+			case SupportType.game:
 				templateKey = TemplateKey.gameTemplateFile;
 				break;
-			case SupportType.NOTE:
+			case SupportType.note:
 				templateKey = TemplateKey.noteTemplateFile;
 				break;
 			default:

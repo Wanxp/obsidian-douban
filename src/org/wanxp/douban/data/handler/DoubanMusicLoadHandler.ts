@@ -16,7 +16,7 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.MUSIC;
+		return SupportType.music;
 	}
 
 	getHighQuantityImageUrl(fileName:string):string{

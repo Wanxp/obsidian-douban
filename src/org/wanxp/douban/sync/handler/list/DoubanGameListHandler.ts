@@ -40,7 +40,7 @@ export abstract class DoubanGameListHandler extends DoubanAbstractListHandler {
 					.find("div.title > a")
 					.text()
 					.trim();
-				const updateDateStr: string = item.find("div.date").text().trim();
+				const updateDateStr: string = item.find("span.date").text().trim();
 				let updateDate = null;
 				try {
 					updateDate = new Date(updateDateStr);
@@ -73,11 +73,10 @@ export abstract class DoubanGameListHandler extends DoubanAbstractListHandler {
 			});
 		const {syncConfig} = context;
 		const {scope} = syncConfig;
-		const pattern = /(\d+)/g;
 
-		const wishCount = this.getCount(countDescs, '想玩', pattern);
-		const collectCount = this.getCount(countDescs, '玩过', pattern);
-		const doCount = this.getCount(countDescs, '在玩', pattern);
+		const wishCount = this.getCount(countDescs, '想玩');
+		const collectCount = this.getCount(countDescs, '玩过');
+		const doCount = this.getCount(countDescs, '在玩');
 
 
 		switch (scope) {
@@ -94,8 +93,9 @@ export abstract class DoubanGameListHandler extends DoubanAbstractListHandler {
 
 	}
 
-	private getCount(countDescs:string[], keyword:string, pattern:RegExp):number {
+	private getCount(countDescs:string[], keyword:string):number {
 		return countDescs.filter(desc => desc.includes(keyword)).map(desc => {
+			const pattern = /(\d+)/g;
 			const result = pattern.exec(desc);
 			return result ? parseInt(result[0], 10) : 0;
 		})[0];

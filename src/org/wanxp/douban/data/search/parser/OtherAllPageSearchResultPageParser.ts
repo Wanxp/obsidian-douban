@@ -6,7 +6,7 @@ import SearchParserHandlerV2 from "../SearchParserV2";
 
 export class OtherAllPageSearchResultPageParser implements SearchResultPageParserInterface {
 	support(type:SupportType, pageNum:number):boolean {
-		return pageNum > 1 && type == SupportType.ALL;
+		return pageNum > 1 && type == SupportType.all;
 	}
 	parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {
 		log.debug("解析给多页面结果");

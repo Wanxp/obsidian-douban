@@ -21,7 +21,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.TELEPLAY;
+		return SupportType.teleplay;
 	}
 
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanTeleplaySubject, context: HandleContext): void {

@@ -16,7 +16,7 @@ export default class DoubanNoteLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.NOTE;
+		return SupportType.note;
 	}
 
 	getHighQuantityImageUrl(fileName:string):string{

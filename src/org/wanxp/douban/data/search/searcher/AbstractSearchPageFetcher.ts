@@ -17,8 +17,9 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 
 	support(type: SupportType, pageNum?:number): boolean {
         throw new Error("Method not implemented.");
-    }
-    fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
+	}
+
+	fetch(keyword: string, pageNum: number, pageSize: number): Promise<string> {
 		const start:number = Math.floor((pageNum - 1) * pageSize);
 		const url:string = this.getSearchUrl(keyword, start, pageSize);
 		if (!url) {
@@ -27,7 +28,8 @@ export abstract class AbstractSearchPageFetcher implements SearchPageFetcherInte
 		return DoubanHttpUtil.httpRequestGet(url, this.settingsManager.getHeaders(), this.settingsManager)
 			.catch(e => {
 				throw log.error(i18nHelper.getMessage('130101').replace('{0}', e.toString()), e);
-			});    }
+			});
+	}
 
 	getSearchUrl(keyword: string, start: number, pageSize: number):string {
 		keyword = keyword.trim();

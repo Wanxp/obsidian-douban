@@ -12,8 +12,8 @@ import {DataField} from "../../../utils/model/DataField";
  * 默认的处理器
  */
 export default class DoubanOtherLoadHandler extends DoubanAbstractLoadHandler<DoubanSubject> {
-	getSupportType(): SupportType.ALL {
-		return SupportType.ALL;
+	getSupportType(): SupportType.all {
+		return SupportType.all;
 	}
 
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanSubject, context: HandleContext): void {

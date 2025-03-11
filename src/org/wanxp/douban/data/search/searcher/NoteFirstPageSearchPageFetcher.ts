@@ -6,7 +6,7 @@ export class NoteFirstPageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://www.douban.com/search?cat=1015&q=${keyword}`;
     }
     support(type: SupportType, pageNum:number): boolean {
-		return type == SupportType.NOTE && pageNum == 1;
+		return type == SupportType.note && pageNum == 1;
     }
 
 

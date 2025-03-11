@@ -77,7 +77,7 @@ export class SearchPageInfo {
 			return this;
 		}
 		return new SearchPageInfo(this.total, this._pageNum - 1,
-			this._pageSize, SupportType.ALL);
+			this._pageSize, SupportType.all);
 	}
 
 

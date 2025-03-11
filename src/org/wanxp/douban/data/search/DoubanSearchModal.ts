@@ -8,15 +8,18 @@ import {sleep} from "../../../utils/TimeUtil";
 
 export class DoubanSearchModal extends Modal {
 	searchTerm: string;
-	searchType: SupportType = SupportType.ALL;
+	searchType: SupportType = SupportType.all;
 	plugin: DoubanPlugin;
 	context: HandleContext
 
-	constructor(app: App, plugin: DoubanPlugin, context: HandleContext) {
+	constructor(app: App, plugin: DoubanPlugin, context: HandleContext, type: SupportType) {
 		super(app);
 		this.plugin = plugin;
 		this.context = context;
+		this.searchType = type??SupportType.all;
 	}
+
+
 
 	onOpen() {
 		let {contentEl} = this;
@@ -42,7 +45,7 @@ export class DoubanSearchModal extends Modal {
 		const typeSelect = content.createDiv("type-select");
 		const typeSelectInput = new DropdownComponent(typeSelect)
 			.addOptions(SearchTypeRecords)
-			.setValue(SupportType.ALL)
+			.setValue(this.searchType)
 			.onChange((value:SupportType) => {
 			this.searchType = value;
 		});

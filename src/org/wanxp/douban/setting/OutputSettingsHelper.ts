@@ -33,7 +33,7 @@ export function showFileExample(containerEl: HTMLElement, manager: SettingsManag
 	const document = new DocumentFragment();
 	document.createDiv('file-path-example')
 		.innerHTML = `${i18nHelper.getMessage('121604')}<a href="https://book.douban.com/subject/2253379/">《简爱》</a>: ${VariableUtil.replaceSubject(EXAMPLE_SUBJECT_MAP, 
-		FileUtil.join(manager.plugin.settings.dataFilePath, manager.plugin.settings.dataFileNamePath + ".md"), SupportType.BOOK, 
+		FileUtil.join(manager.plugin.settings.dataFilePath, manager.plugin.settings.dataFileNamePath + ".md"), SupportType.book, 
 		manager)}`;
 
 	new Setting(containerEl)

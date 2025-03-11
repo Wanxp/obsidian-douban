@@ -1,9 +1,13 @@
 import {
-	DoubanSearchGroupPublishResultSubjectNextPage, DoubanSearchGroupPublishResultSubjectPreviousPage,
+	DoubanSearchGroupPublishResultSubjectNextPage,
+	DoubanSearchGroupPublishResultSubjectPreviousPage,
+	DoubanSearchResultSubject_EMPTY, DoubanSearchResultSubject_TIP_EMPTY,
 	DoubanSearchResultSubjectNextPage,
 	DoubanSearchResultSubjectNextPageNeedLogin,
 	DoubanSearchResultSubjectPreviousPage,
-	NavigateType, SEARCH_ITEM_PAGE_SIZE, SupportType
+	NavigateType,
+	SEARCH_ITEM_PAGE_SIZE,
+	SupportType
 } from "../../../constant/Constsant";
 import {FuzzySuggestModal, RequestUrlParam, request} from "obsidian";
 
@@ -106,9 +110,18 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 
 	private initItems(searchPage: SearchPage) {
 		const doubanList: DoubanSearchResultSubject[] = searchPage.list;
+
+		if (searchPage.type == SupportType.all && searchPage.pageNum == 1) {
+			if (doubanList.length == 0) {
+				// if (searchPage.list.length > 0) {
+				doubanList.push(DoubanSearchResultSubject_EMPTY);
+			}else if (searchPage.list.length < SEARCH_ITEM_PAGE_SIZE) {
+				doubanList.push(DoubanSearchResultSubject_TIP_EMPTY);
+			}
+		}
 		if (searchPage.hasNext) {
 			if (this.plugin.userComponent.isLogin()) {
-				if (searchPage.type == SupportType.ALL && searchPage.pageNum == 1) {
+				if (searchPage.type == SupportType.all && searchPage.pageNum == 1) {
 					doubanList.push(DoubanSearchGroupPublishResultSubjectNextPage)
 				}else {
 					doubanList.push(DoubanSearchResultSubjectNextPage)
@@ -118,7 +131,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 			}
 		}
 		if (searchPage.hasPrevious) {
-			if (searchPage.type == SupportType.ALL && searchPage.pageNum == 2) {
+			if (searchPage.type == SupportType.all && searchPage.pageNum == 2) {
 				doubanList.unshift(DoubanSearchGroupPublishResultSubjectPreviousPage)
 			}else {
 				doubanList.unshift(DoubanSearchResultSubjectPreviousPage);

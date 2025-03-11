@@ -17,7 +17,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.GAME;
+		return SupportType.game;
 	}
 	getHighQuantityImageUrl(fileName:string):string{
 		return `https://img9.doubanio.com/lpic/${fileName}`;

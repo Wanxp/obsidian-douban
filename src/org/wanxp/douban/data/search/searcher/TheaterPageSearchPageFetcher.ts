@@ -6,7 +6,7 @@ export class TheaterPageSearchPageFetcher extends AbstractSearchPageFetcher  {
        return  `https://www.douban.com/j/search?q=${keyword}&start=${start}&cat=3069`;
     }
     support(type: SupportType): boolean {
-		return type == SupportType.THEATER;
+		return type == SupportType.theater;
     }
 
 

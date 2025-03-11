@@ -17,7 +17,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	getSupportType(): SupportType {
-		return SupportType.BOOK;
+		return SupportType.book;
 	}
 
 	getHighQuantityImageUrl(fileName:string):string{
