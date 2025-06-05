@@ -105,12 +105,7 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async createFile(context: HandleContext, result: HandleResult) {
-		let filePath = this.settings.dataFilePath;
-		const {syncConfig} = context;
-		if (syncConfig) {
-			filePath = syncConfig.dataFilePath;
-		}
-		filePath = filePath?filePath:DEFAULT_SETTINGS.dataFilePath;
+		let filePath = result.filePath?result.filePath:DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
 		const syncStatus = context.syncStatusHolder && context.syncStatusHolder.syncStatus ? context.syncStatusHolder.syncStatus : null;
 		const {subject} = result;

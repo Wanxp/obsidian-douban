@@ -71,12 +71,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		} else {
 			result = this.parsePartText(template, extract, context);
 		}
+		let filePath = '';
+		if (SearchHandleMode.FOR_CREATE == context.mode) {
+			filePath = this.parsePartText(this.getFilePath(context), extract, context);
+		}
 		let fileName = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
 			fileName = this.parsePartText(this.getFileName(context), extract, context);
 		}
-
-		return {content: result, fileName: fileName, subject:extract};
+		return {content: result,filePath: filePath, fileName: fileName, subject:extract};
 	}
 
 	private getFileName(context: HandleContext): string {
@@ -86,6 +89,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		const {dataFileNamePath} = context.settings;
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
+	}
+
+	private getFilePath(context: HandleContext): string {
+		const {syncConfig} = context;
+		if (syncConfig) {
+			return syncConfig.dataFilePath;
+		}
+		const {dataFilePath} = context.settings;
+		return dataFilePath ? dataFilePath : DEFAULT_SETTINGS.dataFilePath;
 	}
 
 
