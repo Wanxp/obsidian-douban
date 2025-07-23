@@ -1,6 +1,5 @@
 ---
 title: 看剧时间线
-layout: default
 nav_order: 456
 parent: 特殊效果
 render_with_liquid: false

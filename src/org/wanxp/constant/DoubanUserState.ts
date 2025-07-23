@@ -171,7 +171,12 @@ export const DoubanSubjectStateRecords_KEY_WORD_TYPE: Map<string, SupportType> =
 	['我玩过这个游戏', SupportType.game],
 	['我想玩这个游戏', SupportType.game],
 	['我在玩这个游戏', SupportType.game],
-	['我最近在玩这个游戏', SupportType.game],]
+	['我最近在玩这个游戏', SupportType.game],
+
+		['我最近看过这部电影', SupportType.movie],
+		['我看过这部电影', SupportType.movie],
+		['我想看这部电影', SupportType.movie],
+	]
 )
 
 

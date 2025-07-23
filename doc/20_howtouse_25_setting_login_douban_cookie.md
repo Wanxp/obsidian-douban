@@ -1,10 +1,17 @@
 ---
 title: Cookie登录Douban
-layout: default
 nav_order: 350
 parent: 如何使用
 ---
-
+# 登录方式
+Obsidian-Douban插件提供了两种登录方式，扫码登录和Cookie登录。扫码登录是推荐的方式，但如果扫码登录失败，可以使用Cookie登录。
+## 扫码登录
+扫码登录是Obsidian-Douban插件的默认登录方式，适用于大多数用户。扫码登录的步骤如下：
+1. 在Obsidian-Douban插件设置中点击`登录按钮`
+2. 弹出扫码登录窗口
+3. 使用手机或其他设备的豆瓣APP 扫描二维码
+4. 在手机上确认登录
+5. 登录成功后，Obsidian-Douban插件会自动获取您的豆瓣账号信息
 ## Cookie登录Douban
 此方式仅在Obsidian-Douban中点击`登录按钮`，弹窗后，扫码登录失败的用户
 ### 操作

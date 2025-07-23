@@ -78,6 +78,10 @@ desc: {{desc}}
 ---
 
 ![image]({{image}})
+
+---
+Menu:
+{{menu}}
 `,
 	noteTemplateFileContent: `---
 doubanId: {{id}}
@@ -240,8 +244,12 @@ desc: {{desc}}
 
 ![image]({{image}})
 
-Comment: 
 ---
+Menu:
+{{menu}}
+
+---
+Comment: 
 {{myComment}}
 
 `,

@@ -1,10 +1,9 @@
 ---
 title: 开发
-layout: default
 nav_order: 700
 ---
 
-## 如何开发调试
+# 如何开发调试
 
 1. 进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`
 2. 克隆代码      

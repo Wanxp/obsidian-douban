@@ -208,7 +208,7 @@ export const SearchTypeRecords: { [key in SupportType]: string } = {
 	[SupportType.music]: i18nHelper.getMessage('MUSIC'),
 	[SupportType.note]: i18nHelper.getMessage('NOTE'),
 	[SupportType.game]: i18nHelper.getMessage('GAME'),
-	// [SupportType.THEATER]: i18nHelper.getMessage('THEATER'),
+	[SupportType.theater]: i18nHelper.getMessage('THEATER'),
 }
 
 /**

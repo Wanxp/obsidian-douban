@@ -117,6 +117,8 @@ export default class StringUtil {
 			return true;
 		}
 	}
+
+
 }
 
 export const EscapeMap:Map< { [Symbol.replace](string: string, replaceValue: string): string; }, string> = new Map([

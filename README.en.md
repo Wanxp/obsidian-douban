@@ -21,13 +21,13 @@
 
 Bring your data from [Douban]() to Your [Obsidian](https://obsidian.md/)   
 Including your _Movie, Book, Music, Teleplay, Note, Game_ even your personal State and Comment
-![background](./background.png)
+![background](doc/background.png)
 
 ---  
 If you want some features or have any questions about this plugin, create issues or join the development is welcome or ⭐Star
 
 - [Bugs, Issues, & Feature Requests](https://github.com/Wanxp/obsidian-douban/issues)
-- Read Other Languages: English | [简体中文](../README.md)
+- Read Other Languages: English | [简体中文](README.md)
 
 ## Target
 - [x] Sync Personal Movie/TV/Book/Music
@@ -36,23 +36,23 @@ If you want some features or have any questions about this plugin, create issues
 - [x] Custom Variables
 
 ## 效果
-1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](./Obsidian-Douban-TimeLine.md)
-   ![](./img/obsidian-douban-time-preview-example.gif)
+1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](doc/Obsidian-Douban-TimeLine.md)
+   ![](doc/img/obsidian-douban-time-preview-example.gif)
 <!--2.  结合DataView插件，__构建个人电子书架（书库数据）__，请参照[结合dateview插件实现个人书架效果](./doc/Obsidian-Douban-DataView.md))-->
-2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](./Obsidian-Douban-BlueTopaz.md)
-   ![](./background.png)
+2. 结合主题 __构建类豆瓣网页效果__，请参照[结合Blue Topaz实现网页效果](doc/Obsidian-Douban-BlueTopaz.md)
+   ![](doc/background.png)
 
 ## How to use
 ### Sync
 - Sync Data From Douban    
   Sync data from Douban (to learn how to use the TimeLine plugin to build a reading/movie watching timeline, please refer to [here](Obsidian-Douban-TimeLine.en.md)).
-  ![Sync Data From Douban](img/sync_data_from_douban.gif)
+  ![Sync Data From Douban](doc/img/sync_data_from_douban.gif)
 ### Search
 Use the following method: Enter <kbd>Ctrl</kbd> + <kbd>P</kbd>, enter "Douban", select search and use
 - Search Data And Create Note  
 - Search Data By File Name    
 - Search Movie By Input Text       
-  ![Search Movie By File Name](img/search_and_create_note.gif)
+  ![Search Movie By File Name](doc/img/search_and_create_note.gif)
 
 
 ## Support Field
@@ -119,9 +119,7 @@ Use the following method: Enter <kbd>Ctrl</kbd> + <kbd>P</kbd>, enter "Douban", 
 7. Enjoy your develop  
 
 ## Community
- <img src="img/obsidian-douban-qq-qr_code.svg" width="300px">
-<img src="https://picture-bed-public.wanxuping.com/obsidian-douban/wechat_group.png" width="245px">  
-
+<img src="doc/img/obsidian-douban-qq-qr_code.svg" width="300px">  <img src="doc/img/wechat_group.png" width="245px">  
 
 ## Disclaimer
 1. This program does not crawl any content such as books and videos, and is only for technical research purposes. It does not violate the copyright of authors of books and videos or the official interests of Douban. If there is any infringement, please contact me to delete it.

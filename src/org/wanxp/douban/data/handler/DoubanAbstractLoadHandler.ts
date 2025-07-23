@@ -54,30 +54,35 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		let frontMatterBefore = '';
 		let frontMatterAfter = '';
 		let result = '';
+
+		const variableMap = this.buildVariableMap(extract, context);
+		this.parseUserInfo(template, variableMap, extract, context);
+		this.parseVariable(template, variableMap, extract, context);
+
 		if (frontMatterStart > -1 && frontMatterEnd > -1) {
 			frontMatterBefore = template.substring(0, frontMatterStart);
 			frontMatter = template.substring(frontMatterStart, frontMatterEnd + 3);
 			frontMatterAfter = template.substring(frontMatterEnd + 3);
 			if (frontMatterBefore.length > 0) {
-				frontMatterBefore = this.parsePartText(frontMatterBefore, extract, context);
+				frontMatterBefore = this.parsePartText(frontMatterBefore, extract, context, variableMap);
 			}
 			if (frontMatterAfter.length > 0) {
-				frontMatterAfter = this.parsePartText(frontMatterAfter, extract, context);
+				frontMatterAfter = this.parsePartText(frontMatterAfter, extract, context, variableMap);
 			}
 			if (frontMatter.length > 0) {
-				frontMatter = this.parsePartText(frontMatter, extract, context, TemplateTextMode.YAML);
+				frontMatter = this.parsePartYml(frontMatter, extract, context, variableMap);
 			}
 			result = frontMatterBefore + frontMatter + frontMatterAfter;
 		} else {
-			result = this.parsePartText(template, extract, context);
+			result = this.parsePartText(template, extract, context, variableMap);
 		}
 		let filePath = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
-			filePath = this.parsePartText(this.getFilePath(context), extract, context);
+			filePath = this.parsePartPath(this.getFilePath(context), extract, context, variableMap);
 		}
 		let fileName = '';
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
-			fileName = this.parsePartText(this.getFileName(context), extract, context);
+			fileName = this.parsePartPath(this.getFileName(context), extract, context, variableMap);
 		}
 		return {content: result,filePath: filePath, fileName: fileName, subject:extract};
 	}
@@ -106,7 +111,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getSupportType(): SupportType;
 
-	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext, textMode: TemplateTextMode): void;
+	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
 
 	abstract support(extract: DoubanSubject): boolean;
 
@@ -266,13 +271,25 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return s;
 	}
 
-	private parsePartText(template: string, extract: T, context: HandleContext, textMode: TemplateTextMode = TemplateTextMode.NORMAL): string {
-		const variableMap:Map<string, DataField> = new Map();
+	private parsePartYml(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'yml_text');
+	}
+
+	private parsePartText(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'text');
+	}
+
+	private parsePartPath(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'path');
+	}
+
+	private buildVariableMap(extract: T, context: HandleContext) {
+		const variableMap: Map<string, DataField> = new Map();
 		for (const [key, value] of Object.entries(extract)) {
 			if (!value) {
 				continue;
 			}
-			const type:DataValueType = VariableUtil.getType(value);
+			const type: DataValueType = VariableUtil.getType(value);
 			if (key == 'score') {
 				variableMap.set(DoubanParameterName.SCORE_STAR, new DataField(
 					DoubanParameterName.SCORE_STAR,
@@ -320,14 +337,10 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			currentDate,
 			moment(currentDate).format(context.settings.timeFormat)
 		));
-
-		this.parseUserInfo(template, variableMap, extract, context, textMode);
-		this.parseVariable(template, variableMap, extract, context, textMode);
-		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager);
-
+		return variableMap;
 	}
 
-	private parseUserInfo(resultContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext, textMode: TemplateTextMode) {
+	private parseUserInfo(resultContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext) {
 		const userState = extract.userState;
 		if ((resultContent.indexOf(DoubanUserParameter.MY_TAGS) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_RATING) >= 0 ||

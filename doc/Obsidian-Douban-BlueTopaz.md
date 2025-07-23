@@ -1,6 +1,5 @@
 ---
 title: 类豆瓣网页显示
-layout: default
 nav_order: 455
 parent: 特殊效果
 render_with_liquid: false

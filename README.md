@@ -32,7 +32,7 @@
 如果觉得喜欢或对您有帮助，欢迎一键三连-点亮 ⭐Star
 
 - [异常, 问题 & 新的想法](https://github.com/Wanxp/obsidian-douban/issues)
-- 阅读其它语言的介绍请点击 [English](./doc/README.en.md) | 简体中文
+- 阅读其它语言的介绍请点击 [English](README.en.md) | 简体中文
 
 ## 功能
 - ☑️ 导入电影、电视剧、书籍、音乐、游戏、日记
@@ -42,6 +42,7 @@
   - ⬜ 支持图床自定义
 - ☑️ 支持自定义参数
 - ☑️ 支持移动端导入
+- ⬜ 支持使用AI大模型ChatGPT、Deepseek、Ollama分析导入
 
 ## 效果
 1. 结合Timeline插件 __构建个人观影时间线__，请参照[结合timeline插件实现时间线效果](./doc/Obsidian-Douban-TimeLine.md)
@@ -120,7 +121,7 @@
 3. 在obsidian插件中心开启当前插件功能
 
 ## 如何开发调试
-
+### 开发
 1. 进入你的Obsidian测试文档文件夹下的`/.obsidian/plugins/`
 2. 克隆代码      
    `git clone git@github.com:Wanxp/obsidian-douban.git`
@@ -134,7 +135,10 @@
    `npm run dev`
 7. 进入Obsidian插件中心重新加载当前插件
 8. 享受开发吧
-
+#### 文档
+```shell
+npm run docs:dev
+```
 ## 支持开发者
 如果觉得插件对你有帮助，欢迎请我喝杯咖啡，让我有更多的动力去维护和更新插件
 

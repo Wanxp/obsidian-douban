@@ -88,6 +88,9 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 		const idPattern = /(\d){5,10}/g;
 		const id = idPattern.exec(url);
 
+		const trackItems = html('.track-list .track-items li');
+		const tracks = Array.from(trackItems).map(item => html(item).text().trim());
+
 		const result: DoubanMusicSubject = {
 			image: image,
 			imageUrl: image,
@@ -104,10 +107,9 @@ export default class DoubanMusicLoadHandler extends DoubanAbstractLoadHandler<Do
 			genre: valueMap.has('genre') ? [valueMap.get('genre')] : [""],
 			albumType: valueMap.has('albumType') ? valueMap.get('albumType') : "",
 			medium: valueMap.has('medium') ? valueMap.get('medium') : "",
-			barcode: valueMap.has('barcode') ? valueMap.get('barcode') : ""
+			barcode: valueMap.has('barcode') ? valueMap.get('barcode') : "",
+			menu: tracks
 		};
-
-
 
 		return result;
 	}

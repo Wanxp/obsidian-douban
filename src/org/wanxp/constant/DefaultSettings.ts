@@ -44,6 +44,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		{name: 'myType', value: 'note', field: SupportType.note},
 		{name: 'myType', value: 'game', field: SupportType.game},
 		{name: 'myType', value: 'teleplay', field: SupportType.teleplay},
+		{name: 'myType', value: 'theater', field: SupportType.theater},
 	],
 	loginCookiesContent: '',
 	loginHeadersContent: '',

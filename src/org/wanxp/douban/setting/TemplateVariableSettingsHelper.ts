@@ -302,6 +302,16 @@ ${i18nHelper.getMessage('122004')}
 		<td>${i18nHelper.getMessage('310620')}</th>
 		<td>${i18nHelper.getMessage('310720')}</th>
 	</tr>
+			<tr>
+		<td>${i18nHelper.getMessage('320111')}</th>
+		<td>${i18nHelper.getMessage('310122')}</th>
+		<td>${i18nHelper.getMessage('310222')}</th>
+		<td>${i18nHelper.getMessage('310322')}</th>
+		<td>${i18nHelper.getMessage('310422')}</th>
+		<td>${i18nHelper.getMessage('310522')}</th>
+		<td>${i18nHelper.getMessage('310622')}</th>
+		<td>${i18nHelper.getMessage('310722')}</th>
+	</tr>
 </table>`;
 
 

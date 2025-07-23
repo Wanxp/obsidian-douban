@@ -7,7 +7,10 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
-    "test": "jest"
+    "test": "jest",
+    "docs:dev": "vitepress dev doc",
+    "docs:build": "vitepress build doc",
+    "docs:preview": "vitepress preview doc"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +26,8 @@
     "obsidian": "latest",
     "ts-jest": "^28.0.5",
     "tslib": "2.3.1",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.2",
+    "vitepress": "^1.6.3"
   },
   "dependencies": {
     "@notable/html2markdown": "^1.1.3",

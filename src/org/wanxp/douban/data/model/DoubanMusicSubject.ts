@@ -6,4 +6,5 @@ export default class DoubanMusicSubject extends DoubanSubject {
 	medium: string;
 	records: number;
 	barcode: string;
+	menu: string[];
 }
