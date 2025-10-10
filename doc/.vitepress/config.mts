@@ -13,13 +13,12 @@ export default defineConfig({
     logo: '/obsidian-douban-logo.png',
     nav: [
       { text: '首页', link: '/' },
-      { text: '效果展示', items: [
+      { text: '特殊效果', items: [
         { text: '时间线效果', link: '/Obsidian-Douban-TimeLine' },
         { text: '类网页效果', link: '/Obsidian-Douban-BlueTopaz' },
         { text: '书架效果', link: 'Obsidian-Douban-DataView-Jump' }
         ] },
       { text: '作者', link: 'https://wxp.hk' },
-
     ],
 
     sidebar: [
@@ -45,12 +44,13 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Wanxp/obsidian-douban' },
       // { icon: 'blog', link: 'https://github.com/Wanxp/obsidian-douban' }
-      {
-        icon: {
-          png: '/img/wanxp-obsidian-douban-logo.png',
-        },
-        link: 'https://wxp.hk'
+    ],
+    lastUpdated: {
+      text: '最后更新于',
+      formatOptions: {
+        dateStyle: 'full',
+        timeStyle: 'medium'
       }
-    ]
+    }
   }
 })
