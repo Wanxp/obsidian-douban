@@ -29,7 +29,18 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanGameSubject, context: HandleContext): void {
-		super.parseAliases(beforeContent, variableMap, extract, context);
+		// super.parseAliases(beforeContent, variableMap, extract, context);
+		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
+			extract.aliases.map(a=>a
+					.trim()
+				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
+				// 		//replase multiple _ to single _
+				// 		.replace(/_+/g, '_')
+				// 		.replace(/^_/, '')
+				// 		.replace(/_$/, '')
+				.replace(/:\s+/g, ':')
+			)));
+		// super.parseAliases(beforeContent, variableMap, extract, context);
 	}
 
 	support(extract: DoubanSubject): boolean {

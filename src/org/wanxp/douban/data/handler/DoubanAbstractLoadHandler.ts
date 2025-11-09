@@ -111,19 +111,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getSupportType(): SupportType;
 
-	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
-
-	parseAliases(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): string[] {
-		// variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-		// 	extract.aliases.map(a=>a
-		// 		.trim()
-		// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
-		// 		//replase multiple _ to single _
-		// 		.replace(/_+/g, '_')
-		// 		.replace(/^_/, '')
-		// 		.replace(/_$/, '')
-		// 	)));
-	}
+	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
 
 	abstract support(extract: DoubanSubject): boolean;
 
