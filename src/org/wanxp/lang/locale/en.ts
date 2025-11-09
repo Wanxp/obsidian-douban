@@ -248,12 +248,16 @@ PS: This file could be delete if you want to.
 	'121410': `Search Default Type`,
 	'121411': `Search defuault type when open command palette 'search douban and create file'`,
 
-	'121430': `Save Attachment File`,
+	'121430': `Save Attachment(Picture) File`,
 	'121431': `Save attachment file to local disk, such as image ? If you do not enable this feature, it will not show cover image in note`,
-	'121432': `Attachment folder`,
+	'121432': `Attachment(Picture) folder`,
 	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder,
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/assets`,
 	 '121434': `assets`,
+	'121452': `Attachment(Picture) File Name`,
+	'121453': `Attachment file name, If blank, they will be created by default name '{{title}}'. support all basic template variables. example: {{type}}-{{title}}`,
+
+	'121454': `{{title}}`,
 	'121435': `Save High Definition Cover`,
 	'121436': `High Definition Cover looks better but it will take more space, and you must login douban in this plugin`,
 	'121437': `Please login first, Then this function could be enable`,
@@ -330,6 +334,8 @@ PS: This file could be delete if you want to.
 	'140102': `subject type is different, will not sync this, chosen sync type is {0} but this {1} subject type is {2}`,
 	'130105': `Can not use Douban this time, Please try again after 12 hour or 24 hour. Or you can reset your connection `,
 	'130106': `Can not use Douban this time, Please try Login In Douban Plugin. If not working please again after 12 hour or 24 hour. Or you can reset your connection `,
+	'130404': `404 Url Not Found`,
+
 
 	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,
 	'130108': `Redirect times too much, please check your network or proxy`,

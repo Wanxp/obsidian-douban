@@ -9,6 +9,7 @@ import {UserStateSubject} from "../model/UserStateSubject";
 import {moment} from "obsidian";
 import {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
 import {DataField} from "../../../utils/model/DataField";
+import {b} from "@shikijs/engine-javascript/dist/shared/engine-javascript.BnuFKbIS";
 
 export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<DoubanGameSubject> {
 
@@ -28,7 +29,7 @@ export default class DoubanGameLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanGameSubject, context: HandleContext): void {
-		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases, extract.aliases.map(a=>a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))));
+		super.parseAliases(beforeContent, variableMap, extract, context);
 	}
 
 	support(extract: DoubanSubject): boolean {

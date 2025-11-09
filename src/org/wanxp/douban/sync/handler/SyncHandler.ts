@@ -11,6 +11,9 @@ import {i18nHelper} from "../../../lang/helper";
 import {DoubanTeleplaySyncHandler} from "./DoubanTeleplaySyncHandler";
 import {SyncConditionType} from "../../../constant/Constsant";
 import {DoubanGameSyncHandler} from "./DoubanGameSyncHandler";
+import {DataField} from "../../../utils/model/DataField";
+import {VariableUtil} from "../../../utils/VariableUtil";
+import {FileUtil} from "../../../utils/FileUtil";
 
 export default class SyncHandler {
 	private app: App;
@@ -101,7 +104,7 @@ export default class SyncHandler {
 `;
 			}else {
 				// @ts-ignore
-				details+= `${value.id}-[[${value.title}]]:  ${i18nHelper.getMessage(value.status)}
+				details+= `${value.id}-[[${FileUtil.replaceSpecialCharactersForFileName(value.title)}]]:  ${i18nHelper.getMessage(value.status)}
 `;
 			}
 

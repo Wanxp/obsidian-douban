@@ -5,7 +5,7 @@ import {moment, Platform, TFile} from "obsidian";
 import {i18nHelper} from 'src/org/wanxp/lang/helper';
 import {log} from "src/org/wanxp/utils/Logutil";
 import {CheerioAPI, load} from "cheerio";
-import YamlUtil from "../../../utils/YamlUtil";
+import YamlUtil, {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
 import {
 	BasicConst,
 	DataValueType,
@@ -47,17 +47,17 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
 		const template: string = await this.getTemplate(extract, context);
-		await this.saveImage(extract, context);
+		const variableMap = this.buildVariableMap(extract, context);
+		this.parseUserInfo(template, variableMap, extract, context);
+		this.parseVariable(template, variableMap, extract, context);
+		await this.saveImage(extract, context, variableMap);
+
 		const frontMatterStart: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, 0);
 		const frontMatterEnd: number = template.indexOf(BasicConst.YAML_FRONT_MATTER_SYMBOL, frontMatterStart + 1);
 		let frontMatter = '';
 		let frontMatterBefore = '';
 		let frontMatterAfter = '';
 		let result = '';
-
-		const variableMap = this.buildVariableMap(extract, context);
-		this.parseUserInfo(template, variableMap, extract, context);
-		this.parseVariable(template, variableMap, extract, context);
 
 		if (frontMatterStart > -1 && frontMatterEnd > -1) {
 			frontMatterBefore = template.substring(0, frontMatterStart);
@@ -111,7 +111,19 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getSupportType(): SupportType;
 
-	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
+	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
+
+	parseAliases(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): string[] {
+		// variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
+		// 	extract.aliases.map(a=>a
+		// 		.trim()
+		// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
+		// 		//replase multiple _ to single _
+		// 		.replace(/_+/g, '_')
+		// 		.replace(/^_/, '')
+		// 		.replace(/_$/, '')
+		// 	)));
+	}
 
 	abstract support(extract: DoubanSubject): boolean;
 
@@ -522,41 +534,67 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 	}
 
-	private async saveImage(extract: T, context: HandleContext) {
+	private async saveImage(extract: T, context: HandleContext, variableMap : Map<string, DataField>) {
 		const {syncConfig} = context;
 		if (!extract.image || (syncConfig && !syncConfig.cacheImage)  || !context.settings.cacheImage) {
 			return;
 		}
 		const image = extract.image;
-		const filename = image.split('/').pop();
 		let folder = syncConfig? syncConfig.attachmentPath : context.settings.attachmentPath;
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
-		folder = this.parsePartText(folder, extract, context)
-
-		const referHeaders = {'referer': image};
+		folder = this.parsePartPath(folder, extract, context, variableMap)
+		let fileName = syncConfig? syncConfig.attachmentFileName : context.settings.attachmentFileName;
+		if (!fileName) {
+			fileName = DEFAULT_SETTINGS.attachmentFileName;
+		}
+		let fileNameSuffix = image ? image.substring(image.lastIndexOf('.')) : '.jpg';
+		if (fileNameSuffix && fileNameSuffix.length > 10) {
+			fileNameSuffix = '.jpg';
+		}
+		fileName = this.parsePartPath(fileName, extract, context, variableMap)
+		fileName = fileName + fileNameSuffix;
+		// const referHeaders = {'referer': image};
+		const referHeaders =  context.settings.loginHeadersContent ? JSON.parse(context.settings.loginHeadersContent) : {};
 		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
-				const fileNameSpilt = filename.split('.');
+				const fileNameSpilt = fileName.split('.');
 				const highFilename = fileNameSpilt.first() + '.jpg';
 
 				const highImage = this.getHighQuantityImageUrl(highFilename);
 				const resultValue = await this.handleImage(highImage, folder, highFilename, context, false, referHeaders);
 				if (resultValue && resultValue.success) {
 					extract.image = resultValue.filepath;
+					this.initImageVariableMap(extract, context, variableMap);
 					return;
 				}
-
 			}catch (e) {
 				console.error(e);
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
 		}
-		const resultValue = await this.handleImage(image, folder, filename, context, true, referHeaders);
+		const resultValue = await this.handleImage(image, folder, fileName, context, true, referHeaders);
 		if (resultValue && resultValue.success) {
 			extract.image = resultValue.filepath;
+			this.initImageVariableMap(extract, context, variableMap);
 		}
+	}
+
+	private initImageVariableMap(extract: T, context: HandleContext, variableMap : Map<string, DataField>) {
+		variableMap.set(DoubanParameterName.IMAGE_URL, new DataField(
+			DoubanParameterName.IMAGE_URL,
+			DataValueType.url,
+			extract.imageUrl,
+			extract.imageUrl
+		));
+		variableMap.set(DoubanParameterName.IMAGE, new DataField(
+			DoubanParameterName.IMAGE,
+			DataValueType.path,
+			extract.image,
+			extract.image
+		));
+
 	}
 
 	private async handleImage(image: string, folder: string, filename: string, context: HandleContext, showError: boolean, headers?: any) {

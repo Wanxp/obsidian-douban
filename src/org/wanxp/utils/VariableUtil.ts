@@ -96,7 +96,7 @@ export class VariableUtil {
 		} else if(value instanceof DataField) {
 			content = this.replaceDataField(variable, value, content, settingManager, targetType);
 		} else {
-			content = this.replaceString(variable, value, content, settingManager, targetType);
+			content = this.replaceString(variable, value, value, content, settingManager, targetType);
 		}
 		return content;
 	}
@@ -135,12 +135,12 @@ export class VariableUtil {
 		return `{{${key}}}`;
 	}
 
-	static replaceString(variable: FieldVariable, value: any, content: string, settingManager:SettingsManager, targetType: TargetType): string {
+	static replaceString(variable: FieldVariable, valueField: DataField, value: any, content: string, settingManager:SettingsManager, targetType: TargetType): string {
 		if (!content) {
 			return content;
 		}
 		let strValue = value?  value.toString() : "";
-		return content.replaceAll(variable.variable, this.handleText(strValue, targetType));
+		return content.replaceAll(variable.variable, this.handleText(strValue, targetType, valueField));
 	}
 
 	/**
@@ -186,7 +186,7 @@ export class VariableUtil {
 	private static replaceMap(obj: Map<string, any>, allVariables:FieldVariable[], content: string, settingManager: SettingsManager, targetType: TargetType) {
 		allVariables.forEach(variable => {
 			const value = obj.get(variable.key);
-			content = this.replaceVariable(variable, value,content, settingManager, targetType);
+			content = this.replaceVariable(variable, value, content, settingManager, targetType);
 		});
 		return content;
 	}
@@ -220,19 +220,19 @@ export class VariableUtil {
 		}
 		switch (value.type) {
 			case DataValueType.string:
-				content = this.replaceString(variable, value.value, content, settingManager, targetType);
+				content = this.replaceString(variable, value, value.value, content, settingManager, targetType);
 				break;
 			case DataValueType.number:
-				content = content.replaceAll(variableStr, this.handleText(value.value.toString(), targetType));
+				content = content.replaceAll(variableStr, this.handleText(value.value.toString(), targetType, value));
 				break;
 			case DataValueType.date:
-				content = content.replaceAll(variableStr,  this.handleText(value.value, targetType));
+				content = content.replaceAll(variableStr,  this.handleText(value.value, targetType, value));
 				break;
 			case DataValueType.array:
 				content = this.replaceArray(variable, value.value, content, settingManager, targetType);
 				break;
 			default:
-				content = content.replaceAll(variableStr,  this.handleText(value.value, targetType));
+				content = content.replaceAll(variableStr,  this.handleText(value.value, targetType, value));
 				break;
 
 		}
@@ -277,9 +277,9 @@ export class VariableUtil {
 		return map;
 	}
 
-	private static handleText(v: string, targetType: TargetType) {
+	private static handleText(v: string, targetType: TargetType, dataField: DataField = null): string {
 		if (targetType === 'yml_text') {
-			return YamlUtil.handleText(v);
+			return YamlUtil.handleText(v, dataField);
 		}
 		if (targetType === 'text') {
 			return  v;

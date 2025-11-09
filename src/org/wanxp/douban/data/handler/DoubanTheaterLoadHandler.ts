@@ -54,7 +54,15 @@ export default class DoubanTheaterLoadHandler extends DoubanAbstractLoadHandler<
 			"aliases",
 			DataValueType.array,
 			extract.aliases,
-			extract.aliases.map(a => a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))
+			extract.aliases.map(a => a
+				.trim()
+				.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
+				//replace multiple _ to single _
+				.replace(/_+/g, '_')
+				.replace(/^_/, '')
+				.replace(/_$/, '')
+
+			)
 		));
 	}
 

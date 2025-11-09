@@ -150,6 +150,7 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 			cacheImage: ( settings.cacheImage == null) ?  DEFAULT_SETTINGS.cacheImage : settings.cacheImage,
 			cacheHighQuantityImage: ( settings.cacheHighQuantityImage == null) ?  DEFAULT_SETTINGS.cacheHighQuantityImage : settings.cacheHighQuantityImage,
 			attachmentPath: (settings.attachmentPath == '' || settings.attachmentPath == null) ?  DEFAULT_SETTINGS.attachmentPath : settings.attachmentPath,
+			attachmentFileName: (settings.attachmentFileName == '' || settings.attachmentFileName == null) ?  DEFAULT_SETTINGS.attachmentFileName : settings.attachmentFileName,
 			templateFile:  (settings.movieTemplateFile == '' || settings.movieTemplateFile == null) ? DEFAULT_SETTINGS.movieTemplateFile : settings.movieTemplateFile,
 			incrementalUpdate: true,
 			syncConditionType: SyncConditionType.ALL,
@@ -424,6 +425,20 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 					.setPlaceholder(i18nHelper.getMessage('121434'))
 					.onChange(async (value: string) => {
 						config.attachmentPath = value;
+					});
+			})
+			.setDisabled(disable);
+		new Setting(containerEl)
+			.setName( i18nHelper.getMessage('121452'))
+			.setDesc( i18nHelper.getMessage('121453'))
+			.addSearch(async (search: SearchComponent) => {
+				new FolderSuggest(this.plugin.app, search.inputEl);
+				// @ts-ignore
+				search.setValue(config.attachmentFileName)
+					// @ts-ignore
+					.setPlaceholder(i18nHelper.getMessage('121454'))
+					.onChange(async (value: string) => {
+						config.attachmentFileName = value;
 					});
 			})
 			.setDisabled(disable);

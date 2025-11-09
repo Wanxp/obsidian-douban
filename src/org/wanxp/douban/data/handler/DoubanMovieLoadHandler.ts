@@ -51,13 +51,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			extract.author,
 			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
-
-		variableMap.set("aliases", new DataField(
-			"aliases",
-			DataValueType.array,
-			extract.aliases,
-			extract.aliases.map(a => a.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_'))
-		));
+		super.parseAliases(beforeContent, variableMap, extract, context);
 	}
 
 	support(extract: DoubanSubject): boolean {

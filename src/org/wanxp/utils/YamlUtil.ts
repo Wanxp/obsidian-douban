@@ -1,5 +1,7 @@
-export default class YamlUtil {
+import {DataField} from "./model/DataField";
+import {DataValueType} from "../constant/Constsant";
 
+export default class YamlUtil {
 
 	public static hasSpecialChar(str: string): boolean {
 		return SPECIAL_CHAR_REG.test(str);
@@ -14,21 +16,26 @@ export default class YamlUtil {
 		return '"' + text + '"';
 	}
 
-	public static handleText(text: string) {
-		return YamlUtil.hasSpecialChar(text)
-			? YamlUtil.handleSpecialChar(text.replaceAll('"', '\\"'))
-				.replaceAll(/\s+/g,' ')
+	public static handleText(text: string, dataField: DataField = null): string {
+		if (YamlUtil.hasSpecialChar(text)) {
+			text = text.replaceAll('"', '\\"')
+				.replaceAll(/\s+/g, ' ')
 				.replaceAll('\n', '。')
 				.replaceAll('。。', '。')
 				.replace(/^" /, '"') // Remove leading "
 				.replace(/ "$/, '"') // Remove trailing "
-			: text;
+			if (dataField && dataField.type === DataValueType.date) {
+				return text;
+			}
+			YamlUtil.handleSpecialChar(text);
+		}
+		return text;
 	}
 
 }
 
 export const SPECIAL_CHAR_REG = /[{}\[\]&*#?|\-<>=!%@:"`,\n]/;
-export const TITLE_ALIASES_SPECIAL_CHAR_REG_G = /[{}\[\]&*#?|\-<>=!%@:"`,， \n]/g;
+export const TITLE_ALIASES_SPECIAL_CHAR_REG_G = /[{}\[\]&*#?|\-<>=!%@:"`,，\n]/g;
 
 const SPECIAL_CHAR_REG_REPLACE: Map<string, string> = new Map([
 	['{', '\\{'],

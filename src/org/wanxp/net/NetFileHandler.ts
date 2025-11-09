@@ -19,15 +19,25 @@ export default class NetFileHandler {
 		const filePath:string = FileUtil.join(folder, filename);
 		return HttpUtil.httpRequestBuffer(url, headers, context.plugin.settingsManager)
 			.then((response) => {
+				if (response.status == 404) {
+					throw new Error(i18nHelper.getMessage('130404'));
+				}
 				if (response.status == 403) {
 					throw new Error(i18nHelper.getMessage('130106'));
 				}
 				return response.textArrayBuffer;
 			})
 			.then((buffer) => {
+				if (!buffer || buffer.byteLength == 0) {
+					return 0;
+				}
 				this.fileHandler.creatAttachmentWithData(filePath, buffer);
-			}).then(() => {
-				return {success: true, error: '', filepath: filePath};
+				return buffer.byteLength;
+			}).then((size) => {
+				if (size == 0) {
+					return {success: false, size: size, error: '文件唯恐', filepath: null};
+				}
+				return {success: true, size: size, error: '', filepath: filePath};
 			})
 			.catch(e => {
 				if (showError) {

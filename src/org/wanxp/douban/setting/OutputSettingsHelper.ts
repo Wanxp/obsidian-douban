@@ -223,7 +223,8 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 		}else {
 			new Setting(containerEl).then(createFolderSelectionSetting({containerEl: containerEl, name: '121432', desc: '121433', placeholder: null, key: null, manager: manager}));
 			new Setting(containerEl).then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121434', key: 'attachmentPath', manager: manager}));
-
+			new Setting(containerEl).then(createFolderSelectionSetting({containerEl: containerEl, name: '121452', desc: '121453', placeholder: null, key: null, manager: manager}));
+			new Setting(containerEl).then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121454', key: 'attachmentFileName', manager: manager}));
 			;
 		}
 

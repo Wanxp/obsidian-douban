@@ -31,7 +31,7 @@ class DoubanFuzzySuggester extends FuzzySuggestModal<DoubanSearchResultSubject> 
 	private searchItem:string;
 
 	constructor(plugin: DoubanPlugin, context: HandleContext, searchItem:string) {
-		super(app);
+		super(plugin.app);
 		this.plugin = plugin;
 		this.context = context;
 		this.searchItem = searchItem;

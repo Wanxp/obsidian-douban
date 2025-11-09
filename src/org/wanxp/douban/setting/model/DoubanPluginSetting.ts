@@ -33,6 +33,7 @@ export interface DoubanPluginSetting {
 	cacheImage: boolean,
 	cacheHighQuantityImage: boolean,
 	attachmentPath: string,
+	attachmentFileName: string,
 	pictureBedFlag: boolean
 	pictureBedType: string;
 	pictureBedSetting: PictureBedSetting;

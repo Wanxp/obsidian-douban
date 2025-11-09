@@ -13,6 +13,7 @@ export interface  SyncConfig {
 
 	cacheHighQuantityImage:boolean;
 	attachmentPath: string;
+	attachmentFileName: string;
 	templateFile: string;
 	incrementalUpdate: boolean;
 }
