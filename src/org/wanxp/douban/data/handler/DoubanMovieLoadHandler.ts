@@ -35,24 +35,24 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			"director",
 			DataValueType.array,
 			extract.director,
-			extract.director.map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.director || []).map(SchemaOrg.getPersonName).filter(c => c)
 		));
 
 		variableMap.set("actor", new DataField(
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			extract.actor.map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c)
 		));
 
 		variableMap.set("author", new DataField(
 			"author",
 			DataValueType.array,
 			extract.author,
-			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
+			(extract.author || []).map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
 		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-			extract.aliases.map(a=>a
+			(extract.aliases || []).map(a=>a
 					.trim()
 				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
 				// 		//replase multiple _ to single _
@@ -98,7 +98,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMovieSubject {
-		 const movie:DoubanMovieSubject = html('script')
+		let movie: DoubanMovieSubject | undefined = html('script')
 			.get()
 			.filter(scd => "application/ld+json" == html(scd).attr("type"))
 			.map(i => {
@@ -108,8 +108,8 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				const idPattern = /(\d){5,10}/g;
 				const id = idPattern.exec(obj.url);
 				const name = obj.name;
-				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context)??name;
-				const originalTitle =  super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
+				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context) ?? name;
+				const originalTitle = super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
 
 				const result: DoubanMovieSubject = {
 					id: id ? id[0] : '',
@@ -119,14 +119,14 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 					originalTitle: originalTitle,
 					desc: obj.description,
 					url: "https://movie.douban.com" + obj.url,
-					director: obj.director,
-					author: obj.author,
-					actor: obj.actor,
+					director: obj.director || [],
+					author: obj.author || [],
+					actor: obj.actor || [],
 					aggregateRating: obj.aggregateRating,
 					datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
 					image: obj.image,
 					imageUrl: obj.image,
-					genre: obj.genre,
+					genre: obj.genre || [],
 					publisher: '',
 					aliases: [""],
 					language: [""],
@@ -136,10 +136,52 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				}
 				return result;
 			})[0];
-		this.handlePersonNameByMeta(html, movie,  context, 'video:actor', 'actor');
-		this.handlePersonNameByMeta(html, movie,  context, 'video:director', 'director');
 
-		const desc:string = html("span[property='v:summary']").text();
+		// Fallback: if JSON-LD parsing failed (e.g., anti-bot page), extract from meta tags
+		if (!movie) {
+			const title = html(html("head > meta[property='og:title']").get(0)).attr("content") || '';
+			const image = html(html("head > meta[property='og:image']").get(0)).attr("content") || '';
+			const urlMeta = html(html("head > meta[property='og:url']").get(0)).attr("content") || '';
+			const desc = html(html("head > meta[property='og:description']").get(0)).attr("content") || '';
+
+			// Extract ID from URL
+			const idPattern = /(\d){5,10}/g;
+			const idMatch = idPattern.exec(urlMeta);
+			const id = idMatch ? idMatch[0] : '';
+
+			// Extract score from HTML
+			const scoreText = html("#interest_sectl strong[property='v:average']").text();
+			const score = scoreText ? parseFloat(scoreText) : undefined;
+
+			movie = {
+				id,
+				title,
+				type: this.getSupportType(),
+				score,
+				originalTitle: title,
+				desc,
+				url: urlMeta || (id ? `https://movie.douban.com/subject/${id}/` : ''),
+				director: [],
+				author: [],
+				actor: [],
+				aggregateRating: undefined,
+				datePublished: undefined,
+				image,
+				imageUrl: image,
+				genre: [],
+				publisher: '',
+				aliases: [],
+				language: [],
+				country: [],
+				time: null,
+				IMDb: null,
+			};
+		}
+
+		this.handlePersonNameByMeta(html, movie, context, 'video:actor', 'actor');
+		this.handlePersonNameByMeta(html, movie, context, 'video:director', 'director');
+
+		const desc: string = html("span[property='v:summary']").text();
 		if (desc) {
 			movie.desc = desc;
 		}
@@ -156,7 +198,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				// value = html(info.next.next).text().trim();
 				const vas = html(info.next).text().trim();
 				value = vas.split("/").map((v) => v.trim());
-			} else if(key.indexOf('片长') >= 0) {
+			} else if (key.indexOf('片长') >= 0) {
 				value = html(info.next.next).text().trim()
 			} else {
 				value = html(info.next).text().trim();
@@ -164,11 +206,11 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			valueMap.set(MovieKeyValueMap.get(key), value);
 		})
 
-		movie.country =  valueMap.has('country') ? valueMap.get('country') : [];
-		movie.language =  valueMap.has('language') ? valueMap.get('language') : [];
-		movie.time =  valueMap.has('time') ? valueMap.get('time') : "";
-		movie.aliases =  valueMap.has('aliases') ? valueMap.get('aliases') : [];
-		movie.IMDb =  valueMap.has('IMDb') ? valueMap.get('IMDb') : "";
+		movie.country = valueMap.has('country') ? valueMap.get('country') : [];
+		movie.language = valueMap.has('language') ? valueMap.get('language') : [];
+		movie.time = valueMap.has('time') ? valueMap.get('time') : "";
+		movie.aliases = valueMap.has('aliases') ? valueMap.get('aliases') : [];
+		movie.IMDb = valueMap.has('IMDb') ? valueMap.get('IMDb') : "";
 		return movie;
 	}
 
