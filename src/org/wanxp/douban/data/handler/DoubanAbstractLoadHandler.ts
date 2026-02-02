@@ -142,7 +142,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				}else {
 					context.syncStatusHolder?context.syncStatusHolder.syncStatus.handled(1):null;
 				}
-				return e;
+				return undefined;
 			});
 
 
@@ -608,12 +608,20 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
 								   metaProperty:string, objectProperty:string) {
+		if (!movie) {
+			return;
+		}
 		const metaProperties: string[] = html(`head > meta[property='${metaProperty}']`).get()
 			.map((e) => {
 				return html(e).attr('content');
 			});
 		// @ts-ignore
-		movie[objectProperty]
+		const currentArray = movie[objectProperty];
+		if (!Array.isArray(currentArray)) {
+			return;
+		}
+		// @ts-ignore
+		currentArray
 			// @ts-ignore
 			.filter((p:Person) => p.name)
 			// @ts-ignore
