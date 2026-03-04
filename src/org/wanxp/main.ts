@@ -285,6 +285,7 @@ export default class DoubanPlugin extends Plugin {
 		this.settingsManager = new SettingsManager(this.app, this);
 		// this.fetchOnlineData(this.settingsManager);
 		this.userComponent = new UserComponent(this.settingsManager);
+		await this.userComponent.login();
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
 
 		this.settingTab = new DoubanSettingTab(this.app, this);
