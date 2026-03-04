@@ -25,22 +25,22 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanTeleplaySubject, context: HandleContext): void {
-		variableMap.set("director", new DataField("director", DataValueType.array, extract.director,extract.director.map(SchemaOrg.getPersonName).filter(c => c)));
+		variableMap.set("director", new DataField("director", DataValueType.array, extract.director,(extract.director || []).map(SchemaOrg.getPersonName).filter(c => c)));
 		variableMap.set("actor", new DataField(
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			extract.actor.map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c)
 		));
 
 		variableMap.set("author", new DataField(
 			"author",
 			DataValueType.array,
 			extract.author,
-			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
+			(extract.author || []).map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
 		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-			extract.aliases.map(a=>a
+			(extract.aliases || []).map(a=>a
 					.trim()
 				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
 				// 		//replase multiple _ to single _
@@ -84,7 +84,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanTeleplaySubject {
-		const teleplay:DoubanTeleplaySubject = html('script')
+		let teleplay: DoubanTeleplaySubject | undefined = html('script')
 			.get()
 			.filter(scd => "application/ld+json" == html(scd).attr("type"))
 			.map(i => {
@@ -104,14 +104,14 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 					originalTitle: originalTitle,
 					desc: obj.description,
 					url: "https://movie.douban.com" + obj.url,
-					director: obj.director,
-					author: obj.author,
-					actor: obj.actor,
+					director: obj.director || [],
+					author: obj.author || [],
+					actor: obj.actor || [],
 					aggregateRating: obj.aggregateRating,
 					datePublished: obj.datePublished ? new Date(obj.datePublished) : undefined,
 					image: obj.image,
 					imageUrl: obj.image,
-					genre: obj.genre,
+					genre: obj.genre || [],
 					score: obj.aggregateRating ? obj.aggregateRating.ratingValue : undefined,
 					publisher: "",
 					aliases: [""],
@@ -123,6 +123,46 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				}
 				return result;
 			})[0];
+
+		// Fallback: if JSON-LD parsing failed, extract from meta tags
+		if (!teleplay) {
+			const title = html(html("head > meta[property='og:title']").get(0)).attr("content") || '';
+			const image = html(html("head > meta[property='og:image']").get(0)).attr("content") || '';
+			const urlMeta = html(html("head > meta[property='og:url']").get(0)).attr("content") || '';
+			const desc = html(html("head > meta[property='og:description']").get(0)).attr("content") || '';
+
+			const idPattern = /(\d){5,10}/g;
+			const idMatch = idPattern.exec(urlMeta);
+			const id = idMatch ? idMatch[0] : '';
+
+			const scoreText = html("#interest_sectl strong[property='v:average']").text();
+			const score = scoreText ? parseFloat(scoreText) : undefined;
+
+			teleplay = {
+				id,
+				title,
+				type: this.getSupportType(),
+				score,
+				originalTitle: title,
+				desc,
+				url: urlMeta || (id ? `https://movie.douban.com/subject/${id}/` : ''),
+				director: [],
+				author: [],
+				actor: [],
+				aggregateRating: undefined,
+				datePublished: undefined,
+				image,
+				imageUrl: image,
+				genre: [],
+				publisher: '',
+				aliases: [],
+				language: [],
+				country: [],
+				episode: null,
+				time: null,
+				IMDb: null,
+			};
+		}
 
 		this.handlePersonNameByMeta(html, teleplay,  context, 'video:actor', 'actor');
 		this.handlePersonNameByMeta(html, teleplay,  context, 'video:director', 'director');
