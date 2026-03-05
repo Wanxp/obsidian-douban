@@ -169,9 +169,6 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 		const syncButton = new ButtonComponent(controls)
 			.setButtonText(i18nHelper.getMessage('110007'))
 			.onClick(async () => {
-				if (!this.plugin.userComponent.isLogin()) {
-					await this.plugin.userComponent.login();
-				}
 				if(!await this.plugin.checkLogin(this.context)) {
 					return;
 				}

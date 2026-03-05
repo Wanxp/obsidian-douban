@@ -15,6 +15,7 @@ import {DoubanHttpUtil} from "../../utils/DoubanHttpUtil";
 export default class UserComponent {
 	private settingsManager: SettingsManager;
 	private user: User;
+	private verified: boolean = false;
 
 	constructor(settingsManager: SettingsManager) {
 		this.settingsManager = settingsManager;
@@ -39,9 +40,24 @@ export default class UserComponent {
 			this.user.login = false;
 		}
 		this.user = null;
+		this.verified = false;
 		this.settingsManager.updateSetting('loginCookiesContent', '');
 		this.settingsManager.updateSetting('loginHeadersContent', '');
 
+	}
+
+	assumeLoggedIn(): void {
+		const headers: any = this.settingsManager.getSetting('loginHeadersContent');
+		const cookies: any = this.settingsManager.getSetting('loginCookiesContent');
+		if (headers || cookies) {
+			this.user = new User();
+			this.user.login = true;
+			this.verified = false;
+		}
+	}
+
+	isVerified(): boolean {
+		return this.verified;
 	}
 
 
@@ -68,6 +84,7 @@ export default class UserComponent {
 			this.settingsManager.debug(`配置界面:loginCookie:豆瓣headers信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
 		if(this.user) {
+			this.verified = true;
 			this.settingsManager.updateSetting('loginHeadersContent', JSON.stringify(headers));
 		}
 		return this.user;
@@ -139,6 +156,9 @@ export default class UserComponent {
 			this.user = user;
 			this.settingsManager.debug(`主界面:loginByCookie:豆瓣cookies信息正常，${user&&user.id?'获取用户信息成功id:'+ StringUtil.confuse(user.id) + ',用户名:'+ StringUtil.confuse(user.name) :'获取用户信息失败'}`);
 		});
+		if (this.user && this.user.id) {
+			this.verified = true;
+		}
 		return this.user;
 	}
 }

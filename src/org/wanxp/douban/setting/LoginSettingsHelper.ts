@@ -10,17 +10,17 @@ export function constructLoginUI(containerEl: HTMLElement, manager: SettingsMana
 	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
 
 	const userComponent = manager.plugin.userComponent;
-	if (userComponent.needLogin()) {
-		try {
-			userComponent.login()
-				.then(() => {
-					constructDoubanLoginSettingsUI(containerEl, manager);
-				});
-		}catch (e) {
-			log.debug(i18nHelper.getMessage('100101'));
-			constructDoubanLoginSettingsUI(containerEl, manager);
-		}
-	}else {
+	if (userComponent.isLogin() && !userComponent.isVerified()) {
+		// Assumed login — verify to get user ID/name for settings display
+		userComponent.login()
+			.then(() => constructDoubanLoginSettingsUI(containerEl, manager))
+			.catch(() => constructDoubanLoginSettingsUI(containerEl, manager));
+	} else if (userComponent.needLogin()) {
+		// Has credentials but not yet logged in
+		userComponent.login()
+			.then(() => constructDoubanLoginSettingsUI(containerEl, manager))
+			.catch(() => constructDoubanLoginSettingsUI(containerEl, manager));
+	} else {
 		constructDoubanLoginSettingsUI(containerEl, manager);
 	}
 

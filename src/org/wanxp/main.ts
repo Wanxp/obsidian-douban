@@ -285,8 +285,8 @@ export default class DoubanPlugin extends Plugin {
 		this.settingsManager = new SettingsManager(this.app, this);
 		// this.fetchOnlineData(this.settingsManager);
 		this.userComponent = new UserComponent(this.settingsManager);
-		await this.userComponent.login();
 		this.netFileHandler = new NetFileHandler(this.fileHandler);
+		this.userComponent.assumeLoggedIn();
 
 		this.settingTab = new DoubanSettingTab(this.app, this);
 		this.addSettingTab(this.settingTab);
@@ -356,11 +356,16 @@ export default class DoubanPlugin extends Plugin {
 
 	async checkLogin(context: HandleContext):Promise<boolean> {
 		this.settingsManager.debug('主界面:同步时的登录状态检测');
-		if (!context.userComponent.needLogin()) {
-			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 无用户信息, 尝试获取用户信息');
-			await context.userComponent.login();
+		const uc = context.userComponent;
+		// If assumed-logged-in but not verified, verify now (sync needs real user ID)
+		if (uc.isLogin() && !uc.isVerified()) {
+			await uc.login();
 		}
-		if (!context.userComponent.isLogin()) {
+		// If has saved credentials but not logged in, try login
+		if (uc.needLogin()) {
+			await uc.login();
+		}
+		if (!uc.isLogin()) {
 			this.settingsManager.debug('主界面:同步时的登录状态检测完成: 尝试获取用户信息失败');
 			new Notice(i18nHelper.getMessage('140303'));
 			return false;
