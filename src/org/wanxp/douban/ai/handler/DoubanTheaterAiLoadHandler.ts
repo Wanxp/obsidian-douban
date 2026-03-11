@@ -33,24 +33,24 @@ export default class DoubanTheaterAiLoadHandler extends DoubanAbstractLoadHandle
 			"director",
 			DataValueType.array,
 			extract.director,
-			extract.director.map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.director || []).map(SchemaOrg.getPersonName).filter(c => c)
 		));
 
 		variableMap.set("actor", new DataField(
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			extract.actor.map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c)
 		));
 
 		variableMap.set("author", new DataField(
 			"author",
 			DataValueType.array,
 			extract.author,
-			extract.author.map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
+			(extract.author || []).map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
 		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-			extract.aliases.map(a=>a
+			(extract.aliases || []).map(a=>a
 					.trim()
 				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
 				// 		//replase multiple _ to single _

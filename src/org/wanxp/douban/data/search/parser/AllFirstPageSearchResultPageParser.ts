@@ -3,8 +3,7 @@ import {
 } from "../../../../constant/Constsant";
 import {SearchResultPageParserInterface} from "./SearchResultPageParserInterface";
 import {SearchPage} from "../../model/SearchPage";
-import SearchParserHandlerV2 from "../SearchParserV2";
-import StringUtil from "../../../../utils/StringUtil";
+import SearchParserHandler from "../SearchParser";
 import {log} from "../../../../utils/Logutil";
 
 export class AllFirstPageSearchResultPageParser implements SearchResultPageParserInterface {
@@ -12,22 +11,11 @@ export class AllFirstPageSearchResultPageParser implements SearchResultPageParse
 		return pageNum == 1 && type == SupportType.all;
 	}
 	parse(source:string, type:SupportType, pageNum:number, pageSize:number):SearchPage {
-		if (!source || StringUtil.notJsonString(source)) {
-			//TODO 国际化
-			log.notice("Obsidian-Douban:查询结果为空，无匹配结果，请尝试登录获取获取更多数据(已登录则忽略)");
-			return SearchPage.empty(type);
+		log.debug("解析给多页面结果");
+		if (!source) {
+			return new SearchPage(0, 0, 0, type, []);
 		}
-
-		const {subjects} = JSON.parse(source);
-		if (!subjects) {
-			return SearchPage.empty(type);
-		}
-		const {items} = subjects;
-		if (!items ||items.length == 0) {
-			return SearchPage.empty(type);
-		}
-		const doubanSearchResultSubjects = SearchParserHandlerV2.itemMapToSearchResult(items);
-		return new SearchPage(2000, pageNum, pageSize, type, doubanSearchResultSubjects);
+		return SearchParserHandler.parseSearchJson(source, type, pageNum);
 	}
 
 
