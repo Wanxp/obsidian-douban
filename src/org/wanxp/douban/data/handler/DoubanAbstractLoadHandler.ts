@@ -543,15 +543,24 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		fileName = this.parsePartPath(fileName, extract, context, variableMap)
 		fileName = fileName + fileNameSuffix;
-		// const referHeaders = {'referer': image};
-		const referHeaders =  context.settings.loginHeadersContent ? JSON.parse(context.settings.loginHeadersContent) : {};
+		const imageReferer = extract.url || extract.imageUrl || image;
+		const referHeaders = HttpUtil.buildImageRequestHeaders(
+			context.plugin.settingsManager.getHeaders() as Record<string, any>,
+			imageReferer,
+			image
+		);
 		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
 				const fileNameSpilt = fileName.split('.');
 				const highFilename = fileNameSpilt.first() + '.jpg';
 
 				const highImage = this.getHighQuantityImageUrl(highFilename);
-				const resultValue = await this.handleImage(highImage, folder, highFilename, context, false, referHeaders);
+				const highImageHeaders = HttpUtil.buildImageRequestHeaders(
+					context.plugin.settingsManager.getHeaders() as Record<string, any>,
+					imageReferer,
+					highImage
+				);
+				const resultValue = await this.handleImage(highImage, folder, highFilename, context, false, highImageHeaders);
 				if (resultValue && resultValue.success) {
 					extract.image = resultValue.filepath;
 					this.initImageVariableMap(extract, context, variableMap);
