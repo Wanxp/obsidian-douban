@@ -335,6 +335,8 @@ PS: This file could be delete if you want to.
 	'130105': `Can not use Douban this time, Please try again after 12 hour or 24 hour. Or you can reset your connection `,
 	'130106': `Can not use Douban this time, Please try Login In Douban Plugin. If not working please again after 12 hour or 24 hour. Or you can reset your connection `,
 	'130404': `404 Url Not Found`,
+	'130109': `Downloaded image is empty`,
+	'130110': `Clipboard write failed`,
 
 
 	'130107': `Can not find array setting for {1} in {0} , Please add it in array settings`,

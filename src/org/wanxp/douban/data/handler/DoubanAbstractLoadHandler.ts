@@ -543,24 +543,20 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		fileName = this.parsePartPath(fileName, extract, context, variableMap)
 		fileName = fileName + fileNameSuffix;
-		const imageReferer = extract.url || extract.imageUrl || image;
+		const imageReferer = (extract.id ? this.getSubjectUrl(extract.id) : '') || extract.url;
 		const referHeaders = HttpUtil.buildImageRequestHeaders(
 			context.plugin.settingsManager.getHeaders() as Record<string, any>,
-			imageReferer,
-			image
+			imageReferer
 		);
 		if ((syncConfig ? syncConfig.cacheHighQuantityImage : context.settings.cacheHighQuantityImage) && context.userComponent.isLogin()) {
 			try {
-				const fileNameSpilt = fileName.split('.');
-				const highFilename = fileNameSpilt.first() + '.jpg';
-
-				const highImage = this.getHighQuantityImageUrl(highFilename);
+				const highImageFilename = this.getImageFilename(image);
+				const highImage = this.getHighQuantityImageUrl(highImageFilename);
 				const highImageHeaders = HttpUtil.buildImageRequestHeaders(
 					context.plugin.settingsManager.getHeaders() as Record<string, any>,
-					imageReferer,
-					highImage
+					imageReferer
 				);
-				const resultValue = await this.handleImage(highImage, folder, highFilename, context, false, highImageHeaders);
+				const resultValue = await this.handleImage(highImage, folder, fileName, context, false, highImageHeaders);
 				if (resultValue && resultValue.success) {
 					extract.image = resultValue.filepath;
 					this.initImageVariableMap(extract, context, variableMap);
@@ -576,6 +572,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			extract.image = resultValue.filepath;
 			this.initImageVariableMap(extract, context, variableMap);
 		}
+	}
+
+	private getImageFilename(image: string): string {
+		if (!image) {
+			return '';
+		}
+		const imageUrl = image.split('?').first() || image;
+		return imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
 	}
 
 	private initImageVariableMap(extract: T, context: HandleContext, variableMap : Map<string, DataField>) {
