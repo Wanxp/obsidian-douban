@@ -73,16 +73,14 @@ export default class HttpUtil {
 		}
 	}
 
-	public static buildImageRequestHeaders(headers: Record<string, any> = {}, referer?: string, imageUrl?: string): Record<string, string> {
+	public static buildImageRequestHeaders(headers: Record<string, any> = {}, referer?: string): Record<string, string> {
 		const nextHeaders: Record<string, string> = {};
-		let currentReferer = '';
 		Object.entries(headers || {}).forEach(([key, value]) => {
 			if (value == null || value === '') {
 				return;
 			}
 			const lowerKey = key.toLowerCase();
 			if (lowerKey === 'referer') {
-				currentReferer = String(value);
 				return;
 			}
 			if (this.IMAGE_REQUEST_HEADERS_TO_DROP.has(lowerKey) || lowerKey.startsWith('sec-ch-ua')) {
@@ -90,23 +88,10 @@ export default class HttpUtil {
 			}
 			nextHeaders[key] = String(value);
 		});
-		const finalReferer = referer || currentReferer || this.getDefaultImageRequestReferer(imageUrl);
-		if (finalReferer) {
-			nextHeaders.Referer = finalReferer;
+		if (referer) {
+			nextHeaders.Referer = referer;
 		}
 		return nextHeaders;
-	}
-
-	private static getDefaultImageRequestReferer(imageUrl?: string): string {
-		if (!imageUrl) {
-			return '';
-		}
-		try {
-			const url = new URL(imageUrl);
-			return `${url.protocol}//${url.host}/`;
-		} catch (error) {
-			return '';
-		}
 	}
 
 
@@ -140,10 +125,10 @@ export default class HttpUtil {
 	 * @param str
 	 */
 	public static extractURLFromString(str: string): string  {
-		const urlRegex = /(?:!\[.*?\]\()?(https?:\/\/[^\s)]+)/;
-		const matches = urlRegex.exec(str);
-		if (matches && matches[1]) {
-			return matches[1];
+		const urlRegex = /(?:!\[.*?\]\()?(https?:\/\/[^\s)]+)/g;
+		const matches = str.match(urlRegex);
+		if (matches && matches.length > 0) {
+			return matches[0];
 		}
 		return str;
 	}

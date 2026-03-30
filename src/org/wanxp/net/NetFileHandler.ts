@@ -5,6 +5,7 @@ import FileHandler from "../file/FileHandler";
 import {FileUtil} from "../utils/FileUtil";
 import HandleContext from "../douban/data/model/HandleContext";
 import HttpUtil from "../utils/HttpUtil";
+import {ClipboardUtil} from "../utils/ClipboardUtil";
 import {ResultI} from "../utils/model/Result";
 
 export default class NetFileHandler {
@@ -16,16 +17,19 @@ export default class NetFileHandler {
 
 	async downloadDBFile(url: string, folder:string, filename: string, context:HandleContext, showError:boolean, headers?:any): Promise<{ success: boolean, error:string, filepath: string }> {
 		const filePath:string = FileUtil.join(folder, filename);
-		return HttpUtil.httpRequestBuffer(url, headers, context.plugin.settingsManager)
-			.then((response) => {
-				if (response.status == 404) {
-					throw new Error(i18nHelper.getMessage('130404'));
-				}
-				if (response.status == 403) {
-					throw new Error(i18nHelper.getMessage('130106'));
-				}
-				return response.textArrayBuffer;
-			})
+			return HttpUtil.httpRequestBuffer(url, headers, context.plugin.settingsManager)
+				.then((response) => {
+					if (response.status == 404) {
+						throw new Error(i18nHelper.getMessage('130404'));
+					}
+					if (response.status == 403) {
+						throw new Error(i18nHelper.getMessage('130106'));
+					}
+					if (response.status == 418) {
+						throw new Error(i18nHelper.getMessage('130105'));
+					}
+					return response.textArrayBuffer;
+				})
 			.then((buffer) => {
 				if (!buffer || buffer.byteLength == 0) {
 					return 0;
@@ -55,19 +59,23 @@ export default class NetFileHandler {
 	async downloadDBUploadPicGoByClipboard(url: string, filename: string, context:HandleContext, showError:boolean, headers?:any): Promise<{ success: boolean, error:string, filepath: string }> {
 		return HttpUtil.httpRequestBuffer(url, headers, context.plugin.settingsManager)
 			.then((response) => {
+				if (response.status == 404) {
+					throw new Error(i18nHelper.getMessage('130404'));
+				}
 				if (response.status == 403) {
 					throw new Error(i18nHelper.getMessage('130106'));
 				}
+				if (response.status == 418) {
+					throw new Error(i18nHelper.getMessage('130105'));
+				}
 				return response.textArrayBuffer;
 			})
-			.then(async (buffer) => {
-				const tempFilePath = this.getPicGoTempFilePath(filename, context);
-				try {
-					await this.fileHandler.creatAttachmentWithData(tempFilePath.relativePath, buffer);
-					return await this.uploadClipboardFile(context, tempFilePath.absolutePath);
-				} finally {
-					await this.fileHandler.deleteFile(tempFilePath.relativePath);
-				}
+				.then(async (buffer) => {
+					if (!buffer || buffer.byteLength == 0) {
+						throw new Error(i18nHelper.getMessage('130109'));
+					}
+					await ClipboardUtil.writeImage(buffer);
+					return await this.uploadClipboardFile(context);
 			}).then((data) => {
 				if (data.success) {
 					return {success: true, error: '', filepath: HttpUtil.extractURLFromString(data.result[0])};
@@ -90,23 +98,9 @@ export default class NetFileHandler {
 	}
 
 
-	private getPicGoTempFilePath(filename: string, context: HandleContext) {
-		const tempFileName = `${Date.now()}_${filename}`;
-		const relativePath = FileUtil.join(this.fileHandler.getTmpPath(), tempFileName);
-		// @ts-ignore
-		const adapter = context.plugin.app.vault.adapter;
-		// @ts-ignore
-		const basePath = adapter && adapter.getBasePath ? adapter.getBasePath() : this.fileHandler.getRootPath();
-		return {
-			relativePath: relativePath,
-			absolutePath: FileUtil.join(basePath, relativePath),
-		};
-	}
-
-	async uploadClipboardFile(context:HandleContext, filePath?: string): Promise<ResultI> {
-		const body = filePath ? JSON.stringify({list: [filePath]}) : null;
+	async uploadClipboardFile(context:HandleContext): Promise<ResultI> {
 		const response = await HttpUtil.httpRequest(
-			context.settings.pictureBedSetting.url, {}, context.plugin.settingsManager, {method: "post", body: body});
+			context.settings.pictureBedSetting.url, {}, context.plugin.settingsManager, {method: "post"});
 		const data = response.textJson as ResultI;
 		return data;
 	}
@@ -124,3 +118,4 @@ export default class NetFileHandler {
 
 	}
 }
+
