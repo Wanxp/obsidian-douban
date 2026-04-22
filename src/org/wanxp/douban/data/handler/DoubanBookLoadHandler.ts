@@ -46,11 +46,11 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
 		const rate = html('input#n_rating').val();
-		const tagsStr = html('span#rating').next().text().trim();
-		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
+		const tags = this.getTags(html);
 		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
 		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10').next().text().trim();
 		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
+		const stateName = this.getBookStateName(stateWord);
 		const comment = this.getComment(html);
 
 
@@ -58,10 +58,47 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 			tags: tags,
 			rate: rate?Number(rate):null,
 			state: userState1,
+			stateName: stateName,
 			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
 			comment: comment
 		}
 		return {data: html, userState: userState};
+	}
+
+	private getTags(html: CheerioAPI): string[] {
+		// Tags are no longer adjacent to #rating on current book pages; find the
+		// labeled "标签:" text inside the user-state block instead.
+		const tagsText = html('#interest_sect_level span.color_gray')
+			.get()
+			.map(span => html(span).text().trim())
+			.find(text => /^标签[:：]/.test(text));
+		if (!tagsText) {
+			return null;
+		}
+		const tags = tagsText
+			.replace(/^标签[:：]/, '')
+			.trim()
+			.split(/\s+/)
+			.filter(tag => tag);
+		return tags.length > 0 ? tags : null;
+	}
+
+	private getBookStateName(stateWord: string): string {
+		// Keep the internal wish/do/collect enum, but expose book-specific Chinese
+		// wording for {{myState}} so it does not depend on the plugin locale.
+		if (!stateWord) {
+			return '';
+		}
+		if (stateWord.indexOf('想读') >= 0) {
+			return '想读';
+		}
+		if (stateWord.indexOf('在读') >= 0) {
+			return '在读';
+		}
+		if (stateWord.indexOf('读过') >= 0) {
+			return '读过';
+		}
+		return '';
 	}
 
 
@@ -133,11 +170,36 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	private getComment(html: CheerioAPI) {
-		let comment = html('span#rating').next().next().next().text().trim();
+		// Douban book pages render the user comment as a plain span alongside
+		// state/date/tag/rating labels, so filter metadata labels before choosing it.
+		let comment = html('#interest_sect_level span')
+			.get()
+			.map(span => html(span).text().trim())
+			.filter(text => this.isCommentCandidate(text))
+			.pop();
 		if (comment) {
 			return comment;
 		}
 		return this.getPropertyValue(html, PropertyName.comment);
+	}
+
+	private isCommentCandidate(text: string): boolean {
+		if (!text) {
+			return false;
+		}
+		if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+			return false;
+		}
+		if (/^标签[:：]/.test(text)) {
+			return false;
+		}
+		if (/^(我的)?评价[:：]?$/.test(text)) {
+			return false;
+		}
+		if (text.indexOf('我读过这本书') >= 0 || text.indexOf('我想读这本书') >= 0 || text.indexOf('我在读这本书') >= 0) {
+			return false;
+		}
+		return true;
 	}
 
 

@@ -381,7 +381,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				DoubanUserParameterName.MY_STATE,
 				DataValueType.string,
 				userState.state,
-				this.getUserStateName(userState.state)
+				userState.stateName || this.getUserStateName(userState.state)
 			));
 		}
 		if (userState.rate) {
