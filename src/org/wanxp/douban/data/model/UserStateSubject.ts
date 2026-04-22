@@ -4,6 +4,7 @@ export interface UserStateSubject {
 	tags: string[];
 	rate: number;
 	state: DoubanSubjectState;
+	stateName?: string;
 	comment: string;
 	collectionDate: Date;
 }
