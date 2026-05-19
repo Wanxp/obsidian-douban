@@ -9,6 +9,7 @@ import {DataField} from "./model/DataField";
 import {FieldVariable} from "./model/FieldVariable";
 import {CustomProperty} from "../douban/setting/model/CustomProperty";
 import {FileUtil} from "./FileUtil";
+import {ArrayLengthLimit} from "../douban/setting/model/ArrayLengthLimit";
 
 type TargetType = 'text' | 'path' | 'yml_text';
 
@@ -36,10 +37,12 @@ export class VariableUtil {
 			return content;
 		}
 		if (obj instanceof Map) {
+			this.applyArrayLengthLimits(subjectType, obj, settingManager);
 			this.handleCustomVariable(subjectType, obj, settingManager, 'text')
 			content = this.replaceMap(obj, allVariables, content, settingManager, targetType);
 		}else {
 			const map = this.objToMap(obj);
+			this.applyArrayLengthLimits(subjectType, map, settingManager);
 			this.handleCustomVariable(subjectType, map, settingManager, 'text')
 			content = this.replaceMap(map, allVariables, content, settingManager, targetType);
 		}
@@ -275,6 +278,68 @@ export class VariableUtil {
 			map.set(key, obj[key]);
 		});
 		return map;
+	}
+
+	/**
+	 * 根据用户配置的 ArrayLengthLimit 截断 variableMap 中匹配的数组字段。
+	 *
+	 * 仅对 DataField.value 为数组的字段生效。当 limit > 0 且数组长度大于 limit 时,
+	 * 会取前 limit 个元素生成新的 DataField 替换原值; origin 保持不变以便后续逻辑。
+	 *
+	 * 当 type=all 时, 该限制作用于所有内容类型, 否则仅作用于 type 与当前 subjectType 相等的条目。
+	 *
+	 * @param subjectType 当前内容类型
+	 * @param variableMap 变量映射
+	 * @param settingManager
+	 */
+	static applyArrayLengthLimits(subjectType: SupportType,
+								  variableMap: Map<string, DataField>,
+								  settingManager: SettingsManager): void {
+		if (!variableMap || variableMap.size == 0) {
+			return;
+		}
+		// @ts-ignore
+		const limits: ArrayLengthLimit[] = settingManager.getSetting('arrayLengthLimits');
+		if (!limits || limits.length == 0) {
+			return;
+		}
+		const effectiveLimits: Map<string, number> = new Map();
+		limits
+			.filter(l => l && l.field && l.limit && l.limit > 0)
+			.filter(l => {
+				if (!l.type) {
+					return false;
+				}
+				const t = String(l.type).toLowerCase();
+				return t === SupportType.all || t === subjectType;
+			})
+			.forEach(l => {
+				const existing = effectiveLimits.get(l.field);
+				// 当同一字段同时存在 type=all 和 type=具体 的限制时,
+				// 优先使用更具体的(更小的)限制值, 行为更符合用户预期。
+				if (existing == null || l.limit < existing) {
+					effectiveLimits.set(l.field, l.limit);
+				}
+			});
+		if (effectiveLimits.size == 0) {
+			return;
+		}
+		effectiveLimits.forEach((limit, fieldName) => {
+			const dataField = variableMap.get(fieldName);
+			if (!dataField) {
+				return;
+			}
+			const value = dataField.value;
+			if (Array.isArray(value) && value.length > limit) {
+				const truncated = value.slice(0, limit);
+				variableMap.set(fieldName, new DataField(
+					dataField.name,
+					dataField.type,
+					dataField.origin,
+					truncated
+				));
+			}
+		});
 	}
 
 	private static handleText(v: string, targetType: TargetType, dataField: DataField = null): string {
