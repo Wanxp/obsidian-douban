@@ -4,6 +4,7 @@ import {ArraySetting} from "./ArraySetting";
 import {ScoreSetting} from "./ScoreSetting";
 import PictureBedSetting from "./PictureBedSetting";
 import {SupportType} from "../../../constant/Constsant";
+import {ArrayLengthLimit} from "./ArrayLengthLimit";
 
 export interface DoubanPluginSetting {
 	onlineSettingsFileName: string;
@@ -42,4 +43,5 @@ export interface DoubanPluginSetting {
 	arraySettings: ArraySetting[],
 	scoreSetting: ScoreSetting,
 	searchDefaultType: SupportType,
+	arrayLengthLimits: ArrayLengthLimit[],
 }

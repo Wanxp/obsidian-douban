@@ -19,6 +19,7 @@ import {
 } from "./model/ArraySetting";
 import {logger} from "bs-logger";
 import {i18nHelper} from "../../lang/helper";
+import {ArrayLengthLimit} from "./model/ArrayLengthLimit";
 
 export default class SettingsManager {
 	app: App;
@@ -246,5 +247,36 @@ export default class SettingsManager {
 
 	getSettings() {
 		return this.settings;
+	}
+
+	/**
+	 * 添加一条数组长度限制配置, 默认 type=all, field 为空, limit=5。
+	 */
+	async addArrayLengthLimit(): Promise<ArrayLengthLimit> {
+		if (!this.settings.arrayLengthLimits) {
+			this.settings.arrayLengthLimits = [];
+		}
+		const limit: ArrayLengthLimit = {
+			type: SupportType.all,
+			field: '',
+			limit: 5,
+		};
+		this.settings.arrayLengthLimits.push(limit);
+		await this.plugin.saveSettings();
+		return limit;
+	}
+
+	/**
+	 * 移除指定下标的数组长度限制配置。
+	 */
+	async removeArrayLengthLimit(index: number): Promise<void> {
+		if (!this.settings.arrayLengthLimits) {
+			return;
+		}
+		if (index < 0 || index >= this.settings.arrayLengthLimits.length) {
+			return;
+		}
+		this.settings.arrayLengthLimits.splice(index, 1);
+		await this.plugin.saveSettings();
 	}
 }

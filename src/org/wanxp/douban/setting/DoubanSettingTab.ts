@@ -11,6 +11,7 @@ import { constructAdvancedUI } from "./AdvancedSettingsHelper";
 import {arraySettingDisplay, arraySettingDisplayUI} from "./ArrayDisplayTypeSettingsHelper";
 import {i18nHelper} from "../../lang/helper";
 import {constructLoginUI} from "./LoginSettingsHelper";
+import {constructArrayLengthLimitSettingsUI} from "./ArrayLengthLimitSettingsHelper";
 
 /**
  * 部分逻辑参考以下项目
@@ -45,6 +46,7 @@ export class DoubanSettingTab extends PluginSettingTab {
 		  {name: i18nHelper.getMessage('1260'), construct: constructLoginUI},
 	    {name: i18nHelper.getMessage('1220'), construct: constructOutUI},
 	    {name: i18nHelper.getMessage('120601'), construct: arraySettingDisplayUI},
+	    {name: i18nHelper.getMessage('1270'), construct: constructArrayLengthLimitSettingsUI},
 	    {name: i18nHelper.getMessage('1240'), construct: constructCustomPropertySettingsUI},
 	    {name: i18nHelper.getMessage('1230'), construct: constructTemplateVariablesUI},
 	    {name: i18nHelper.getMessage('1250'), construct: constructAdvancedUI}
