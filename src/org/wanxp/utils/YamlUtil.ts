@@ -27,7 +27,7 @@ export default class YamlUtil {
 			if (dataField && dataField.type === DataValueType.date) {
 				return text;
 			}
-			YamlUtil.handleSpecialChar(text);
+			text = YamlUtil.handleSpecialChar(text);
 		}
 		return text;
 	}
