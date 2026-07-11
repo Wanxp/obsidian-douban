@@ -30,7 +30,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, 6)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, this.doubanPlugin.settings.actorMaxCount)
 		));
 
 		variableMap.set("author", new DataField(

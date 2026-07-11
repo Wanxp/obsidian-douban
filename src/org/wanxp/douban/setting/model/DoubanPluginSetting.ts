@@ -45,4 +45,5 @@ export interface DoubanPluginSetting {
 	searchDefaultType: SupportType,
 	arrayLengthLimits: ArrayLengthLimit[],
 	language: string,
+	actorMaxCount: number,
 }

@@ -65,6 +65,7 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	searchDefaultType: SupportType.all,
 	arrayLengthLimits: [],
 	language: 'en',
+	actorMaxCount: 6,
 
 }
 

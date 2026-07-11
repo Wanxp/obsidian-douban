@@ -548,7 +548,14 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	private async saveImage(extract: T, context: HandleContext, variableMap: Map<string, DataField>) {
 		const { syncConfig } = context;
-		if (!extract.image || (syncConfig && !syncConfig.cacheImage) || !context.settings.cacheImage) {
+		const shouldSaveImage = extract.image && (syncConfig ? syncConfig.cacheImage : context.settings.cacheImage);
+		if (!shouldSaveImage) {
+			if (extract.image) {
+				extract.image = '';
+				extract.imageUrl = '';
+				variableMap.delete(DoubanParameterName.IMAGE);
+				variableMap.delete(DoubanParameterName.IMAGE_URL);
+			}
 			return;
 		}
 		const image = extract.image;

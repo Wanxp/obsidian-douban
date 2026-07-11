@@ -717,4 +717,6 @@ PS: This file could be delete if you want to.
 	'121002': `Choose the display language for the plugin interface`,
 	'121003': `English`,
 	'121004': `Chinese`,
+	'121005': `Actor Count Limit`,
+	'121006': `Maximum number of actors/directors to display (1-20)`,
 }

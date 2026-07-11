@@ -129,5 +129,20 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 				});
 		});
 
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('121005'))
+		.setDesc(i18nHelper.getMessage('121006'))
+		.addText((text) => {
+			text
+				.setValue(String(manager.plugin.settings.actorMaxCount))
+				.onChange(async (value) => {
+					const num = parseInt(value);
+					if (!isNaN(num) && num >= 1 && num <= 20) {
+						manager.plugin.settings.actorMaxCount = num;
+						await manager.plugin.saveSettings();
+					}
+				});
+		});
+
 }
 

@@ -42,7 +42,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, 6)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, this.doubanPlugin.settings.actorMaxCount)
 		));
 
 		variableMap.set("author", new DataField(
