@@ -1,7 +1,7 @@
 //简体中文
 //简体中文
 
-import {SyncItemStatus} from "../../constant/Constsant";
+import { SyncItemStatus } from "../../constant/Constsant";
 
 export default {
 	//main.ts
@@ -15,7 +15,7 @@ export default {
 	'110103': '同步个人书影音广播记录',
 	//'110102': 'search douban and create movie or tv',
 	'110102': '搜索电影或电视剧并创建',
-//	'110104': 'search douban and create book',
+	//	'110104': 'search douban and create book',
 	'110104': '搜索书籍并创建',
 	//'110105': 'search douban and create music',
 	'110105': '搜索音乐并创建',
@@ -91,21 +91,21 @@ export default {
 	'110055': `开启`,
 	'110056': `关闭`,
 
-	'unHandle':`[已忽略]`,
-	'exists':  `[未替换]`,
+	'unHandle': `[已忽略]`,
+	'exists': `[未替换]`,
 	'replace': `[已替换]`,
-	'create':  `[已创建]`,
-	'fail':	   `[已失败]`,
-	'failByDiffType':	 `[类型不匹配]`,
+	'create': `[已创建]`,
+	'fail': `[已失败]`,
+	'failByDiffType': `[类型不匹配]`,
 	'syncall': `[总数]`,
 	'notsync': `[未进行]`,
 
-	'unHandle_desc':`增量同步上次已进行,这次无需处理`,
-	'exists_desc':  `已经存在的同名文档,这次无需同步`,
+	'unHandle_desc': `增量同步上次已进行,这次无需处理`,
+	'exists_desc': `已经存在的同名文档,这次无需同步`,
 	'replace_desc': `已经存在的同名文档,这次已被替换`,
-	'create_desc':  `之前不存在的文档,这次直接新增`,
-	'fail_desc':	`处理过程钟出现错误,未能成功`,
-	'failByDiffType_desc':	`失败,类型不匹配,比如想要同步的是电影,但是实际获取到的是电视剧`,
+	'create_desc': `之前不存在的文档,这次直接新增`,
+	'fail_desc': `处理过程钟出现错误,未能成功`,
+	'failByDiffType_desc': `失败,类型不匹配,比如想要同步的是电影,但是实际获取到的是电视剧`,
 	'notsync_desc': `因异常中断或提前终止导致还未处理`,
 	'syncall_desc': `您此次同步条件在豆瓣中的条目总数`,
 
@@ -297,6 +297,10 @@ export default {
 	'124310': `评分（星）参数{{scoreStar}} and {{myRatingStar}}输出格式。当分数是{0}/{1}时，模板案例\`score: {{scoreStar}}\``,
 	'124311': `最大符号数:`,
 	'124312': `默认整数:`,
+	'124320': `最低个人评分`,
+	'124321': `同步时过滤个人评分低于此值的内容（0-5，0表示不过滤）`,
+	'124322': `最低豆瓣评分`,
+	'124323': `同步时过滤豆瓣评分低于此值的内容（0-10，0表示不过滤）`,
 
 	'120701': `豆瓣HTTP请求头`,
 	'120702': `如果豆瓣搜索或者获取数据失败,请尝试修改这个参数,\n
@@ -402,36 +406,36 @@ export default {
 	'150103': `[下一页]...`,
 	'150105': `[下一页]...(小组帖子结果)`,
 	'150104': `[下一页]...(请先在插件中登录才能使用此功能)`,
-//	'150107': `Result is empty. Please choose type before search`,
+	//	'150107': `Result is empty. Please choose type before search`,
 	'150107': `结果为空，请先选择类型再搜索`,
 	'150108': `如果没有找到你想要的内容, 请尝试更换关键字或者更换搜索类型`,
 
 	//content
 	'200101': `。`,
 
-//book example
-// 	'book': {
-// 		id: {desc: `豆瓣ID`, example: `25982198`},
-// 		title: {desc: `书名`, example: `社会心理学（第11版，精装彩印）`},
-// 		type: {desc: `类型`, example: `Book`},
-// 		score: {desc: `评分`, example: `9.4`},
-// 		image: {desc: `图片URL`, example: `https://img1.doubanio.com/view/subject/l/public/s28261247.jpg`},
-// 		url: {desc: `豆瓣URL`, example: `https://book.douban.com/subject/25982198/`},
-// 		desc: {
-// 			desc: `简述`,
-// 			example: `戴维·迈尔斯的《社会心理学》是美国700 多所大专院校社会心理学教学所采用的教材，自出版以来深受广大师生和社会心理学爱好者的喜爱，并被翻译成多种语言，有着广泛的影响力。本书译自第11 版。全书共分四...`
-// 		},
-// 		publisher: {desc: `出版社`, example: `人民邮电出版社`},
-// 		datePublished: {desc: `出版时间`, example: `2014-10-1`},
-// 		genre: {desc: `类型`, example: `社会科学`},
-// 		author: {desc: `作者`, example: `戴维·迈尔斯`},
-// 		translator: {desc: `译者`, example: `侯玉波 / 乐国安 / 张志勇`},
-// 		isbn: {desc: `ISBN`, example: `9787115369840`},
-// 		originTitle: {desc: `原作名`, example: `Social Psychology (11th)`},
-// 		subTitle: {desc: `副标题`, example: `社会心理学`},
-// 		binding: {desc: `装帧`, example: `精装`},
-// 		totalPages: {desc: `页数`, example: `707`},
-// 	},
+	//book example
+	// 	'book': {
+	// 		id: {desc: `豆瓣ID`, example: `25982198`},
+	// 		title: {desc: `书名`, example: `社会心理学（第11版，精装彩印）`},
+	// 		type: {desc: `类型`, example: `Book`},
+	// 		score: {desc: `评分`, example: `9.4`},
+	// 		image: {desc: `图片URL`, example: `https://img1.doubanio.com/view/subject/l/public/s28261247.jpg`},
+	// 		url: {desc: `豆瓣URL`, example: `https://book.douban.com/subject/25982198/`},
+	// 		desc: {
+	// 			desc: `简述`,
+	// 			example: `戴维·迈尔斯的《社会心理学》是美国700 多所大专院校社会心理学教学所采用的教材，自出版以来深受广大师生和社会心理学爱好者的喜爱，并被翻译成多种语言，有着广泛的影响力。本书译自第11 版。全书共分四...`
+	// 		},
+	// 		publisher: {desc: `出版社`, example: `人民邮电出版社`},
+	// 		datePublished: {desc: `出版时间`, example: `2014-10-1`},
+	// 		genre: {desc: `类型`, example: `社会科学`},
+	// 		author: {desc: `作者`, example: `戴维·迈尔斯`},
+	// 		translator: {desc: `译者`, example: `侯玉波 / 乐国安 / 张志勇`},
+	// 		isbn: {desc: `ISBN`, example: `9787115369840`},
+	// 		originTitle: {desc: `原作名`, example: `Social Psychology (11th)`},
+	// 		subTitle: {desc: `副标题`, example: `社会心理学`},
+	// 		binding: {desc: `装帧`, example: `精装`},
+	// 		totalPages: {desc: `页数`, example: `707`},
+	// 	},
 
 	'122001': `通用参数`,
 	'122002': `扩展参数`,
@@ -726,5 +730,10 @@ export default {
 	'HOUR': `时`,
 	'MINUTE': `分`,
 	'SECOND': `秒`,
+
+	'121001': `语言`,
+	'121002': `选择插件界面的显示语言`,
+	'121003': `English`,
+	'121004': `中文`,
 
 }

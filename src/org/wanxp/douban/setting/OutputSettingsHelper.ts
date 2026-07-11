@@ -1,7 +1,7 @@
-import {i18nHelper} from "../../lang/helper";
-import {Setting, TextComponent, ToggleComponent} from "obsidian";
-import {createFolderSelectionSetting, createFolderSelectionSettingInput} from "./TemplateSettingHelper";
-import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
+import { i18nHelper } from "../../lang/helper";
+import { Setting, TextComponent, ToggleComponent } from "obsidian";
+import { createFolderSelectionSetting, createFolderSelectionSettingInput } from "./TemplateSettingHelper";
+import { DEFAULT_SETTINGS } from "../../constant/DefaultSettings";
 import {
 	DEFAULT_SETTINGS_ARRAY_INPUT_SIZE, EXAMPLE_RATE, EXAMPLE_RATE_MAX,
 	EXAMPLE_SUBJECT_MAP, MAX_STAR_NUMBER,
@@ -11,9 +11,9 @@ import {
 } from "../../constant/Constsant";
 import SettingsManager from "./SettingsManager";
 import NumberUtil from "../../utils/NumberUtil";
-import {VariableUtil} from "../../utils/VariableUtil";
-import {FileUtil} from "../../utils/FileUtil";
-import {ScoreSetting} from "./model/ScoreSetting";
+import { VariableUtil } from "../../utils/VariableUtil";
+import { FileUtil } from "../../utils/FileUtil";
+import { ScoreSetting } from "./model/ScoreSetting";
 import DoubanPlugin from "../../main";
 
 
@@ -21,7 +21,7 @@ function showStarExample(containerEl: HTMLElement, manager: SettingsManager) {
 	containerEl.empty();
 	const document = new DocumentFragment();
 	document.createDiv('score-show-title')
-		.innerHTML = `score: ${NumberUtil.getRateStar(EXAMPLE_RATE, EXAMPLE_RATE_MAX, {scoreSetting: manager.plugin.settings.scoreSetting})}`;
+		.innerHTML = `score: ${NumberUtil.getRateStar(EXAMPLE_RATE, EXAMPLE_RATE_MAX, { scoreSetting: manager.plugin.settings.scoreSetting })}`;
 
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('120603'))
@@ -32,9 +32,9 @@ export function showFileExample(containerEl: HTMLElement, manager: SettingsManag
 	containerEl.empty();
 	const document = new DocumentFragment();
 	document.createDiv('file-path-example')
-		.innerHTML = `${i18nHelper.getMessage('121604')}<a href="https://book.douban.com/subject/2253379/">《简爱》</a>: ${VariableUtil.replaceSubject(EXAMPLE_SUBJECT_MAP, 
-		FileUtil.join(manager.plugin.settings.dataFilePath, manager.plugin.settings.dataFileNamePath + ".md"), SupportType.book, 
-		manager, 'path')}`;
+		.innerHTML = `${i18nHelper.getMessage('121604')}<a href="https://book.douban.com/subject/2253379/">《简爱》</a>: ${VariableUtil.replaceSubject(EXAMPLE_SUBJECT_MAP,
+			FileUtil.join(manager.plugin.settings.dataFilePath, manager.plugin.settings.dataFileNamePath + ".md"), SupportType.book,
+			manager, 'path')}`;
 
 	new Setting(containerEl)
 		.setName(i18nHelper.getMessage('120603'))
@@ -49,8 +49,8 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 	const scoreShowUI = containerEl.createDiv('score-show');
 
 	//@ts-ignore1·
-	const scoreSetting:ScoreSetting = manager.getSetting('scoreSetting');
-	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124120')})
+	const scoreSetting: ScoreSetting = manager.getSetting('scoreSetting');
+	scoreSettingsUI.createEl('span', { text: i18nHelper.getMessage('124120') })
 	const starFullUI = new TextComponent(scoreSettingsUI);
 	starFullUI.setPlaceholder(DEFAULT_SETTINGS.scoreSetting.starFull)
 		.setValue(scoreSetting.starFull)
@@ -59,12 +59,12 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 			await manager.plugin.saveSettings();
 			showStarExample(scoreShowUI, manager);
 		});
-	const  starFullEl = starFullUI.inputEl;
+	const starFullEl = starFullUI.inputEl;
 	starFullEl.size = DEFAULT_SETTINGS_ARRAY_INPUT_SIZE;
 	starFullEl.addClass('obsidian_douban_settings_input')
 	scoreSettingsUI.appendChild(starFullEl).appendText("  ");
 
-	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124121')})
+	scoreSettingsUI.createEl('span', { text: i18nHelper.getMessage('124121') })
 	const starEmptyUI = new TextComponent(scoreSettingsUI);
 	starEmptyUI.setPlaceholder(DEFAULT_SETTINGS.scoreSetting.starEmpty)
 		.setValue(scoreSetting.starEmpty)
@@ -78,7 +78,7 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 	starEmptyEl.size = DEFAULT_SETTINGS_ARRAY_INPUT_SIZE;
 	scoreSettingsUI.appendChild(starEmptyEl).appendText("  ");
 
-	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124311')})
+	scoreSettingsUI.createEl('span', { text: i18nHelper.getMessage('124311') })
 	const maxStarUI = new TextComponent(scoreSettingsUI);
 	maxStarUI.setPlaceholder(i18nHelper.getMessage('124312') + DEFAULT_SETTINGS.scoreSetting.maxStar)
 		.setValue(scoreSetting.maxStar + "")
@@ -95,7 +95,7 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 	maxStarEl.size = DEFAULT_SETTINGS_ARRAY_INPUT_SIZE;
 	scoreSettingsUI.appendChild(maxStarEl).appendText("  ");
 
-	scoreSettingsUI.createEl('span', {text: i18nHelper.getMessage('124122')})
+	scoreSettingsUI.createEl('span', { text: i18nHelper.getMessage('124122') })
 	const displayEmptyStarUI = new ToggleComponent(scoreSettingsUI);
 	displayEmptyStarUI.setValue(scoreSetting.displayStarEmpty)
 		.onChange(async (value) => {
@@ -103,12 +103,42 @@ function scoreSettingDisplay(containerEl: HTMLElement, manager: SettingsManager)
 			await manager.plugin.saveSettings();
 			showStarExample(scoreShowUI, manager);
 		});
-	// displayEmptyStarUI.('obsidian_douban_settings_input')
-	const  displayEmptyStarEl = displayEmptyStarUI.toggleEl;
+	const displayEmptyStarEl = displayEmptyStarUI.toggleEl;
 	displayEmptyStarEl.addClass('obsidian_douban_settings_input')
 	scoreSettingsUI.appendChild(displayEmptyStarEl).appendText("  ");
 
 	showStarExample(scoreShowUI, manager);
+
+	const filterSettingsUI = containerEl.createDiv('filter-settings');
+	new Setting(filterSettingsUI)
+		.setName(i18nHelper.getMessage('124320'))
+		.setDesc(i18nHelper.getMessage('124321'))
+		.addText((textField) => {
+			textField.setPlaceholder('0')
+				.setValue(scoreSetting.minUserRating + "")
+				.onChange(async (value) => {
+					const numValue = NumberUtil.value(value);
+					if (numValue >= 0 && numValue <= 5) {
+						scoreSetting.minUserRating = numValue;
+						await manager.plugin.saveSettings();
+					}
+				});
+		});
+
+	new Setting(filterSettingsUI)
+		.setName(i18nHelper.getMessage('124322'))
+		.setDesc(i18nHelper.getMessage('124323'))
+		.addText((textField) => {
+			textField.setPlaceholder('0')
+				.setValue(scoreSetting.minDoubanScore + "")
+				.onChange(async (value) => {
+					const numValue = NumberUtil.value(value);
+					if (numValue >= 0 && numValue <= 10) {
+						scoreSetting.minDoubanScore = numValue;
+						await manager.plugin.saveSettings();
+					}
+				});
+		});
 }
 
 export function constructOutUI(containerEl: HTMLElement, manager: SettingsManager) {
@@ -124,8 +154,8 @@ export function constructOutUI(containerEl: HTMLElement, manager: SettingsManage
 	const outFolder = containerEl.createDiv({ cls: 'settings-item' });
 	const filePathDisplayExample = containerEl.createDiv('filePath-display-example');
 
-	folder.then(createFolderSelectionSetting({containerEl: containerEl, name: '121501', desc: '121502', placeholder: null, key: null, manager: manager}, filePathDisplayExample));
-	folderInput.then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121503', key: 'dataFilePath', manager: manager}, filePathDisplayExample));
+	folder.then(createFolderSelectionSetting({ containerEl: containerEl, name: '121501', desc: '121502', placeholder: null, key: null, manager: manager }, filePathDisplayExample));
+	folderInput.then(createFolderSelectionSettingInput({ containerEl: containerEl, name: null, desc: null, placeholder: '121503', key: 'dataFilePath', manager: manager }, filePathDisplayExample));
 
 	constructOutputFileNameUI(outFolder, filePathDisplayExample, manager);
 
@@ -160,7 +190,7 @@ export function constructOutUI(containerEl: HTMLElement, manager: SettingsManage
 }
 
 
-export function constructOutputFileNameUI(containerEl: HTMLElement, filePathDisplayExample:HTMLDivElement , manager: SettingsManager) {
+export function constructOutputFileNameUI(containerEl: HTMLElement, filePathDisplayExample: HTMLDivElement, manager: SettingsManager) {
 	containerEl.empty();
 	const dataFilePathSetting = new Setting(containerEl);
 	dataFilePathSetting.setName(i18nHelper.getMessage('121601'))
@@ -204,7 +234,7 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 				});
 		});
 
-	if(manager.plugin.settings.cacheImage) {
+	if (manager.plugin.settings.cacheImage) {
 		new Setting(containerEl)
 			.setName(i18nHelper.getMessage('121440'))
 			.setDesc(i18nHelper.getMessage('121441'))
@@ -220,11 +250,11 @@ export function constructAttachmentFileSettingsUI(containerEl: HTMLElement, mana
 			});
 		if (manager.plugin.settings.pictureBedFlag) {
 			constructAttachmentFilePictureBedSettingsUI(containerEl, manager);
-		}else {
-			new Setting(containerEl).then(createFolderSelectionSetting({containerEl: containerEl, name: '121432', desc: '121433', placeholder: null, key: null, manager: manager}));
-			new Setting(containerEl).then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121434', key: 'attachmentPath', manager: manager}));
-			new Setting(containerEl).then(createFolderSelectionSetting({containerEl: containerEl, name: '121452', desc: '121453', placeholder: null, key: null, manager: manager}));
-			new Setting(containerEl).then(createFolderSelectionSettingInput({containerEl: containerEl, name: null, desc: null, placeholder: '121454', key: 'attachmentFileName', manager: manager}));
+		} else {
+			new Setting(containerEl).then(createFolderSelectionSetting({ containerEl: containerEl, name: '121432', desc: '121433', placeholder: null, key: null, manager: manager }));
+			new Setting(containerEl).then(createFolderSelectionSettingInput({ containerEl: containerEl, name: null, desc: null, placeholder: '121434', key: 'attachmentPath', manager: manager }));
+			new Setting(containerEl).then(createFolderSelectionSetting({ containerEl: containerEl, name: '121452', desc: '121453', placeholder: null, key: null, manager: manager }));
+			new Setting(containerEl).then(createFolderSelectionSettingInput({ containerEl: containerEl, name: null, desc: null, placeholder: '121454', key: 'attachmentFileName', manager: manager }));
 			;
 		}
 
@@ -255,7 +285,7 @@ export function constructAttachmentFilePictureBedSettingsUI(containerEl: HTMLEle
 		}
 	}
 	var pictureBedTypeSettingsUI = new Setting(containerEl);
-	var pictureBedPropertySettingsUI =  new Setting(containerEl).settingEl;
+	var pictureBedPropertySettingsUI = new Setting(containerEl).settingEl;
 	pictureBedTypeSettingsUI.setName(i18nHelper.getMessage('121451')).then((setting) => {
 		setting.addDropdown((dropdwon) => {
 			dropdwon.addOptions(PictureBedTypeRecords)
