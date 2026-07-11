@@ -163,8 +163,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: 
-  - {{type}}
+tags: {{tags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}
@@ -175,7 +174,6 @@ time: {{time}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 myComment: {{myComment}}
-myTags: {{myTags}}
 desc: {{desc}}
 ---
 
@@ -205,14 +203,12 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags:  
-  - {{type}}
+tags: {{tags}}
 state: {{myState}}
 binding: {{binding}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 myComment: {{myComment}}
-myTags: {{myTags}}
 desc: {{desc}}
 ---
 
@@ -241,13 +237,11 @@ publisher: {{publisher}}
 barcode: {{barcode}}
 url: {{url}}
 records: {{records}}
-tags:  
-  - {{type}}
+tags: {{tags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 myComment: {{myComment}}
-myTags: {{myTags}}
 desc: {{desc}}
 ---
 
@@ -293,13 +287,11 @@ genre: {{genre}}
 developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
-tags:  
-  - {{type}}
+tags: {{tags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 myComment: {{myComment}}
-myTags: {{myTags}}
 desc: {{desc}}
 ---
 
@@ -322,8 +314,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags:  
-  - {{type}}
+tags: {{tags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}
@@ -335,7 +326,6 @@ episode: {{episode}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
 myComment: {{myComment}}
-myTags: {{myTags}}
 desc: {{desc}}
 ---
 

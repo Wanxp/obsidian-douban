@@ -62,7 +62,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{type}}, 我看过的电影, {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 url: {{url}}
 coverUrl: {{imageData.url}}

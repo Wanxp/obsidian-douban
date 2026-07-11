@@ -5,7 +5,7 @@ import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/org/wanxp/utils/SchemaOrg";
 import HandleContext from "../model/HandleContext";
-import { DataValueType, PersonNameMode, SupportType } from "../../../constant/Constsant";
+import { DataValueType, PersonNameMode, PropertyName, SupportType } from "../../../constant/Constsant";
 import { UserStateSubject } from "../model/UserStateSubject";
 import { moment } from "obsidian";
 import { TITLE_ALIASES_SPECIAL_CHAR_REG_G } from "../../../utils/YamlUtil";
@@ -65,13 +65,12 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 
 	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI, userState: UserStateSubject } {
 		const rate = html('input#n_rating').val();
-		const rating = html('span#rating');
-		const tagsStr = rating.next().next().text().trim();
+		const tagsStr = html('div#interest_sect_level > div.a_stars > span.color_gray').text().trim();
 		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
 		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
 		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').text().trim();
 		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		const component = rating.next().next().next().next().text().trim();
+		const component = this.getComment(html, context);
 
 		const userState: UserStateSubject = {
 			tags: tags,
@@ -81,6 +80,14 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			comment: component
 		}
 		return { data: html, userState: userState };
+	}
+
+	private getComment(html: CheerioAPI, context: HandleContext) {
+		const component = html('div#interest_sect_level > div.a_stars > span.color_gray').next().next().text().trim();
+		if (component) {
+			return component;
+		}
+		return this.getPropertyValue(html, PropertyName.comment);
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanTeleplaySubject {

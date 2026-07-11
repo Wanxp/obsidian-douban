@@ -79,7 +79,7 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 binding: {{binding}}
 createTime: {{currentDate}} {{currentTime}}

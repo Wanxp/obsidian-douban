@@ -46,7 +46,16 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
-		const template: string = await this.getTemplate(extract, context);
+		let template: string = await this.getTemplate(extract, context);
+		const { syncConfig } = context;
+		const shouldSaveImage = extract.image && (syncConfig ? syncConfig.cacheImage : context.settings.cacheImage);
+		if (!shouldSaveImage) {
+			if (extract.image) {
+				extract.image = '';
+				extract.imageUrl = '';
+			}
+			template = template.replace(/!\[[^\]]*\]\(\{\{image\}\}\)\s*/g, '');
+		}
 		const variableMap = this.buildVariableMap(extract, context);
 		this.parseUserInfo(template, variableMap, extract, context);
 		this.parseVariable(template, variableMap, extract, context);
@@ -379,9 +388,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (!userState) {
 			return resultContent;
 		}
-		let tags: string[] = [];
+		let userTags: string[] = [];
 		if (userState.tags && userState.tags.length > 0) {
-			tags = userState.tags.map(tag => tag.trim());
+			userTags = userState.tags.map(tag => tag.trim());
 		}
 		Object.entries(userState).forEach(([key, value]) => {
 			if (!value) {
@@ -389,8 +398,18 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			}
 			variableMap.set(key, new DataField(key, VariableUtil.getType(value), value, value));
 		});
-		if (tags.length > 0) {
-			variableMap.set(DoubanUserParameterName.MY_TAGS, new DataField(DoubanUserParameterName.MY_TAGS, DataValueType.array, tags, tags));
+		if (userTags.length > 0) {
+			const existingTags = variableMap.get('tags');
+			let allTags: string[] = [];
+			if (existingTags && existingTags.value && existingTags.value instanceof Array) {
+				allTags = [...existingTags.value];
+			}
+			userTags.forEach(tag => {
+				if (!allTags.includes(tag)) {
+					allTags.push(tag);
+				}
+			});
+			variableMap.set('tags', new DataField('tags', DataValueType.array, allTags, allTags));
 		}
 		if (userState.comment) {
 			variableMap.set(DoubanUserParameterName.MY_COMMENT, new DataField(
