@@ -221,6 +221,7 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 }
 
 export enum SyncType {
+	all = 'all',
 	movie = 'movie',
 	book = 'book',
 	game = 'game',
@@ -246,6 +247,7 @@ export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
  */
 // @ts-ignore
 export const SyncTypeRecords: { [key in SyncType | string]: string } = {
+	[SyncType.all]: i18nHelper.getMessage('504101'),
 	[SyncType.movie]: i18nHelper.getMessage('504103'),
 	[SyncType.teleplay]: i18nHelper.getMessage('504107'),
 	[SyncType.book]: i18nHelper.getMessage('504102'),
@@ -402,6 +404,14 @@ export const ONLINE_SETTING_DEFAULT: DoubanPluginOnlineSettings = {
 		},
 		{
 			type: SupportType.movie,
+			name: PropertyName.comment,
+			selectors: ['#interest_sect_level > div > span:nth-child(8)',
+				'#interest_sect_level > div > span:nth-child(7)',
+				'#interest_sect_level > div > span:nth-child(9)'
+			]
+		},
+		{
+			type: SupportType.teleplay,
 			name: PropertyName.comment,
 			selectors: ['#interest_sect_level > div > span:nth-child(8)',
 				'#interest_sect_level > div > span:nth-child(7)',

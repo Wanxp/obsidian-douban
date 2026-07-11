@@ -313,7 +313,11 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const savedSettings = await this.loadData();
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, savedSettings);
+		if (savedSettings && savedSettings.scoreSetting) {
+			this.settings.scoreSetting = Object.assign({}, DEFAULT_SETTINGS.scoreSetting, savedSettings.scoreSetting);
+		}
 		this.doubanExtractHandler = new DoubanSearchChooseItemHandler(this.app, this);
 		this.fileHandler = new FileHandler(this.app);
 	}

@@ -16,6 +16,7 @@ import {
 } from "../../constant/Constsant";
 import {
 	ALL, DoubanSubjectState, DoubanSubjectStateRecords,
+	DoubanSubjectStateRecords_ALL_SYNC,
 	DoubanSubjectStateRecords_BOOK_SYNC,
 	DoubanSubjectStateRecords_BROADCAST_SYNC, DoubanSubjectStateRecords_GAME_SYNC,
 	DoubanSubjectStateRecords_MOVIE_SYNC,
@@ -65,6 +66,11 @@ export class DoubanSyncModal extends Modal {
 
 	private showSyncStatus(contentEl: HTMLElement) {
 		const {syncStatus} = this.plugin.statusHolder;
+		if (!syncStatus) {
+			contentEl.createEl("h3", {text: i18nHelper.getMessage('500002')});
+			contentEl.createEl("p", {text: i18nHelper.getMessage('110043')});
+			return;
+		}
 		const {syncConfig} = syncStatus;
 		contentEl.createEl("h3", {text: i18nHelper.getMessage('500002')});
 
@@ -101,41 +107,68 @@ export class DoubanSyncModal extends Modal {
 
 	private showProgress(sliderDiv: HTMLDivElement, backgroundButton:ButtonComponent, stopButton:ButtonComponent) {
 		sliderDiv.empty();
-		new Setting(sliderDiv);
-		let progress = sliderDiv.createDiv('progress');
 		const {syncStatus} = this.plugin.statusHolder;
-		if (!this.plugin.statusHolder.syncStarted) {
-			progress.innerHTML = `<p>
-    <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getHasHandle()}/${syncStatus.getTotal()}:${i18nHelper.getMessage('110036')}  </span>
-</p>
-<p>
-<label for="file">${i18nHelper.getMessage('110092')}</label>
-<span>${i18nHelper.getMessage('110090', syncStatus.getTypeName(), syncStatus.getScopeName(), syncStatus.getAllTotal(), syncStatus.getTotal())}</span>
-</p>
-<p>
-<label for="file">${i18nHelper.getMessage('110091')}</label>
-<span>${syncStatus.getMessage()}</span>
-</p>
-`
-			backgroundButton.setDisabled(true);
-			stopButton.setButtonText(i18nHelper.getMessage('110036'))
+		
+		if (!syncStatus) {
+			sliderDiv.createEl("p", {text: i18nHelper.getMessage('110043')});
 			return;
 		}
-		progress.innerHTML = `<p>
-    <label for="file">${i18nHelper.getMessage('110033')}</label>
-    <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getTotal() == 0 ? i18nHelper.getMessage('110043') : syncStatus.getHasHandle() + '/' + syncStatus.getTotal()}
-${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled()-syncStatus.getHandle(), syncStatus.getOverSize())} </span>
-</p>
-<p>
-<label for="file">${i18nHelper.getMessage('110092')}</label>
-<span>${i18nHelper.getMessage('110090', syncStatus.getTypeName(), syncStatus.getScopeName(), syncStatus.getAllTotal(), syncStatus.getTotal())}</span>
-</p>
-<p>
-<label for="file">${i18nHelper.getMessage('110091')}</label>
-<span>${syncStatus.getMessage()}</span>
-</p>
-`}
+
+		const isSyncing = this.plugin.statusHolder.syncStarted;
+		const handleCount = syncStatus.getHandle();
+		const totalCount = syncStatus.getTotal() > 0 ? syncStatus.getTotal() : syncStatus.getAllTotal();
+		const hasTotal = totalCount > 0;
+
+		const progressDiv = sliderDiv.createDiv();
+		progressDiv.style.display = "block";
+		progressDiv.style.marginTop = "10px";
+
+		if (hasTotal) {
+			const progressEl = progressDiv.createEl("progress");
+			progressEl.className = "obsidian_douban_sync_slider";
+			progressEl.max = totalCount;
+			progressEl.value = handleCount;
+
+			const statusText = progressDiv.createEl("span");
+			statusText.style.display = "block";
+			statusText.style.marginTop = "5px";
+			statusText.style.fontSize = "14px";
+			statusText.textContent = `${handleCount}/${totalCount}`;
+
+			if (isSyncing && handleCount > 0) {
+				const timeText = progressDiv.createEl("span");
+				timeText.style.display = "block";
+				timeText.style.fontSize = "12px";
+				timeText.textContent = i18nHelper.getMessage('110042') + ": " + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled() - handleCount, syncStatus.getOverSize());
+			} else if (!isSyncing && handleCount > 0) {
+				const completeText = progressDiv.createEl("span");
+				completeText.style.display = "block";
+				completeText.style.fontSize = "12px";
+				completeText.textContent = i18nHelper.getMessage('140302');
+			}
+		} else {
+			const loadingText = progressDiv.createEl("p");
+			loadingText.style.fontSize = "14px";
+			loadingText.textContent = isSyncing ? i18nHelper.getMessage('110043') : i18nHelper.getMessage('110036');
+		}
+
+		const infoDiv = sliderDiv.createDiv();
+		infoDiv.style.display = "block";
+		infoDiv.style.marginTop = "10px";
+		infoDiv.style.fontSize = "12px";
+		infoDiv.textContent = i18nHelper.getMessage('110090', syncStatus.getTypeName(), syncStatus.getScopeName(), syncStatus.getAllTotal(), totalCount);
+
+		const msgDiv = sliderDiv.createDiv();
+		msgDiv.style.display = "block";
+		msgDiv.style.marginTop = "5px";
+		msgDiv.style.fontSize = "12px";
+		msgDiv.textContent = syncStatus.getMessage();
+
+		if (!isSyncing) {
+			backgroundButton.setDisabled(handleCount === 0);
+			stopButton.setButtonText(handleCount > 0 ? i18nHelper.getMessage('110005') : i18nHelper.getMessage('110036'));
+		}
+	}
 
 	private showSyncConfig(contentEl: HTMLElement) {
 		if (this.timer != null) {
@@ -213,7 +246,11 @@ ${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + T
 	}
 
 	private openScopeDropdown(contentEl:HTMLDivElement, config: SyncConfig, disable:boolean) {
+		contentEl.empty();
 		switch (config.syncType) {
+			case SyncType.all:
+				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_ALL_SYNC, config, disable);
+				break;
 			case SyncType.movie:
 				this.showScopeDropdown(contentEl, DoubanSubjectStateRecords_MOVIE_SYNC, config, disable);
 				break;

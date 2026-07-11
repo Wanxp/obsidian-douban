@@ -55,6 +55,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				extract.imageUrl = '';
 			}
 			template = template.replace(/!\[[^\]]*\]\(\{\{image\}\}\)\s*/g, '');
+			template = template.replace(/!\[[^\]]*\]\(\{\{imageData\.url\}\}\)\s*/g, '');
 		}
 		const variableMap = this.buildVariableMap(extract, context);
 		this.parseUserInfo(template, variableMap, extract, context);
@@ -400,9 +401,11 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		});
 		if (userTags.length > 0) {
 			const existingTags = variableMap.get('tags');
-			let allTags: string[] = [];
+			let allTags: string[] = [extract.type];
 			if (existingTags && existingTags.value && existingTags.value instanceof Array) {
 				allTags = [...existingTags.value];
+			} else {
+				allTags = [extract.type];
 			}
 			userTags.forEach(tag => {
 				if (!allTags.includes(tag)) {
