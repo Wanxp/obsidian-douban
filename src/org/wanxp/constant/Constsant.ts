@@ -247,7 +247,6 @@ export const SyncTypeUrlDomain: Map<SyncType, string> = new Map([
  */
 // @ts-ignore
 export const SyncTypeRecords: { [key in SyncType | string]: string } = {
-	[SyncType.all]: i18nHelper.getMessage('504101'),
 	[SyncType.movie]: i18nHelper.getMessage('504103'),
 	[SyncType.teleplay]: i18nHelper.getMessage('504107'),
 	[SyncType.book]: i18nHelper.getMessage('504102'),
