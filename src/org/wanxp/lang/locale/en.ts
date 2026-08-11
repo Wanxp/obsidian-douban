@@ -76,25 +76,25 @@ PS: This file could be delete if you want to.
 	'110095': `The smaller the number, the closer to now. For example, the latest update on Douban is the first one, and the earliest update is the last one.`,
 	'110096': `This is the update time of our entry on Douban`,
 
-	'exists':`[exists]`,
-	'unHandle':`[unHandle]`,
-	'replace':`[replace]`,
-	'create':`[create]`,
-	'fail':`[fail]`,
-	'failByDiffType':	 `[fail by diff type]`,
-	'syncall':`[summary]`,
-	'notsync':`[notsync]`,
+	'exists': `[exists]`,
+	'unHandle': `[unHandle]`,
+	'replace': `[replace]`,
+	'create': `[create]`,
+	'fail': `[fail]`,
+	'failByDiffType': `[fail by diff type]`,
+	'syncall': `[summary]`,
+	'notsync': `[notsync]`,
 
-	'unHandle_desc':`unHandle`,
-	'exists_desc':  `exists`,
+	'unHandle_desc': `unHandle`,
+	'exists_desc': `exists`,
 	'replace_desc': `replace`,
-	'create_desc':  `create`,
-	'fail_desc':	`fail`,
-	'failByDiffType_desc':	`fail because of different type`,
+	'create_desc': `create`,
+	'fail_desc': `fail`,
+	'failByDiffType_desc': `fail because of different type`,
 	'notsync_desc': `notsync`,
 	'syncall_desc': `syncall`,
 
-	'110053':`|{0}|{1}|{2}|`,
+	'110053': `|{0}|{1}|{2}|`,
 
 	//DoubanSettingTab
 	'1201': `Obsidian Douban`,
@@ -193,6 +193,10 @@ PS: This file could be delete if you want to.
 	'124310': `The setting will effect variables {{scoreStar}} and {{myRatingStar}}. When the score is {0}/{1}, template is \`score: {{scoreStar}}\``,
 	'124311': `MaxStar:`,
 	'124312': `Integer:`,
+	'124320': `Min User Rating`,
+	'124321': `Filter items with user rating below this value during sync (0-5, 0 for no filter)`,
+	'124322': `Min Douban Score`,
+	'124323': `Filter items with Douban score below this value during sync (0-10, 0 for no filter)`,
 
 
 	'121101': `Template File`,
@@ -278,7 +282,7 @@ PS: This file could be delete if you want to.
 	'121432': `Attachment(Picture) folder`,
 	'121433': `Attachment file created from Obsidian-Douban will be placed in this folder,
 	 If blank, they will be created by default name. support all basic template variables. example: {{type}}/assets`,
-	 '121434': `assets`,
+	'121434': `assets`,
 	'121452': `Attachment(Picture) File Name`,
 	'121453': `Attachment file name, If blank, they will be created by default name '{{title}}'. support all basic template variables. example: {{type}}-{{title}}`,
 
@@ -708,4 +712,11 @@ PS: This file could be delete if you want to.
 	'HOUR': `H`,
 	'MINUTE': `m`,
 	'SECOND': `S`,
+
+	'121001': `Language`,
+	'121002': `Choose the display language for the plugin interface`,
+	'121003': `English`,
+	'121004': `Chinese`,
+	'121005': `Actor Count Limit`,
+	'121006': `Maximum number of actors/directors to display (1-20)`,
 }

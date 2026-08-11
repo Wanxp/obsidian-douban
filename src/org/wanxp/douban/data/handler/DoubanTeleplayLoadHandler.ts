@@ -1,15 +1,15 @@
-import {CheerioAPI} from "cheerio";
+import { CheerioAPI } from "cheerio";
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "../../../main";
 import DoubanSubject from "../model/DoubanSubject";
 import DoubanTeleplaySubject from "../model/DoubanTeleplaySubject";
 import SchemaOrg from "src/org/wanxp/utils/SchemaOrg";
 import HandleContext from "../model/HandleContext";
-import {DataValueType, PersonNameMode, SupportType} from "../../../constant/Constsant";
-import {UserStateSubject} from "../model/UserStateSubject";
-import {moment} from "obsidian";
-import {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
-import {DataField} from "../../../utils/model/DataField";
+import { DataValueType, PersonNameMode, PropertyName, SupportType } from "../../../constant/Constsant";
+import { UserStateSubject } from "../model/UserStateSubject";
+import { moment } from "obsidian";
+import { TITLE_ALIASES_SPECIAL_CHAR_REG_G } from "../../../utils/YamlUtil";
+import { DataField } from "../../../utils/model/DataField";
 
 /**
  * teleplay
@@ -24,13 +24,13 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		return SupportType.teleplay;
 	}
 
-	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanTeleplaySubject, context: HandleContext): void {
-		variableMap.set("director", new DataField("director", DataValueType.array, extract.director,(extract.director || []).map(SchemaOrg.getPersonName).filter(c => c)));
+	parseVariable(beforeContent: string, variableMap: Map<string, DataField>, extract: DoubanTeleplaySubject, context: HandleContext): void {
+		variableMap.set("director", new DataField("director", DataValueType.array, extract.director, (extract.director || []).map(SchemaOrg.getPersonName).filter(c => c)));
 		variableMap.set("actor", new DataField(
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, this.doubanPlugin.settings.actorMaxCount)
 		));
 
 		variableMap.set("author", new DataField(
@@ -40,8 +40,8 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			(extract.author || []).map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
 		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-			(extract.aliases || []).map(a=>a
-					.trim()
+			(extract.aliases || []).map(a => a
+				.trim()
 				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
 				// 		//replase multiple _ to single _
 				// 		.replace(/_+/g, '_')
@@ -55,32 +55,39 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 	support(extract: DoubanSubject): boolean {
 		return extract && extract.type && (extract.type.contains("电视剧") || extract.type.contains("Teleplay") || extract.type.contains("teleplay"));
 	}
-	getHighQuantityImageUrl(fileName:string):string{
+	getHighQuantityImageUrl(fileName: string): string {
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
-	getSubjectUrl(id:string):string{
+	getSubjectUrl(id: string): string {
 		return `https://movie.douban.com/subject/${id}/`;
 	}
 
-	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI, userState: UserStateSubject } {
 		const rate = html('input#n_rating').val();
-		const rating = html('span#rating');
-		const tagsStr = rating.next().next().text().trim();
+		const tagsStr = html('div#interest_sect_level > div.a_stars > span.color_gray').text().trim();
 		const tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
 		const stateWord = html('div#interest_sect_level > div.a_stars > span.mr10').text().trim();
 		const collectionDateStr = html('div#interest_sect_level > div.a_stars > span.mr10 > span.collection_date').text().trim();
 		const userState1 = DoubanAbstractLoadHandler.getUserState(stateWord);
-		const component = rating.next().next().next().next().text().trim();
+		const component = this.getComment(html, context);
 
 		const userState: UserStateSubject = {
 			tags: tags,
-			rate: rate?Number(rate):null,
+			rate: rate ? Number(rate) : null,
 			state: userState1,
-			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			collectionDate: collectionDateStr ? moment(collectionDateStr, 'YYYY-MM-DD').toDate() : null,
 			comment: component
 		}
-		return {data: html, userState: userState};
+		return { data: html, userState: userState };
+	}
+
+	private getComment(html: CheerioAPI, context: HandleContext) {
+		const component = html('div#interest_sect_level > div.a_stars > span.color_gray').next().next().text().trim();
+		if (component) {
+			return component;
+		}
+		return this.getPropertyValue(html, PropertyName.comment);
 	}
 
 	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanTeleplaySubject {
@@ -94,8 +101,8 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				const idPattern = /(\d){5,10}/g;
 				const id = idPattern.exec(obj.url);
 				const name = obj.name;
-				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context)??name;
-				const originalTitle =  super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
+				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context) ?? name;
+				const originalTitle = super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
 
 				const result: DoubanTeleplaySubject = {
 					id: id ? id[0] : '',
@@ -164,9 +171,9 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 			};
 		}
 
-		this.handlePersonNameByMeta(html, teleplay,  context, 'video:actor', 'actor');
-		this.handlePersonNameByMeta(html, teleplay,  context, 'video:director', 'director');
-		const desc:string = html("span[property='v:summary']").text();
+		this.handlePersonNameByMeta(html, teleplay, context, 'video:actor', 'actor');
+		this.handlePersonNameByMeta(html, teleplay, context, 'video:director', 'director');
+		const desc: string = html("span[property='v:summary']").text();
 		if (desc) {
 			teleplay.desc = desc;
 		}
@@ -183,17 +190,17 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				// value = html(info.next.next).text().trim();
 				const vas = html(info.next).text().trim();
 				value = vas.split("/").map((v) => v.trim());
-			}else {
+			} else {
 				value = html(info.next).text().trim();
 			}
 			valueMap.set(TeleplayKeyValueMap.get(key), value);
 		})
-		teleplay.country =  valueMap.has('country') ? valueMap.get('country') : [];
-		teleplay.language =  valueMap.has('language') ? valueMap.get('language') : [];
-		teleplay.episode =  valueMap.has('episode') ? valueMap.get('episode') : "";
-		teleplay.time =  valueMap.has('time') ? valueMap.get('time') : "";
-		teleplay.aliases =  valueMap.has('aliases') ? valueMap.get('aliases') : [];
-		teleplay.IMDb =  valueMap.has('IMDb') ? valueMap.get('IMDb') : "";
+		teleplay.country = valueMap.has('country') ? valueMap.get('country') : [];
+		teleplay.language = valueMap.has('language') ? valueMap.get('language') : [];
+		teleplay.episode = valueMap.has('episode') ? valueMap.get('episode') : "";
+		teleplay.time = valueMap.has('time') ? valueMap.get('time') : "";
+		teleplay.aliases = valueMap.has('aliases') ? valueMap.get('aliases') : [];
+		teleplay.IMDb = valueMap.has('IMDb') ? valueMap.get('IMDb') : "";
 		return teleplay;
 	}
 
@@ -201,10 +208,10 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 
 const TeleplayKeyValueMap: Map<string, string> = new Map(
 	[['制片国家/地区:', 'country'],
-		['语言:', 'language'],
-		['集数:', 'episode'],
-		['单集片长:', 'time'],
-		['又名:', 'aliases'],
-		['IMDb:', 'IMDb']
+	['语言:', 'language'],
+	['集数:', 'episode'],
+	['单集片长:', 'time'],
+	['又名:', 'aliases'],
+	['IMDb:', 'IMDb']
 	]
 );

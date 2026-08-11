@@ -3,4 +3,6 @@ export interface ScoreSetting {
 	starFull: string,
 	displayStarEmpty: boolean
 	maxStar: number
+	minUserRating: number
+	minDoubanScore: number
 }

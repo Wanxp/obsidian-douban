@@ -1,4 +1,4 @@
-import {CheerioAPI} from 'cheerio';
+import { CheerioAPI } from 'cheerio';
 import DoubanAbstractLoadHandler from "./DoubanAbstractLoadHandler";
 import DoubanPlugin from "../../../main";
 import SchemaOrg from "src/org/wanxp/utils/SchemaOrg";
@@ -6,11 +6,11 @@ import DoubanSubject from '../model/DoubanSubject';
 import DoubanMovieSubject from '../model/DoubanMovieSubject';
 import StringUtil from "../../../utils/StringUtil";
 import HandleContext from "../model/HandleContext";
-import {DataValueType, PersonNameMode, PropertyName, SupportType, TemplateKey} from "../../../constant/Constsant";
-import {UserStateSubject} from "../model/UserStateSubject";
-import {moment} from "obsidian";
-import YamlUtil, {SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
-import {DataField} from "../../../utils/model/DataField";
+import { DataValueType, PersonNameMode, PropertyName, SupportType, TemplateKey } from "../../../constant/Constsant";
+import { UserStateSubject } from "../model/UserStateSubject";
+import { moment } from "obsidian";
+import YamlUtil, { SPECIAL_CHAR_REG, TITLE_ALIASES_SPECIAL_CHAR_REG_G } from "../../../utils/YamlUtil";
+import { DataField } from "../../../utils/model/DataField";
 
 export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<DoubanMovieSubject> {
 
@@ -22,15 +22,15 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		return SupportType.movie;
 	}
 
-	getHighQuantityImageUrl(fileName:string):string{
+	getHighQuantityImageUrl(fileName: string): string {
 		return `https://img9.doubanio.com/view/photo/l/public/${fileName}`;
 	}
 
-	getSubjectUrl(id:string):string{
+	getSubjectUrl(id: string): string {
 		return `https://movie.douban.com/subject/${id}/`;
 	}
 
-	parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: DoubanMovieSubject, context: HandleContext): void {
+	parseVariable(beforeContent: string, variableMap: Map<string, DataField>, extract: DoubanMovieSubject, context: HandleContext): void {
 		variableMap.set("director", new DataField(
 			"director",
 			DataValueType.array,
@@ -42,7 +42,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			"actor",
 			DataValueType.array,
 			extract.actor,
-			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c)
+			(extract.actor || []).map(SchemaOrg.getPersonName).filter(c => c).slice(0, this.doubanPlugin.settings.actorMaxCount)
 		));
 
 		variableMap.set("author", new DataField(
@@ -52,8 +52,8 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 			(extract.author || []).map(SchemaOrg.getPersonName).map(name => super.getPersonName(name, context)).filter(c => c)
 		));
 		variableMap.set("aliases", new DataField("aliases", DataValueType.array, extract.aliases,
-			(extract.aliases || []).map(a=>a
-					.trim()
+			(extract.aliases || []).map(a => a
+				.trim()
 				// 		.replace(TITLE_ALIASES_SPECIAL_CHAR_REG_G, '_')
 				// 		//replase multiple _ to single _
 				// 		.replace(/_+/g, '_')
@@ -62,13 +62,13 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				.replace(/:\s+/g, ':')
 			)));
 		// super.parseAliases(beforeContent, variableMap, extract, context);
-		}
+	}
 
 	support(extract: DoubanSubject): boolean {
 		return extract && extract.type && (extract.type.contains("电影") || extract.type.contains("Movie") || extract.type.contains("movie"));
 	}
 
-	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+	analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI, userState: UserStateSubject } {
 		let rate = html('input#n_rating').val();
 		let tagsStr = html('div#interest_sect_level > div.a_stars > span.color_gray').text().trim();
 		let tags = tagsStr ? tagsStr.replace('标签:', '').trim().split(' ') : null;
@@ -80,12 +80,12 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 
 		const userState: UserStateSubject = {
 			tags: tags,
-			rate: rate?Number(rate):null,
+			rate: rate ? Number(rate) : null,
 			state: userState1,
-			collectionDate: collectionDateStr?moment(collectionDateStr, 'YYYY-MM-DD').toDate():null,
+			collectionDate: collectionDateStr ? moment(collectionDateStr, 'YYYY-MM-DD').toDate() : null,
 			comment: component
 		}
-		return {data: html, userState: userState};
+		return { data: html, userState: userState };
 	}
 
 
@@ -219,9 +219,9 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 
 const MovieKeyValueMap: Map<string, string> = new Map(
 	[['制片国家/地区:', 'country'],
-		['语言:', 'language'],
-		['片长:', 'time'],
-		['又名:', 'aliases'],
-		['IMDb:', 'IMDb']
+	['语言:', 'language'],
+	['片长:', 'time'],
+	['又名:', 'aliases'],
+	['IMDb:', 'IMDb']
 	]
 );

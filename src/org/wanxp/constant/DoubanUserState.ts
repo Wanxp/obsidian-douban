@@ -79,6 +79,13 @@ export const DoubanSubjectStateRecords: { [key in SupportType]: Record<DoubanSub
 
 export const ALL:string = 'ALL';
 
+export const DoubanSubjectStateRecords_ALL_SYNC: { [key: string]: string } = {
+	[ALL]: i18nHelper.getMessage('500004'),
+	[DoubanSubjectState.wish]: i18nHelper.getMessage('500102'),
+	[DoubanSubjectState.do]: i18nHelper.getMessage('500103'),
+	[DoubanSubjectState.collect]: i18nHelper.getMessage('500104'),
+}
+
 // @ts-ignore
 export const DoubanSubjectStateRecords_MOVIE_SYNC: { [key in DoubanSubjectState]: string } = {
 	// @ts-ignore

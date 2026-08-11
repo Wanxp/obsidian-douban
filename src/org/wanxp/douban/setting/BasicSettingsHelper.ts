@@ -1,19 +1,36 @@
-import I18nHelper, {i18nHelper} from "../../lang/helper";
-import {Platform, Setting} from "obsidian";
-import {DEFAULT_SETTINGS} from "../../constant/DefaultSettings";
+import I18nHelper, { i18nHelper } from "../../lang/helper";
+import { Platform, Setting } from "obsidian";
+import { DEFAULT_SETTINGS } from "../../constant/DefaultSettings";
 import SettingsManager from "./SettingsManager";
 import DoubanLoginModel from "../component/DoubanLoginModel";
 import DoubanLogoutModel from "../component/DoubanLogoutModel";
 import User from "../user/User";
-import {createFolderSelectionSetting} from "./TemplateSettingHelper";
+import { createFolderSelectionSetting } from "./TemplateSettingHelper";
 import StringUtil from "../../utils/StringUtil";
-import {log} from "../../utils/Logutil";
+import { log } from "../../utils/Logutil";
 import DoubanPlugin from "../../main";
-import {SearchTypeRecords, SupportType, SupportTypeMap} from "../../constant/Constsant";
+import { SearchTypeRecords, SupportType, SupportTypeMap } from "../../constant/Constsant";
 
 export function constructBasicUI(containerEl: HTMLElement, manager: SettingsManager) {
 	// containerEl.createEl('h3', { text: i18nHelper.getMessage('1210') });
 
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('121001'))
+		.setDesc(i18nHelper.getMessage('121002'))
+		.addDropdown((dropdown) => {
+			dropdown
+				.addOptions({
+					'en': i18nHelper.getMessage('121003'),
+					'zh': i18nHelper.getMessage('121004'),
+				})
+				.setValue(manager.plugin.settings.language || 'en')
+				.onChange(async (value) => {
+					manager.plugin.settings.language = value;
+					i18nHelper.setLanguage(value);
+					await manager.plugin.saveSettings();
+					manager.plugin.settingTab.display();
+				});
+		});
 
 	new Setting(containerEl).setName(i18nHelper.getMessage('120501')).then((setting) => {
 		setting.addMomentFormat((mf) => {
@@ -36,7 +53,7 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 					);
 					frag.createEl('br');
 					frag.appendText(i18nHelper.getMessage('120507') + ': ');
-					mf.setSampleEl(frag.createEl('b', {cls: 'u-pop'}));
+					mf.setSampleEl(frag.createEl('b', { cls: 'u-pop' }));
 					frag.createEl('br');
 				})
 			);
@@ -71,7 +88,7 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 					);
 					frag.createEl('br');
 					frag.appendText(i18nHelper.getMessage('120507') + ': ');
-					mf.setSampleEl(frag.createEl('b', {cls: 'u-pop'}));
+					mf.setSampleEl(frag.createEl('b', { cls: 'u-pop' }));
 					frag.createEl('br');
 				})
 			);
@@ -109,6 +126,21 @@ export function constructBasicUI(containerEl: HTMLElement, manager: SettingsMana
 					// @ts-ignore
 					manager.plugin.settings.searchDefaultType = SupportTypeMap[value];
 					await manager.plugin.saveSettings();
+				});
+		});
+
+	new Setting(containerEl)
+		.setName(i18nHelper.getMessage('121005'))
+		.setDesc(i18nHelper.getMessage('121006'))
+		.addText((text) => {
+			text
+				.setValue(String(manager.plugin.settings.actorMaxCount))
+				.onChange(async (value) => {
+					const num = parseInt(value);
+					if (!isNaN(num) && num >= 1 && num <= 20) {
+						manager.plugin.settings.actorMaxCount = num;
+						await manager.plugin.saveSettings();
+					}
 				});
 		});
 

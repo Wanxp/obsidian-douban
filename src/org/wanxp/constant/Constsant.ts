@@ -221,6 +221,7 @@ export const PersonNameModeRecords: { [key in PersonNameMode]: string } = {
 }
 
 export enum SyncType {
+	all = 'all',
 	movie = 'movie',
 	book = 'book',
 	game = 'game',
@@ -402,6 +403,14 @@ export const ONLINE_SETTING_DEFAULT: DoubanPluginOnlineSettings = {
 		},
 		{
 			type: SupportType.movie,
+			name: PropertyName.comment,
+			selectors: ['#interest_sect_level > div > span:nth-child(8)',
+				'#interest_sect_level > div > span:nth-child(7)',
+				'#interest_sect_level > div > span:nth-child(9)'
+			]
+		},
+		{
+			type: SupportType.teleplay,
 			name: PropertyName.comment,
 			selectors: ['#interest_sect_level > div > span:nth-child(8)',
 				'#interest_sect_level > div > span:nth-child(7)',

@@ -1,11 +1,11 @@
 import DoubanPlugin from "../../../main";
-import DoubanSubject, {DoubanParameterName} from '../model/DoubanSubject';
+import DoubanSubject, { DoubanParameterName } from '../model/DoubanSubject';
 import DoubanSubjectLoadHandler from "./DoubanSubjectLoadHandler";
-import {moment, Platform, TFile} from "obsidian";
-import {i18nHelper} from 'src/org/wanxp/lang/helper';
-import {log} from "src/org/wanxp/utils/Logutil";
-import {CheerioAPI, load} from "cheerio";
-import YamlUtil, {TITLE_ALIASES_SPECIAL_CHAR_REG_G} from "../../../utils/YamlUtil";
+import { moment, Platform, TFile } from "obsidian";
+import { i18nHelper } from 'src/org/wanxp/lang/helper';
+import { log } from "src/org/wanxp/utils/Logutil";
+import { CheerioAPI, load } from "cheerio";
+import YamlUtil, { TITLE_ALIASES_SPECIAL_CHAR_REG_G } from "../../../utils/YamlUtil";
 import {
 	BasicConst,
 	DataValueType,
@@ -18,23 +18,23 @@ import {
 } from "../../../constant/Constsant";
 import HandleContext from "../model/HandleContext";
 import HandleResult from "../model/HandleResult";
-import {getDefaultTemplateContent} from "../../../constant/DefaultTemplateContent";
+import { getDefaultTemplateContent } from "../../../constant/DefaultTemplateContent";
 import StringUtil from "../../../utils/StringUtil";
-import {DEFAULT_SETTINGS} from "../../../constant/DefaultSettings";
-import {DoubanUserParameter, DoubanUserParameterName, UserStateSubject} from "../model/UserStateSubject";
+import { DEFAULT_SETTINGS } from "../../../constant/DefaultSettings";
+import { DoubanUserParameter, DoubanUserParameterName, UserStateSubject } from "../model/UserStateSubject";
 import {
 	DoubanSubjectState,
 	DoubanSubjectStateRecords,
 	DoubanSubjectStateRecords_KEY_WORD_TYPE
 } from "../../../constant/DoubanUserState";
-import {Person} from "schema-dts";
+import { Person } from "schema-dts";
 import HttpUtil from "../../../utils/HttpUtil";
 import HtmlUtil from "../../../utils/HtmlUtil";
-import {VariableUtil} from "../../../utils/VariableUtil";
-import {DataField} from "../../../utils/model/DataField";
+import { VariableUtil } from "../../../utils/VariableUtil";
+import { DataField } from "../../../utils/model/DataField";
 import NumberUtil from "../../../utils/NumberUtil";
-import {DoubanHttpUtil} from "../../../utils/DoubanHttpUtil";
-import {logger} from "bs-logger";
+import { DoubanHttpUtil } from "../../../utils/DoubanHttpUtil";
+import { logger } from "bs-logger";
 
 export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject> implements DoubanSubjectLoadHandler<T> {
 
@@ -46,7 +46,17 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	async parse(extract: T, context: HandleContext): Promise<HandleResult> {
-		const template: string = await this.getTemplate(extract, context);
+		let template: string = await this.getTemplate(extract, context);
+		const { syncConfig } = context;
+		const shouldSaveImage = extract.image && (syncConfig ? syncConfig.cacheImage : context.settings.cacheImage);
+		if (!shouldSaveImage) {
+			if (extract.image) {
+				extract.image = '';
+				extract.imageUrl = '';
+			}
+			template = template.replace(/!\[[^\]]*\]\(\{\{image\}\}\)\s*/g, '');
+			template = template.replace(/!\[[^\]]*\]\(\{\{imageData\.url\}\}\)\s*/g, '');
+		}
 		const variableMap = this.buildVariableMap(extract, context);
 		this.parseUserInfo(template, variableMap, extract, context);
 		this.parseVariable(template, variableMap, extract, context);
@@ -84,24 +94,24 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		if (SearchHandleMode.FOR_CREATE == context.mode) {
 			fileName = this.parsePartPath(this.getFileName(context), extract, context, variableMap);
 		}
-		return {content: result,filePath: filePath, fileName: fileName, subject:extract};
+		return { content: result, filePath: filePath, fileName: fileName, subject: extract };
 	}
 
 	private getFileName(context: HandleContext): string {
-		const {syncConfig} = context;
+		const { syncConfig } = context;
 		if (syncConfig) {
 			return syncConfig.dataFileNamePath;
 		}
-		const {dataFileNamePath} = context.settings;
+		const { dataFileNamePath } = context.settings;
 		return dataFileNamePath ? dataFileNamePath : DEFAULT_SETTINGS.dataFileNamePath;
 	}
 
 	private getFilePath(context: HandleContext): string {
-		const {syncConfig} = context;
+		const { syncConfig } = context;
 		if (syncConfig) {
 			return syncConfig.dataFilePath;
 		}
-		const {dataFilePath} = context.settings;
+		const { dataFilePath } = context.settings;
 		return dataFilePath ? dataFilePath : DEFAULT_SETTINGS.dataFilePath;
 	}
 
@@ -111,18 +121,18 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 	abstract getSupportType(): SupportType;
 
-	abstract parseVariable(beforeContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext): void;
+	abstract parseVariable(beforeContent: string, variableMap: Map<string, DataField>, extract: T, context: HandleContext): void;
 
 	abstract support(extract: DoubanSubject): boolean;
 
 	async handle(id: string, context: HandleContext): Promise<T> {
-		const url:string = this.getSubjectUrl(id);
+		const url: string = this.getSubjectUrl(id);
 		context.plugin.settingsManager.debug(`开始请求地址:${url}`)
 		context.plugin.settingsManager.debug(`(注意:请勿向任何人透露你的Cookie,此处若需要截图请**打码**)请求header:${context.settings.loginHeadersContent}`)
 		return await DoubanHttpUtil.httpRequestGet(url, context.plugin.settingsManager.getHeaders(), context.plugin.settingsManager)
 			.then(load)
 			.then(data => this.analysisUserState(data, context))
-			.then(({data, userState}) => {
+			.then(({ data, userState }) => {
 				let guessType = this.getSupportType();
 				if (context.syncActive) {
 					guessType = this.getGuessType(data);
@@ -132,15 +142,41 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				sub.guessType = guessType;
 				return sub;
 			})
-			.then(content => this.toEditor(context, content))
+			.then(content => {
+				if (!content) {
+					return content;
+				}
+				const { minUserRating, minDoubanScore } = context.settings.scoreSetting;
+				let skip = false;
+				let skipReason = '';
+				if (minUserRating > 0 && content.userState && content.userState.rate != null) {
+					if (content.userState.rate < minUserRating) {
+						skip = true;
+						skipReason = `个人评分${content.userState.rate}星低于最低阈值${minUserRating}星`;
+					}
+				}
+				if (!skip && minDoubanScore > 0 && content.score != null) {
+					if (content.score < minDoubanScore) {
+						skip = true;
+						skipReason = `豆瓣评分${content.score}低于最低阈值${minDoubanScore}`;
+					}
+				}
+				if (skip) {
+					log.info(`跳过导入「${content.title}」: ${skipReason}`);
+					context.syncStatusHolder?.syncStatus.unHandle(content.id, content.title);
+					return undefined;
+				}
+				return content;
+			})
+			.then(content => content ? this.toEditor(context, content) : undefined)
 			// .then(content => content ? editor.replaceSelection(content) : content)
-			.catch(e =>  {
-				log.error(i18nHelper.getMessage('130101',  e.toString()), e);
+			.catch(e => {
+				log.error(i18nHelper.getMessage('130101', e.toString()), e);
 				if (url) {
 					const id = StringUtil.analyzeIdByUrl(url);
-					context.syncStatusHolder?context.syncStatusHolder.syncStatus.fail(id, ''):null;
-				}else {
-					context.syncStatusHolder?context.syncStatusHolder.syncStatus.handled(1):null;
+					context.syncStatusHolder ? context.syncStatusHolder.syncStatus.fail(id, '') : null;
+				} else {
+					context.syncStatusHolder ? context.syncStatusHolder.syncStatus.handled(1) : null;
 				}
 				return undefined;
 			});
@@ -153,7 +189,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	 * @param data
 	 * @private
 	 */
-	private getGuessType(data: CheerioAPI):SupportType {
+	private getGuessType(data: CheerioAPI): SupportType {
 		if (data) {
 			const text = data.html();
 			if (text) {
@@ -194,7 +230,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				resultName = chineseName;
 				break;
 			case PersonNameMode.EN_NAME:
-				resultName  = originalName.trim().replace(chineseName, '').trim();
+				resultName = originalName.trim().replace(chineseName, '').trim();
 				if (!resultName) {
 					resultName = originalName;
 				}
@@ -239,7 +275,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					break;
 				case PersonNameMode.EN_NAME:
 					return name.trim().replaceAll(' ', '').replaceAll(newName, '');
-                    break;
+					break;
 			}
 		}
 		return this.getPersonNameByMode(name, personNameMode);
@@ -271,15 +307,15 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return s;
 	}
 
-	private parsePartYml(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+	private parsePartYml(template: string, extract: T, context: HandleContext, variableMap: Map<string, DataField>): string {
 		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'yml_text');
 	}
 
-	private parsePartText(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+	private parsePartText(template: string, extract: T, context: HandleContext, variableMap: Map<string, DataField>): string {
 		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'text');
 	}
 
-	private parsePartPath(template: string, extract: T, context: HandleContext,  variableMap : Map<string, DataField>): string {
+	private parsePartPath(template: string, extract: T, context: HandleContext, variableMap: Map<string, DataField>): string {
 		return VariableUtil.replaceSubject(variableMap, template, this.getSupportType(), this.doubanPlugin.settingsManager, 'path');
 	}
 
@@ -295,7 +331,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					DoubanParameterName.SCORE_STAR,
 					DataValueType.string,
 					value,
-					NumberUtil.getRateStar(value, 10, {scoreSetting: context.settings.scoreSetting})
+					NumberUtil.getRateStar(value, 10, { scoreSetting: context.settings.scoreSetting })
 				));
 			}
 			variableMap.set(key, new DataField(key, type, value, value));
@@ -340,24 +376,22 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return variableMap;
 	}
 
-	private parseUserInfo(resultContent: string, variableMap:Map<string, DataField>, extract: T, context: HandleContext) {
+	private parseUserInfo(resultContent: string, variableMap: Map<string, DataField>, extract: T, context: HandleContext) {
 		const userState = extract.userState;
 		if ((resultContent.indexOf(DoubanUserParameter.MY_TAGS) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_RATING) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_STATE) >= 0 ||
 			resultContent.indexOf(DoubanUserParameter.MY_COMMENT) >= 0 ||
-			resultContent.indexOf(DoubanUserParameter.MY_COLLECTION_DATE) >= 0 ) && !this.doubanPlugin.userComponent.isLogin()) {
+			resultContent.indexOf(DoubanUserParameter.MY_COLLECTION_DATE) >= 0) && !this.doubanPlugin.userComponent.isLogin()) {
 			log.warn(i18nHelper.getMessage('100113'));
 			return resultContent;
 		}
 		if (!userState) {
 			return resultContent;
 		}
-		let tags: string[] = [];
-		if (userState.tags && userState.tags.length > 0 ) {
-			tags = [extract.type, ...userState.tags.map(tag => tag.trim())];
-		}else {
-			tags = [extract.type];
+		let userTags: string[] = [];
+		if (userState.tags && userState.tags.length > 0) {
+			userTags = userState.tags.map(tag => tag.trim());
 		}
 		Object.entries(userState).forEach(([key, value]) => {
 			if (!value) {
@@ -365,8 +399,20 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			}
 			variableMap.set(key, new DataField(key, VariableUtil.getType(value), value, value));
 		});
-		if (userState.tags && userState.tags.length > 0 ) {
-			variableMap.set(DoubanUserParameterName.MY_TAGS, new DataField(DoubanUserParameterName.MY_TAGS, DataValueType.array, tags, tags));
+		if (userTags.length > 0) {
+			const existingTags = variableMap.get('tags');
+			let allTags: string[] = [extract.type];
+			if (existingTags && existingTags.value && existingTags.value instanceof Array) {
+				allTags = [...existingTags.value];
+			} else {
+				allTags = [extract.type];
+			}
+			userTags.forEach(tag => {
+				if (!allTags.includes(tag)) {
+					allTags.push(tag);
+				}
+			});
+			variableMap.set('tags', new DataField('tags', DataValueType.array, allTags, allTags));
 		}
 		if (userState.comment) {
 			variableMap.set(DoubanUserParameterName.MY_COMMENT, new DataField(
@@ -395,7 +441,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 				DoubanUserParameterName.MY_RATING_STAR,
 				DataValueType.string,
 				userState.rate,
-				NumberUtil.getRateStar(userState.rate, 5, {scoreSetting: context.settings.scoreSetting})
+				NumberUtil.getRateStar(userState.rate, 5, { scoreSetting: context.settings.scoreSetting })
 			));
 		}
 		if (userState.collectionDate) {
@@ -411,7 +457,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 
 
 
-	private getTemplateKey():TemplateKey {
+	private getTemplateKey(): TemplateKey {
 		let templateKey: TemplateKey;
 		switch (this.getSupportType()) {
 			case SupportType.movie:
@@ -440,9 +486,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 	}
 
 	private async getTemplate(extract: T, context: HandleContext): Promise<string> {
-		const {syncConfig} = context;
+		const { syncConfig } = context;
 		if (syncConfig) {
-			if(syncConfig.templateFile) {
+			if (syncConfig.templateFile) {
 				const val = await this.doubanPlugin.fileHandler.getFileContent(syncConfig.templateFile);
 				if (val) {
 					return val;
@@ -451,9 +497,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 		const tempKey: TemplateKey = this.getTemplateKey();
 		const templatePath: string = context.settings[tempKey];
-		let useUserState:boolean = context.userComponent.isLogin() &&
+		let useUserState: boolean = context.userComponent.isLogin() &&
 			extract.userState &&
-			extract.userState.collectionDate != null  &&
+			extract.userState.collectionDate != null &&
 			extract.userState.collectionDate != undefined;
 
 		useUserState = useUserState ? useUserState : false;
@@ -472,31 +518,31 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 	}
 
-	analysisUserState(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {
+	analysisUserState(html: CheerioAPI, context: HandleContext): { data: CheerioAPI, userState: UserStateSubject } {
 		if (!context.userComponent.isLogin()) {
-			return {data: html, userState: null};
+			return { data: html, userState: null };
 		}
-		if(!html('.nav-user-account')) {
-			return {data: html, userState: null};
+		if (!html('.nav-user-account')) {
+			return { data: html, userState: null };
 		}
-		return this. analysisUser(html, context);
+		return this.analysisUser(html, context);
 	}
 
-	abstract analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject};
+	abstract analysisUser(html: CheerioAPI, context: HandleContext): { data: CheerioAPI, userState: UserStateSubject };
 
 
-	public static getUserState(stateWord:string):DoubanSubjectState {
-		let state:DoubanSubjectState;
-		if(!stateWord) {
+	public static getUserState(stateWord: string): DoubanSubjectState {
+		let state: DoubanSubjectState;
+		if (!stateWord) {
 			return null;
 		}
-		if(stateWord.indexOf('想')>=0 ) {
+		if (stateWord.indexOf('想') >= 0) {
 			state = DoubanSubjectState.wish;
-		}else if(stateWord.indexOf('在')>=0) {
+		} else if (stateWord.indexOf('在') >= 0) {
 			state = DoubanSubjectState.do;
-		}else if(stateWord.indexOf('过')>=0) {
+		} else if (stateWord.indexOf('过') >= 0) {
 			state = DoubanSubjectState.collect;
-		}else {
+		} else {
 			state = DoubanSubjectState.not;
 		}
 		return state;
@@ -522,18 +568,25 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		}
 	}
 
-	private async saveImage(extract: T, context: HandleContext, variableMap : Map<string, DataField>) {
-		const {syncConfig} = context;
-		if (!extract.image || (syncConfig && !syncConfig.cacheImage)  || !context.settings.cacheImage) {
+	private async saveImage(extract: T, context: HandleContext, variableMap: Map<string, DataField>) {
+		const { syncConfig } = context;
+		const shouldSaveImage = extract.image && (syncConfig ? syncConfig.cacheImage : context.settings.cacheImage);
+		if (!shouldSaveImage) {
+			if (extract.image) {
+				extract.image = '';
+				extract.imageUrl = '';
+				variableMap.delete(DoubanParameterName.IMAGE);
+				variableMap.delete(DoubanParameterName.IMAGE_URL);
+			}
 			return;
 		}
 		const image = extract.image;
-		let folder = syncConfig? syncConfig.attachmentPath : context.settings.attachmentPath;
+		let folder = syncConfig ? syncConfig.attachmentPath : context.settings.attachmentPath;
 		if (!folder) {
 			folder = DEFAULT_SETTINGS.attachmentPath;
 		}
 		folder = this.parsePartPath(folder, extract, context, variableMap)
-		let fileName = syncConfig? syncConfig.attachmentFileName : context.settings.attachmentFileName;
+		let fileName = syncConfig ? syncConfig.attachmentFileName : context.settings.attachmentFileName;
 		if (!fileName) {
 			fileName = DEFAULT_SETTINGS.attachmentFileName;
 		}
@@ -562,7 +615,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					this.initImageVariableMap(extract, context, variableMap);
 					return;
 				}
-			}catch (e) {
+			} catch (e) {
 				console.error(e);
 				console.error('下载高清封面失败，将会使用普通封面')
 			}
@@ -582,7 +635,7 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
 	}
 
-	private initImageVariableMap(extract: T, context: HandleContext, variableMap : Map<string, DataField>) {
+	private initImageVariableMap(extract: T, context: HandleContext, variableMap: Map<string, DataField>) {
 		variableMap.set(DoubanParameterName.IMAGE_URL, new DataField(
 			DoubanParameterName.IMAGE_URL,
 			DataValueType.url,
@@ -606,21 +659,21 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 			if (!checked) {
 				//TODO 国际化
 				log.notice('连接PicGo软件失败, 请检查是否已开启PicGo的Server服务 或 检查插件中配置地址是否正确，现使用默认的下载到本地的方式');
-				return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
+				return await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
 			}
 			return await context.netFileHandler.downloadDBUploadPicGoByClipboard(image, filename, context, showError, headers);
-		}else {
-			return  await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
+		} else {
+			return await context.netFileHandler.downloadDBFile(image, folder, filename, context, false, headers);
 		}
 
 	}
 
-	abstract getHighQuantityImageUrl(fileName:string):string;
+	abstract getHighQuantityImageUrl(fileName: string): string;
 
-	abstract getSubjectUrl(id:string):string;
+	abstract getSubjectUrl(id: string): string;
 
 	handlePersonNameByMeta(html: CheerioAPI, movie: DoubanSubject, context: HandleContext,
-								   metaProperty:string, objectProperty:string) {
+		metaProperty: string, objectProperty: string) {
 		if (!movie) {
 			return;
 		}
@@ -636,9 +689,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		// @ts-ignore
 		currentArray
 			// @ts-ignore
-			.filter((p:Person) => p.name)
+			.filter((p: Person) => p.name)
 			// @ts-ignore
-			.map((p:Person) => {
+			.map((p: Person) => {
 				// @ts-ignore
 				const persons = metaProperties.filter((a) => p.name.indexOf(a) >= 0);
 				if (persons) {

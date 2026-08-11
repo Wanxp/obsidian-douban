@@ -9,7 +9,7 @@ import { DoubanMusicSyncHandler } from "./DoubanMusicSyncHandler";
 import { DoubanBookSyncHandler } from "./DoubanBookSyncHandler";
 import {i18nHelper} from "../../../lang/helper";
 import {DoubanTeleplaySyncHandler} from "./DoubanTeleplaySyncHandler";
-import {SyncConditionType} from "../../../constant/Constsant";
+import {SyncConditionType, SyncType} from "../../../constant/Constsant";
 import {DoubanGameSyncHandler} from "./DoubanGameSyncHandler";
 import {DataField} from "../../../utils/model/DataField";
 import {VariableUtil} from "../../../utils/VariableUtil";
@@ -49,11 +49,22 @@ export default class SyncHandler {
 				this.context.syncStatusHolder.syncStatus.setMessage(this.checkSyncConfig());
 				return;
 			}
-			let syncHandler = this.syncHandlers.find(handler => handler.support(this.syncConfig.syncType));
-			if (syncHandler) {
-				await syncHandler.sync(this.syncConfig, this.context);
+			if (this.syncConfig.syncType === SyncType.all) {
+				const types = [SyncType.movie, SyncType.book, SyncType.music, SyncType.teleplay, SyncType.game];
+				for (const type of types) {
+					const subConfig = {...this.syncConfig, syncType: type};
+					let syncHandler = this.syncHandlers.find(handler => handler.support(type));
+					if (syncHandler) {
+						await syncHandler.sync(subConfig, this.context);
+					}
+				}
 			} else {
-				await this.defaultSyncHandler.sync(this.syncConfig, this.context);
+				let syncHandler = this.syncHandlers.find(handler => handler.support(this.syncConfig.syncType));
+				if (syncHandler) {
+					await syncHandler.sync(this.syncConfig, this.context);
+				} else {
+					await this.defaultSyncHandler.sync(this.syncConfig, this.context);
+				}
 			}
 		}
 		await this.showResult();

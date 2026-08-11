@@ -1,5 +1,5 @@
-import {DoubanPluginSetting} from "../douban/setting/model/DoubanPluginSetting";
-import {PersonNameMode, PictureBedSetting_PicGo, PictureBedType, SupportType} from "./Constsant";
+import { DoubanPluginSetting } from "../douban/setting/model/DoubanPluginSetting";
+import { PersonNameMode, PictureBedSetting_PicGo, PictureBedType, SupportType } from "./Constsant";
 
 export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	pictureBedFlag: false,
@@ -38,13 +38,13 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 	statusBar: true,
 	debugMode: false,
 	customProperties: [
-		{name: 'myType', value: 'movie', field: SupportType.movie},
-		{name: 'myType', value: 'book', field: SupportType.book},
-		{name: 'myType', value: 'music', field: SupportType.music},
-		{name: 'myType', value: 'note', field: SupportType.note},
-		{name: 'myType', value: 'game', field: SupportType.game},
-		{name: 'myType', value: 'teleplay', field: SupportType.teleplay},
-		{name: 'myType', value: 'theater', field: SupportType.theater},
+		{ name: 'myType', value: 'movie', field: SupportType.movie },
+		{ name: 'myType', value: 'book', field: SupportType.book },
+		{ name: 'myType', value: 'music', field: SupportType.music },
+		{ name: 'myType', value: 'note', field: SupportType.note },
+		{ name: 'myType', value: 'game', field: SupportType.game },
+		{ name: 'myType', value: 'teleplay', field: SupportType.teleplay },
+		{ name: 'myType', value: 'theater', field: SupportType.theater },
 	],
 	loginCookiesContent: '',
 	loginHeadersContent: '',
@@ -59,9 +59,13 @@ export const DEFAULT_SETTINGS: DoubanPluginSetting = {
 		starEmpty: '☆',
 		displayStarEmpty: false,
 		maxStar: 5,
+		minUserRating: 0,
+		minDoubanScore: 0,
 	},
 	searchDefaultType: SupportType.all,
 	arrayLengthLimits: [],
+	language: 'en',
+	actorMaxCount: 6,
 
 }
 

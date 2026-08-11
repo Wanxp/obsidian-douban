@@ -7,32 +7,32 @@ import {
 	SupportType,
 	SyncTypeRecords
 } from "./constant/Constsant";
-import {Editor, Notice, Plugin} from "obsidian";
+import { Editor, Notice, Plugin } from "obsidian";
 
-import {DEFAULT_SETTINGS} from "./constant/DefaultSettings";
-import {DoubanFuzzySuggester} from "./douban/data/search/DoubanSearchFuzzySuggestModal";
-import {DoubanPluginSetting} from "./douban/setting/model/DoubanPluginSetting";
-import {DoubanSearchChooseItemHandler} from "./douban/data/handler/DoubanSearchChooseItemHandler";
-import {DoubanSearchModal} from "./douban/data/search/DoubanSearchModal";
-import {DoubanSettingTab} from "./douban/setting/DoubanSettingTab";
+import { DEFAULT_SETTINGS } from "./constant/DefaultSettings";
+import { DoubanFuzzySuggester } from "./douban/data/search/DoubanSearchFuzzySuggestModal";
+import { DoubanPluginSetting } from "./douban/setting/model/DoubanPluginSetting";
+import { DoubanSearchChooseItemHandler } from "./douban/data/handler/DoubanSearchChooseItemHandler";
+import { DoubanSearchModal } from "./douban/data/search/DoubanSearchModal";
+import { DoubanSettingTab } from "./douban/setting/DoubanSettingTab";
 import DoubanSubject from "./douban/data/model/DoubanSubject";
-import {DoubanSyncModal} from "./douban/component/DoubanSyncModal";
+import { DoubanSyncModal } from "./douban/component/DoubanSyncModal";
 import FileHandler from "./file/FileHandler";
-import {FileUtil} from "./utils/FileUtil";
+import { FileUtil } from "./utils/FileUtil";
 import GlobalStatusHolder from "./douban/model/GlobalStatusHolder";
 import HandleContext from "./douban/data/model/HandleContext";
 import HandleResult from "./douban/data/model/HandleResult";
 import NetFileHandler from "./net/NetFileHandler";
 import SettingsManager from "./douban/setting/SettingsManager";
-import {SyncConfig} from "./douban/sync/model/SyncConfig";
+import { SyncConfig } from "./douban/sync/model/SyncConfig";
 import SyncHandler from "./douban/sync/handler/SyncHandler";
 import UserComponent from "./douban/user/UserComponent";
-import {i18nHelper} from './lang/helper';
-import {log} from "src/org/wanxp/utils/Logutil";
+import { i18nHelper } from './lang/helper';
+import { log } from "src/org/wanxp/utils/Logutil";
 import GithubUtil from "./utils/GithubUtil";
-import {DoubanPluginOnlineData} from "./douban/setting/model/DoubanPluginOnlineData";
+import { DoubanPluginOnlineData } from "./douban/setting/model/DoubanPluginOnlineData";
 import SearcherV2 from "./douban/data/search/SearchV2";
-import {SearchPage} from "./douban/data/model/SearchPage";
+import { SearchPage } from "./douban/data/model/SearchPage";
 
 export default class DoubanPlugin extends Plugin {
 	public settings: DoubanPluginSetting;
@@ -60,36 +60,36 @@ export default class DoubanPlugin extends Plugin {
 				if (Action.Sync == context.action) {
 					this.showStatus(i18nHelper.getMessage('140207', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
 					syncStatus.failByDiffType(extract.id, extract.title);
-				}else {
+				} else {
 					console.log(i18nHelper.getMessage('140102', extract.type, extract.title, extract.guessType));
 				}
 				return;
 			}
 			if (Action.Sync == context.action) {
 				this.showStatus(i18nHelper.getMessage('140207', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
-			}else {
+			} else {
 				this.showStatus(i18nHelper.getMessage('140204', extract.title));
 			}
-			const result  = await this.doubanExtractHandler.parseText(extract, context)
+			const result = await this.doubanExtractHandler.parseText(extract, context)
 			if (result) {
 				await this.putContentToObsidian(context, result);
 				extract.handledStatus = SubjectHandledStatus.saved;
 			}
 			if (Action.Sync == context.action) {
-				this.showStatus(i18nHelper.getMessage('140208', syncStatus.getHasHandle(),  syncStatus.getTotal(), extract.title));
-			}else {
+				this.showStatus(i18nHelper.getMessage('140208', syncStatus.getHasHandle(), syncStatus.getTotal(), extract.title));
+			} else {
 				this.showStatus(i18nHelper.getMessage('140205', extract.title));
 			}
 		} catch (e) {
 			log.error(i18nHelper.getMessage('140206', e.message), e);
-			syncStatus!=null?syncStatus.fail(extract.id, extract.title):null;
+			syncStatus != null ? syncStatus.fail(extract.id, extract.title) : null;
 		} finally {
 			this.clearStatusBarDelay();
 		}
 	}
 
 	async putContentToObsidian(context: HandleContext, result: HandleResult) {
-		const {mode} = context;
+		const { mode } = context;
 		switch (mode) {
 			case SearchHandleMode.FOR_CREATE:
 				await this.createFile(context, result);
@@ -105,24 +105,24 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async createFile(context: HandleContext, result: HandleResult) {
-		let filePath = result.filePath?result.filePath:DEFAULT_SETTINGS.dataFilePath;
+		let filePath = result.filePath ? result.filePath : DEFAULT_SETTINGS.dataFilePath;
 		filePath = FileUtil.join(filePath, result.fileName);
 		const syncStatus = context.syncStatusHolder && context.syncStatusHolder.syncStatus ? context.syncStatusHolder.syncStatus : null;
-		const {subject} = result;
-		const {content} = result;
+		const { subject } = result;
+		const { content } = result;
 		if (Action.Sync == context.action) {
 			if (context.syncStatusHolder.syncStatus.syncConfig.force) {
-				const exists:boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, content, context.showAfterCreate);
+				const exists: boolean = await this.fileHandler.createOrReplaceNewNoteWithData(filePath, content, context.showAfterCreate);
 				if (exists) {
-					syncStatus != null ? syncStatus.replace(subject.id, subject.title):null;
-				}else {
-					syncStatus != null ?syncStatus.create(subject.id, subject.title):null;
+					syncStatus != null ? syncStatus.replace(subject.id, subject.title) : null;
+				} else {
+					syncStatus != null ? syncStatus.create(subject.id, subject.title) : null;
 				}
-			}else {
-				const created:boolean = await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate, false);
-				created ?syncStatus.create(subject.id, subject.title):syncStatus.exists(subject.id, subject.title);
+			} else {
+				const created: boolean = await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate, false);
+				created ? syncStatus.create(subject.id, subject.title) : syncStatus.exists(subject.id, subject.title);
 			}
-		}else {
+		} else {
 			await this.fileHandler.createNewNoteWithData(filePath, content, context.showAfterCreate);
 		}
 	}
@@ -130,7 +130,7 @@ export default class DoubanPlugin extends Plugin {
 	async search(searchTerm: string, searchType: SupportType, context: HandleContext) {
 		try {
 			this.showStatus(i18nHelper.getMessage('140201', searchTerm));
-			const result:SearchPage = await SearcherV2.search(searchTerm, searchType, 1, SEARCH_ITEM_PAGE_SIZE, this.settings, context.plugin.settingsManager);
+			const result: SearchPage = await SearcherV2.search(searchTerm, searchType, 1, SEARCH_ITEM_PAGE_SIZE, this.settings, context.plugin.settingsManager);
 			this.showStatus(i18nHelper.getMessage('140202', result.list.toString()));
 			context.searchPage = result;
 			new DoubanFuzzySuggester(this, context, searchTerm).showSearchPage(result);
@@ -170,113 +170,132 @@ export default class DoubanPlugin extends Plugin {
 	async onload() {
 		console.log("----douban-plugins-load------")
 		await this.loadSettings();
+		if (this.settings.language) {
+			i18nHelper.setLanguage(this.settings.language);
+		}
 		if (this.settings.statusBar) {
 			this.doubanStatusBar = this.addStatusBarItem();
 		}
 
-		
+
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110101"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
-				netFileHandler: this.netFileHandler,
-				showAfterCreate:true,
-				action: Action.SearchAndCrate}, this.settings.searchDefaultType),
+					netFileHandler: this.netFileHandler,
+					showAfterCreate: true,
+					action: Action.SearchAndCrate
+				}, this.settings.searchDefaultType),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-and-input-current-file",
 			name: i18nHelper.getMessage("110002"),
 			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForSearchTerm({plugin: this,
+				this.getDoubanTextForSearchTerm({
+					plugin: this,
 					mode: SearchHandleMode.FOR_REPLACE,
 					settings: this.settings,
 					editor: editor,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-				action: Action.SearchAndReplace}),
+					action: Action.SearchAndReplace
+				}),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-by-current-file-name",
 			name: i18nHelper.getMessage("110001"),
 			editorCallback: (editor: Editor) =>
-				this.getDoubanTextForActiveFile({plugin: this,
+				this.getDoubanTextForActiveFile({
+					plugin: this,
 					mode: SearchHandleMode.FOR_REPLACE,
 					settings: this.settings,
 					editor: editor,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-				action: Action.SearchEditorAndReplace}),
+					action: Action.SearchEditorAndReplace
+				}),
 		});
 
 		this.addCommand({
 			id: "sync-douban-import-and-create-file",
 			name: i18nHelper.getMessage("110103"),
 			callback: () =>
-				this.showSyncModal({plugin: this,
+				this.showSyncModal({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-				action: Action.Sync,
-				syncStatusHolder: this.statusHolder}),
+					action: Action.Sync,
+					syncStatusHolder: this.statusHolder
+				}),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file-movie-tv",
 			name: i18nHelper.getMessage("110102"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-					showAfterCreate:true,
-					action: Action.SearchAndCrate}, SupportType.movie),
+					showAfterCreate: true,
+					action: Action.SearchAndCrate
+				}, SupportType.movie),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file-book",
 			name: i18nHelper.getMessage("110104"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-					showAfterCreate:true,
-					action: Action.SearchAndCrate}, SupportType.book),
+					showAfterCreate: true,
+					action: Action.SearchAndCrate
+				}, SupportType.book),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file-music",
 			name: i18nHelper.getMessage("110105"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-					showAfterCreate:true,
-					action: Action.SearchAndCrate}, SupportType.music),
+					showAfterCreate: true,
+					action: Action.SearchAndCrate
+				}, SupportType.music),
 		});
 
 		this.addCommand({
 			id: "searcher-douban-import-and-create-file-game",
 			name: i18nHelper.getMessage("110106"),
 			callback: () =>
-				this.getDoubanTextForCreateNewNoteForType({plugin: this,
+				this.getDoubanTextForCreateNewNoteForType({
+					plugin: this,
 					mode: SearchHandleMode.FOR_CREATE,
 					settings: this.settings,
 					userComponent: this.userComponent,
 					netFileHandler: this.netFileHandler,
-					showAfterCreate:true,
-					action: Action.SearchAndCrate}, SupportType.game),
+					showAfterCreate: true,
+					action: Action.SearchAndCrate
+				}, SupportType.game),
 		});
 
 
@@ -294,7 +313,11 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const savedSettings = await this.loadData();
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, savedSettings);
+		if (savedSettings && savedSettings.scoreSetting) {
+			this.settings.scoreSetting = Object.assign({}, DEFAULT_SETTINGS.scoreSetting, savedSettings.scoreSetting);
+		}
 		this.doubanExtractHandler = new DoubanSearchChooseItemHandler(this.app, this);
 		this.fileHandler = new FileHandler(this.app);
 	}
@@ -330,9 +353,9 @@ export default class DoubanPlugin extends Plugin {
 	}
 
 	async sync(context: HandleContext) {
-		const {syncConfig}  = context;
-			try {
-			const result:boolean = await this.checkLogin(context);
+		const { syncConfig } = context;
+		try {
+			const result: boolean = await this.checkLogin(context);
 			if (!result) {
 				return;
 			}
@@ -351,10 +374,10 @@ export default class DoubanPlugin extends Plugin {
 			await context.plugin.statusHolder.completeSync();
 			this.clearStatusBarDelay();
 			context.syncActive = false;
-			}
+		}
 	}
 
-	async checkLogin(context: HandleContext):Promise<boolean> {
+	async checkLogin(context: HandleContext): Promise<boolean> {
 		this.settingsManager.debug('主界面:同步时的登录状态检测');
 		const uc = context.userComponent;
 		// If assumed-logged-in but not verified, verify now (sync needs real user ID)

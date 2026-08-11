@@ -1,4 +1,4 @@
-import {TemplateKey} from "./Constsant";
+import { TemplateKey } from "./Constsant";
 
 export const DEFAULT_TEMPLATE_CONTENT = {
 	movieTemplateFileContent: `---
@@ -119,7 +119,7 @@ desc: {{desc}}
 ---
 
 ![image]({{image}})	
-`,teleplayTemplateFileContent: `---
+`, teleplayTemplateFileContent: `---
 doubanId: {{id}}
 title: {{title}}
 type: {{type}}
@@ -163,7 +163,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}
@@ -173,6 +173,7 @@ IMDb: {{IMDb}}
 time: {{time}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
+myComment: {{myComment}}
 desc: {{desc}}
 ---
 
@@ -202,11 +203,12 @@ isbn: {{isbn}}
 url: {{url}}
 totalPage: {{totalPage}}
 price: {{price}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 binding: {{binding}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
+myComment: {{myComment}}
 desc: {{desc}}
 ---
 
@@ -235,10 +237,11 @@ publisher: {{publisher}}
 barcode: {{barcode}}
 url: {{url}}
 records: {{records}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
+myComment: {{myComment}}
 desc: {{desc}}
 ---
 
@@ -284,10 +287,11 @@ genre: {{genre}}
 developer: {{developer}}
 platform: {{platform}}
 url: {{url}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
+myComment: {{myComment}}
 desc: {{desc}}
 ---
 
@@ -296,7 +300,7 @@ desc: {{desc}}
 Comment: 
 ---
 {{myComment}}
-`,teleplayTemplateFileContent: `---
+`, teleplayTemplateFileContent: `---
 doubanId: {{id}}
 title: {{title}}
 type: {{type}}
@@ -310,7 +314,7 @@ datePublished: {{datePublished}}
 director: {{director}}
 actor: {{actor}}
 author: {{author}}
-tags: {{myTags}}
+tags: {{tags}}
 state: {{myState}}
 url: {{url}}
 aliases: {{aliases}}
@@ -321,6 +325,7 @@ time: {{time}}
 episode: {{episode}}
 createTime: {{currentDate}} {{currentTime}}
 collectionDate: {{myCollectionDate}}
+myComment: {{myComment}}
 desc: {{desc}}
 ---
 
