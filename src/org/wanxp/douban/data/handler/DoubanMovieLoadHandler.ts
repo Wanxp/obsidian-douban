@@ -96,7 +96,7 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 		);
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMovieSubject {
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanMovieSubject | undefined {
 		let movie: DoubanMovieSubject | undefined = html('script')
 			.get()
 			.filter(scd => "application/ld+json" == html(scd).attr("type"))
@@ -177,6 +177,9 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				time: null,
 				IMDb: null,
 			};
+		}
+		if (!movie || !String(movie.id || '').trim() || !String(movie.title || '').trim()) {
+			return undefined;
 		}
 
 		this.handlePersonNameByMeta(html, movie, context, 'video:actor', 'actor');

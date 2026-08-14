@@ -82,7 +82,7 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 		return {data: html, userState: userState};
 	}
 
-	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanTeleplaySubject {
+	parseSubjectFromHtml(html: CheerioAPI, context: HandleContext): DoubanTeleplaySubject | undefined {
 		let teleplay: DoubanTeleplaySubject | undefined = html('script')
 			.get()
 			.filter(scd => "application/ld+json" == html(scd).attr("type"))
@@ -161,6 +161,9 @@ export class DoubanTeleplayLoadHandler extends DoubanAbstractLoadHandler<DoubanT
 				time: null,
 				IMDb: null,
 			};
+		}
+		if (!teleplay || !String(teleplay.id || '').trim() || !String(teleplay.title || '').trim()) {
+			return undefined;
 		}
 
 		this.handlePersonNameByMeta(html, teleplay,  context, 'video:actor', 'actor');

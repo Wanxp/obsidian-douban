@@ -11,6 +11,7 @@ import {i18nHelper} from "../lang/helper";
 import {ClipboardUtil} from "./ClipboardUtil";
 import DoubanHumanCheckModel from "../douban/component/DoubanHumanCheckModel";
 import {DoubanChallengeUtil} from "./DoubanChallengeUtil";
+import DoubanPageGuard, {DoubanPageProblem} from "./DoubanPageGuard";
 
 export class DoubanHttpUtil {
 	/**
@@ -76,13 +77,18 @@ export class DoubanHttpUtil {
 		if (settingsManager) {
 			settingsManager.debug(html);
 		}
-		if (html && html.toString().indexOf("<title>禁止访问</title>") != -1) {
-			const loginModel = new DoubanHumanCheckModel(url);
-			await loginModel.load();
-			return '';
-		} else {
-			return html;
+		const problem = DoubanPageGuard.detect(html.toString());
+		if (problem === DoubanPageProblem.accessDenied) {
+			if (Platform.isDesktopApp) {
+				const loginModel = new DoubanHumanCheckModel(url);
+				await loginModel.load();
+			}
+			throw new Error(i18nHelper.getMessage('130105'));
 		}
+		if (problem === DoubanPageProblem.loginRequired) {
+			throw new Error(i18nHelper.getMessage('130112'));
+		}
+		return html;
 	}
 
 }

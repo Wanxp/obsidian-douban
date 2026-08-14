@@ -129,6 +129,9 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 					guessType = this.getGuessType(data);
 				}
 				const sub = this.parseSubjectFromHtml(data, context);
+				if (!sub || !String(sub.id || '').trim() || !String(sub.title || '').trim()) {
+					throw new Error(i18nHelper.getMessage('130113'));
+				}
 				sub.userState = userState;
 				sub.guessType = guessType;
 				return sub;
