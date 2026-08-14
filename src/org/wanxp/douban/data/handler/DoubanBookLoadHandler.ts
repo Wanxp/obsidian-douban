@@ -41,8 +41,7 @@ export default class DoubanBookLoadHandler extends DoubanAbstractLoadHandler<Dou
 	}
 
 	handleSpecialAuthorName(authorName: string): string {
-		return authorName.replace(/\[/g, '')
-			.replace(']', '/');
+		return authorName.replace(/[\[\]]/g, '').trim();
 	}
 
 	analysisUser(html: CheerioAPI, context: HandleContext): {data:CheerioAPI ,  userState: UserStateSubject} {

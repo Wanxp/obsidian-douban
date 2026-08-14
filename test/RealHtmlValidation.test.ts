@@ -13,9 +13,13 @@ import DoubanMovieLoadHandler from "../src/org/wanxp/douban/data/handler/DoubanM
 import {DoubanTeleplayLoadHandler} from "../src/org/wanxp/douban/data/handler/DoubanTeleplayLoadHandler";
 import DoubanTheaterLoadHandler from "../src/org/wanxp/douban/data/handler/DoubanTheaterLoadHandler";
 import {PersonNameMode, SupportType} from "../src/org/wanxp/constant/Constsant";
+import YamlUtil from "../src/org/wanxp/utils/YamlUtil";
+import {FileUtil} from "../src/org/wanxp/utils/FileUtil";
 
 const realHtmlDirectory = process.env.DOUBAN_REAL_HTML_DIR;
 const realTest = realHtmlDirectory ? it : it.skip;
+const issueHtmlDirectory = process.env.DOUBAN_ISSUE_HTML_DIR;
+const issueTest = issueHtmlDirectory ? it : it.skip;
 const currentChromeHtmlFiles = (process.env.DOUBAN_CURRENT_CHROME_HTML || '').split(delimiter).filter(Boolean);
 const currentChromeTest = currentChromeHtmlFiles.length > 0 ? it : it.skip;
 const plugin = {} as any;
@@ -24,6 +28,7 @@ const context = (title?: string, url?: string) => ({
 	listItem: title || url ? {title: title || '', url: url || ''} : undefined,
 }) as any;
 const read = (name: string) => load(readFileSync(join(realHtmlDirectory, name), 'utf8'));
+const readIssue = (name: string) => load(readFileSync(join(issueHtmlDirectory, name), 'utf8'));
 
 describe("downloaded real Douban HTML", () => {
 	currentChromeTest.each(currentChromeHtmlFiles)("separates tags and comments from the current logged-in Chrome session: %s", currentChromeHtml => {
@@ -140,5 +145,66 @@ describe("downloaded real Douban HTML", () => {
 		expect(subject.author.length).toBeGreaterThan(0);
 		expect(subject.actor.length).toBeGreaterThan(0);
 		expect(subject.desc.length).toBeGreaterThan(300);
+	});
+
+	issueTest("covers open issues with the exact reported Douban subjects", () => {
+		const foucault = new DoubanBookLoadHandler(plugin).parseSubjectFromHtml(
+			readIssue("foucault.html"),
+			context("福柯：关键概念"),
+		);
+		expect(foucault).toMatchObject({
+			id: "34866852",
+			title: "福柯：关键概念",
+		});
+		expect(foucault.originalTitle).toContain("Michel Foucault: Key Concepts");
+		expect(YamlUtil.handleText(foucault.originalTitle)).toMatch(/^".*"$/);
+
+		const janeEyre = new DoubanBookLoadHandler(plugin).parseSubjectFromHtml(
+			readIssue("jane-eyre.html"),
+			context("简·爱"),
+		);
+		expect(janeEyre.id).toBe("30245411");
+		expect(janeEyre.author).toEqual(expect.arrayContaining([expect.stringContaining("夏洛蒂")]));
+
+		const linuxUnix = new DoubanBookLoadHandler(plugin).parseSubjectFromHtml(
+			readIssue("linux-unix.html"),
+			context("Linux/UNIX系统编程手册"),
+		);
+		expect(linuxUnix.title).toContain("Linux/UNIX");
+		expect(FileUtil.replaceSpecialCharactersForFileName(linuxUnix.title))
+			.not.toContain("/");
+
+		const nineteenEightyFourHandler = new DoubanBookLoadHandler(plugin);
+		const nineteenEightyFour = nineteenEightyFourHandler.parseSubjectFromHtml(
+			readIssue("nineteen-eighty-four.html"),
+			context("一九八四"),
+		);
+		const orwell = nineteenEightyFour.author.find(author => author.includes("奥威尔"));
+		expect(orwell).toBeTruthy();
+		expect(nineteenEightyFourHandler.handleSpecialAuthorName(orwell))
+			.not.toMatch(/[\\/]/);
+
+		const underOnePerson = new DoubanMovieLoadHandler(plugin).parseSubjectFromHtml(
+			readIssue("hitori-no-shita.html"),
+			context("一人之下 第一季"),
+		);
+		expect(underOnePerson).toMatchObject({
+			id: "26815153",
+			type: SupportType.teleplay,
+		});
+		expect(underOnePerson.actor.length).toBeGreaterThan(0);
+		expect(underOnePerson.desc).toBeTruthy();
+		expect(YamlUtil.handleText(underOnePerson.desc)).toMatch(/^".*"$/);
+
+		const homeAlone = new DoubanMovieLoadHandler(plugin).parseSubjectFromHtml(
+			readIssue("home-alone-guess.html"),
+			context("小鬼当家"),
+		);
+		expect(homeAlone).toMatchObject({
+			id: "1293088",
+			title: "小鬼当家",
+			type: SupportType.movie,
+		});
+		expect(homeAlone.author).toBeInstanceOf(Array);
 	});
 });
