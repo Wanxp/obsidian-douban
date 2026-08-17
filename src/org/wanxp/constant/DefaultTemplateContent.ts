@@ -25,7 +25,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 `,
 	bookTemplateFileContent: `---
 doubanId: {{id}}
@@ -52,7 +52,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 {{menu}}
 `,
@@ -77,7 +77,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 ---
 Menu:
@@ -118,7 +118,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})	
+![image](<{{image}}>)
 `,theaterTemplateFileContent: `---
 doubanId: {{id}}
 title: {{title}}
@@ -138,7 +138,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 `,teleplayTemplateFileContent: `---
 doubanId: {{id}}
 title: {{title}}
@@ -164,7 +164,7 @@ createTime: {{currentDate}} {{currentTime}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 `,
 }
 
@@ -196,7 +196,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 Comment: 
 ---
@@ -230,7 +230,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 Comment: 
 ---
@@ -262,7 +262,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 ---
 Menu:
@@ -311,7 +311,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})	
+![image](<{{image}}>)
 
 Comment: 
 ---
@@ -340,7 +340,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 Comment:
 {{myComment}}
@@ -372,7 +372,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 Comment: 
 ---

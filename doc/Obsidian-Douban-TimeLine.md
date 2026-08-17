@@ -71,7 +71,7 @@ collectionDate: {{myCollectionDate}}
 desc: {{desc}}
 ---
 
-![image]({{image}})
+![image](<{{image}}>)
 
 Comment: 
 ---
