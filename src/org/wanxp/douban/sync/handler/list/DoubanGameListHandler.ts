@@ -71,8 +71,7 @@ export abstract class DoubanGameListHandler extends DoubanAbstractListHandler {
 				const item = dataHtml(i);
 				return item.text().trim();
 			});
-		const {syncConfig} = context;
-		const {scope} = syncConfig;
+		const scope = this.getDoType();
 
 		const wishCount = this.getCount(countDescs, '想玩');
 		const collectCount = this.getCount(countDescs, '玩过');

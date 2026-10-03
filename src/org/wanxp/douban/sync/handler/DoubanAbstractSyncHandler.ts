@@ -1,10 +1,5 @@
 import DoubanPlugin from "../../../main";
-import {
-	BasicConst,
-	PAGE_SIZE,
-	SyncConditionType,
-	SyncType,
-} from "../../../constant/Constsant";
+import { BasicConst, PAGE_SIZE, SyncConditionType, SyncType } from "../../../constant/Constsant";
 import { DoubanSyncHandler } from "./DoubanSyncHandler";
 import { SyncConfig } from "../model/SyncConfig";
 import HandleContext from "../../data/model/HandleContext";
@@ -15,57 +10,24 @@ import { DoubanListHandler } from "./list/DoubanListHandler";
 import DoubanSubject from "../../data/model/DoubanSubject";
 import { log } from "../../../utils/Logutil";
 import { i18nHelper } from "../../../lang/helper";
-import { SearchPage } from "../../data/model/SearchPage";
-import {SearchPageTypeOf} from "../../data/model/SearchPageTypeOf";
+import { SearchPageTypeOf } from "../../data/model/SearchPageTypeOf";
 
-function toDateList(dataList: SubjectListItem[]): Date[] {
-	const dateList = dataList
-		.map((item) => item.updateDate)
-		.sort((a, b) => {
-			try {
-				return a.getTime() - b.getTime();
-			} catch (e) {
-			}
-			return 0;
-		});
-	return dateList;
-}
-
-function testTouchEndCondition(searchPage: SearchPage, context: HandleContext) {
-	const { syncConfig } = context;
-	if (!syncConfig) {
-		return false;
-	}
-	switch (syncConfig.syncConditionType) {
-		case SyncConditionType.ALL:
-			return false;
-		case SyncConditionType.LAST_THIRTY:
-			return searchPage.pageNum >= 0;
-		case SyncConditionType.CUSTOM_ITEM:
-			const syncConditionCountToValue = syncConfig.syncConditionCountToValue? syncConfig.syncConditionCountToValue : searchPage.total;
-			return searchPage.start + PAGE_SIZE - 1 >= syncConditionCountToValue;
-		case SyncConditionType.CUSTOM_TIME:
-			return true;
-	}
-	return false;
+interface SyncListPlan {
+	handler: DoubanListHandler;
+	context: HandleContext;
+	firstPage: SearchPageTypeOf<SubjectListItem>;
+	from: number;
+	to: number;
 }
 
 export abstract class DoubanAbstractSyncHandler<T extends DoubanSubject>
 	implements DoubanSyncHandler
 {
-	private plugin: DoubanPlugin;
-	private doubanSubjectLoadHandler: DoubanSubjectLoadHandler<T>;
-	private doubanListHandlers: DoubanListHandler[];
-
 	constructor(
-		plugin: DoubanPlugin,
-		doubanSubjectLoadHandler: DoubanSubjectLoadHandler<T>,
-		doubanListHandlers: DoubanListHandler[],
-	) {
-		this.plugin = plugin;
-		this.doubanSubjectLoadHandler = doubanSubjectLoadHandler;
-		this.doubanListHandlers = doubanListHandlers;
-	}
+		private plugin: DoubanPlugin,
+		private doubanSubjectLoadHandler: DoubanSubjectLoadHandler<T>,
+		private doubanListHandlers: DoubanListHandler[],
+	) {}
 
 	support(t: string): boolean {
 		return this.getSyncType() == t;
@@ -74,386 +36,152 @@ export abstract class DoubanAbstractSyncHandler<T extends DoubanSubject>
 	abstract getSyncType(): SyncType;
 
 	async sync(syncConfig: SyncConfig, context: HandleContext): Promise<void> {
-		if (syncConfig.syncConditionType == SyncConditionType.CUSTOM_TIME) {
-			await this.syncByTimeLimit(syncConfig, context);
-		} else if (syncConfig.syncConditionType == SyncConditionType.CUSTOM_ITEM) {
-			await this.syncByCountLimit(syncConfig, context);
-		}else if (syncConfig.syncConditionType == SyncConditionType.ALL) {
-			await this.syncAll(syncConfig, context);
-		}else if (syncConfig.syncConditionType == SyncConditionType.LAST_THIRTY) {
-			await this.syncLastThirty(syncConfig, context);
-		}else {
+		if (!Object.values(SyncConditionType).includes(syncConfig.syncConditionType as SyncConditionType)) {
 			log.warn(i18nHelper.getMessage("110083"));
+			return;
+		}
+		const { syncStatus } = context.syncStatusHolder;
+		if (syncConfig.syncConditionType == SyncConditionType.CUSTOM_TIME) {
+			const items = await this.getByTimeLimit(syncConfig, context);
+			syncStatus.totalNum(items.length);
+			syncStatus.setNeedHandled(items.length);
+			await this.handleItems(items, context);
+			return;
+		}
+
+		const plans = await this.getPlans(syncConfig, context);
+		const total = plans.reduce((sum, plan) => sum + Math.max(0, plan.to - plan.from + 1), 0);
+		syncStatus.totalNum(total);
+		syncStatus.setNeedHandled(total);
+		const seen = new Set<string>();
+		for (const plan of plans) {
+			await this.visitPages(plan, async (items) => {
+				const unique = items.filter((item) => {
+					if (seen.has(item.id)) {
+						syncStatus.totalNum(syncStatus.getTotal() - 1);
+						return false;
+					}
+					seen.add(item.id);
+					return true;
+				});
+				await this.handleItems(unique, context);
+			});
+		}
+		syncStatus.setNeedHandled(syncStatus.getTotal() - syncStatus.getHasHandle());
+	}
+
+	// Apply the existing one-based, inclusive range independently to each status.
+	// Keep the original ALL scope for the shared incremental cache key.
+	private async getPlans(syncConfig: SyncConfig, context: HandleContext): Promise<SyncListPlan[]> {
+		const plans: SyncListPlan[] = [];
+		let allTotal = 0;
+		const handlers = this.doubanListHandlers.filter((h) => h.support(syncConfig));
+		for (const handler of handlers) {
+			if (!context.plugin.statusHolder.syncing()) {
+				break;
+			}
+			if (plans.length > 0) {
+				await this.delay();
+				if (!context.plugin.statusHolder.syncing()) {
+					break;
+				}
+			}
+			const from = syncConfig.syncConditionType == SyncConditionType.CUSTOM_ITEM
+				? syncConfig.syncConditionCountFromValue : 1;
+			const listContext = { ...context, syncOffset: Math.floor((from - 1) / PAGE_SIZE) * PAGE_SIZE };
+			const firstPage = await handler.getPageData(listContext);
+			if (!firstPage || !context.plugin.statusHolder.syncing()) {
+				break;
+			}
+			allTotal += firstPage.total;
+			if (handlers.length == 1 && from > firstPage.total) {
+				context.syncStatusHolder.syncStatus.setMessage(i18nHelper.getMessage("130121", firstPage.total));
+			}
+			let to = firstPage.total;
+			if (syncConfig.syncConditionType == SyncConditionType.CUSTOM_ITEM) {
+				to = Math.min(syncConfig.syncConditionCountToValue || to, to);
+			} else if (syncConfig.syncConditionType == SyncConditionType.LAST_THIRTY) {
+				to = Math.min(PAGE_SIZE, to);
+			}
+			plans.push({ handler, context: listContext, firstPage, from, to });
+		}
+		context.syncStatusHolder.syncStatus.setAllTotal(allTotal);
+		return plans;
+	}
+
+	private async visitPages(plan: SyncListPlan, visit: (items: SubjectListItem[]) => Promise<void>): Promise<void> {
+		const { handler, context, from, to } = plan;
+		let page = plan.firstPage;
+		while (context.plugin.statusHolder.syncing() && context.syncOffset < to) {
+			if (!page || !page.list || page.list.length == 0) {
+				return;
+			}
+			const start = Math.max(0, from - 1 - context.syncOffset);
+			const end = Math.min(page.list.length, to - context.syncOffset);
+			await visit(page.list.slice(start, end).filter((item) => item != null));
+			context.syncOffset += PAGE_SIZE;
+			if (!context.plugin.statusHolder.syncing() || context.syncOffset >= to) {
+				return;
+			}
+			await this.delay();
+			if (!context.plugin.statusHolder.syncing()) {
+				return;
+			}
+			const allTotal = context.syncStatusHolder.syncStatus.getAllTotal();
+			page = await handler.getPageData(context);
+			// List handlers publish their own totals; retain the combined total.
+			context.syncStatusHolder.syncStatus.setAllTotal(allTotal);
 		}
 	}
 
 	async getByTimeLimit(syncConfig: SyncConfig, context: HandleContext): Promise<SubjectListItem[]> {
-		let startDate = syncConfig.syncConditionDateFromValue
-			? new Date(syncConfig.syncConditionDateFromValue)
-			: null;
-		let endDate = syncConfig.syncConditionDateToValue
-			? new Date(syncConfig.syncConditionDateToValue)
-			: null;
+		const startDate = syncConfig.syncConditionDateFromValue ? new Date(syncConfig.syncConditionDateFromValue) : null;
+		const endDate = syncConfig.syncConditionDateToValue ? new Date(syncConfig.syncConditionDateToValue) : null;
 		if (!startDate && !endDate) {
 			log.warn(i18nHelper.getMessage("110081"));
-			return;
-		}
-		const cacheList = new Map<number, SearchPageTypeOf<SubjectListItem>>();
-		let searchPage = await this.getItems(syncConfig, context);
-		if (!searchPage) {
-			return;
-		}
-		const total = searchPage.total;
-		const lastPage = total / PAGE_SIZE + 1;
-		if (lastPage == 1) {
-			return searchPage.list;
-		}
-		let leftPage = 1;
-		let startPage = 1;
-		let rightPage = lastPage;
-		let endPage = lastPage;
-		let currentPage = 1;
-		cacheList.set(currentPage, searchPage);
-		if (startDate != null) {
-			do {
-				if (!context.plugin.statusHolder.syncing()) {
-					break;
-				}
-				let page = cacheList.get(currentPage);
-				if (!page) {
-					page = await this.getItems(syncConfig, context);
-					if (!page) {
-						break;
-					}
-					cacheList.set(currentPage, page);
-				}
-				const pageItems = page.list;
-				const pageDateList = toDateList(pageItems);
-				if (pageDateList[pageDateList.length - 1] >= startDate) {
-					leftPage = currentPage;
-					endPage = currentPage;
-					currentPage = Math.ceil((leftPage + rightPage) / 2);
-				}else {
-					rightPage = currentPage;
-					endPage = currentPage;
-					currentPage = Math.floor((leftPage + rightPage) / 2);
-				}
-				if (currentPage == leftPage || currentPage == rightPage) {
-					break;
-				}
-			} while (currentPage < lastPage);
-		}
-		leftPage = 1;
-		rightPage = lastPage;
-		currentPage = 1;
-		if (endDate != null) {
-			do {
-				if (!context.plugin.statusHolder.syncing()) {
-					break;
-				}
-				let page = cacheList.get(currentPage);
-				if (!page) {
-					page = await this.getItems(syncConfig, context);
-					if (!page) {
-						break;
-					}
-					cacheList.set(currentPage, page);
-				}
-				const pageItems = page.list;
-				const pageDateList = toDateList(pageItems);
-				if (pageDateList[0] <= endDate) {
-					rightPage = currentPage;
-					startPage = currentPage;
-					currentPage = Math.ceil((leftPage + rightPage) / 2);
-				}else {
-					leftPage = currentPage;
-					startPage = currentPage;
-					currentPage = Math.floor((leftPage + rightPage) / 2);
-				}
-				if (currentPage == leftPage || currentPage == rightPage) {
-					break;
-				}
-			} while (currentPage < lastPage);
-		}
-		let needHandleItems:SubjectListItem[] = [];
-		for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
-			if (!context.plugin.statusHolder.syncing()) {
-				break;
-			}
-			let page = cacheList.get(pageNum);
-			if (!page) {
-				page = await this.getItems(syncConfig, context);
-				if (!page) {
-					break;
-				}
-				cacheList.set(pageNum, page);
-			}
-			const pageItems = page.list;
-			needHandleItems = needHandleItems.concat(pageItems
-				.filter((item) => {
-					const itemDate = item.updateDate;
-					return (!startDate || itemDate >= startDate) && (!endDate || itemDate <= endDate);
-				}
-			));
-		}
-		return needHandleItems;
-
-	}
-	async syncByTimeLimit(syncConfig: SyncConfig, context: HandleContext) {
-		const items = await this.getByTimeLimit(syncConfig, context);
-		if (!items || items.length == 0) {
-			return;
-		}
-
-		let subjectListItems = await this.removeExists(
-			items,
-			syncConfig,
-			context,
-		);
-
-		const searchPage = new SearchPageTypeOf<SubjectListItem>(subjectListItems.length,
-			1,
-			subjectListItems.length,
-			null,subjectListItems);
-		await this.handleItems(searchPage, subjectListItems, context);
-
-	}
-
-	private async getItems(
-		syncConfig: SyncConfig,
-		context: HandleContext,
-	): Promise<SearchPageTypeOf<SubjectListItem>> {
-		const supportHandlers: DoubanListHandler[] =
-			this.doubanListHandlers.filter((h) => h.support(syncConfig));
-		const handler = supportHandlers[0];
-		if (!context.plugin.statusHolder.syncing()) {
-			return SearchPage.emptyWithNoType();
-		}
-		const item = await handler.getPageData(context);
-		if (!context.plugin.statusHolder.syncing()) {
-			return SearchPage.emptyWithNoType();
-		}
-		return item;
-	}
-
-	private async removeExists(
-		items: SubjectListItem[],
-		syncConfig: SyncConfig,
-		context: HandleContext,
-	): Promise<SubjectListItem[]> {
-		if (!context.plugin.statusHolder.syncing()) {
 			return [];
 		}
-		return items;
+		const plans = await this.getPlans(syncConfig, context);
+		const allTotal = context.syncStatusHolder.syncStatus.getAllTotal();
+		const selected = new Map<string, SubjectListItem>();
+		// Traverse real offsets: dates and page boundaries are local to each list.
+		for (const plan of plans) {
+			await this.visitPages(plan, async (items) => {
+				for (const item of items) {
+					if (item.updateDate && (!startDate || item.updateDate >= startDate)
+						&& (!endDate || item.updateDate <= endDate) && !selected.has(item.id)) {
+						selected.set(item.id, item);
+					}
+				}
+			});
+		}
+		context.syncStatusHolder.syncStatus.setAllTotal(allTotal);
+		return Array.from(selected.values());
 	}
 
-	private async handleItems(
-		searchPage: SearchPage,
-		items: SubjectListItem[],
-		context: HandleContext,
-	): Promise<void> {
-		if (!items || items.length == 0) {
-			return;
-		}
+	private async handleItems(items: SubjectListItem[], context: HandleContext): Promise<void> {
 		const { syncStatus } = context.syncStatusHolder;
-		syncStatus.totalNum(searchPage.total);
-		const needHandled: number =
-			syncStatus.getTotal() - syncStatus.getHasHandle();
-		syncStatus.setNeedHandled(needHandled);
+		const allTotal = syncStatus.getAllTotal();
 		for (const item of items) {
 			if (!context.plugin.statusHolder.syncing()) {
 				return;
 			}
 			try {
 				if (syncStatus.shouldSync(item.id)) {
-					let subject: DoubanSubject =
-						await this.doubanSubjectLoadHandler.handle(
-							item.id,
-							context,
-						);
-
-					await sleepRange(
-						BasicConst.CALL_DOUBAN_DELAY,
-						BasicConst.CALL_DOUBAN_DELAY +
-							BasicConst.CALL_DOUBAN_DELAY_RANGE,
-					);
+					await this.doubanSubjectLoadHandler.handle(item.id, context);
+					await this.delay();
 				} else {
 					syncStatus.unHandle(item.id, item.title);
 				}
 			} catch (e) {
 				log.notice(i18nHelper.getMessage("130120"));
 			}
+			syncStatus.setNeedHandled(syncStatus.getTotal() - syncStatus.getHasHandle());
 		}
+		syncStatus.setAllTotal(allTotal);
 	}
 
-	private async syncByCountLimit(syncConfig: SyncConfig, context: HandleContext) {
-		const {syncConditionCountFromValue, syncConditionCountToValue} = syncConfig;
-		const startOffset = Math.floor((syncConditionCountFromValue - 1)/ PAGE_SIZE) * PAGE_SIZE;
-		context.syncOffset = startOffset;
-		//结束点是第几条
-		let endOffsetNumberForCustom = 0;
-		let needHandleTotalCustomItem = 0;
-		let isFirstStep = true;
-		let handleCount = 0;
-		do {
-			let searchPage = await this.getItems(syncConfig, context);
-			if (!context.plugin.statusHolder.syncing()) {
-				break;
-			}
-			const {list, total} = searchPage;
-			if (
-				!searchPage ||
-				!list ||
-				list.length == 0
-			) {
-				break;
-			}
-			if (syncConditionCountFromValue > total) {
-				context.syncStatusHolder.syncStatus.setMessage(i18nHelper.getMessage("130121", total));
-				break;
-			}
-			if (endOffsetNumberForCustom == 0) {
-				endOffsetNumberForCustom = Math.min(syncConditionCountToValue?syncConditionCountToValue:searchPage.total, searchPage.total);
-				needHandleTotalCustomItem = endOffsetNumberForCustom - syncConditionCountFromValue + 1;
-
-			}
-			let subjectListItems = [];
-
-			//在开始和结束同一页
-			if (Math.floor((syncConditionCountFromValue - 1) / PAGE_SIZE) == Math.floor((endOffsetNumberForCustom - 1) / PAGE_SIZE)) {
-				const startIndex = Math.floor((syncConditionCountFromValue - 1) % PAGE_SIZE);
-				const endIndex =  Math.floor((endOffsetNumberForCustom - 1) % PAGE_SIZE);
-				subjectListItems = await this.removeExists(
-					list.slice(startIndex, endIndex + 1),
-					syncConfig,
-					context,
-				);
-				handleCount += (endIndex - startIndex + 1);
-			//第一页
-			} else if (isFirstStep) {
-				const startIndex = (syncConditionCountFromValue - 1) % PAGE_SIZE;
-				handleCount += (list.length - startIndex);
-				subjectListItems = await this.removeExists(
-					list.slice(startIndex),
-					syncConfig,
-					context,
-				);
-				isFirstStep = false;
-			}
-			//最后一页
-			else if (needHandleTotalCustomItem - handleCount <= PAGE_SIZE) {
-				const endIndex = needHandleTotalCustomItem - handleCount;
-				subjectListItems = await this.removeExists(
-					list.slice(0, endIndex),
-					syncConfig,
-					context,
-				);
-				handleCount += endIndex;
-				//中间页
-			} else {
-				subjectListItems = await this.removeExists(
-					list,
-					syncConfig,
-					context,
-				);
-				handleCount += PAGE_SIZE;
-			}
-
-
-			if (!subjectListItems || subjectListItems.length == 0) {
-				await sleepRange(
-					BasicConst.CALL_DOUBAN_DELAY,
-					BasicConst.CALL_DOUBAN_DELAY +
-					BasicConst.CALL_DOUBAN_DELAY_RANGE,
-				);
-				continue;
-			}
-
-			searchPage.total = needHandleTotalCustomItem;
-			//处理
-			await this.handleItems(searchPage, subjectListItems, context);
-
-			context.syncOffset = context.syncOffset + PAGE_SIZE;
-			await sleepRange(
-				BasicConst.CALL_DOUBAN_DELAY,
-				BasicConst.CALL_DOUBAN_DELAY +
-				BasicConst.CALL_DOUBAN_DELAY_RANGE,
-			);
-		} while (handleCount < needHandleTotalCustomItem);
-	}
-
-	private async syncAll(syncConfig: SyncConfig, context: HandleContext) {
-		//最多100000条
-		context.syncOffset = 0;
-		let handleCount = 0;
-		let totalForHandle = 0;
-		let isFirstStep = true;
-		do {
-			let searchPage = await this.getItems(syncConfig, context);
-			if (!context.plugin.statusHolder.syncing()) {
-				break;
-			}
-
-			const {list, total} = searchPage;
-			if (
-				!searchPage ||
-				!list ||
-				list.length == 0
-			) {
-				break;
-			}
-			if (isFirstStep) {
-				totalForHandle = total;
-				isFirstStep = false;
-			}
-			handleCount += list.length;
-			let subjectListItems = await this.removeExists(
-				list,
-				syncConfig,
-				context,
-			);
-			if (!subjectListItems || subjectListItems.length == 0) {
-				await sleepRange(
-					BasicConst.CALL_DOUBAN_DELAY,
-					BasicConst.CALL_DOUBAN_DELAY +
-					BasicConst.CALL_DOUBAN_DELAY_RANGE,
-				);
-				continue;
-			}
-			await this.handleItems(searchPage, subjectListItems, context);
-			context.syncOffset = context.syncOffset + PAGE_SIZE;
-			await sleepRange(
-				BasicConst.CALL_DOUBAN_DELAY,
-				BasicConst.CALL_DOUBAN_DELAY +
-				BasicConst.CALL_DOUBAN_DELAY_RANGE,
-			);
-		} while (handleCount <= totalForHandle);
-	}
-
-	private async syncLastThirty(syncConfig: SyncConfig, context: HandleContext) {
-		context.syncOffset = 0;
-		let searchPage = await this.getItems(syncConfig, context);
-		if (!context.plugin.statusHolder.syncing()) {
-			return;
-		}
-		const {list, total} = searchPage;
-		if (
-			!searchPage ||
-			!list ||
-			list.length == 0
-		) {
-			return;
-		}
-
-		let subjectListItems = await this.removeExists(
-			list,
-			syncConfig,
-			context,
-		);
-		if (!subjectListItems || subjectListItems.length == 0) {
-			return;
-		}
-		searchPage.total = Math.min(list.length, total);
-		await this.handleItems(searchPage, subjectListItems, context);
+	private async delay(): Promise<void> {
+		await sleepRange(BasicConst.CALL_DOUBAN_DELAY, BasicConst.CALL_DOUBAN_DELAY + BasicConst.CALL_DOUBAN_DELAY_RANGE);
 	}
 }
