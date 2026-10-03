@@ -125,7 +125,7 @@ export class DoubanSyncModal extends Modal {
 		progress.innerHTML = `<p>
     <label for="file">${i18nHelper.getMessage('110033')}</label>
     <progress class="obsidian_douban_sync_slider" max="${syncStatus.getTotal() == 0 ? 1:syncStatus.getTotal()}" value="${syncStatus.getHasHandle()}"> </progress> <span> ${syncStatus.getTotal() == 0 ? i18nHelper.getMessage('110043') : syncStatus.getHasHandle() + '/' + syncStatus.getTotal()}
-${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled()-syncStatus.getHandle(), syncStatus.getOverSize())} </span>
+${syncStatus.getHandle() == 0? '...' : i18nHelper.getMessage('110042') + ':' + TimeUtil.estimateTimeMsg(syncStatus.getNeedHandled(), syncStatus.getOverSize())} </span>
 </p>
 <p>
 <label for="file">${i18nHelper.getMessage('110092')}</label>
