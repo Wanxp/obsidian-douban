@@ -26,6 +26,14 @@ export default class DoubanPageParser {
 			.trim();
 	}
 
+	static parseSubjectTitle(html: CheerioAPI): string {
+		// Movie JSON-LD and og:title include the original name. The document
+		// title contains the complete localized name, including Latin letters.
+		const title = this.normalizeText(html('head > title').first().text());
+		const match = title.match(/^([\s\S]+?)\s*[（(]豆瓣[）)]$/);
+		return match ? match[1].trim() : '';
+	}
+
 	static extractText(html: CheerioAPI, selectors: string[]): string {
 		for (const selector of selectors) {
 			const elements = html(selector).get();

@@ -231,12 +231,12 @@ export default abstract class DoubanAbstractLoadHandler<T extends DoubanSubject>
 		return resultName.trim();
 	}
 
-	getTitleNameByMode(name: string, personNameMode: string, context: HandleContext): string {
+	getTitleNameByMode(name: string, personNameMode: string, context: HandleContext, pageTitle?: string): string {
 		if (!name || !personNameMode) {
 			return "";
 		}
-		if (context.listItem) {
-			const listedName = context.listItem.title.trim();
+		const listedName = context.listItem?.title?.trim() || pageTitle?.trim();
+		if (listedName) {
 			switch (personNameMode) {
 				case PersonNameMode.CH_NAME:
 					return listedName;
