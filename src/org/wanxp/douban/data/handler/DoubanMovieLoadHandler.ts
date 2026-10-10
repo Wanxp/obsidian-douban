@@ -107,8 +107,9 @@ export default class DoubanMovieLoadHandler extends DoubanAbstractLoadHandler<Do
 				const idPattern = /(\d){5,10}/g;
 				const id = idPattern.exec(obj.url);
 				const name = obj.name;
-				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context) ?? name;
-				const originalTitle = super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context) ?? name;
+				const pageTitle = DoubanPageParser.parseSubjectTitle(html);
+				const title = super.getTitleNameByMode(name, PersonNameMode.CH_NAME, context, pageTitle) ?? name;
+				const originalTitle = super.getTitleNameByMode(name, PersonNameMode.EN_NAME, context, pageTitle) ?? name;
 
 				const result: DoubanMovieSubject = {
 					id: id ? id[0] : '',
