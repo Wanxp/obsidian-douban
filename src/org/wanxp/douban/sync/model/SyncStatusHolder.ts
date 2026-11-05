@@ -93,9 +93,9 @@ export default class SyncStatusHolder {
 		this.updateResult(id, title, SyncItemStatus.replace);
 	}
 
-	public exists(id:string, title:string) {
+	public exists(id:string, title:string, notePath?: string) {
 		this.putToHandled(id, title);
-		this.updateResult(id, title, SyncItemStatus.exists);
+		this.updateResult(id, title, SyncItemStatus.exists, notePath);
 	}
 
 	public unHandle(id:string, title:string) {
@@ -103,9 +103,9 @@ export default class SyncStatusHolder {
 	}
 
 
-	public create(id:string, title:string) {
+	public create(id:string, title:string, notePath?: string) {
 		this.putToHandled(id, title);
-		this.updateResult(id, title, SyncItemStatus.create);
+		this.updateResult(id, title, SyncItemStatus.create, notePath);
 	}
 
 	public fail(id:string, title:string) {
@@ -116,8 +116,8 @@ export default class SyncStatusHolder {
 		this.updateResult(id, title, SyncItemStatus.failByDiffType);
 	}
 
-	private updateResult(id:string, title:string, status:SyncItemStatus) {
-		this.syncResultMap.set(id, {id: id,title:title,status:status});
+	private updateResult(id:string, title:string, status:SyncItemStatus, notePath?: string) {
+		this.syncResultMap.set(id, {id, title, status, notePath});
 		this.statusHandleMap.set(status, this.statusHandleMap.get(status) + 1);
 		this.handled(1);
 	}
@@ -178,17 +178,9 @@ export default class SyncStatusHolder {
 	}
 
 	private needClearByKey(handleKey:string, savedKey:string):boolean {
-		if (handleKey == savedKey) {
-			return false;
-		}
-		let handledKeys = handleKey.split('+');
-		let savedKeys = savedKey.split('+');
-		handledKeys = handledKeys??[''];
-		savedKeys = savedKeys??[''];
-		if (handledKeys[0] == savedKeys[0]) {
-			return true;
-		}
-		return false;
+		// Strip the state, keeping the output path and media type in the comparison.
+		return handleKey !== savedKey
+			&& handleKey.slice(0, handleKey.lastIndexOf('+')) === savedKey.slice(0, savedKey.lastIndexOf('+'));
 	}
 
 	public setMessage(s: string) {
