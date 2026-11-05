@@ -103,8 +103,9 @@ export default class SyncHandler {
 				details+= `${value.id}-  ${value.title}  :  ${i18nHelper.getMessage(value.status)}
 `;
 			}else {
+				const link = value.notePath?.replace(/\.md$/i, '') ?? FileUtil.replaceSpecialCharactersForFileName(value.title);
 				// @ts-ignore
-				details+= `${value.id}-[[${FileUtil.replaceSpecialCharactersForFileName(value.title)}]]:  ${i18nHelper.getMessage(value.status)}
+				details+= `${value.id}-[[${link}]]:  ${i18nHelper.getMessage(value.status)}
 `;
 			}
 

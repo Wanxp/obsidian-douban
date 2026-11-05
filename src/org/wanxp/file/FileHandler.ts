@@ -1,7 +1,8 @@
 import { DoubanPluginSetting } from "../douban/setting/model/DoubanPluginSetting";
-import {App, normalizePath, Platform, TFile} from "obsidian";
+import {App, normalizePath, Platform, TFile, TFolder} from "obsidian";
 import { log } from "src/org/wanxp/utils/Logutil";
 import DoubanPlugin from "../main";
+import type DoubanSubject from "../douban/data/model/DoubanSubject";
 import {FileUtil} from "../utils/FileUtil";
 import {i18nHelper} from "../lang/helper";
 import {exists} from "fs";
@@ -140,6 +141,36 @@ export default class FileHandler {
 			await leaf.openFile(File);
 		}
 		return true;
+	}
+
+	async createSyncNote(
+		originalFilePath: string, data: string, showAfterCreate: boolean, subject: Pick<DoubanSubject, 'id' | 'type'>,
+	): Promise<{created: boolean; path: string}> {
+		const {vault, metadataCache} = this._app;
+		const {dir, name} = FileUtil.parse(originalFilePath);
+		const folder = dir ? vault.getAbstractFileByPath(normalizePath(dir)) : vault.getRoot();
+		const original = FileUtil.join(dir, name);
+		let destination = original;
+
+		if (folder instanceof TFolder && /^\d+$/.test(subject.id)) {
+			for (const file of folder.children) {
+				if (!(file instanceof TFile) || file.extension !== 'md') {
+					continue;
+				}
+				const properties = metadataCache.getFileCache(file)?.frontmatter;
+				const id = String(properties?.doubanId ?? '');
+				if (id === subject.id && properties?.type === subject.type) {
+					return {created: false, path: file.path};
+				}
+				if (file.path === original + '.md' && /^\d+$/.test(id)
+					&& (id !== subject.id || (properties?.type && properties.type !== subject.type))) {
+					destination = original + '--' + subject.id;
+				}
+			}
+		}
+
+		const created = await this.createNewNoteWithData(destination, data, showAfterCreate, false);
+		return {created, path: destination + '.md'};
 	}
 
 	/**
